@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { MainLayout } from 'src/layouts/main';
-import { spaNavData } from 'src/layouts/config-nav-spa';
+import { sofaNavData } from 'src/layouts/config-nav-sofa';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -26,7 +26,7 @@ export function Router() {
        */
       element: (
         <Suspense fallback={<SplashScreen />}>
-          <MainLayout data={{ nav: spaNavData }}>
+          <MainLayout data={{ nav: sofaNavData }}>
             <HomePage />
           </MainLayout>
         </Suspense>
