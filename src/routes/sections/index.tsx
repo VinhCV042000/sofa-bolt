@@ -8,6 +8,9 @@ import { sofa2NavData } from 'src/layouts/config-nav-sofa2';
 import { sofa3NavData } from 'src/layouts/config-nav-sofa3';
 import { sofa4NavData } from 'src/layouts/config-nav-sofa4';
 import { sofa5NavData } from 'src/layouts/config-nav-sofa5';
+import { sofa6NavData } from 'src/layouts/config-nav-sofa6';
+import { sofa7NavData } from 'src/layouts/config-nav-sofa7';
+import { sofa8NavData } from 'src/layouts/config-nav-sofa8';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -25,6 +28,9 @@ const Sofa2Page = lazy(() => import('src/pages/sofa2'));
 const Sofa3Page = lazy(() => import('src/pages/sofa3'));
 const Sofa4Page = lazy(() => import('src/pages/sofa4'));
 const Sofa5Page = lazy(() => import('src/pages/sofa5'));
+const Sofa6Page = lazy(() => import('src/pages/sofa6'));
+const Sofa7Page = lazy(() => import('src/pages/sofa7'));
+const Sofa8Page = lazy(() => import('src/pages/sofa8'));
 
 export function Router() {
   return useRoutes([
@@ -78,6 +84,39 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa5NavData }}>
             <Sofa5Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa6',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6NavData }}>
+            <Sofa6Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa7',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7NavData }}>
+            <Sofa7Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa8',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8NavData }}>
+            <Sofa8Page />
           </MainLayout>
         </Suspense>
       ),
