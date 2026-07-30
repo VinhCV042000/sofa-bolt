@@ -117,7 +117,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                 sx={{
                   color: SOFA11_COLORS.cream,
                   fontSize: { xs: 46, md: 86 },
-                  lineHeight: 0.95,
+                  lineHeight: 1.05,
                   fontWeight: 900,
                   letterSpacing: -2,
                   textTransform: 'uppercase',
