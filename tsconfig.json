@@ -18,7 +18,6 @@
     "isolatedModules": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
