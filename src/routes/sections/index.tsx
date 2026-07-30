@@ -129,6 +129,40 @@ export function Router() {
     },
 
     {
+      path: '/sofa9',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9NavData }}>
+            <Sofa9Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa10',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10NavData }}>
+            <Sofa10Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa11',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11NavData }}>
+            <Sofa11Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+
+    {
       path: '/sofa3',
       element: (
         <Suspense fallback={<SplashScreen />}>
