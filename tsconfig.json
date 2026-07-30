@@ -18,7 +18,7 @@
     "isolatedModules": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "paths": { "src/*": ["src/*"] },
+    "paths": { "src/*": ["./src/*"] },
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
