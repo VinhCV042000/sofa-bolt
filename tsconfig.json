@@ -18,6 +18,7 @@
     "isolatedModules": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
+    "paths": { "src/*": ["./src/*"] },
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
@@ -29,10 +30,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
   ]
 }
