@@ -34,6 +34,9 @@ const Sofa5Page = lazy(() => import('src/pages/sofa5'));
 const Sofa6Page = lazy(() => import('src/pages/sofa6'));
 const Sofa7Page = lazy(() => import('src/pages/sofa7'));
 const Sofa8Page = lazy(() => import('src/pages/sofa8'));
+const Sofa9Page = lazy(() => import('src/pages/sofa9'));
+const Sofa10Page = lazy(() => import('src/pages/sofa10'));
+const Sofa11Page = lazy(() => import('src/pages/sofa11'));
 
 export function Router() {
   return useRoutes([
