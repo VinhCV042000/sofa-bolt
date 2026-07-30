@@ -8,11 +8,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_GALLERY } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_GALLERY } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +54,7 @@ export function Sofa11Gallery({ sx, ...other }: BoxProps) {
                   overflow: 'hidden',
                   borderRadius: 4,
                   height: { xs: 240, md: 300 },
-                  border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.1)}`,
+                  border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.1)}`,
                   '&:hover img': { transform: 'scale(1.1)' },
                   '&:hover': { borderColor: SOFA11_COLORS.magenta },
                   transition: 'border-color .3s',
@@ -71,7 +70,7 @@ export function Sofa11Gallery({ sx, ...other }: BoxProps) {
                   sx={{
                     inset: 0,
                     position: 'absolute',
-                    background: `linear-gradient(to top, ${varAlpha(SOFA11_COLORS.voidDeep, 0.9)} 0%, transparent 60%)`,
+                    background: `linear-gradient(to top, ${sofa11Alpha(SOFA11_COLORS.voidDeep, 0.9)} 0%, transparent 60%)`,
                   }}
                 />
                 <Stack spacing={0.5} sx={{ p: 2, left: 0, bottom: 0, position: 'absolute' }}>

@@ -8,12 +8,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_COLLECTIONS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_COLLECTIONS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +48,7 @@ export function Sofa11Collections({ sx, ...other }: BoxProps) {
             </Typography>
           </Box>
           <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
-            <Typography sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.6), maxWidth: 560 }}>
+            <Typography sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6), maxWidth: 560 }}>
               Mỗi dòng là một bảng màu riêng, một dáng ngồi riêng. Chọn dòng hợp năng lượng của bạn.
             </Typography>
           </Box>
@@ -68,13 +67,13 @@ export function Sofa11Collections({ sx, ...other }: BoxProps) {
                   cursor: 'pointer',
                   position: 'relative',
                   bgcolor: SOFA11_COLORS.grape,
-                  border: `2px solid ${varAlpha(item.accent, 0.5)}`,
+                  border: `2px solid ${sofa11Alpha(item.accent, 0.5)}`,
                   transform: index % 2 ? 'rotate(1.2deg)' : 'rotate(-1.2deg)',
                   transition: 'all .3s',
                   '&:hover': {
                     transform: 'rotate(0deg) translateY(-8px)',
                     borderColor: item.accent,
-                    boxShadow: `0 0 40px ${varAlpha(item.accent, 0.45)}`,
+                    boxShadow: `0 0 40px ${sofa11Alpha(item.accent, 0.45)}`,
                   },
                 }}
               >
@@ -98,7 +97,7 @@ export function Sofa11Collections({ sx, ...other }: BoxProps) {
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.6) }}>
+                  <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6) }}>
                     {item.description}
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={0.5} sx={{ pt: 1, color: item.accent }}>

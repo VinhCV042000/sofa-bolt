@@ -8,12 +8,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_STEPS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_STEPS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -57,13 +56,13 @@ export function Sofa11Steps({ sx, ...other }: BoxProps) {
                   height: 1,
                   borderRadius: 4,
                   position: 'relative',
-                  bgcolor: varAlpha(SOFA11_COLORS.cream, 0.03),
-                  border: `2px dashed ${varAlpha(step.accent, 0.5)}`,
+                  bgcolor: sofa11Alpha(SOFA11_COLORS.cream, 0.03),
+                  border: `2px dashed ${sofa11Alpha(step.accent, 0.5)}`,
                   transition: 'all .3s',
                   '&:hover': {
                     borderStyle: 'solid',
                     borderColor: step.accent,
-                    bgcolor: varAlpha(step.accent, 0.08),
+                    bgcolor: sofa11Alpha(step.accent, 0.08),
                   },
                 }}
               >
@@ -87,7 +86,7 @@ export function Sofa11Steps({ sx, ...other }: BoxProps) {
                       fontSize: 40,
                       fontWeight: 900,
                       lineHeight: 1,
-                      color: varAlpha(SOFA11_COLORS.cream, 0.12),
+                      color: sofa11Alpha(SOFA11_COLORS.cream, 0.12),
                     }}
                   >
                     {step.step}
@@ -97,7 +96,7 @@ export function Sofa11Steps({ sx, ...other }: BoxProps) {
                 <Typography variant="h6" sx={{ color: SOFA11_COLORS.cream, fontWeight: 900 }}>
                   {step.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.6) }}>
+                <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6) }}>
                   {step.description}
                 </Typography>
               </Stack>

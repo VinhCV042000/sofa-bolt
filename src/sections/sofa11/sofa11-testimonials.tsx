@@ -9,12 +9,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_TESTIMONIALS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_TESTIMONIALS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -58,12 +57,12 @@ export function Sofa11Testimonials({ sx, ...other }: BoxProps) {
                   height: 1,
                   borderRadius: 4,
                   bgcolor: SOFA11_COLORS.void,
-                  border: `2px solid ${varAlpha(item.accent, 0.4)}`,
+                  border: `2px solid ${sofa11Alpha(item.accent, 0.4)}`,
                   transform: index % 2 ? 'rotate(0.8deg)' : 'rotate(-0.8deg)',
                   transition: 'all .3s',
                   '&:hover': {
                     transform: 'rotate(0)',
-                    boxShadow: `0 0 40px ${varAlpha(item.accent, 0.3)}`,
+                    boxShadow: `0 0 40px ${sofa11Alpha(item.accent, 0.3)}`,
                   },
                 }}
               >
@@ -78,7 +77,7 @@ export function Sofa11Testimonials({ sx, ...other }: BoxProps) {
                   ))}
                 </Stack>
 
-                <Typography sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.8), lineHeight: 1.9 }}>
+                <Typography sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.8), lineHeight: 1.9 }}>
                   “{item.content}”
                 </Typography>
 
@@ -88,7 +87,7 @@ export function Sofa11Testimonials({ sx, ...other }: BoxProps) {
                     <Typography variant="subtitle2" sx={{ color: SOFA11_COLORS.cream, fontWeight: 900 }}>
                       {item.name}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.5) }}>
+                    <Typography variant="caption" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.5) }}>
                       {item.role}
                     </Typography>
                   </Box>

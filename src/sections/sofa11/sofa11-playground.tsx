@@ -9,12 +9,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_IMAGES, SOFA11_PLAYGROUND } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_IMAGES, SOFA11_PLAYGROUND } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +38,7 @@ export function Sofa11Playground({ sx, ...other }: BoxProps) {
                 borderRadius: 5,
                 overflow: 'hidden',
                 border: `3px solid ${active.hex}`,
-                boxShadow: `0 0 70px ${varAlpha(active.hex, 0.45)}`,
+                boxShadow: `0 0 70px ${sofa11Alpha(active.hex, 0.45)}`,
                 transition: 'all .4s',
               }}
             >
@@ -67,13 +66,13 @@ export function Sofa11Playground({ sx, ...other }: BoxProps) {
                   py: 1,
                   position: 'absolute',
                   borderRadius: 99,
-                  bgcolor: varAlpha(SOFA11_COLORS.voidDeep, 0.75),
+                  bgcolor: sofa11Alpha(SOFA11_COLORS.voidDeep, 0.75),
                 }}
               >
                 <Typography variant="subtitle2" sx={{ color: SOFA11_COLORS.cream, fontWeight: 900 }}>
                   {active.name}
                 </Typography>
-                <Typography variant="caption" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.6) }}>
+                <Typography variant="caption" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6) }}>
                   {active.mood}
                 </Typography>
               </Stack>
@@ -101,7 +100,7 @@ export function Sofa11Playground({ sx, ...other }: BoxProps) {
               </Box>
 
               <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
-                <Typography sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.62), lineHeight: 1.9 }}>
+                <Typography sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.62), lineHeight: 1.9 }}>
                   Chạm vào từng ô màu để xem không gian đổi tông ngay lập tức. Đây chỉ là 6 trong hơn
                   200 mã vải chúng tôi đang có sẵn tại xưởng.
                 </Typography>
@@ -126,8 +125,8 @@ export function Sofa11Playground({ sx, ...other }: BoxProps) {
                       borderRadius: 3,
                       cursor: 'pointer',
                       textAlign: 'center',
-                      bgcolor: varAlpha(SOFA11_COLORS.cream, 0.04),
-                      border: `2px solid ${active.hex === color.hex ? color.hex : varAlpha(SOFA11_COLORS.cream, 0.12)}`,
+                      bgcolor: sofa11Alpha(SOFA11_COLORS.cream, 0.04),
+                      border: `2px solid ${active.hex === color.hex ? color.hex : sofa11Alpha(SOFA11_COLORS.cream, 0.12)}`,
                       transition: 'all .25s',
                       '&:hover': { transform: 'translateY(-4px)', borderColor: color.hex },
                     }}
@@ -139,7 +138,7 @@ export function Sofa11Playground({ sx, ...other }: BoxProps) {
                         borderRadius: 2,
                         bgcolor: color.hex,
                         mb: 1,
-                        boxShadow: `0 0 20px ${varAlpha(color.hex, 0.5)}`,
+                        boxShadow: `0 0 20px ${sofa11Alpha(color.hex, 0.5)}`,
                       }}
                     />
                     <Typography

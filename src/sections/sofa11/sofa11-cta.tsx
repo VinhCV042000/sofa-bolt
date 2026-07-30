@@ -10,12 +10,11 @@ import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_IMAGES } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_IMAGES } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +38,7 @@ export function Sofa11Cta({ sx, ...other }: BoxProps) {
           position: 'absolute',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundImage: `linear-gradient(120deg, ${varAlpha(SOFA11_COLORS.void, 0.94)} 0%, ${varAlpha(SOFA11_COLORS.magenta, 0.5)} 100%), url(${SOFA11_IMAGES.cta})`,
+          backgroundImage: `linear-gradient(120deg, ${sofa11Alpha(SOFA11_COLORS.void, 0.94)} 0%, ${sofa11Alpha(SOFA11_COLORS.magenta, 0.5)} 100%), url(${SOFA11_IMAGES.cta})`,
         }}
       />
 
@@ -71,7 +70,7 @@ export function Sofa11Cta({ sx, ...other }: BoxProps) {
           </Box>
 
           <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
-            <Typography sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.75), fontSize: 18 }}>
+            <Typography sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.75), fontSize: 18 }}>
               Đặt lịch tư vấn màu miễn phí — nhận ngay bộ 6 mã vải mẫu và bản render 3D phòng khách
               của bạn trong 24h.
             </Typography>
@@ -96,7 +95,7 @@ export function Sofa11Cta({ sx, ...other }: BoxProps) {
                 textTransform: 'uppercase',
                 color: SOFA11_COLORS.void,
                 bgcolor: SOFA11_COLORS.lime,
-                boxShadow: `0 0 36px ${varAlpha(SOFA11_COLORS.lime, 0.6)}`,
+                boxShadow: `0 0 36px ${sofa11Alpha(SOFA11_COLORS.lime, 0.6)}`,
                 '&:hover': { bgcolor: SOFA11_COLORS.cyan },
               }}
             >
@@ -115,7 +114,7 @@ export function Sofa11Cta({ sx, ...other }: BoxProps) {
                 borderRadius: 99,
                 textTransform: 'uppercase',
                 color: SOFA11_COLORS.cream,
-                border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.45)}`,
+                border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.45)}`,
                 '&:hover': { borderColor: SOFA11_COLORS.lime, color: SOFA11_COLORS.lime },
               }}
             >

@@ -8,11 +8,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { varFade, MotionViewport, AnimateCountUp } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_STATS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_STATS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -30,8 +29,8 @@ export function Sofa11Stats({ sx, ...other }: BoxProps) {
       sx={{
         py: { xs: 7, md: 10 },
         bgcolor: SOFA11_COLORS.grape,
-        borderTop: `3px solid ${varAlpha(SOFA11_COLORS.cream, 0.1)}`,
-        borderBottom: `3px solid ${varAlpha(SOFA11_COLORS.cream, 0.1)}`,
+        borderTop: `3px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.1)}`,
+        borderBottom: `3px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.1)}`,
         ...sx,
       }}
       {...other}
@@ -67,7 +66,7 @@ export function Sofa11Stats({ sx, ...other }: BoxProps) {
                     {stat.suffix}
                   </Box>
                 </Stack>
-                <Typography variant="body2" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.6) }}>
+                <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6) }}>
                   {stat.label}
                 </Typography>
               </Stack>

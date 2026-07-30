@@ -9,12 +9,11 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionContainer } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_IMAGES, SOFA11_PROMOS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_IMAGES, SOFA11_PROMOS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +45,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
         sx={{
           inset: 0,
           position: 'absolute',
-          backgroundImage: `linear-gradient(${varAlpha(SOFA11_COLORS.cyan, 0.16)} 1px, transparent 1px), linear-gradient(90deg, ${varAlpha(SOFA11_COLORS.cyan, 0.16)} 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(${sofa11Alpha(SOFA11_COLORS.cyan, 0.16)} 1px, transparent 1px), linear-gradient(90deg, ${sofa11Alpha(SOFA11_COLORS.cyan, 0.16)} 1px, transparent 1px)`,
           backgroundSize: '56px 56px',
           maskImage: 'radial-gradient(ellipse at 50% 60%, #000 0%, transparent 75%)',
         }}
@@ -62,7 +61,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
           height: 520,
           borderRadius: '50%',
           filter: 'blur(120px)',
-          background: varAlpha(SOFA11_COLORS.magenta, 0.45),
+          background: sofa11Alpha(SOFA11_COLORS.magenta, 0.45),
         }}
       />
       <Box
@@ -74,7 +73,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
           height: 460,
           borderRadius: '50%',
           filter: 'blur(130px)',
-          background: varAlpha(SOFA11_COLORS.cyan, 0.35),
+          background: sofa11Alpha(SOFA11_COLORS.cyan, 0.35),
         }}
       />
 
@@ -99,7 +98,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                   width: 'fit-content',
                   borderRadius: 99,
                   border: `2px solid ${SOFA11_COLORS.lime}`,
-                  boxShadow: `0 0 24px ${varAlpha(SOFA11_COLORS.lime, 0.5)}`,
+                  boxShadow: `0 0 24px ${sofa11Alpha(SOFA11_COLORS.lime, 0.5)}`,
                 }}
               >
                 <Iconify icon="solar:bolt-circle-bold" width={18} sx={{ color: SOFA11_COLORS.lime }} />
@@ -130,7 +129,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                   component="span"
                   sx={{
                     color: SOFA11_COLORS.magenta,
-                    textShadow: `4px 4px 0 ${SOFA11_COLORS.cyan}, 8px 8px 0 ${varAlpha(SOFA11_COLORS.lime, 0.6)}`,
+                    textShadow: `4px 4px 0 ${SOFA11_COLORS.cyan}, 8px 8px 0 ${sofa11Alpha(SOFA11_COLORS.lime, 0.6)}`,
                   }}
                 >
                   bật màu
@@ -144,7 +143,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
             <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
               <Typography
                 sx={{
-                  color: varAlpha(SOFA11_COLORS.cream, 0.72),
+                  color: sofa11Alpha(SOFA11_COLORS.cream, 0.72),
                   fontSize: { xs: 16, md: 18 },
                   maxWidth: 480,
                   lineHeight: 1.8,
@@ -173,7 +172,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                   textTransform: 'uppercase',
                   color: SOFA11_COLORS.void,
                   bgcolor: SOFA11_COLORS.lime,
-                  boxShadow: `0 0 32px ${varAlpha(SOFA11_COLORS.lime, 0.55)}`,
+                  boxShadow: `0 0 32px ${sofa11Alpha(SOFA11_COLORS.lime, 0.55)}`,
                   '&:hover': { bgcolor: SOFA11_COLORS.cyan, transform: 'translateY(-2px)' },
                   transition: 'all .25s',
                 }}
@@ -192,7 +191,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                   borderRadius: 99,
                   textTransform: 'uppercase',
                   color: SOFA11_COLORS.cream,
-                  border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.4)}`,
+                  border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.4)}`,
                   '&:hover': { borderColor: SOFA11_COLORS.magenta, color: SOFA11_COLORS.magenta },
                 }}
               >
@@ -212,7 +211,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                     <Typography variant="subtitle2" sx={{ color: SOFA11_COLORS.cream, fontWeight: 800 }}>
                       {promo.label}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.5) }}>
+                    <Typography variant="caption" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.5) }}>
                       {promo.text}
                     </Typography>
                   </Box>
@@ -228,7 +227,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                 borderRadius: '48% 52% 46% 54% / 52% 46% 54% 48%',
                 overflow: 'hidden',
                 border: `3px solid ${SOFA11_COLORS.magenta}`,
-                boxShadow: `0 0 60px ${varAlpha(SOFA11_COLORS.magenta, 0.5)}`,
+                boxShadow: `0 0 60px ${sofa11Alpha(SOFA11_COLORS.magenta, 0.5)}`,
                 animation: 'sofa11-morph 12s ease-in-out infinite',
               }}
             >
@@ -254,7 +253,7 @@ export function Sofa11Hero({ sx, ...other }: BoxProps) {
                 fontWeight: 900,
                 fontSize: 14,
                 textTransform: 'uppercase',
-                boxShadow: `0 0 28px ${varAlpha(SOFA11_COLORS.tangerine, 0.6)}`,
+                boxShadow: `0 0 28px ${sofa11Alpha(SOFA11_COLORS.tangerine, 0.6)}`,
               }}
             >
               -30% tháng này

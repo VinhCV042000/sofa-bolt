@@ -11,12 +11,11 @@ import Typography from '@mui/material/Typography';
 
 import { fCurrency } from 'src/utils/format-number';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_PRODUCTS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_PRODUCTS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -65,7 +64,7 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                 borderRadius: 99,
                 fontWeight: 800,
                 color: SOFA11_COLORS.cream,
-                border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.3)}`,
+                border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.3)}`,
                 '&:hover': { borderColor: SOFA11_COLORS.lime, color: SOFA11_COLORS.lime },
               }}
             >
@@ -86,11 +85,11 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                   overflow: 'hidden',
                   position: 'relative',
                   bgcolor: SOFA11_COLORS.grape,
-                  border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.12)}`,
+                  border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.12)}`,
                   transition: 'all .3s',
                   '&:hover': {
                     borderColor: product.accent,
-                    boxShadow: `0 18px 50px ${varAlpha(product.accent, 0.35)}`,
+                    boxShadow: `0 18px 50px ${sofa11Alpha(product.accent, 0.35)}`,
                     transform: 'translateY(-6px)',
                   },
                   '&:hover img': { transform: 'scale(1.08)' },
@@ -136,7 +135,7 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                     {product.name}
                   </Typography>
 
-                  <Typography variant="body2" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.55) }}>
+                  <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.55) }}>
                     {product.material}
                   </Typography>
 
@@ -145,7 +144,7 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                     <Typography variant="caption" sx={{ color: SOFA11_COLORS.cream, fontWeight: 700 }}>
                       {product.rating}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.45) }}>
+                    <Typography variant="caption" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.45) }}>
                       ({product.reviews} đánh giá)
                     </Typography>
                   </Stack>
@@ -159,7 +158,7 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                           height: 18,
                           borderRadius: '50%',
                           bgcolor: color,
-                          border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.3)}`,
+                          border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.3)}`,
                         }}
                       />
                     ))}
@@ -172,7 +171,7 @@ export function Sofa11Products({ sx, ...other }: BoxProps) {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: varAlpha(SOFA11_COLORS.cream, 0.4),
+                        color: sofa11Alpha(SOFA11_COLORS.cream, 0.4),
                         textDecoration: 'line-through',
                       }}
                     >

@@ -10,12 +10,11 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA11_COLORS, SOFA11_FAQS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_FAQS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -54,8 +53,8 @@ export function Sofa11Faqs({ sx, ...other }: BoxProps) {
                 disableGutters
                 sx={{
                   borderRadius: 3,
-                  bgcolor: varAlpha(SOFA11_COLORS.cream, 0.04),
-                  border: `2px solid ${varAlpha(SOFA11_COLORS.cream, 0.1)}`,
+                  bgcolor: sofa11Alpha(SOFA11_COLORS.cream, 0.04),
+                  border: `2px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.1)}`,
                   '&:before': { display: 'none' },
                   '&.Mui-expanded': { borderColor: SOFA11_COLORS.magenta },
                 }}
@@ -71,7 +70,7 @@ export function Sofa11Faqs({ sx, ...other }: BoxProps) {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails sx={{ px: 2.5, pb: 2.5 }}>
-                  <Typography sx={{ color: varAlpha(SOFA11_COLORS.cream, 0.65), lineHeight: 1.9 }}>
+                  <Typography sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.65), lineHeight: 1.9 }}>
                     {faq.answer}
                   </Typography>
                 </AccordionDetails>

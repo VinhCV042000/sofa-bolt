@@ -3,9 +3,8 @@ import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { varAlpha } from 'src/theme/styles';
 
-import { SOFA11_COLORS, SOFA11_MARQUEE } from './sofa11-data';
+import { sofa11Alpha, SOFA11_COLORS, SOFA11_MARQUEE } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +57,7 @@ export function Sofa11Marquee({ sx, ...other }: BoxProps) {
                 flexShrink: 0,
                 borderRadius: '50%',
                 bgcolor: SOFA11_COLORS.magenta,
-                border: `2px solid ${varAlpha(SOFA11_COLORS.void, 0.9)}`,
+                border: `2px solid ${sofa11Alpha(SOFA11_COLORS.void, 0.9)}`,
               }}
             />
           </Stack>
