@@ -139,5 +139,9 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "vite-plugin-checker": "^0.7.2"
+  },
+  "overrides": {
+    "protobufjs": "^7.5.4",
+    "websocket-driver": "^0.7.5"
   }
 }
