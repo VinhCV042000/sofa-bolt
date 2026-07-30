@@ -11,6 +11,9 @@ import { sofa5NavData } from 'src/layouts/config-nav-sofa5';
 import { sofa6NavData } from 'src/layouts/config-nav-sofa6';
 import { sofa7NavData } from 'src/layouts/config-nav-sofa7';
 import { sofa8NavData } from 'src/layouts/config-nav-sofa8';
+import { sofa9NavData } from 'src/layouts/config-nav-sofa9';
+import { sofa10NavData } from 'src/layouts/config-nav-sofa10';
+import { sofa11NavData } from 'src/layouts/config-nav-sofa11';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
