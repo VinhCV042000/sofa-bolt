@@ -21,7 +21,9 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { navData as mainNavData } from '../config-nav-main';
 import { SignInButton } from '../components/sign-in-button';
+import { LanguagePopover } from '../components/language-popover';
 import { SettingsButton } from '../components/settings-button';
+
 
 import type { NavMainProps } from './nav/types';
 
