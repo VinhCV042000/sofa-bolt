@@ -77,8 +77,25 @@ export function createPaletteChannel(hexPalette: Record<string, string>) {
  * Color with alpha channel
  */
 export function varAlpha(color: string, opacity = 1) {
+  /* Gracefully support hex colors (e.g. "#00B8D9" / "#0BD") */
+  if (color.startsWith('#')) {
+    let hex = color.slice(1);
+
+    if (hex.length === 3) {
+      hex = hex
+        .split('')
+        .map((char) => char + char)
+        .join('');
+    }
+
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+
   const unsupported =
-    color.startsWith('#') ||
     color.startsWith('rgb') ||
     color.startsWith('rgba') ||
     (!color.includes('var') && color.includes('Channel'));
@@ -90,7 +107,6 @@ export function varAlpha(color: string, opacity = 1) {
        - RGB channels: "0 184 217".
        - CSS variables with "Channel" prefix: "var(--palette-common-blackChannel, #000000)".
        Unsupported formats are:
-       - Hex: "#00B8D9".
        - RGB: "rgb(0, 184, 217)".
        - RGBA: "rgba(0, 184, 217, 1)".
        `
@@ -99,3 +115,4 @@ export function varAlpha(color: string, opacity = 1) {
 
   return `rgba(${color} / ${opacity})`;
 }
+
