@@ -15,6 +15,7 @@ import { sofa9NavData } from 'src/layouts/config-nav-sofa9';
 import { sofa10NavData } from 'src/layouts/config-nav-sofa10';
 import { sofa11NavData } from 'src/layouts/config-nav-sofa11';
 import { sofa12NavData } from 'src/layouts/config-nav-sofa12';
+import { sofa13NavData } from 'src/layouts/config-nav-sofa13';
 import { sofa14NavData } from 'src/layouts/config-nav-sofa14';
 
 import { SplashScreen } from 'src/components/loading-screen';
@@ -40,6 +41,7 @@ const Sofa9Page = lazy(() => import('src/pages/sofa9'));
 const Sofa10Page = lazy(() => import('src/pages/sofa10'));
 const Sofa11Page = lazy(() => import('src/pages/sofa11'));
 const Sofa12Page = lazy(() => import('src/pages/sofa12'));
+const Sofa13Page = lazy(() => import('src/pages/sofa13'));
 const Sofa14Page = lazy(() => import('src/pages/sofa14'));
 
 export function Router() {
@@ -172,6 +174,17 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa12NavData }}>
             <Sofa12Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa13',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13NavData }}>
+            <Sofa13Page />
           </MainLayout>
         </Suspense>
       ),
