@@ -99,8 +99,11 @@ export function MainLayout({ sx, data, children, header }: MainLayoutProps) {
                   }}
                 />
                 <Box display="flex" alignItems="center" gap={{ xs: 1, sm: 1.5 }}>
+                  {/* -- Language popover -- */}
+                  <LanguagePopover data={allLangs} />
                   {/* -- Settings button -- */}
                   <SettingsButton />
+
                   {/* -- Sign in button -- */}
                   <SignInButton />
                   {/* -- Purchase button -- */}
