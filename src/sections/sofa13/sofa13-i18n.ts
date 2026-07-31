@@ -315,7 +315,7 @@ const fr: Sofa13Content = {
     viewCta: 'Voir la collection',
     items: [
       { title: 'Gatsby', tagline: 'Velours émeraude · Liseré doré', description: 'Dossiers capitonnés profonds et accoudoirs en éventail, pour les grandes pièces et les plus grandes fêtes.', count: '9 pièces' },
-      { title: 'Chrysler', tagline: 'Laque noire · Incrustations laiton', description: 'Pieds à chevrons étagés et bois laqué, aussi nets qu'une silhouette de gratte-ciel.', count: '7 pièces' },
+      { title: 'Chrysler', tagline: 'Laque noire · Incrustations laiton', description: "Pieds à chevrons étagés et bois laqué, aussi nets qu'une silhouette de gratte-ciel.", count: '7 pièces' },
       { title: 'Cabaret', tagline: 'Bouclé champagne · Passepoil doré', description: 'Assise basse et courbée, tapissée dans un bouclé champagne chaleureux.', count: '6 pièces' },
     ],
   },
