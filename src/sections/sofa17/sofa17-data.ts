@@ -1,0 +1,54 @@
+// SOFA17 — MOROCCAN RIAD — deep teal, saffron gold, ruby red, zellige geometry, Marrakech warmth
+// ----------------------------------------------------------------------
+
+export const SOFA17_COLORS = {
+  teal: '#1A6B6B',
+  tealDeep: '#0D4D4D',
+  tealLight: '#2E8A8A',
+  saffron: '#D4A017',
+  saffronLight: '#E8B83D',
+  saffronDeep: '#B8860B',
+  ruby: '#9B2335',
+  rubyDeep: '#7A1A28',
+  rubyLight: '#C44E5E',
+  cream: '#F5E6D3',
+  creamLight: '#FBF3E4',
+  creamDeep: '#E8D5B7',
+  terracotta: '#C66B3D',
+  ink: '#1A1410',
+  inkSoft: '#5C4A3F',
+  sand: '#D4B896',
+  brass: '#B8860B',
+  white: '#FFFFFF',
+};
+
+export const SOFA17_IMAGES = {
+  hero: 'https://images.pexels.com/photos/30664540/pexels-photo-30664540.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  story: 'https://images.pexels.com/photos/30257102/pexels-photo-30257102.jpeg?auto=compress&cs=tinysrgb&w=900',
+  cat1: 'https://images.pexels.com/photos/30664540/pexels-photo-30664540.jpeg?auto=compress&cs=tinysrgb&w=700',
+  cat2: 'https://images.pexels.com/photos/31371152/pexels-photo-31371152.jpeg?auto=compress&cs=tinysrgb&w=700',
+  cat3: 'https://images.pexels.com/photos/6969774/pexels-photo-6969774.jpeg?auto=compress&cs=tinysrgb&w=700',
+  cat4: 'https://images.pexels.com/photos/34772403/pexels-photo-34772403.jpeg?auto=compress&cs=tinysrgb&w=700',
+  prod1: 'https://images.pexels.com/photos/30664540/pexels-photo-30664540.jpeg?auto=compress&cs=tinysrgb&w=600',
+  prod2: 'https://images.pexels.com/photos/31371152/pexels-photo-31371152.jpeg?auto=compress&cs=tinysrgb&w=600',
+  prod3: 'https://images.pexels.com/photos/6969774/pexels-photo-6969774.jpeg?auto=compress&cs=tinysrgb&w=600',
+  prod4: 'https://images.pexels.com/photos/34772403/pexels-photo-34772403.jpeg?auto=compress&cs=tinysrgb&w=600',
+  prod5: 'https://images.pexels.com/photos/6758344/pexels-photo-6758344.jpeg?auto=compress&cs=tinysrgb&w=600',
+  prod6: 'https://images.pexels.com/photos/20512329/pexels-photo-20512329.jpeg?auto=compress&cs=tinysrgb&w=600',
+  gallery1: 'https://images.pexels.com/photos/30257102/pexels-photo-30257102.jpeg?auto=compress&cs=tinysrgb&w=700',
+  gallery2: 'https://images.pexels.com/photos/36209546/pexels-photo-36209546.jpeg?auto=compress&cs=tinysrgb&w=700',
+  gallery3: 'https://images.pexels.com/photos/29125650/pexels-photo-29125650.jpeg?auto=compress&cs=tinysrgb&w=700',
+  gallery4: 'https://images.pexels.com/photos/19190849/pexels-photo-19190849.jpeg?auto=compress&cs=tinysrgb&w=700',
+  gallery5: 'https://images.pexels.com/photos/30130840/pexels-photo-30130840.jpeg?auto=compress&cs=tinysrgb&w=700',
+  gallery6: 'https://images.pexels.com/photos/24839180/pexels-photo-24839180.jpeg?auto=compress&cs=tinysrgb&w=700',
+  cta: 'https://images.pexels.com/photos/36493384/pexels-photo-36493384.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  lantern: 'https://images.pexels.com/photos/36521644/pexels-photo-36521644.jpeg?auto=compress&cs=tinysrgb&w=600',
+  zellige: 'https://images.pexels.com/photos/34296099/pexels-photo-34296099.jpeg?auto=compress&cs=tinysrgb&w=900',
+};
+
+export const SOFA17_PROMO_ICONS = [
+  'solar:hand-bold-duotone',
+  'solar:palmtree2-bold-duotone',
+  'solar:gift-bold-duotone',
+  'solar:shield-check-bold-duotone',
+];
