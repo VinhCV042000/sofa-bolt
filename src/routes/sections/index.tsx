@@ -23,6 +23,7 @@ import { sofa17NavData } from 'src/layouts/config-nav-sofa17';
 import { sofa18NavData } from 'src/layouts/config-nav-sofa18';
 import { sofa19NavData } from 'src/layouts/config-nav-sofa19';
 import { sofa20NavData } from 'src/layouts/config-nav-sofa20';
+import { sofaPagesNavData } from 'src/layouts/config-nav-sofa-pages';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -56,6 +57,27 @@ const Sofa18Page = lazy(() => import('src/pages/sofa18'));
 const Sofa19Page = lazy(() => import('src/pages/sofa19'));
 const Sofa20Page = lazy(() => import('src/pages/sofa20'));
 
+const SofaAboutPage = lazy(() => import('src/pages/sofa-pages/about'));
+const SofaServicesPage = lazy(() => import('src/pages/sofa-pages/services'));
+const SofaServiceDetailPage = lazy(() => import('src/pages/sofa-pages/service-detail'));
+const SofaTrainingPage = lazy(() => import('src/pages/sofa-pages/training'));
+const SofaBlogPage = lazy(() => import('src/pages/sofa-pages/blog'));
+const SofaBlogDetailPage = lazy(() => import('src/pages/sofa-pages/blog-detail'));
+const SofaCareersPage = lazy(() => import('src/pages/sofa-pages/careers'));
+const SofaBookingPage = lazy(() => import('src/pages/sofa-pages/booking'));
+const SofaContactPage = lazy(() => import('src/pages/sofa-pages/contact'));
+const SofaOffersPage = lazy(() => import('src/pages/sofa-pages/offers'));
+const SofaFeedbackPage = lazy(() => import('src/pages/sofa-pages/feedback'));
+const SofaPromotionsPage = lazy(() => import('src/pages/sofa-pages/promotions'));
+const SofaBranchesPage = lazy(() => import('src/pages/sofa-pages/branches'));
+const SofaAccountPage = lazy(() => import('src/pages/sofa-pages/account'));
+const SofaPartnersPage = lazy(() => import('src/pages/sofa-pages/partners'));
+const SofaPackagesPage = lazy(() => import('src/pages/sofa-pages/packages'));
+const SofaBeforeAfterPage = lazy(() => import('src/pages/sofa-pages/before-after'));
+const SofaGalleryPage = lazy(() => import('src/pages/sofa-pages/gallery'));
+const SofaFaqPage = lazy(() => import('src/pages/sofa-pages/faq'));
+const SofaPolicyPage = lazy(() => import('src/pages/sofa-pages/policy'));
+
 export function Router() {
   return useRoutes([
     {
@@ -66,7 +88,7 @@ export function Router() {
        */
       element: (
         <Suspense fallback={<SplashScreen />}>
-          <MainLayout data={{ nav: sofaNavData }}>
+          <MainLayout data={{ nav: sofaPagesNavData }}>
             <HomePage />
           </MainLayout>
         </Suspense>
@@ -288,6 +310,88 @@ export function Router() {
           </MainLayout>
         </Suspense>
       ),
+    },
+
+    // Sofa Pages
+    {
+      path: '/about',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaAboutPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/services',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaServicesPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/services/:id',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaServiceDetailPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/training',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaTrainingPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/blog',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaBlogPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/blog/:id',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaBlogDetailPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/careers',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaCareersPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/booking',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaBookingPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/sofa-contact',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaContactPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/offers',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaOffersPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/feedback',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaFeedbackPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/promotions',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaPromotionsPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/branches',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaBranchesPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/account',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaAccountPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/partners',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaPartnersPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/packages',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaPackagesPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/before-after',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaBeforeAfterPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/gallery',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaGalleryPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/faq',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaFaqPage /></MainLayout></Suspense>),
+    },
+    {
+      path: '/policy',
+      element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaPolicyPage /></MainLayout></Suspense>),
     },
 
     // Auth
