@@ -24,6 +24,7 @@ import { sofa18NavData } from 'src/layouts/config-nav-sofa18';
 import { sofa19NavData } from 'src/layouts/config-nav-sofa19';
 import { sofa20NavData } from 'src/layouts/config-nav-sofa20';
 import { sofaPagesNavData } from 'src/layouts/config-nav-sofa-pages';
+import { sofa2PagesNavData } from 'src/layouts/config-nav-sofa2-pages';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -77,6 +78,45 @@ const SofaBeforeAfterPage = lazy(() => import('src/pages/sofa-pages/before-after
 const SofaGalleryPage = lazy(() => import('src/pages/sofa-pages/gallery'));
 const SofaFaqPage = lazy(() => import('src/pages/sofa-pages/faq'));
 const SofaPolicyPage = lazy(() => import('src/pages/sofa-pages/policy'));
+
+// Sofa2 Pages
+const Sofa2AboutPage = lazy(() => import('src/pages/sofa2-pages/about'));
+const Sofa2AboutSubPage = lazy(() => import('src/pages/sofa2-pages/about-sub'));
+const Sofa2ProductsPage = lazy(() => import('src/pages/sofa2-pages/products'));
+const Sofa2ProductCategoryPage = lazy(() => import('src/pages/sofa2-pages/product-category'));
+const Sofa2ProductDetailPage = lazy(() => import('src/pages/sofa2-pages/product-detail'));
+const Sofa2CollectionsPage = lazy(() => import('src/pages/sofa2-pages/collections'));
+const Sofa2CollectionDetailPage = lazy(() => import('src/pages/sofa2-pages/collection-detail'));
+const Sofa2ProjectsPage = lazy(() => import('src/pages/sofa2-pages/projects'));
+const Sofa2ProjectDetailPage = lazy(() => import('src/pages/sofa2-pages/project-detail'));
+const Sofa2ShowroomsPage = lazy(() => import('src/pages/sofa2-pages/showrooms'));
+const Sofa2ShowroomDetailPage = lazy(() => import('src/pages/sofa2-pages/showroom-detail'));
+const Sofa2ShowroomVisitPage = lazy(() => import('src/pages/sofa2-pages/showroom-visit'));
+const Sofa2ServicesPage = lazy(() => import('src/pages/sofa2-pages/services'));
+const Sofa2ServiceDesignPage = lazy(() => import('src/pages/sofa2-pages/service-design'));
+const Sofa2ServiceProductionPage = lazy(() => import('src/pages/sofa2-pages/service-production'));
+const Sofa2BlogPage = lazy(() => import('src/pages/sofa2-pages/blog'));
+const Sofa2BlogCategoryPage = lazy(() => import('src/pages/sofa2-pages/blog-category'));
+const Sofa2BlogDetailPage = lazy(() => import('src/pages/sofa2-pages/blog-detail'));
+const Sofa2PromotionsPage = lazy(() => import('src/pages/sofa2-pages/promotions'));
+const Sofa2PromotionServicePage = lazy(() => import('src/pages/sofa2-pages/promotion-service'));
+const Sofa2CareersPage = lazy(() => import('src/pages/sofa2-pages/careers'));
+const Sofa2CareerDetailPage = lazy(() => import('src/pages/sofa2-pages/career-detail'));
+const Sofa2CareerApplyPage = lazy(() => import('src/pages/sofa2-pages/career-apply'));
+const Sofa2CareerTrackingPage = lazy(() => import('src/pages/sofa2-pages/career-tracking'));
+const Sofa2ContactPage = lazy(() => import('src/pages/sofa2-pages/contact'));
+const Sofa2AccountPage = lazy(() => import('src/pages/sofa2-pages/account'));
+const Sofa2SupportPage = lazy(() => import('src/pages/sofa2-pages/support'));
+const Sofa2B2BPage = lazy(() => import('src/pages/sofa2-pages/b2b'));
+const Sofa2B2BRegisterPage = lazy(() => import('src/pages/sofa2-pages/b2b-register'));
+const Sofa2B2BQuotePage = lazy(() => import('src/pages/sofa2-pages/b2b-quote'));
+const Sofa2B2BOEMPage = lazy(() => import('src/pages/sofa2-pages/b2b-oem'));
+const Sofa2B2BPolicyPage = lazy(() => import('src/pages/sofa2-pages/b2b-policy'));
+const Sofa2CartPage = lazy(() => import('src/pages/sofa2-pages/cart'));
+const Sofa2CheckoutPage = lazy(() => import('src/pages/sofa2-pages/checkout'));
+const Sofa2CheckoutSuccessPage = lazy(() => import('src/pages/sofa2-pages/checkout-success'));
+const Sofa2OrderTrackingPage = lazy(() => import('src/pages/sofa2-pages/order-tracking'));
+const Sofa2PaymentPage = lazy(() => import('src/pages/sofa2-pages/payment'));
 
 export function Router() {
   return useRoutes([
@@ -393,6 +433,52 @@ export function Router() {
       path: '/policy',
       element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofaPagesNavData }}><SofaPolicyPage /></MainLayout></Suspense>),
     },
+
+    // Sofa2 Pages
+    { path: '/sofa2/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AboutPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AboutSubPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductsPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CollectionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CollectionDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProjectsPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProjectDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomsPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServicesPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/design/custom', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/design/3d', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/design/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/production/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/production/odm', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/services/production/project', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PromotionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PromotionServicePage /></MainLayout></Suspense>) },
+    { path: '/sofa2/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareersPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/careers/apply', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerApplyPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ContactPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AccountPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2SupportPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BRegisterPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BQuotePage /></MainLayout></Suspense>) },
+    { path: '/sofa2/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BOEMPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BPolicyPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CartPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CheckoutPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CheckoutSuccessPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2OrderTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa2/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PaymentPage /></MainLayout></Suspense>) },
 
     // Auth
     ...authRoutes,
