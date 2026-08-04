@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "baseUrl": ".",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "strict": true,
     "noEmit": true,
     "allowJs": true,
@@ -25,10 +22,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
