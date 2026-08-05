@@ -1,0 +1,100 @@
+import { Helmet } from 'react-helmet-async';
+
+import { useState } from 'react';
+import { m } from 'framer-motion';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material/styles';
+
+import { useParams } from 'react-router-dom';
+
+import { varAlpha } from 'src/theme/styles';
+import { Iconify } from 'src/components/iconify';
+import { varFade } from 'src/components/animate';
+
+import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
+import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
+import { SOFA8_PAGE_BLOG_POSTS } from 'src/sections/sofa8-pages/sofa8-pages-data';
+
+export default function Page() {
+  const theme = useTheme();
+  const params = useParams();
+  const slug = params.id || '';
+  const post = SOFA8_PAGE_BLOG_POSTS.find((p) => p.slug === slug) || SOFA8_PAGE_BLOG_POSTS[0];
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<string[]>([]);
+
+  return (
+    <>
+      <Helmet>
+        <title>{post.title} — Sofa8 Blog</title>
+      </Helmet>
+
+      <Sofa8PageHero overline="BLOG" title={<><span>{post.title.toUpperCase()}</span></>} subtitle={post.excerpt} image={post.image} />
+
+      <Sofa8Section>
+        <Grid container spacing={5}>
+          <Grid xs={12} md={8}>
+            <Stack spacing={4} component={m.div} variants={varFade({ distance: 24 }).inUp}>
+              <Box sx={{ overflow: 'hidden', borderRadius: 3, aspectRatio: '16/9' }}>
+                <Box component="img" src={post.image} alt={post.title} sx={{ width: 1, height: 1, objectFit: 'cover' }} />
+              </Box>
+
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar sx={{ bgcolor: SOFA8_COLORS.ocean }}>{post.author.charAt(0)}</Avatar>
+                <Stack>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold' }}>{post.author}</Typography>
+                  <Typography variant="caption" sx={{ color: 'text.disabled' }}>{post.date} · {post.readTime} đọc</Typography>
+                </Stack>
+              </Stack>
+
+              <Divider />
+
+              <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>{post.content}</Typography>
+
+              <Chip label={post.categoryLabel} size="small" sx={{ alignSelf: 'flex-start', bgcolor: varAlpha(SOFA8_COLORS.ocean, 0.08), color: SOFA8_COLORS.ocean, fontWeight: 'fontWeightBold' }} />
+
+              <Divider />
+
+              {/* Comments */}
+              <Stack spacing={3}>
+                <Typography variant="h5" sx={{ fontWeight: 'fontWeightBold' }}>Bình luận ({comments.length})</Typography>
+                {comments.map((c, i) => (
+                  <Stack key={i} direction="row" spacing={2} sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}` }}>
+                    <Avatar sx={{ bgcolor: SOFA8_COLORS.coral }}>K{i + 1}</Avatar>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{c}</Typography>
+                  </Stack>
+                ))}
+                <Stack spacing={2}>
+                  <TextField fullWidth multiline rows={3} label="Viết bình luận" value={comment} onChange={(e) => setComment(e.target.value)} />
+                  <Button onClick={() => { if (comment.trim()) { setComments([...comments, comment]); setComment(''); } }} variant="contained" sx={{ alignSelf: 'flex-start', bgcolor: SOFA8_COLORS.coral, color: 'common.white', fontWeight: 'fontWeightBold', '&:hover': { bgcolor: SOFA8_COLORS.coralLight } }}>
+                    Gửi bình luận
+                  </Button>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid xs={12} md={4}>
+            <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inRight} sx={{ position: 'sticky', top: 80 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'fontWeightBold' }}>Chia sẻ</Typography>
+              <Stack direction="row" spacing={2}>
+                <Iconify icon="solar:facebook-bold-duotone" width={32} sx={{ color: '#1877F2', cursor: 'pointer' }} />
+                <Iconify icon="solar:gallery-bold-duotone" width={32} sx={{ color: '#E4405F', cursor: 'pointer' }} />
+                <Iconify icon="solar:letter-bold-duotone" width={32} sx={{ color: SOFA8_COLORS.ocean, cursor: 'pointer' }} />
+              </Stack>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Sofa8Section>
+    </>
+  );
+}

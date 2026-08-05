@@ -1,0 +1,57 @@
+import { Helmet } from 'react-helmet-async';
+
+import { m } from 'framer-motion';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+
+import { varAlpha, textGradient } from 'src/theme/styles';
+import { Iconify } from 'src/components/iconify';
+import { varFade } from 'src/components/animate';
+import { RouterLink } from 'src/routes/components';
+
+import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
+import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
+import { SOFA8_PAGE_IMAGES } from 'src/sections/sofa8-pages/sofa8-pages-data';
+
+const B2B_ITEMS = [
+  { title: 'Giới thiệu hợp tác', desc: 'Hợp tác cùng Sofa8 phát triển', icon: 'solar:hand-shake-bold-duotone', path: '/sofa8/b2b' },
+  { title: 'Đại lý phân phối', desc: 'Trở thành đại lý Sofa8', icon: 'solar:users-group-rounded-bold-duotone', path: '/sofa8/b2b/register' },
+  { title: 'Báo giá dự án', desc: 'Yêu cầu báo giá số lượng lớn', icon: 'solar:document-bold-duotone', path: '/sofa8/b2b/quote' },
+  { title: 'Yêu cầu OEM', desc: 'Sản xuất theo thương hiệu', icon: 'solar:box-bold-duotone', path: '/sofa8/b2b/oem' },
+  { title: 'Chính sách đại lý', desc: 'Quyền lợi và chính sách', icon: 'solar:shield-check-bold-duotone', path: '/sofa8/b2b/policy' },
+];
+
+export default function Page() {
+  const theme = useTheme();
+
+  return (
+    <>
+      <Helmet>
+        <title>Đại lý B2B — Sofa8</title>
+      </Helmet>
+
+      <Sofa8PageHero overline="ĐẠI LÝ B2B" title={<>ĐẠI LÝ <span>B2B</span></>} subtitle="Hợp tác cùng Sofa8 — phát triển kinh doanh coastal." image={SOFA8_PAGE_IMAGES.b2b} />
+
+      <Sofa8Section>
+        <Grid container spacing={3}>
+          {B2B_ITEMS.map((item) => (
+            <Grid key={item.title} xs={12} sm={6} md={4}>
+              <Stack component={RouterLink} href={item.path} spacing={2} sx={{ p: 4, height: 1, borderRadius: 3, textDecoration: 'none', bgcolor: 'background.paper', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}`, '&:hover': { borderColor: SOFA8_COLORS.coral, transition: 'border-color 0.3s' } }}>
+                <Box sx={{ width: 56, height: 56, display: 'flex', borderRadius: 2, alignItems: 'center', justifyContent: 'center', bgcolor: varAlpha(SOFA8_COLORS.ocean, 0.08), color: SOFA8_COLORS.ocean }}>
+                  <Iconify icon={item.icon} width={28} />
+                </Box>
+                <Typography variant="h6" sx={{ fontWeight: 'fontWeightBold', color: 'text.primary' }}>{item.title}</Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{item.desc}</Typography>
+              </Stack>
+            </Grid>
+          ))}
+        </Grid>
+      </Sofa8Section>
+    </>
+  );
+}
