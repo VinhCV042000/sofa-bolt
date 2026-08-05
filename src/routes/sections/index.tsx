@@ -26,6 +26,7 @@ import { sofaPagesNavData } from 'src/layouts/config-nav-sofa-pages';
 import { sofa2PagesNavData } from 'src/layouts/config-nav-sofa2-pages';
 import { sofa1PagesNavData } from 'src/layouts/config-nav-sofa1-pages';
 import { sofa6PagesNavData } from 'src/layouts/config-nav-sofa6-pages';
+import { sofa7PagesNavData } from 'src/layouts/config-nav-sofa7-pages';
 import { sofa3PagesNavData } from 'src/layouts/config-nav-sofa3-pages';
 import { sofa4PagesNavData } from 'src/layouts/config-nav-sofa4-pages';
 
@@ -202,6 +203,49 @@ const Sofa6CheckoutSuccessPage = lazy(() => import('src/pages/sofa6-pages/checko
 const Sofa6OrderTrackingPage = lazy(() => import('src/pages/sofa6-pages/order-tracking'));
 const Sofa6PaymentPage = lazy(() => import('src/pages/sofa6-pages/payment'));
 const Sofa6MemberPage = lazy(() => import('src/pages/sofa6-pages/member'));
+
+// Sofa7 Pages
+const Sofa7AboutPage = lazy(() => import('src/pages/sofa7-pages/about'));
+const Sofa7AboutSubPage = lazy(() => import('src/pages/sofa7-pages/about-sub'));
+const Sofa7ProductsPage = lazy(() => import('src/pages/sofa7-pages/products'));
+const Sofa7ProductCategoryPage = lazy(() => import('src/pages/sofa7-pages/product-category'));
+const Sofa7ProductDetailPage = lazy(() => import('src/pages/sofa7-pages/product-detail'));
+const Sofa7CollectionsPage = lazy(() => import('src/pages/sofa7-pages/collections'));
+const Sofa7CollectionDetailPage = lazy(() => import('src/pages/sofa7-pages/collection-detail'));
+const Sofa7ProjectsPage = lazy(() => import('src/pages/sofa7-pages/projects'));
+const Sofa7ProjectDetailPage = lazy(() => import('src/pages/sofa7-pages/project-detail'));
+const Sofa7ShowroomsPage = lazy(() => import('src/pages/sofa7-pages/showrooms'));
+const Sofa7ShowroomDetailPage = lazy(() => import('src/pages/sofa7-pages/showroom-detail'));
+const Sofa7ShowroomVisitPage = lazy(() => import('src/pages/sofa7-pages/showroom-visit'));
+const Sofa7ServicesPage = lazy(() => import('src/pages/sofa7-pages/services'));
+const Sofa7ServiceDesignPage = lazy(() => import('src/pages/sofa7-pages/service-design'));
+const Sofa7ServiceProductionPage = lazy(() => import('src/pages/sofa7-pages/service-production'));
+const Sofa7BlogPage = lazy(() => import('src/pages/sofa7-pages/blog'));
+const Sofa7BlogCategoryPage = lazy(() => import('src/pages/sofa7-pages/blog-category'));
+const Sofa7BlogDetailPage = lazy(() => import('src/pages/sofa7-pages/blog-detail'));
+const Sofa7PromotionsPage = lazy(() => import('src/pages/sofa7-pages/promotions'));
+const Sofa7PromotionServicePage = lazy(() => import('src/pages/sofa7-pages/promotion-service'));
+const Sofa7CareersPage = lazy(() => import('src/pages/sofa7-pages/careers'));
+const Sofa7CareerDetailPage = lazy(() => import('src/pages/sofa7-pages/career-detail'));
+const Sofa7CareerApplyPage = lazy(() => import('src/pages/sofa7-pages/career-apply'));
+const Sofa7CareerTrackingPage = lazy(() => import('src/pages/sofa7-pages/career-tracking'));
+const Sofa7ContactPage = lazy(() => import('src/pages/sofa7-pages/contact'));
+const Sofa7AccountPage = lazy(() => import('src/pages/sofa7-pages/account'));
+const Sofa7AccountSectionPage = lazy(() => import('src/pages/sofa7-pages/account-section'));
+const Sofa7SupportPage = lazy(() => import('src/pages/sofa7-pages/support'));
+const Sofa7FaqPage = lazy(() => import('src/pages/sofa7-pages/faq'));
+const Sofa7PolicyPage = lazy(() => import('src/pages/sofa7-pages/policy'));
+const Sofa7B2BPage = lazy(() => import('src/pages/sofa7-pages/b2b'));
+const Sofa7B2BRegisterPage = lazy(() => import('src/pages/sofa7-pages/b2b-register'));
+const Sofa7B2BQuotePage = lazy(() => import('src/pages/sofa7-pages/b2b-quote'));
+const Sofa7B2BOEMPage = lazy(() => import('src/pages/sofa7-pages/b2b-oem'));
+const Sofa7B2BPolicyPage = lazy(() => import('src/pages/sofa7-pages/b2b-policy'));
+const Sofa7CartPage = lazy(() => import('src/pages/sofa7-pages/cart'));
+const Sofa7CheckoutPage = lazy(() => import('src/pages/sofa7-pages/checkout'));
+const Sofa7CheckoutSuccessPage = lazy(() => import('src/pages/sofa7-pages/checkout-success'));
+const Sofa7OrderTrackingPage = lazy(() => import('src/pages/sofa7-pages/order-tracking'));
+const Sofa7PaymentPage = lazy(() => import('src/pages/sofa7-pages/payment'));
+const Sofa7MemberPage = lazy(() => import('src/pages/sofa7-pages/member'));
 const Sofa1FaqPage = lazy(() => import('src/pages/sofa1-pages/faq'));
 const Sofa1PolicyPage = lazy(() => import('src/pages/sofa1-pages/policy'));
 
@@ -1581,6 +1625,54 @@ export function Router() {
         </Suspense>
       ),
     },
+
+    // Sofa7 Pages
+    { path: '/sofa7/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AboutPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AboutSubPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductsPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CollectionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CollectionDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProjectsPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProjectDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomsPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServicesPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PromotionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PromotionServicePage /></MainLayout></Suspense>) },
+    { path: '/sofa7/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareersPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/careers/apply', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerApplyPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ContactPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AccountPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AccountSectionPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7SupportPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7FaqPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PolicyPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PolicyPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BRegisterPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BQuotePage /></MainLayout></Suspense>) },
+    { path: '/sofa7/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BOEMPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BPolicyPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CartPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CheckoutPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CheckoutSuccessPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7OrderTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PaymentPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7MemberPage /></MainLayout></Suspense>) },
+    { path: '/sofa7/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7MemberPage /></MainLayout></Suspense>) },
 
     // Sofa6 Pages
     { path: '/sofa6/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6AboutPage /></MainLayout></Suspense>) },
