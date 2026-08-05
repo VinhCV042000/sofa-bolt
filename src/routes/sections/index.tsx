@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { MainLayout } from 'src/layouts/main';
-import { sofaNavData } from 'src/layouts/config-nav-sofa';
 import { sofa1NavData } from 'src/layouts/config-nav-sofa1';
 import { sofa2NavData } from 'src/layouts/config-nav-sofa2';
 import { sofa3NavData } from 'src/layouts/config-nav-sofa3';
@@ -27,6 +26,7 @@ import { sofaPagesNavData } from 'src/layouts/config-nav-sofa-pages';
 import { sofa2PagesNavData } from 'src/layouts/config-nav-sofa2-pages';
 import { sofa1PagesNavData } from 'src/layouts/config-nav-sofa1-pages';
 import { sofa3PagesNavData } from 'src/layouts/config-nav-sofa3-pages';
+import { sofa4PagesNavData } from 'src/layouts/config-nav-sofa4-pages';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -199,6 +199,45 @@ const Sofa3CheckoutPage = lazy(() => import('src/pages/sofa3-pages/checkout'));
 const Sofa3CheckoutSuccessPage = lazy(() => import('src/pages/sofa3-pages/checkout-success'));
 const Sofa3OrderTrackingPage = lazy(() => import('src/pages/sofa3-pages/order-tracking'));
 const Sofa3PaymentPage = lazy(() => import('src/pages/sofa3-pages/payment'));
+
+// Sofa4 Pages
+const Sofa4AboutPage = lazy(() => import('src/pages/sofa4-pages/about'));
+const Sofa4AboutSubPage = lazy(() => import('src/pages/sofa4-pages/about-sub'));
+const Sofa4ProductsPage = lazy(() => import('src/pages/sofa4-pages/products'));
+const Sofa4ProductCategoryPage = lazy(() => import('src/pages/sofa4-pages/product-category'));
+const Sofa4ProductDetailPage = lazy(() => import('src/pages/sofa4-pages/product-detail'));
+const Sofa4CollectionsPage = lazy(() => import('src/pages/sofa4-pages/collections'));
+const Sofa4CollectionDetailPage = lazy(() => import('src/pages/sofa4-pages/collection-detail'));
+const Sofa4ProjectsPage = lazy(() => import('src/pages/sofa4-pages/projects'));
+const Sofa4ProjectDetailPage = lazy(() => import('src/pages/sofa4-pages/project-detail'));
+const Sofa4ShowroomsPage = lazy(() => import('src/pages/sofa4-pages/showrooms'));
+const Sofa4ShowroomDetailPage = lazy(() => import('src/pages/sofa4-pages/showroom-detail'));
+const Sofa4ShowroomVisitPage = lazy(() => import('src/pages/sofa4-pages/showroom-visit'));
+const Sofa4ServicesPage = lazy(() => import('src/pages/sofa4-pages/services'));
+const Sofa4ServiceDesignPage = lazy(() => import('src/pages/sofa4-pages/service-design'));
+const Sofa4ServiceProductionPage = lazy(() => import('src/pages/sofa4-pages/service-production'));
+const Sofa4BlogPage = lazy(() => import('src/pages/sofa4-pages/blog'));
+const Sofa4BlogCategoryPage = lazy(() => import('src/pages/sofa4-pages/blog-category'));
+const Sofa4BlogDetailPage = lazy(() => import('src/pages/sofa4-pages/blog-detail'));
+const Sofa4PromotionsPage = lazy(() => import('src/pages/sofa4-pages/promotions'));
+const Sofa4PromotionServicePage = lazy(() => import('src/pages/sofa4-pages/promotion-service'));
+const Sofa4CareersPage = lazy(() => import('src/pages/sofa4-pages/careers'));
+const Sofa4CareerDetailPage = lazy(() => import('src/pages/sofa4-pages/career-detail'));
+const Sofa4CareerApplyPage = lazy(() => import('src/pages/sofa4-pages/career-apply'));
+const Sofa4CareerTrackingPage = lazy(() => import('src/pages/sofa4-pages/career-tracking'));
+const Sofa4ContactPage = lazy(() => import('src/pages/sofa4-pages/contact'));
+const Sofa4AccountPage = lazy(() => import('src/pages/sofa4-pages/account'));
+const Sofa4SupportPage = lazy(() => import('src/pages/sofa4-pages/support'));
+const Sofa4B2BPage = lazy(() => import('src/pages/sofa4-pages/b2b'));
+const Sofa4B2BRegisterPage = lazy(() => import('src/pages/sofa4-pages/b2b-register'));
+const Sofa4B2BQuotePage = lazy(() => import('src/pages/sofa4-pages/b2b-quote'));
+const Sofa4B2BOEMPage = lazy(() => import('src/pages/sofa4-pages/b2b-oem'));
+const Sofa4B2BPolicyPage = lazy(() => import('src/pages/sofa4-pages/b2b-policy'));
+const Sofa4CartPage = lazy(() => import('src/pages/sofa4-pages/cart'));
+const Sofa4CheckoutPage = lazy(() => import('src/pages/sofa4-pages/checkout'));
+const Sofa4CheckoutSuccessPage = lazy(() => import('src/pages/sofa4-pages/checkout-success'));
+const Sofa4OrderTrackingPage = lazy(() => import('src/pages/sofa4-pages/order-tracking'));
+const Sofa4PaymentPage = lazy(() => import('src/pages/sofa4-pages/payment'));
 
 export function Router() {
   return useRoutes([
@@ -1910,6 +1949,49 @@ export function Router() {
         </Suspense>
       ),
     },
+
+    // Sofa4 Pages
+    { path: '/sofa4/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AboutPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AboutSubPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductsPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CollectionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CollectionDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProjectsPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProjectDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomsPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomVisitPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServicesPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceDesignPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceProductionPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogCategoryPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/blog/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PromotionsPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PromotionServicePage /></MainLayout></Suspense>) },
+    { path: '/sofa4/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareersPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/careers/apply', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerApplyPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerApplyPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerDetailPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ContactPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AccountPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4SupportPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BRegisterPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BQuotePage /></MainLayout></Suspense>) },
+    { path: '/sofa4/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BOEMPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BPolicyPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CartPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CheckoutPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CheckoutSuccessPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4OrderTrackingPage /></MainLayout></Suspense>) },
+    { path: '/sofa4/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PaymentPage /></MainLayout></Suspense>) },
 
     // Auth
     ...authRoutes,
