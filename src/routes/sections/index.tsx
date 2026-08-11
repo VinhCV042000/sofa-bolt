@@ -262,6 +262,9 @@ export function Router() {
       ),
     },
 
+    // SOFA8 PAGES
+    ...sofa8PagesRoutes,
+
     {
       path: '/sofa9',
       element: (
