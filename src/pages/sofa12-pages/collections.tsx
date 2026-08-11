@@ -25,7 +25,7 @@ export default function Page() {
             {SOFA12_PAGE_COLLECTIONS.map((col) => (
               <Grid key={col.id} xs={12} sm={6} md={4}>
                 <Stack component={RouterLink} href={`/sofa12/collections/${col.slug}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Box component={m.div} variants={varFade({ distance: 24 }).inUp} sx={{ borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, '&:hover': { transform: \'translateY(-4px)', transition: \'transform 0.3s' } }}>
+                  <Box component={m.div} variants={varFade({ distance: 24 }).inUp} sx={{ borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, '&:hover': { transform: 'translateY(-4px)', transition: 'transform 0.3s' } }}>
                     <Box component="img" src={col.image} alt={col.name} sx={{ width: 1, aspectRatio: '4/3', objectFit: 'cover' }} />
                     <Stack spacing={1} sx={{ p: 3 }}>
                       <Typography variant="h6">{col.name}</Typography>
