@@ -557,7 +557,6 @@ const Sofa18ProductsPage = lazy(() => import('src/pages/sofa18-pages/products'))
 const Sofa18ProductCategoryPage = lazy(() => import('src/pages/sofa18-pages/product-category'));
 const Sofa18ProductDetailPage = lazy(() => import('src/pages/sofa18-pages/product-detail'));
 
-
 const HomePage = lazy(() => import('src/pages/home'));
 const Sofa1Page = lazy(() => import('src/pages/sofa1'));
 const Sofa2Page = lazy(() => import('src/pages/sofa2'));
@@ -706,7 +705,6 @@ export function Router() {
       ),
     },
 
-
     {
       path: '/sofa12',
       element: (
@@ -784,9 +782,6 @@ export function Router() {
       ),
     },
 
-
-
-
     {
       path: '/sofa18',
       element: (
@@ -833,616 +828,5278 @@ export function Router() {
     // Components
     ...componentsRoutes,
 
-<<<<<<< HEAD
     // SOFA8 PAGES
-    { path: '/sofa8/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa8/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AccountSectionPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa8/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8SupportPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8FaqPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8MemberPage /></MainLayout></Suspense>) },
-    { path: '/sofa8/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8MemberPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa8/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8AccountSectionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa8PagesNavData }}>
+            <Sofa8MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA1 PAGES
-    { path: '/sofa1/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa1/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa1/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1SupportPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1FaqPage /></MainLayout></Suspense>) },
-    { path: '/sofa1/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa1PagesNavData }}><Sofa1PolicyPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa1/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa1PagesNavData }}>
+            <Sofa1PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA2 PAGES
-    { path: '/sofa2/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa2/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa2/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa2/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa2PagesNavData }}><Sofa2SupportPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa2/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA3 PAGES
-    { path: '/sofa3/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa3/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa3/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa3/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa3PagesNavData }}><Sofa3SupportPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa3/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa3PagesNavData }}>
+            <Sofa3SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA4 PAGES
-    { path: '/sofa4/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa4/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa4/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa4/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa4PagesNavData }}><Sofa4SupportPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa4/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa4/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa4PagesNavData }}>
+            <Sofa4SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA6 PAGES
-    { path: '/sofa6/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa6/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6AccountSectionPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa6/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6SupportPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6FaqPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6PolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6MemberPage /></MainLayout></Suspense>) },
-    { path: '/sofa6/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa6PagesNavData }}><Sofa6MemberPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa6/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6AccountSectionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa6PagesNavData }}>
+            <Sofa6MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA7 PAGES
-    { path: '/sofa7/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa7/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7AccountSectionPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa7/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7SupportPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7FaqPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7PolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7MemberPage /></MainLayout></Suspense>) },
-    { path: '/sofa7/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa7PagesNavData }}><Sofa7MemberPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa7/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7AccountSectionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa7/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa7PagesNavData }}>
+            <Sofa7MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA9 PAGES
-    { path: '/sofa9/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa9/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9AccountSectionPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9B2BPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9B2BRegisterPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9B2BQuotePage /></MainLayout></Suspense>) },
-    { path: '/sofa9/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9B2BOEMPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9B2BPolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CartPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CheckoutPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9CheckoutSuccessPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9OrderTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9PaymentPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9SupportPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9FaqPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9PolicyPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9MemberPage /></MainLayout></Suspense>) },
-    { path: '/sofa9/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa9PagesNavData }}><Sofa9MemberPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa9/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9AccountSectionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa9/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa9PagesNavData }}>
+            <Sofa9MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA10 PAGES
-    { path: '/sofa10/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa10/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa10PagesNavData }}><Sofa10BlogDetailPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa10/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA11 PAGES
-    { path: '/sofa11/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa11/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa11PagesNavData }}><Sofa11BlogDetailPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa11/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa11/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa11PagesNavData }}>
+            <Sofa11BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA12 PAGES
-    { path: '/sofa12/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa12/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12ContactPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12AccountPage /></MainLayout></Suspense>) },
-    { path: '/sofa12/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa12PagesNavData }}><Sofa12SupportPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa12/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa12PagesNavData }}>
+            <Sofa12SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA13 PAGES
-    { path: '/sofa13/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa13/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa13/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa13PagesNavData }}><Sofa13ContactPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa13/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa13/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa13PagesNavData }}>
+            <Sofa13ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA14 PAGES
-    { path: '/sofa14/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa14/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa14/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa14PagesNavData }}><Sofa14ContactPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa14/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa14/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa14PagesNavData }}>
+            <Sofa14ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA15 PAGES
-    { path: '/sofa15/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15BlogDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15PromotionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15PromotionServicePage /></MainLayout></Suspense>) },
-    { path: '/sofa15/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CareersPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CareerDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CareerApplyPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15CareerTrackingPage /></MainLayout></Suspense>) },
-    { path: '/sofa15/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa15PagesNavData }}><Sofa15ContactPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa15/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA16 PAGES
-    { path: '/sofa16/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ProductDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16CollectionsPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16CollectionDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ProjectsPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ProjectDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ShowroomsPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ShowroomDetailPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ShowroomVisitPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ServicesPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ServiceDesignPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16ServiceProductionPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16BlogPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16BlogCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa16/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa16PagesNavData }}><Sofa16BlogDetailPage /></MainLayout></Suspense>) },
+    {
+      path: '/sofa16/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA18 PAGES
-    { path: '/sofa18/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa18PagesNavData }}><Sofa18AboutPage /></MainLayout></Suspense>) },
-    { path: '/sofa18/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa18PagesNavData }}><Sofa18AboutSubPage /></MainLayout></Suspense>) },
-    { path: '/sofa18/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa18PagesNavData }}><Sofa18ProductsPage /></MainLayout></Suspense>) },
-    { path: '/sofa18/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa18PagesNavData }}><Sofa18ProductCategoryPage /></MainLayout></Suspense>) },
-    { path: '/sofa18/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa18PagesNavData }}><Sofa18ProductDetailPage /></MainLayout></Suspense>) },
-=======
->>>>>>> 5716d2acc495767643b047b9ae7dff039b7b1f07
+    {
+      path: '/sofa18/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa18PagesNavData }}>
+            <Sofa18AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa18PagesNavData }}>
+            <Sofa18AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa18PagesNavData }}>
+            <Sofa18ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa18PagesNavData }}>
+            <Sofa18ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa18PagesNavData }}>
+            <Sofa18ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
     // No match
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
-
-<<<<<<< HEAD
-=======
-const sofa8PagesRoutes = [
-  { path: '/sofa8/about', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AboutPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/about/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AboutSubPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/products', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductsPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/products/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductCategoryPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/products/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProductDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/collections', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CollectionsPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/collections/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CollectionDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/projects', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProjectsPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/projects/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ProjectDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/showrooms', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomsPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/showrooms/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/showrooms/visit', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomVisitPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/showrooms/consult', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ShowroomVisitPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/services', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServicesPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/services/design', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceDesignPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/services/design/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceDesignPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/services/production', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceProductionPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/services/production/:sub', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ServiceProductionPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/blog', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/blog/category/:slug', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogCategoryPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/blog/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8BlogDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/promotions', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PromotionsPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/promotions/:service', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PromotionServicePage /></MainLayout></Suspense>) },
-  { path: '/sofa8/careers', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareersPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/careers/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerDetailPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/careers/apply/:id', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerApplyPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/careers/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CareerTrackingPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/contact', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8ContactPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/account', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AccountPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/account/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8AccountSectionPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/b2b', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/b2b/register', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BRegisterPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/b2b/quote', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BQuotePage /></MainLayout></Suspense>) },
-  { path: '/sofa8/b2b/oem', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BOEMPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/b2b/policy', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8B2BPolicyPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/cart', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CartPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/checkout', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CheckoutPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/checkout/success', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8CheckoutSuccessPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/orders/tracking', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8OrderTrackingPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/payment', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PaymentPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/support', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8SupportPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/faq', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8FaqPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/policy/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8PolicyPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/member', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8MemberPage /></MainLayout></Suspense>) },
-  { path: '/sofa8/member/:section', element: (<Suspense fallback={<SplashScreen />}><MainLayout data={{ nav: sofa8PagesNavData }}><Sofa8MemberPage /></MainLayout></Suspense>) },
-];
->>>>>>> 5716d2acc495767643b047b9ae7dff039b7b1f07
