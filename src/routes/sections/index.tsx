@@ -635,7 +635,6 @@ export function Router() {
         </Suspense>
       ),
     },
-
     {
       path: '/sofa6',
       element: (
@@ -646,7 +645,6 @@ export function Router() {
         </Suspense>
       ),
     },
-
     {
       path: '/sofa7',
       element: (
@@ -657,7 +655,6 @@ export function Router() {
         </Suspense>
       ),
     },
-
     {
       path: '/sofa8',
       element: (
@@ -668,10 +665,6 @@ export function Router() {
         </Suspense>
       ),
     },
-
-    // SOFA8 PAGES
-    ...sofa8PagesRoutes,
-
     {
       path: '/sofa9',
       element: (
