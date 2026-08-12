@@ -1,20 +1,19 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
 
 import { sofa13Alpha, SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
-import { Sofa13PageHero, Sofa13Section } from 'src/sections/sofa13-pages/sofa13-page-hero';
 import { SOFA13_PAGE_IMAGES } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
 
 const APPLICATIONS = [
   { id: '1', position: 'Thợ may velvet', status: 'Đang xem', date: '15/01/2025' },
@@ -44,11 +43,11 @@ export default function Page() {
           ))}
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 6 }}>
-          <RouterLink href="/sofa13/careers" sx={{ textDecoration: 'none' }}>
+          <Link component={RouterLink} href="/sofa13/careers" sx={{ textDecoration: 'none' }}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 4, py: 1.75, fontWeight: 700, letterSpacing: 1.5, color: SOFA13_COLORS.noir, bgcolor: SOFA13_COLORS.gold, '&:hover': { bgcolor: SOFA13_COLORS.goldPale } }}>
               <Iconify icon="solar:case-bold-duotone" width={18} /> Xem việc làm
             </Stack>
-          </RouterLink>
+          </Link>
         </Stack>
       </Sofa13Section>
     </>

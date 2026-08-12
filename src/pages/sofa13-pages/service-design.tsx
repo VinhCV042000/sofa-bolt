@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,15 +7,13 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa13Alpha, SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
-import { Sofa13PageHero, Sofa13Section } from 'src/sections/sofa13-pages/sofa13-page-hero';
 import { SOFA13_PAGE_IMAGES } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
 
 const DESIGN_SERVICES: Record<string, { title: string; subtitle: string; content: { heading: string; body: string }[] }> = {
   default: { title: 'THIẾT KẾ NỘI THẤT', subtitle: 'Thiết kế không gian art deco tổng thể — từ ý tưởng đến jazz-age glamour.', content: [{ heading: 'Tư vấn', body: 'Tư vấn phong cách art deco, màu, vật liệu.' }, { heading: 'Thiết kế 3D', body: 'Bản vẽ 3D chi tiết trong 24h.' }, { heading: 'Sản xuất', body: 'Sản xuất sofa theo bản vẽ, 7-14 ngày.' }, { heading: 'Lắp đặt', body: 'Lắp đặt miễn phí, bảo hành 10 năm.' }] },
@@ -33,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{data.title} — Sofa13</title></Helmet>
-      <Sofa13PageHero overline="DỊCH VỤ" title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={SOFA13_PAGE_IMAGES.service1} />
+      <Sofa13PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA13_PAGE_IMAGES.service1} />
 
       <Sofa13Section>
         <Grid container spacing={5} alignItems="center">

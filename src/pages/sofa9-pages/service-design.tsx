@@ -1,24 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA9_COLORS } from 'src/sections/sofa9/sofa9-data';
-import { Sofa9PageHero, Sofa9Section } from 'src/sections/sofa9-pages/sofa9-page-hero';
 import { SOFA9_PAGE_IMAGES } from 'src/sections/sofa9-pages/sofa9-pages-data';
+import { Sofa9Section, Sofa9PageHero } from 'src/sections/sofa9-pages/sofa9-page-hero';
 
 const DESIGN_SERVICES: Record<string, { title: string; subtitle: string; content: { heading: string; body: string }[] }> = {
   default: { title: 'THIẾT KẾ NỘI THẤT', subtitle: 'Thiết kế không gian retro tổng thể — từ ý tưởng đến hiện thực.', content: [{ heading: 'Tư vấn', body: 'Tư vấn phong cách retro, màu neon, họa tiết.' }, { heading: 'Thiết kế 3D', body: 'Bản vẽ 3D chi tiết trước khi sản xuất.' }, { heading: 'Sản xuất', body: 'Sản xuất sofa theo bản vẽ, 7-14 ngày.' }, { heading: 'Lắp đặt', body: 'Lắp đặt miễn phí, bảo hành 10 năm.' }] },
@@ -39,7 +35,7 @@ export default function Page() {
         <title>{data.title} — Sofa9</title>
       </Helmet>
 
-      <Sofa9PageHero overline="DỊCH VỤ" title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={SOFA9_PAGE_IMAGES.service1} />
+      <Sofa9PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA9_PAGE_IMAGES.service1} />
 
       <Sofa9Section>
         <Grid container spacing={5} alignItems="center">

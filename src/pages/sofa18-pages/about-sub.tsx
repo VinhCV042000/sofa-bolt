@@ -1,19 +1,18 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
+
 import { varFade } from 'src/components/animate';
 
 import { SOFA18_COLORS } from 'src/sections/sofa18/sofa18-data';
-import { Sofa18PageHero, Sofa18Section } from 'src/sections/sofa18-pages/sofa18-page-hero';
 import { SOFA18_PAGE_IMAGES } from 'src/sections/sofa18-pages/sofa18-pages-data';
+import { Sofa18Section, Sofa18PageHero } from 'src/sections/sofa18-pages/sofa18-page-hero';
 
 const TIMELINE = [
   { year: '1972', title: 'Khởi đầu', text: 'Tanaka-sensei tạo hình sofa đầu tiên từ tuyết tùng không hoàn hảo tại Kyoto.' },

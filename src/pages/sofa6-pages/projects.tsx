@@ -1,8 +1,6 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -14,9 +12,9 @@ import { RouterLink } from 'src/routes/components';
 
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
-import { SOFA6_PROJECTS, SOFA6_PROJECT_TYPES, SOFA6_PAGE_IMAGES } from 'src/sections/sofa6-pages/sofa6-pages-data';
 import { SOFA6_COLORS } from 'src/sections/sofa6/sofa6-data';
+import { Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
+import { SOFA6_PROJECTS, SOFA6_PAGE_IMAGES, SOFA6_PROJECT_TYPES } from 'src/sections/sofa6-pages/sofa6-pages-data';
 
 const metadata = { title: 'Dự án - Sofa Earth' };
 

@@ -16,8 +16,8 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { SOFA7_COLORS } from 'src/sections/sofa7/sofa7-data';
-import { Sofa7PageHero, Sofa7Section } from 'src/sections/sofa7-pages/sofa7-page-hero';
-import { SOFA7_PAGE_PROMOTION_SERVICES, SOFA7_PAGE_IMAGES } from 'src/sections/sofa7-pages/sofa7-pages-data';
+import { Sofa7Section, Sofa7PageHero } from 'src/sections/sofa7-pages/sofa7-page-hero';
+import { SOFA7_PAGE_IMAGES, SOFA7_PAGE_PROMOTION_SERVICES } from 'src/sections/sofa7-pages/sofa7-pages-data';
 
 // ----------------------------------------------------------------------
 
@@ -90,7 +90,7 @@ export default function Page() {
           <Grid xs={12} md={5}>
             <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inUp} sx={{ p: { xs: 3, md: 4 }, borderRadius: 0, bgcolor: 'background.paper', border: `1px solid ${varAlpha(SOFA7_COLORS.concrete, 0.12)}`, boxShadow: (t) => t.customShadows.card, position: 'sticky', top: 24 }}>
               <Typography variant="h6" sx={{ textTransform: 'uppercase' }}>Đăng ký dịch vụ</Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>Liên hệ đội hậu mãi Sofa7 để đặt lịch hoặc tư vấn chi tiết về dịch vụ "{item.title}".</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>Liên hệ đội hậu mãi Sofa7 để đặt lịch hoặc tư vấn chi tiết về dịch vụ &ldquo;{item.title}&rdquo;.</Typography>
               <Stack spacing={2}>
                 <Stack direction="row" spacing={1.5} alignItems="center">
                   <Iconify icon="solar:phone-bold-duotone" width={20} sx={{ color: SOFA7_COLORS.electric }} />

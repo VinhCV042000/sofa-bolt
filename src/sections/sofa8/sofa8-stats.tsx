@@ -3,16 +3,13 @@ import type { BoxProps } from '@mui/material/Box';
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
+import { varFade, AnimateCountUp, MotionViewport } from 'src/components/animate';
 
-import { AnimateCountUp, varFade, MotionViewport } from 'src/components/animate';
-
-import { SOFA8_COLORS, SOFA8_STATS } from './sofa8-data';
+import { SOFA8_STATS, SOFA8_COLORS } from './sofa8-data';
 
 // ----------------------------------------------------------------------
 

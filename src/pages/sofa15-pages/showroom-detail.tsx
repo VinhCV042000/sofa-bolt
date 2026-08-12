@@ -1,24 +1,24 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
-import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section, Sofa15Card } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_SHOWROOMS, SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Card, Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { SOFA15_PAGE_IMAGES, SOFA15_PAGE_SHOWROOMS } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -29,7 +29,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{showroom.name} — Sofa15</title></Helmet>
-      <Sofa15PageHero overline="SHOWROOM" title={<><span>{showroom.name.toUpperCase()}</span></>} subtitle={showroom.address} image={showroom.image} />
+      <Sofa15PageHero overline="SHOWROOM" title={<span>{showroom.name.toUpperCase()}</span>} subtitle={showroom.address} image={showroom.image} />
 
       <Sofa15Section bg="black">
         <Grid container spacing={5}>

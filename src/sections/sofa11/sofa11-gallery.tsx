@@ -8,7 +8,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { sofa11Alpha, SOFA11_COLORS, SOFA11_GALLERY } from './sofa11-data';

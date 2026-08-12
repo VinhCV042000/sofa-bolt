@@ -1,22 +1,20 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
-import { SOFA11_PAGE_SHOWROOMS, SOFA11_PAGE_IMAGES } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
+import { SOFA11_PAGE_IMAGES, SOFA11_PAGE_SHOWROOMS } from 'src/sections/sofa11-pages/sofa11-pages-data';
 
 export default function Page() {
   const [submitted, setSubmitted] = useState(false);

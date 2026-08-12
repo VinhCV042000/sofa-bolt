@@ -1,20 +1,19 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
 
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section, Sofa14Card } from 'src/sections/sofa14-pages/sofa14-page-hero';
 import { SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Card, Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
 
 const APPLICATIONS = [
   { id: '1', position: 'Thợ may cotton pastel', status: 'Đang xem', date: '15/01/2025' },
@@ -46,11 +45,11 @@ export default function Page() {
           ))}
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 6 }}>
-          <RouterLink href="/sofa14/careers" sx={{ textDecoration: 'none' }}>
+          <Link component={RouterLink} href="/sofa14/careers" sx={{ textDecoration: 'none' }}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 4, py: 1.75, borderRadius: 99, fontWeight: 800, color: SOFA14_COLORS.ink, bgcolor: SOFA14_COLORS.mint, boxShadow: `0 8px 0 ${SOFA14_COLORS.mintDeep}`, '&:hover': { bgcolor: SOFA14_COLORS.mint, transform: 'translateY(2px)', boxShadow: `0 6px 0 ${SOFA14_COLORS.mintDeep}` } }}>
               <Iconify icon="solar:case-bold-duotone" width={18} /> Xem việc làm
             </Stack>
-          </RouterLink>
+          </Link>
         </Stack>
       </Sofa14Section>
     </>

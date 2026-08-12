@@ -1,13 +1,12 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -16,16 +15,16 @@ import { varAlpha, textGradient } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa7PageHero, Sofa7Section } from 'src/sections/sofa7-pages/sofa7-page-hero';
-import { SOFA7_PAGE_IMAGES, SOFA7_PAGE_PRODUCTS, formatSofa7Price } from 'src/sections/sofa7-pages/sofa7-pages-data';
 import { SOFA7_COLORS } from 'src/sections/sofa7/sofa7-data';
+import { Sofa7Section, Sofa7PageHero } from 'src/sections/sofa7-pages/sofa7-page-hero';
+import { formatSofa7Price, SOFA7_PAGE_IMAGES, SOFA7_PAGE_PRODUCTS } from 'src/sections/sofa7-pages/sofa7-pages-data';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: 'Đặt hàng thành công — Sofa7' };
 
 export default function Page() {
-  const orderNo = '#SF7-' + Math.floor(100000 + Math.random() * 900000);
+  const orderNo = `#SF7-${  Math.floor(100000 + Math.random() * 900000)}`;
   const items = [
     { ...SOFA7_PAGE_PRODUCTS[0], qty: 1 },
     { ...SOFA7_PAGE_PRODUCTS[1], qty: 2 },

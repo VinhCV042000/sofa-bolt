@@ -1,21 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varAlpha } from 'src/theme/styles';
+
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA10_COLORS } from 'src/sections/sofa10/sofa10-data';
-import { Sofa10PageHero, Sofa10Section } from 'src/sections/sofa10-pages/sofa10-page-hero';
 import { SOFA10_PAGE_IMAGES } from 'src/sections/sofa10-pages/sofa10-pages-data';
+import { Sofa10Section, Sofa10PageHero } from 'src/sections/sofa10-pages/sofa10-page-hero';
 
 const SERVICES = [
   { title: 'Thiết kế nội thất', icon: 'solar:pen-bold-duotone', desc: 'Thiết kế không gian wabi-sabi tổng thể.', path: '/sofa10/services/design' },

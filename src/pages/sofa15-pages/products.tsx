@@ -1,21 +1,24 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha, textGradient } from 'src/theme/styles';
 
+import { varFade } from 'src/components/animate';
+
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_IMAGES, SOFA15_PAGE_PRODUCT_CATEGORIES, sofa15FormatPrice } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { sofa15FormatPrice, SOFA15_PAGE_IMAGES, SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_PRODUCT_CATEGORIES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -34,9 +37,9 @@ export default function Page() {
                     {key === 'types' ? 'LOẠI SOFA' : key === 'styles' ? 'PHONG CÁCH' : key === 'spaces' ? 'KHÔNG GIAN' : key === 'sizes' ? 'KÍCH THƯỚC' : 'GIÁ'}
                   </Typography>
                   {items.map((item: any) => (
-                    <RouterLink key={item.slug} href={`/sofa15/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA15_COLORS.gold } }}>
+                    <Link component={RouterLink} key={item.slug} href={`/sofa15/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA15_COLORS.gold } }}>
                       <Typography variant="body2" sx={{ color: varAlpha('#FFFFFF', 0.5), transition: 'color 0.2s', fontWeight: 'fontWeightLight' }}>{item.label}</Typography>
-                    </RouterLink>
+                    </Link>
                   ))}
                 </Stack>
               ))}

@@ -1,22 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { Iconify } from 'src/components/iconify';
-import { varFade, MotionViewport } from 'src/components/animate';
+import { MotionViewport } from 'src/components/animate';
 
-import { Sofa3PageHero, Sofa3Section } from 'src/sections/sofa3-pages/sofa3-page-hero';
-import { SOFA3_PAGE_IMAGES, formatSofa3Price } from 'src/sections/sofa3-pages/sofa3-pages-data';
+import { Sofa3Section, Sofa3PageHero } from 'src/sections/sofa3-pages/sofa3-page-hero';
+import { formatSofa3Price, SOFA3_PAGE_IMAGES } from 'src/sections/sofa3-pages/sofa3-pages-data';
 
 const metadata = { title: 'Thanh toán - Sofa Terra' };
 

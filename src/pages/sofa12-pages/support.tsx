@@ -8,10 +8,12 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
+
 import { Sofa12PageHero } from 'src/sections/sofa12-pages/sofa12-page-hero';
-import { SOFA12_PAGE_IMAGES, SOFA12_PAGE_FAQS } from 'src/sections/sofa12-pages/sofa12-pages-data';
+import { SOFA12_PAGE_FAQS, SOFA12_PAGE_IMAGES } from 'src/sections/sofa12-pages/sofa12-pages-data';
 
 const SUPPORT_LINKS = [
   { title: 'FAQ', desc: 'Câu hỏi thường gặp', icon: 'solar:question-circle-bold-duotone' },

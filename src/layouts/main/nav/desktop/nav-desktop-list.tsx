@@ -118,13 +118,22 @@ export function NavList({ data }: NavListProps) {
                   }}
                 >
                   <NavUl sx={{ gap: 3, width: 1, flexWrap: 'wrap', flexDirection: 'row' }}>
-                    {data.children.map((list) => (
-                      <NavSubList
-                        key={list.subheader}
-                        subheader={list.subheader}
-                        data={list.items}
-                      />
-                    ))}
+                    {data.children
+                      // This mega-menu dropdown only understands the flat
+                      // "subheader + items" grouping. Some nav configs nest
+                      // items recursively instead (no `subheader`); skip
+                      // those here rather than rendering with undefined props.
+                      .filter(
+                        (list): list is { subheader: string; items: { title: string; path: string }[] } =>
+                          'subheader' in list
+                      )
+                      .map((list) => (
+                        <NavSubList
+                          key={list.subheader}
+                          subheader={list.subheader}
+                          data={list.items}
+                        />
+                      ))}
                   </NavUl>
                 </Box>
               </Box>

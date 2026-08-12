@@ -13,7 +13,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA6_COLORS, SOFA6_STEPS } from './sofa6-data';
+import { SOFA6_STEPS, SOFA6_COLORS } from './sofa6-data';
 
 // ----------------------------------------------------------------------
 

@@ -1,24 +1,22 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha } from 'src/theme/styles';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_BLOG_POSTS, SOFA15_PAGE_BLOG_CATEGORIES, SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { SOFA15_PAGE_IMAGES, SOFA15_PAGE_BLOG_POSTS, SOFA15_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -31,7 +29,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{label} — Sofa15 Blog</title></Helmet>
-      <Sofa15PageHero overline="BLOG" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA15_PAGE_IMAGES.blog1} />
+      <Sofa15PageHero overline="BLOG" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA15_PAGE_IMAGES.blog1} />
 
       <Sofa15Section bg="black">
         {filtered.length === 0 ? (

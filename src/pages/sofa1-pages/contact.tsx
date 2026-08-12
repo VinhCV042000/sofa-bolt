@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -17,7 +16,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa1PageHero, Sofa1Section } from 'src/sections/sofa1-pages/sofa1-page-hero';
+import { Sofa1Section, Sofa1PageHero } from 'src/sections/sofa1-pages/sofa1-page-hero';
 import { SOFA1_PAGE_IMAGES, SOFA1_COMPANY_INFO } from 'src/sections/sofa1-pages/sofa1-pages-data';
 
 // ----------------------------------------------------------------------

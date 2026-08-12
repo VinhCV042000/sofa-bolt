@@ -4,8 +4,8 @@ import { BackToTop } from 'src/components/animate/back-to-top';
 import { ScrollProgress, useScrollProgress } from 'src/components/animate/scroll-progress';
 
 import { SpaHero } from '../spa-hero';
-import { SpaAbout } from '../spa-about';
 import { SpaFaqs } from '../spa-faqs';
+import { SpaAbout } from '../spa-about';
 import { SpaBooking } from '../spa-booking';
 import { SpaServices } from '../spa-services';
 import { SpaPackages } from '../spa-packages';

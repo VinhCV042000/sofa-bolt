@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -16,7 +15,7 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa3PageHero } from 'src/sections/sofa3-pages/sofa3-page-hero';
-import { SOFA3_PROMOTION_SERVICES, SOFA3_PAGE_IMAGES } from 'src/sections/sofa3-pages/sofa3-pages-data';
+import { SOFA3_PAGE_IMAGES, SOFA3_PROMOTION_SERVICES } from 'src/sections/sofa3-pages/sofa3-pages-data';
 
 const metadata = { title: 'Khuyến mãi - Sofa Terra' };
 

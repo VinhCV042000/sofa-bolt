@@ -15,7 +15,7 @@ import { fileData } from '../../file-thumbnail';
 // ----------------------------------------------------------------------
 
 type RejectionFilesProps = PaperProps & {
-  files: FileRejection[];
+  files: readonly FileRejection[];
 };
 
 export function RejectionFiles({ files, sx, className, ...other }: RejectionFilesProps) {

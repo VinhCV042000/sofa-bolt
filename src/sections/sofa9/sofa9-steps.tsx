@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA9_COLORS, SOFA9_STEPS } from './sofa9-data';
+import { SOFA9_STEPS, SOFA9_COLORS } from './sofa9-data';
 
 // ----------------------------------------------------------------------
 

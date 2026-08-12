@@ -1,28 +1,27 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { varAlpha, textGradient } from 'src/theme/styles';
-import { useTheme } from '@mui/material/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa1PageHero, Sofa1Section } from 'src/sections/sofa1-pages/sofa1-page-hero';
-import { SOFA1_PAGE_IMAGES, SOFA1_PRODUCTS, formatSofa1Price } from 'src/sections/sofa1-pages/sofa1-pages-data';
+import { Sofa1Section, Sofa1PageHero } from 'src/sections/sofa1-pages/sofa1-page-hero';
+import { SOFA1_PRODUCTS, formatSofa1Price, SOFA1_PAGE_IMAGES } from 'src/sections/sofa1-pages/sofa1-pages-data';
 
 // ----------------------------------------------------------------------
 

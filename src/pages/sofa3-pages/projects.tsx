@@ -1,8 +1,6 @@
-import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
 import { useState } from 'react';
+import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,7 +13,7 @@ import { RouterLink } from 'src/routes/components';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa3PageHero } from 'src/sections/sofa3-pages/sofa3-page-hero';
-import { SOFA3_PROJECTS, SOFA3_PROJECT_TYPES, SOFA3_PAGE_IMAGES } from 'src/sections/sofa3-pages/sofa3-pages-data';
+import { SOFA3_PROJECTS, SOFA3_PAGE_IMAGES, SOFA3_PROJECT_TYPES } from 'src/sections/sofa3-pages/sofa3-pages-data';
 
 const metadata = { title: 'Dự án - Sofa Terra' };
 

@@ -1,25 +1,24 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha, textGradient } from 'src/theme/styles';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
-import { Sofa16PageHero, Sofa16Section } from 'src/sections/sofa16-pages/sofa16-page-hero';
-import { SOFA16_PAGE_PRODUCTS, SOFA16_PAGE_IMAGES, SOFA16_PAGE_PRODUCT_CATEGORIES, sofa16FormatPrice } from 'src/sections/sofa16-pages/sofa16-pages-data';
+import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
+import { sofa16FormatPrice, SOFA16_PAGE_IMAGES, SOFA16_PAGE_PRODUCTS, SOFA16_PAGE_PRODUCT_CATEGORIES } from 'src/sections/sofa16-pages/sofa16-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -33,11 +32,11 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{label} — Sofa16</title></Helmet>
-      <Sofa16PageHero overline="DANH MỤC" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} tác phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA16_PAGE_IMAGES.prod1} />
+      <Sofa16PageHero overline="DANH MỤC" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} tác phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA16_PAGE_IMAGES.prod1} />
 
       <Sofa16Section bg="cream">
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 4, flexWrap: 'wrap' }}>
-          <RouterLink href="/sofa16/products" sx={{ textDecoration: 'none' }}><Typography variant="body2" sx={{ color: SOFA16_COLORS.inkSoft, fontWeight: 'fontWeightLight', '&:hover': { color: SOFA16_COLORS.terracotta } }}>Sản phẩm</Typography></RouterLink>
+          <Link component={RouterLink} href="/sofa16/products" sx={{ textDecoration: 'none' }}><Typography variant="body2" sx={{ color: SOFA16_COLORS.inkSoft, fontWeight: 'fontWeightLight', '&:hover': { color: SOFA16_COLORS.terracotta } }}>Sản phẩm</Typography></Link>
           <Iconify icon="solar:alt-arrow-right-linear" width={16} sx={{ color: SOFA16_COLORS.inkSoft, opacity: 0.5 }} />
           <Typography variant="body2" sx={{ color: SOFA16_COLORS.terracotta, fontWeight: 'fontWeightMedium' }}>{label}</Typography>
         </Stack>

@@ -1,20 +1,20 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varFade } from 'src/components/animate';
+
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section } from 'src/sections/sofa14-pages/sofa14-page-hero';
-import { SOFA14_PAGE_BLOG_POSTS, SOFA14_PAGE_BLOG_CATEGORIES, SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_BLOG_POSTS, SOFA14_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 export default function Page() {
   return (
@@ -28,9 +28,9 @@ export default function Page() {
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ position: 'sticky', top: 80 }}>
               <Typography variant="overline" sx={{ color: sofa14Alpha(SOFA14_COLORS.inkSoft, 0.6), letterSpacing: 2, fontWeight: 800 }}>CHUYÊN MỤC</Typography>
               {SOFA14_PAGE_BLOG_CATEGORIES.map((cat) => (
-                <RouterLink key={cat.slug} href={`/sofa14/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA14_COLORS.coralDeep } }}>
+                <Link component={RouterLink} key={cat.slug} href={`/sofa14/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA14_COLORS.coralDeep } }}>
                   <Typography variant="body2" sx={{ color: sofa14Alpha(SOFA14_COLORS.inkSoft, 0.8), transition: 'color 0.2s', fontWeight: 700 }}>{cat.label}</Typography>
-                </RouterLink>
+                </Link>
               ))}
             </Stack>
           </Grid>

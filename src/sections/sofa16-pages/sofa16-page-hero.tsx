@@ -1,3 +1,4 @@
+import type { MotionProps } from 'framer-motion';
 import type { BoxProps } from '@mui/material/Box';
 
 import { m } from 'framer-motion';
@@ -5,10 +6,11 @@ import { m } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { varAlpha, textGradient } from 'src/theme/styles';
+
 import { varFade, MotionContainer } from 'src/components/animate';
 
 import { SOFA16_COLORS } from '../sofa16/sofa16-data';
@@ -20,7 +22,7 @@ interface Sofa16PageHeroProps {
   overline?: string;
 }
 
-export function Sofa16PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa16PageHeroProps & BoxProps) {
+export function Sofa16PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa16PageHeroProps & Omit<BoxProps, 'title'>) {
   const theme = useTheme();
   return (
     <Box
@@ -73,7 +75,7 @@ export function Sofa16Section({ children, bg = 'cream', py = { xs: 8, md: 12 } }
   );
 }
 
-export function Sofa16Card({ children, accent = SOFA16_COLORS.terracotta, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps) {
+export function Sofa16Card({ children, accent = SOFA16_COLORS.terracotta, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps & Partial<MotionProps>) {
   return (
     <Box sx={{ p: 4, borderRadius: 3, bgcolor: SOFA16_COLORS.creamLight, border: `1px solid ${varAlpha(accent, 0.25)}`, ...sx }} {...other}>
       {children}

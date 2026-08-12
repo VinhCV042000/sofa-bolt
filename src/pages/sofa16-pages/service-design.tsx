@@ -1,24 +1,22 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha } from 'src/theme/styles';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
-import { Sofa16PageHero, Sofa16Section, Sofa16Card } from 'src/sections/sofa16-pages/sofa16-page-hero';
 import { SOFA16_PAGE_IMAGES } from 'src/sections/sofa16-pages/sofa16-pages-data';
+import { Sofa16Card, Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
 
 const DESIGN_SERVICES: Record<string, { title: string; subtitle: string; content: { heading: string; body: string }[] }> = {
   default: { title: 'THIẾT KẾ NỘI THẤT', subtitle: 'Thiết kế không gian Mediterranean tổng thể — từ ý tưởng đến Riviera.', content: [{ heading: 'Tư vấn', body: 'Tư vấn phong cách Mediterranean, màu, vật liệu.' }, { heading: 'Thiết kế 3D', body: 'Bản vẽ 3D chi tiết trong 24h.' }, { heading: 'Sản xuất', body: 'Sản xuất sofa theo bản vẽ, 14-21 ngày.' }, { heading: 'Lắp đặt', body: 'Lắp đặt miễn phí, bảo hành 10 năm.' }] },
@@ -36,7 +34,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{data.title} — Sofa16</title></Helmet>
-      <Sofa16PageHero overline="DỊCH VỤ" title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={SOFA16_PAGE_IMAGES.service1} />
+      <Sofa16PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA16_PAGE_IMAGES.service1} />
 
       <Sofa16Section bg="cream">
         <Grid container spacing={5} alignItems="center">

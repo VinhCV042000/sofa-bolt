@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,12 +7,13 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+import { varFade } from 'src/components/animate';
+
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section, Sofa14Card } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { Sofa14Card, Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
 import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_COMPANY_INFO } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 const VALUES = [

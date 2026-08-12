@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,15 +7,13 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section, Sofa14Card } from 'src/sections/sofa14-pages/sofa14-page-hero';
 import { SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Card, Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
 
 const DESIGN_SERVICES: Record<string, { title: string; subtitle: string; content: { heading: string; body: string }[] }> = {
   default: { title: 'THIẾT KẾ NỘI THẤT', subtitle: 'Thiết kế không gian pastel pop tổng thể — từ ý tưởng đến claymorphism.', content: [{ heading: 'Tư vấn', body: 'Tư vấn phong cách pastel pop, màu, vật liệu.' }, { heading: 'Thiết kế 3D', body: 'Bản vẽ 3D chi tiết trong 24h.' }, { heading: 'Sản xuất', body: 'Sản xuất sofa theo bản vẽ, 7-14 ngày.' }, { heading: 'Lắp đặt', body: 'Lắp đặt miễn phí, bảo hành 5 năm.' }] },
@@ -33,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{data.title} — Sofa14</title></Helmet>
-      <Sofa14PageHero overline="DỊCH VỤ" title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={SOFA14_PAGE_IMAGES.service1} />
+      <Sofa14PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA14_PAGE_IMAGES.service1} />
 
       <Sofa14Section>
         <Grid container spacing={5} alignItems="center">

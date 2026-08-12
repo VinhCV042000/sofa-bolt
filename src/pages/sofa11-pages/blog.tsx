@@ -1,20 +1,20 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varFade } from 'src/components/animate';
+
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
-import { SOFA11_PAGE_BLOG_POSTS, SOFA11_PAGE_BLOG_CATEGORIES, SOFA11_PAGE_IMAGES } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
+import { SOFA11_PAGE_IMAGES, SOFA11_PAGE_BLOG_POSTS, SOFA11_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa11-pages/sofa11-pages-data';
 
 export default function Page() {
   return (
@@ -28,9 +28,9 @@ export default function Page() {
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ position: 'sticky', top: 80 }}>
               <Typography variant="overline" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.4), letterSpacing: 2, fontWeight: 800 }}>CHUYÊN MỤC</Typography>
               {SOFA11_PAGE_BLOG_CATEGORIES.map((cat) => (
-                <RouterLink key={cat.slug} href={`/sofa11/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA11_COLORS.lime } }}>
+                <Link component={RouterLink} key={cat.slug} href={`/sofa11/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA11_COLORS.lime } }}>
                   <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.5), transition: 'color 0.2s', fontWeight: 700 }}>{cat.label}</Typography>
-                </RouterLink>
+                </Link>
               ))}
             </Stack>
           </Grid>

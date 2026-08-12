@@ -1,3 +1,4 @@
+import type { MotionProps } from 'framer-motion';
 import type { BoxProps } from '@mui/material/Box';
 
 import { m } from 'framer-motion';
@@ -19,7 +20,7 @@ interface Sofa14PageHeroProps {
   overline?: string;
 }
 
-export function Sofa14PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa14PageHeroProps & BoxProps) {
+export function Sofa14PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa14PageHeroProps & Omit<BoxProps, 'title'>) {
   return (
     <Box
       component="section"
@@ -78,7 +79,7 @@ export function Sofa14Section({ children, bg = 'canvas', py = { xs: 8, md: 12 } 
   );
 }
 
-export function Sofa14Card({ children, accent = SOFA14_COLORS.mint, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps) {
+export function Sofa14Card({ children, accent = SOFA14_COLORS.mint, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps & Partial<MotionProps>) {
   return (
     <Box sx={{ p: 4, borderRadius: '32px', bgcolor: SOFA14_COLORS.white, border: `2px solid ${sofa14Alpha(SOFA14_COLORS.ink, 0.06)}`, boxShadow: `6px 6px 0 ${sofa14Alpha(accent, 0.3)}`, ...sx }} {...other}>
       {children}

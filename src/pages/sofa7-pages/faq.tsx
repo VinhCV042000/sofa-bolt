@@ -1,12 +1,11 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
+import Typography from '@mui/material/Typography';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 
@@ -17,9 +16,9 @@ import { varAlpha, textGradient } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa7PageHero, Sofa7Section } from 'src/sections/sofa7-pages/sofa7-page-hero';
-import { SOFA7_PAGE_IMAGES, SOFA7_PAGE_FAQS } from 'src/sections/sofa7-pages/sofa7-pages-data';
 import { SOFA7_COLORS } from 'src/sections/sofa7/sofa7-data';
+import { Sofa7Section, Sofa7PageHero } from 'src/sections/sofa7-pages/sofa7-page-hero';
+import { SOFA7_PAGE_FAQS, SOFA7_PAGE_IMAGES } from 'src/sections/sofa7-pages/sofa7-pages-data';
 
 // ----------------------------------------------------------------------
 

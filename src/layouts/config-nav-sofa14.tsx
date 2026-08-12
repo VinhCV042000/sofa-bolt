@@ -6,6 +6,16 @@ import { Iconify } from 'src/components/iconify';
 
 export const sofa14NavData = [
   { title: 'Home', path: '/sofa14', icon: <Iconify width={22} icon="solar:home-2-bold-duotone" /> },
+  {
+    title: 'About Us',
+    path: '/sofa14/about',
+    icon: <Iconify width={22} icon="solar:info-circle-bold-duotone" />,
+  },
+  {
+    title: 'Shop All',
+    path: '/sofa14/products',
+    icon: <Iconify width={22} icon="solar:bag-check-bold-duotone" />,
+  },
   { title: 'Story', path: '/sofa14#story', icon: <Iconify width={22} icon="solar:hearts-bold-duotone" /> },
   { title: 'Collections', path: '/sofa14#collections', icon: <Iconify width={22} icon="solar:magic-stick-3-bold-duotone" /> },
   { title: 'Products', path: '/sofa14#products', icon: <Iconify width={22} icon="solar:armchair-bold-duotone" /> },

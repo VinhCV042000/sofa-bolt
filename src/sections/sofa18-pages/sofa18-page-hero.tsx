@@ -5,10 +5,11 @@ import { m } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { varAlpha, textGradient } from 'src/theme/styles';
+
 import { varFade, MotionContainer } from 'src/components/animate';
 
 import { SOFA18_COLORS } from '../sofa18/sofa18-data';
@@ -20,7 +21,7 @@ interface Sofa18PageHeroProps {
   overline?: string;
 }
 
-export function Sofa18PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa18PageHeroProps & BoxProps) {
+export function Sofa18PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa18PageHeroProps & Omit<BoxProps, 'title'>) {
   const theme = useTheme();
 
   return (

@@ -1,21 +1,22 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
+import { RouterLink } from 'src/routes/components';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
-import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section, Sofa15Card } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Card, Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 
 const APPLICATIONS = [
   { id: '1', position: 'Thợ may da cao cấp', status: 'Đang xem', date: '15/01/2025' },
@@ -48,11 +49,11 @@ export default function Page() {
           ))}
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 6 }}>
-          <RouterLink href="/sofa15/careers" sx={{ textDecoration: 'none' }}>
+          <Link component={RouterLink} href="/sofa15/careers" sx={{ textDecoration: 'none' }}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 4, py: 1.75, fontWeight: 'fontWeightMedium', color: SOFA15_COLORS.black, bgcolor: SOFA15_COLORS.gold, border: `1px solid ${SOFA15_COLORS.gold}`, '&:hover': { bgcolor: SOFA15_COLORS.goldLight } }}>
               <Iconify icon="solar:case-bold-duotone" width={18} /> Xem việc làm
             </Stack>
-          </RouterLink>
+          </Link>
         </Stack>
       </Sofa15Section>
     </>

@@ -1,21 +1,23 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha } from 'src/theme/styles';
 
+import { varFade } from 'src/components/animate';
+
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
-import { Sofa16PageHero, Sofa16Section } from 'src/sections/sofa16-pages/sofa16-page-hero';
-import { SOFA16_PAGE_BLOG_POSTS, SOFA16_PAGE_BLOG_CATEGORIES, SOFA16_PAGE_IMAGES } from 'src/sections/sofa16-pages/sofa16-pages-data';
+import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
+import { SOFA16_PAGE_IMAGES, SOFA16_PAGE_BLOG_POSTS, SOFA16_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa16-pages/sofa16-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -30,9 +32,9 @@ export default function Page() {
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ position: 'sticky', top: 80 }}>
               <Typography variant="overline" sx={{ color: SOFA16_COLORS.terracottaDeep, letterSpacing: 2, fontWeight: 'fontWeightMedium' }}>CHUYÊN MỤC</Typography>
               {SOFA16_PAGE_BLOG_CATEGORIES.map((cat) => (
-                <RouterLink key={cat.slug} href={`/sofa16/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA16_COLORS.terracotta } }}>
+                <Link component={RouterLink} key={cat.slug} href={`/sofa16/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA16_COLORS.terracotta } }}>
                   <Typography variant="body2" sx={{ color: SOFA16_COLORS.inkSoft, transition: 'color 0.2s', fontWeight: 'fontWeightLight' }}>{cat.label}</Typography>
-                </RouterLink>
+                </Link>
               ))}
             </Stack>
           </Grid>

@@ -207,4 +207,4 @@ export const SOFA3_MILESTONES = [
 ];
 
 export const formatSofa3Price = (price: number): string =>
-  new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+  `${new Intl.NumberFormat('vi-VN').format(price)  }đ`;

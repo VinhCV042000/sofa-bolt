@@ -2,8 +2,9 @@
 // Brand: ART DECO GATSBY — opulent gold, deep black, emerald, 1920s geometric luxury
 // ----------------------------------------------------------------------
 
-import { SOFA15_IMAGES, SOFA15_COLORS } from '../sofa15/sofa15-data';
 import { varAlpha } from 'src/theme/styles';
+
+import { SOFA15_IMAGES, SOFA15_COLORS } from '../sofa15/sofa15-data';
 
 export { varAlpha };
 

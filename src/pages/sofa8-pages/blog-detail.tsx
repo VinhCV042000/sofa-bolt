@@ -1,28 +1,27 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
-import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
 import { SOFA8_PAGE_BLOG_POSTS } from 'src/sections/sofa8-pages/sofa8-pages-data';
+import { Sofa8Section, Sofa8PageHero } from 'src/sections/sofa8-pages/sofa8-page-hero';
 
 export default function Page() {
   const theme = useTheme();
@@ -38,7 +37,7 @@ export default function Page() {
         <title>{post.title} — Sofa8 Blog</title>
       </Helmet>
 
-      <Sofa8PageHero overline="BLOG" title={<><span>{post.title.toUpperCase()}</span></>} subtitle={post.excerpt} image={post.image} />
+      <Sofa8PageHero overline="BLOG" title={<span>{post.title.toUpperCase()}</span>} subtitle={post.excerpt} image={post.image} />
 
       <Sofa8Section>
         <Grid container spacing={5}>

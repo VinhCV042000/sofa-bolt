@@ -2,8 +2,9 @@
 // Brand: MEDITERRANEAN RIVIERA — terracotta, cream, olive, sun-drenched Italian coastal luxury
 // ----------------------------------------------------------------------
 
-import { SOFA16_IMAGES, SOFA16_COLORS } from '../sofa16/sofa16-data';
 import { varAlpha } from 'src/theme/styles';
+
+import { SOFA16_IMAGES, SOFA16_COLORS } from '../sofa16/sofa16-data';
 
 export { varAlpha };
 

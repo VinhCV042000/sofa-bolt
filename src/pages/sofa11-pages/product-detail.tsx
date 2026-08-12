@@ -1,28 +1,27 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Chip from '@mui/material/Chip';
+import Tabs from '@mui/material/Tabs';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
 
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
-import { SOFA11_PAGE_PRODUCTS, SOFA11_PAGE_IMAGES, formatSofa11Price } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
+import { formatSofa11Price, SOFA11_PAGE_PRODUCTS } from 'src/sections/sofa11-pages/sofa11-pages-data';
 
 export default function Page() {
   const params = useParams();
@@ -38,7 +37,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{product.name} — Sofa11</title></Helmet>
-      <Sofa11PageHero overline="CHI TIẾT SẢN PHẨM" title={<><span>{product.name.toUpperCase()}</span></>} subtitle={product.material} image={product.image} />
+      <Sofa11PageHero overline="CHI TIẾT SẢN PHẨM" title={<span>{product.name.toUpperCase()}</span>} subtitle={product.material} image={product.image} />
 
       <Sofa11Section>
         <Grid container spacing={5}>

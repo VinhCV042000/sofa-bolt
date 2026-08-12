@@ -2,7 +2,7 @@
 // Brand: SOFT CLAY / PASTEL POP — claymorphism, candy pastels, chunky blobs, playful & toy-like
 // ----------------------------------------------------------------------
 
-import { SOFA14_IMAGES, SOFA14_COLORS, sofa14Alpha } from '../sofa14/sofa14-data';
+import { sofa14Alpha, SOFA14_IMAGES, SOFA14_COLORS } from '../sofa14/sofa14-data';
 
 export { sofa14Alpha };
 

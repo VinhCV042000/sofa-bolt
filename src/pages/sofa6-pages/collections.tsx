@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -12,9 +11,9 @@ import { RouterLink } from 'src/routes/components';
 
 import { varFade, MotionViewport } from 'src/components/animate';
 
+import { SOFA6_COLORS } from 'src/sections/sofa6/sofa6-data';
 import { Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
 import { SOFA6_COLLECTIONS, SOFA6_PAGE_IMAGES } from 'src/sections/sofa6-pages/sofa6-pages-data';
-import { SOFA6_COLORS } from 'src/sections/sofa6/sofa6-data';
 
 const metadata = { title: 'Bộ sưu tập - Sofa Earth' };
 

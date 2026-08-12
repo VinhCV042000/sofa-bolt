@@ -1,19 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
-import { varAlpha, textGradient } from 'src/theme/styles';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_COLLECTIONS, SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { SOFA15_PAGE_IMAGES, SOFA15_PAGE_COLLECTIONS } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();

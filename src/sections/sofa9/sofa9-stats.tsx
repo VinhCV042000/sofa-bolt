@@ -3,16 +3,15 @@ import type { BoxProps } from '@mui/material/Box';
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
 
-import { AnimateCountUp, varFade, MotionViewport } from 'src/components/animate';
+import { varFade, AnimateCountUp, MotionViewport } from 'src/components/animate';
 
-import { SOFA9_COLORS, SOFA9_STATS } from './sofa9-data';
+import { SOFA9_STATS, SOFA9_COLORS } from './sofa9-data';
 
 // ----------------------------------------------------------------------
 

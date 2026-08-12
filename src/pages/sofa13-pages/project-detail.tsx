@@ -1,23 +1,22 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
 
 import { sofa13Alpha, SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
-import { Sofa13PageHero, Sofa13Section } from 'src/sections/sofa13-pages/sofa13-page-hero';
-import { SOFA13_PAGE_PROJECTS, SOFA13_PAGE_PRODUCTS, sofa13FormatPrice } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
+import { sofa13FormatPrice, SOFA13_PAGE_PROJECTS, SOFA13_PAGE_PRODUCTS } from 'src/sections/sofa13-pages/sofa13-pages-data';
 
 export default function Page() {
   const params = useParams();
@@ -27,7 +26,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{project.name} — Sofa13</title></Helmet>
-      <Sofa13PageHero overline="CHI TIẾT DỰ ÁN" title={<><span>{project.name.toUpperCase()}</span></>} subtitle={`${project.typeLabel} · ${project.location} · ${project.year}`} image={project.image} />
+      <Sofa13PageHero overline="CHI TIẾT DỰ ÁN" title={<span>{project.name.toUpperCase()}</span>} subtitle={`${project.typeLabel} · ${project.location} · ${project.year}`} image={project.image} />
 
       <Sofa13Section>
         <Grid container spacing={5}>
@@ -53,7 +52,7 @@ export default function Page() {
                 <Typography variant="h5" sx={{ fontWeight: 700, color: SOFA13_COLORS.gold, letterSpacing: 1 }}>Đánh giá khách hàng</Typography>
                 <Stack spacing={2} sx={{ p: 3, border: `1px solid ${sofa13Alpha(SOFA13_COLORS.ivory, 0.08)}`, bgcolor: sofa13Alpha(SOFA13_COLORS.charcoal, 0.5) }}>
                   <Rating value={5} readOnly sx={{ '& .MuiRating-iconFilled': { color: SOFA13_COLORS.gold } }} />
-                  <Typography sx={{ color: sofa13Alpha(SOFA13_COLORS.ivory, 0.6), lineHeight: 1.9 }}>"Sofa13 đã biến không gian của chúng tôi thành một salon art deco. Velvet vàng, da Ý — tuyệt đẹp!"</Typography>
+                  <Typography sx={{ color: sofa13Alpha(SOFA13_COLORS.ivory, 0.6), lineHeight: 1.9 }}>&ldquo;Sofa13 đã biến không gian của chúng tôi thành một salon art deco. Velvet vàng, da Ý — tuyệt đẹp!&rdquo;</Typography>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: SOFA13_COLORS.ivory }}>— Chủ dự án {project.name}</Typography>
                 </Stack>
               </Stack>

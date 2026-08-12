@@ -19,7 +19,7 @@ interface Sofa4PageHeroProps {
   overline?: string;
 }
 
-export function Sofa4PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa4PageHeroProps & BoxProps) {
+export function Sofa4PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa4PageHeroProps & Omit<BoxProps, 'title'>) {
   const theme = useTheme();
 
   return (

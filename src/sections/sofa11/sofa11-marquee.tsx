@@ -3,7 +3,6 @@ import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-
 import { sofa11Alpha, SOFA11_COLORS, SOFA11_MARQUEE } from './sofa11-data';
 
 // ----------------------------------------------------------------------

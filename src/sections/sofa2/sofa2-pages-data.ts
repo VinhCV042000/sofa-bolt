@@ -193,4 +193,4 @@ export const SOFA2_FAQS = [
   { question: 'Bảo hành bao lâu?', answer: 'Bảo hành 10 năm — cam kết dài hạn nhất thị trường sofa Việt Nam.' },
 ];
 
-export const formatSofa2Price = (price: number): string => new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+export const formatSofa2Price = (price: number): string => `${new Intl.NumberFormat('vi-VN').format(price)  }đ`;

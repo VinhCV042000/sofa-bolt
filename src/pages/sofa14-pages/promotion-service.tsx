@@ -1,21 +1,21 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
 
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section, Sofa14Card } from 'src/sections/sofa14-pages/sofa14-page-hero';
-import { SOFA14_PAGE_PROMOTION_SERVICES, SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Card, Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_PROMOTION_SERVICES } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 export default function Page() {
   const params = useParams();
@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{service.title} — Sofa14</title></Helmet>
-      <Sofa14PageHero overline="KHUYẾN MÃI" title={<><span>{service.title.toUpperCase()}</span></>} subtitle={service.description} image={SOFA14_PAGE_IMAGES.prod1} />
+      <Sofa14PageHero overline="KHUYẾN MÃI" title={<span>{service.title.toUpperCase()}</span>} subtitle={service.description} image={SOFA14_PAGE_IMAGES.prod1} />
 
       <Sofa14Section>
         <Grid container spacing={5} alignItems="center">
@@ -45,11 +45,11 @@ export default function Page() {
                 </Stack>
                 <Typography sx={{ color: sofa14Alpha(SOFA14_COLORS.inkSoft, 0.8), lineHeight: 1.9 }}>{service.description}</Typography>
                 <Typography sx={{ color: sofa14Alpha(SOFA14_COLORS.inkSoft, 0.8), lineHeight: 1.9 }}>Dịch vụ {service.title.toLowerCase()} của Sofa14 được thực hiện bởi đội ngũ kỹ thuật viên chuyên nghiệp, sử dụng vật liệu và dung dịch chính hãng. Cam kết chất lượng và bảo hành sau dịch vụ.</Typography>
-                <RouterLink href="/sofa14/showrooms/visit" sx={{ textDecoration: 'none' }}>
+                <Link component={RouterLink} href="/sofa14/showrooms/visit" sx={{ textDecoration: 'none' }}>
                   <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 4, py: 1.75, width: 'fit-content', borderRadius: 99, fontWeight: 800, color: SOFA14_COLORS.ink, bgcolor: SOFA14_COLORS.mint, boxShadow: `0 8px 0 ${SOFA14_COLORS.mintDeep}`, '&:hover': { bgcolor: SOFA14_COLORS.mint, transform: 'translateY(2px)', boxShadow: `0 6px 0 ${SOFA14_COLORS.mintDeep}` } }}>
                     <Iconify icon="solar:phone-bold-duotone" width={18} /> Đặt lịch dịch vụ
                   </Stack>
-                </RouterLink>
+                </Link>
               </Stack>
             </Sofa14Card>
           </Grid>

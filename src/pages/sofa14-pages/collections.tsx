@@ -1,7 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -10,8 +8,8 @@ import Typography from '@mui/material/Typography';
 import { RouterLink } from 'src/routes/components';
 
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section } from 'src/sections/sofa14-pages/sofa14-page-hero';
-import { SOFA14_PAGE_COLLECTIONS, SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_COLLECTIONS } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 export default function Page() {
   return (

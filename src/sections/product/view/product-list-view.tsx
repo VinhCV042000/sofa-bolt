@@ -76,8 +76,6 @@ export function ProductListView() {
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
 
-  const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
-
   const [columnVisibilityModel, setColumnVisibilityModel] =
     useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
@@ -130,7 +128,6 @@ export function ProductListView() {
         filters={filters}
         canReset={canReset}
         selectedRowIds={selectedRowIds}
-        setFilterButtonEl={setFilterButtonEl}
         filteredResults={dataFiltered.length}
         onOpenConfirmDeleteRows={confirmRows.onTrue}
       />
@@ -271,8 +268,6 @@ export function ProductListView() {
               noResultsOverlay: () => <EmptyContent title="No results found" />,
             }}
             slotProps={{
-              panel: { anchorEl: filterButtonEl },
-              toolbar: { setFilterButtonEl },
               columnsManagement: { getTogglableColumns },
             }}
             sx={{ [`& .${gridClasses.cell}`]: { alignItems: 'center', display: 'inline-flex' } }}
@@ -314,7 +309,6 @@ interface CustomToolbarProps {
   selectedRowIds: GridRowSelectionModel;
   onOpenConfirmDeleteRows: () => void;
   filters: UseSetStateReturn<IProductTableFilters>;
-  setFilterButtonEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
 }
 
 function CustomToolbar({
@@ -322,7 +316,6 @@ function CustomToolbar({
   canReset,
   selectedRowIds,
   filteredResults,
-  setFilterButtonEl,
   onOpenConfirmDeleteRows,
 }: CustomToolbarProps) {
   return (
@@ -354,7 +347,7 @@ function CustomToolbar({
           )}
 
           <GridToolbarColumnsButton />
-          <GridToolbarFilterButton ref={setFilterButtonEl} />
+          <GridToolbarFilterButton />
           <GridToolbarExport />
         </Stack>
       </GridToolbarContainer>

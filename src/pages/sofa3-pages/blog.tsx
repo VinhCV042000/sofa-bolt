@@ -1,6 +1,5 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -13,7 +12,7 @@ import { RouterLink } from 'src/routes/components';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa3PageHero } from 'src/sections/sofa3-pages/sofa3-page-hero';
-import { SOFA3_BLOG_POSTS, SOFA3_BLOG_CATEGORIES, SOFA3_PAGE_IMAGES } from 'src/sections/sofa3-pages/sofa3-pages-data';
+import { SOFA3_BLOG_POSTS, SOFA3_PAGE_IMAGES, SOFA3_BLOG_CATEGORIES } from 'src/sections/sofa3-pages/sofa3-pages-data';
 
 const metadata = { title: 'Blog - Sofa Terra' };
 

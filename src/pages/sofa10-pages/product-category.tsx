@@ -1,28 +1,26 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA10_COLORS } from 'src/sections/sofa10/sofa10-data';
-import { Sofa10PageHero, Sofa10Section } from 'src/sections/sofa10-pages/sofa10-page-hero';
+import { Sofa10Section, Sofa10PageHero } from 'src/sections/sofa10-pages/sofa10-page-hero';
 import {
-  SOFA10_PAGE_PRODUCTS,
-  SOFA10_PAGE_IMAGES,
-  SOFA10_PAGE_PRODUCT_CATEGORIES,
   formatSofa10Price,
+  SOFA10_PAGE_IMAGES,
+  SOFA10_PAGE_PRODUCTS,
+  SOFA10_PAGE_PRODUCT_CATEGORIES,
 } from 'src/sections/sofa10-pages/sofa10-pages-data';
 
 export default function Page() {
@@ -47,13 +45,13 @@ export default function Page() {
         <title>{label} — Sofa10</title>
       </Helmet>
 
-      <Sofa10PageHero overline="DANH MỤC" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} sản phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA10_PAGE_IMAGES.product1} />
+      <Sofa10PageHero overline="DANH MỤC" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} sản phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA10_PAGE_IMAGES.product1} />
 
       <Sofa10Section>
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 4, flexWrap: 'wrap' }}>
-          <RouterLink href="/sofa10/products" sx={{ textDecoration: 'none' }}>
+          <Link component={RouterLink} href="/sofa10/products" sx={{ textDecoration: 'none' }}>
             <Typography variant="body2" sx={{ color: 'text.secondary', '&:hover': { color: SOFA10_COLORS.wood } }}>Sản phẩm</Typography>
-          </RouterLink>
+          </Link>
           <Iconify icon="solar:alt-arrow-right-linear" width={16} sx={{ color: 'text.disabled' }} />
           <Typography variant="body2" sx={{ color: SOFA10_COLORS.wood, fontWeight: 'fontWeightNormal' }}>{label}</Typography>
         </Stack>

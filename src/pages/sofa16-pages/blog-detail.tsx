@@ -1,28 +1,27 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { varAlpha } from 'src/theme/styles';
 
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
-import { Sofa16PageHero, Sofa16Section, Sofa16Card } from 'src/sections/sofa16-pages/sofa16-page-hero';
 import { SOFA16_PAGE_BLOG_POSTS } from 'src/sections/sofa16-pages/sofa16-pages-data';
+import { Sofa16Card, Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
 
 export default function Page() {
   const theme = useTheme();
@@ -35,7 +34,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{post.title} — Sofa16 Blog</title></Helmet>
-      <Sofa16PageHero overline="BLOG" title={<><span>{post.title.toUpperCase()}</span></>} subtitle={post.excerpt} image={post.image} />
+      <Sofa16PageHero overline="BLOG" title={<span>{post.title.toUpperCase()}</span>} subtitle={post.excerpt} image={post.image} />
 
       <Sofa16Section bg="cream">
         <Grid container spacing={5}>

@@ -19,7 +19,7 @@ interface Sofa11PageHeroProps {
   overline?: string;
 }
 
-export function Sofa11PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa11PageHeroProps & BoxProps) {
+export function Sofa11PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa11PageHeroProps & Omit<BoxProps, 'title'>) {
   return (
     <Box
       component="section"

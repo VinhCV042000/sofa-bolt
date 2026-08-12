@@ -13,8 +13,8 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { useSofa19Content } from './sofa19-i18n';
 import { SOFA19_COLORS } from './sofa19-data';
+import { useSofa19Content } from './sofa19-i18n';
 
 // ----------------------------------------------------------------------
 

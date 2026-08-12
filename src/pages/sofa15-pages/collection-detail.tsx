@@ -1,23 +1,21 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha, textGradient } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_COLLECTIONS, sofa15FormatPrice } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { sofa15FormatPrice, SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_COLLECTIONS } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -28,7 +26,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{collection.name} — Sofa15</title></Helmet>
-      <Sofa15PageHero overline="BỘ SƯU TẬP" title={<><span>{collection.name.toUpperCase()}</span></>} subtitle={collection.description} image={collection.image} />
+      <Sofa15PageHero overline="BỘ SƯU TẬP" title={<span>{collection.name.toUpperCase()}</span>} subtitle={collection.description} image={collection.image} />
 
       <Sofa15Section bg="black">
         <Grid container spacing={3}>

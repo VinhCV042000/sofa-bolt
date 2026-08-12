@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { sofa12Alpha, SOFA12_COLORS, SOFA12_STEPS } from './sofa12-data';
+import { sofa12Alpha, SOFA12_STEPS, SOFA12_COLORS } from './sofa12-data';
 
 // ----------------------------------------------------------------------
 

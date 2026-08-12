@@ -5,20 +5,21 @@ import { m } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varAlpha, textGradient } from 'src/theme/styles';
+import { varAlpha } from 'src/theme/styles';
+
 import { varFade, MotionContainer } from 'src/components/animate';
 
 interface Sofa2PageHeroProps {
-  title: string;
+  title: React.ReactNode;
   subtitle?: string;
   image: string;
   overline?: string;
 }
 
-export function Sofa2PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa2PageHeroProps & BoxProps) {
+export function Sofa2PageHero({ title, subtitle, image, overline, sx, ...other }: Sofa2PageHeroProps & Omit<BoxProps, 'title'>) {
   const theme = useTheme();
 
   return (

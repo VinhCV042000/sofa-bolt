@@ -1,25 +1,25 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
+
+import { varAlpha, textGradient } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
-import { varAlpha, textGradient } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section, Sofa15Card } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_PROJECTS, SOFA15_PAGE_PRODUCTS, sofa15FormatPrice } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Card, Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { sofa15FormatPrice, SOFA15_PAGE_PROJECTS, SOFA15_PAGE_PRODUCTS } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -30,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{project.name} — Sofa15</title></Helmet>
-      <Sofa15PageHero overline="CHI TIẾT DỰ ÁN" title={<><span>{project.name.toUpperCase()}</span></>} subtitle={`${project.typeLabel} · ${project.location} · ${project.year}`} image={project.image} />
+      <Sofa15PageHero overline="CHI TIẾT DỰ ÁN" title={<span>{project.name.toUpperCase()}</span>} subtitle={`${project.typeLabel} · ${project.location} · ${project.year}`} image={project.image} />
 
       <Sofa15Section bg="black">
         <Grid container spacing={5}>
@@ -56,7 +56,7 @@ export default function Page() {
                 <Stack spacing={2}>
                   <Typography variant="h5" sx={{ fontWeight: 'fontWeightMedium', color: SOFA15_COLORS.gold }}>Đánh giá khách hàng</Typography>
                   <Rating value={5} readOnly sx={{ '& .MuiRating-iconFilled': { color: SOFA15_COLORS.gold } }} />
-                  <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>"Sofa15 đã biến không gian của chúng tôi thành một nơi sang trọng. Da thật, velvet emerald — tuyệt tác Gatsby!"</Typography>
+                  <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>&ldquo;Sofa15 đã biến không gian của chúng tôi thành một nơi sang trọng. Da thật, velvet emerald — tuyệt tác Gatsby!&rdquo;</Typography>
                   <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightMedium', color: 'common.white' }}>— Chủ dự án {project.name}</Typography>
                 </Stack>
               </Sofa15Card>

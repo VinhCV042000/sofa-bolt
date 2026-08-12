@@ -1,20 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa13Alpha, SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
-import { Sofa13PageHero, Sofa13Section } from 'src/sections/sofa13-pages/sofa13-page-hero';
-import { SOFA13_PAGE_CAREERS, SOFA13_PAGE_IMAGES } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
+import { SOFA13_PAGE_IMAGES, SOFA13_PAGE_CAREERS } from 'src/sections/sofa13-pages/sofa13-pages-data';
 
 export default function Page() {
   return (

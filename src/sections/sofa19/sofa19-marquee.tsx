@@ -3,8 +3,8 @@ import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { useSofa19Content } from './sofa19-i18n';
 import { SOFA19_COLORS } from './sofa19-data';
+import { useSofa19Content } from './sofa19-i18n';
 
 // ----------------------------------------------------------------------
 

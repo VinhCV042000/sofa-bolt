@@ -10,12 +10,10 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
-import { varAlpha } from 'src/theme/styles';
-
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA8_COLORS, SOFA8_FAQS } from './sofa8-data';
+import { SOFA8_FAQS, SOFA8_COLORS } from './sofa8-data';
 
 // ----------------------------------------------------------------------
 

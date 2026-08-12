@@ -196,4 +196,4 @@ export const SOFA11_PAGE_FAQS = [
 ];
 
 export const formatSofa11Price = (price: number): string =>
-  new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+  `${new Intl.NumberFormat('vi-VN').format(price)  }đ`;

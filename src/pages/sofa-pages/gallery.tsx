@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -9,8 +8,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -21,8 +20,8 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport, MotionContainer } from 'src/components/animate';
 
 import {
-  SOFA_GALLERY_IMAGES,
   SOFA_PAGE_IMAGES,
+  SOFA_GALLERY_IMAGES,
 } from 'src/sections/sofa/pages/sofa-pages-data';
 
 // ----------------------------------------------------------------------

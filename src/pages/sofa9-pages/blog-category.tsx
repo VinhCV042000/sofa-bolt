@@ -1,24 +1,22 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
 
+import { varAlpha } from 'src/theme/styles';
+
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA9_COLORS } from 'src/sections/sofa9/sofa9-data';
-import { Sofa9PageHero, Sofa9Section } from 'src/sections/sofa9-pages/sofa9-page-hero';
-import { SOFA9_PAGE_BLOG_POSTS, SOFA9_PAGE_BLOG_CATEGORIES, SOFA9_PAGE_IMAGES } from 'src/sections/sofa9-pages/sofa9-pages-data';
+import { Sofa9Section, Sofa9PageHero } from 'src/sections/sofa9-pages/sofa9-page-hero';
+import { SOFA9_PAGE_IMAGES, SOFA9_PAGE_BLOG_POSTS, SOFA9_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa9-pages/sofa9-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -34,7 +32,7 @@ export default function Page() {
         <title>{label} — Sofa9 Blog</title>
       </Helmet>
 
-      <Sofa9PageHero overline="BLOG" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA9_PAGE_IMAGES.blog1} />
+      <Sofa9PageHero overline="BLOG" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA9_PAGE_IMAGES.blog1} />
 
       <Sofa9Section>
         {filtered.length === 0 ? (

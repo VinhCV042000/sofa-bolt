@@ -1,24 +1,23 @@
+import { m } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import Table from '@mui/material/Table';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import TableContainer from '@mui/material/TableContainer';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -27,9 +26,9 @@ import { varAlpha, textGradient } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa6PageHero, Sofa6Section } from 'src/sections/sofa6-pages/sofa6-page-hero';
-import { SOFA6_PAGE_IMAGES, formatSofa6Price } from 'src/sections/sofa6-pages/sofa6-pages-data';
 import { SOFA6_COLORS } from 'src/sections/sofa6/sofa6-data';
+import { Sofa6Section, Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
+import { formatSofa6Price, SOFA6_PAGE_IMAGES } from 'src/sections/sofa6-pages/sofa6-pages-data';
 
 // ----------------------------------------------------------------------
 
@@ -353,7 +352,7 @@ export default function Page() {
           </Stack>
         );
     }
-  }, [section]);
+  }, [section, sent]);
 
   return (
     <>

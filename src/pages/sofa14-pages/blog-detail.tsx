@@ -1,26 +1,24 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-
-import { useParams } from 'react-router-dom';
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section, Sofa14Card } from 'src/sections/sofa14-pages/sofa14-page-hero';
 import { SOFA14_PAGE_BLOG_POSTS } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Card, Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
 
 export default function Page() {
   const params = useParams();
@@ -32,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{post.title} — Sofa14 Blog</title></Helmet>
-      <Sofa14PageHero overline="BLOG" title={<><span>{post.title.toUpperCase()}</span></>} subtitle={post.excerpt} image={post.image} />
+      <Sofa14PageHero overline="BLOG" title={<span>{post.title.toUpperCase()}</span>} subtitle={post.excerpt} image={post.image} />
 
       <Sofa14Section>
         <Grid container spacing={5}>

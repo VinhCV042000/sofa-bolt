@@ -3,13 +3,13 @@ import Stack from '@mui/material/Stack';
 import { BackToTop } from 'src/components/animate/back-to-top';
 import { ScrollProgress, useScrollProgress } from 'src/components/animate/scroll-progress';
 
-import { Sofa8Hero } from '../sofa8-hero';
-import { Sofa8Marquee } from '../sofa8-marquee';
-import { Sofa8Faqs } from '../sofa8-faqs';
 import { Sofa8Cta } from '../sofa8-cta';
+import { Sofa8Hero } from '../sofa8-hero';
+import { Sofa8Faqs } from '../sofa8-faqs';
 import { Sofa8Story } from '../sofa8-story';
 import { Sofa8Stats } from '../sofa8-stats';
 import { Sofa8Steps } from '../sofa8-steps';
+import { Sofa8Marquee } from '../sofa8-marquee';
 import { Sofa8Gallery } from '../sofa8-gallery';
 import { Sofa8Products } from '../sofa8-products';
 import { Sofa8Collections } from '../sofa8-collections';

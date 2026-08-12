@@ -13,8 +13,6 @@ import Typography from '@mui/material/Typography';
 
 import { fCurrency } from 'src/utils/format-number';
 
-import { varAlpha } from 'src/theme/styles';
-
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';

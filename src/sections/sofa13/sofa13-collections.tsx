@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA13_IMAGES, sofa13Alpha, SOFA13_COLORS, SOFA13_COLLECTION_ACCENTS } from './sofa13-data';
 import { useSofa13Content } from './sofa13-i18n';
+import { sofa13Alpha, SOFA13_IMAGES, SOFA13_COLORS, SOFA13_COLLECTION_ACCENTS } from './sofa13-data';
 
 // ----------------------------------------------------------------------
 

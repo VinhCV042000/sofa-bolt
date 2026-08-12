@@ -20,8 +20,8 @@ import {
   CarouselArrowBasicButtons,
 } from 'src/components/carousel';
 
-import { useSofa15Content } from './sofa15-i18n';
 import { SOFA15_COLORS } from './sofa15-data';
+import { useSofa15Content } from './sofa15-i18n';
 
 // ----------------------------------------------------------------------
 

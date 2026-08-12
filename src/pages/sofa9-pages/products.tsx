@@ -1,27 +1,26 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varFade } from 'src/components/animate';
+
 import { SOFA9_COLORS } from 'src/sections/sofa9/sofa9-data';
-import { Sofa9PageHero, Sofa9Section } from 'src/sections/sofa9-pages/sofa9-page-hero';
+import { Sofa9Section, Sofa9PageHero } from 'src/sections/sofa9-pages/sofa9-page-hero';
 import {
-  SOFA9_PAGE_PRODUCTS,
-  SOFA9_PAGE_IMAGES,
-  SOFA9_PAGE_PRODUCT_CATEGORIES,
   formatSofa9Price,
+  SOFA9_PAGE_IMAGES,
+  SOFA9_PAGE_PRODUCTS,
+  SOFA9_PAGE_PRODUCT_CATEGORIES,
 } from 'src/sections/sofa9-pages/sofa9-pages-data';
 
 const metadata = { title: 'Sản phẩm — Sofa9' };
@@ -47,9 +46,9 @@ export default function Page() {
                     {key === 'types' ? 'Loại sofa' : key === 'styles' ? 'Phong cách' : key === 'spaces' ? 'Không gian' : key === 'sizes' ? 'Kích thước' : 'Giá'}
                   </Typography>
                   {items.map((item: any) => (
-                    <RouterLink key={item.slug} href={`/sofa9/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA9_COLORS.pink } }}>
+                    <Link component={RouterLink} key={item.slug} href={`/sofa9/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA9_COLORS.pink } }}>
                       <Typography variant="body2" sx={{ color: 'text.secondary', transition: 'color 0.2s' }}>{item.label}</Typography>
-                    </RouterLink>
+                    </Link>
                   ))}
                 </Stack>
               ))}

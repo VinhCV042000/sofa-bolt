@@ -1,33 +1,32 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { useTheme } from '@mui/material/styles';
-
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Chip from '@mui/material/Chip';
+import Tabs from '@mui/material/Tabs';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
 
+import { varAlpha } from 'src/theme/styles';
+
+import { Iconify } from 'src/components/iconify';
+import { varFade } from 'src/components/animate';
+
 import { SOFA9_COLORS } from 'src/sections/sofa9/sofa9-data';
-import { Sofa9PageHero, Sofa9Section } from 'src/sections/sofa9-pages/sofa9-page-hero';
+import { Sofa9Section, Sofa9PageHero } from 'src/sections/sofa9-pages/sofa9-page-hero';
 import {
-  SOFA9_PAGE_PRODUCTS,
-  SOFA9_PAGE_IMAGES,
   formatSofa9Price,
+  SOFA9_PAGE_PRODUCTS,
 } from 'src/sections/sofa9-pages/sofa9-pages-data';
 
 export default function Page() {
@@ -48,7 +47,7 @@ export default function Page() {
         <title>{product.name} — Sofa9</title>
       </Helmet>
 
-      <Sofa9PageHero overline="CHI TIẾT SẢN PHẨM" title={<><span>{product.name.toUpperCase()}</span></>} subtitle={product.material} image={product.image} />
+      <Sofa9PageHero overline="CHI TIẾT SẢN PHẨM" title={<span>{product.name.toUpperCase()}</span>} subtitle={product.material} image={product.image} />
 
       <Sofa9Section>
         <Grid container spacing={5}>

@@ -221,8 +221,6 @@ const HIDE_COLUMNS = { id: false };
 const HIDE_COLUMNS_TOGGLABLE = ['id', 'actions'];
 
 export function DataGridCustom({ data: rows }: Props) {
-  const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
-
   const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
   const [columnVisibilityModel, setColumnVisibilityModel] =
@@ -241,10 +239,6 @@ export function DataGridCustom({ data: rows }: Props) {
       .filter((column) => !HIDE_COLUMNS_TOGGLABLE.includes(column.field))
       .map((column) => column.field);
 
-  const selected = rows.filter((row) => selectedRows.includes(row.id)).map((_row) => _row.id);
-
-  console.info('SELECTED ROWS', selected);
-
   return (
     <DataGrid
       checkboxSelection
@@ -262,8 +256,7 @@ export function DataGridCustom({ data: rows }: Props) {
         noResultsOverlay: () => <EmptyContent title="No results found" />,
       }}
       slotProps={{
-        panel: { anchorEl: filterButtonEl },
-        toolbar: { setFilterButtonEl, showQuickFilter: true },
+        toolbar: { showQuickFilter: true },
         columnsManagement: { getTogglableColumns },
       }}
       sx={{ [`& .${gridClasses.cell}`]: { alignItems: 'center', display: 'inline-flex' } }}
@@ -273,17 +266,13 @@ export function DataGridCustom({ data: rows }: Props) {
 
 // ----------------------------------------------------------------------
 
-interface CustomToolbarProps {
-  setFilterButtonEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
-}
-
-function CustomToolbar({ setFilterButtonEl }: CustomToolbarProps) {
+function CustomToolbar() {
   return (
     <GridToolbarContainer>
       <GridToolbarQuickFilter />
       <Box sx={{ flexGrow: 1 }} />
       <GridToolbarColumnsButton />
-      <GridToolbarFilterButton ref={setFilterButtonEl} />
+      <GridToolbarFilterButton />
       <GridToolbarDensitySelector />
       <GridToolbarExport />
     </GridToolbarContainer>

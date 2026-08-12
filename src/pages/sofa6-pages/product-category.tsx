@@ -1,15 +1,14 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-
-import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -18,9 +17,9 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
-import { SOFA6_PRODUCTS, SOFA6_PRODUCT_CATEGORIES, SOFA6_PAGE_IMAGES, formatSofa6Price } from 'src/sections/sofa6-pages/sofa6-pages-data';
 import { SOFA6_COLORS } from 'src/sections/sofa6/sofa6-data';
+import { Sofa6PageHero } from 'src/sections/sofa6-pages/sofa6-page-hero';
+import { SOFA6_PRODUCTS, formatSofa6Price, SOFA6_PAGE_IMAGES, SOFA6_PRODUCT_CATEGORIES } from 'src/sections/sofa6-pages/sofa6-pages-data';
 
 const metadata = { title: 'Danh mục sản phẩm - Sofa Earth' };
 

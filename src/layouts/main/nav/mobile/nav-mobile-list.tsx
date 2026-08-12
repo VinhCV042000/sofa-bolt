@@ -12,7 +12,7 @@ import { NavLi, navSectionClasses, NavSectionVertical } from 'src/components/nav
 
 import { NavItem } from './nav-mobile-item';
 
-import type { NavListProps } from '../types';
+import type { NavListProps, NavItemBaseProps } from '../types';
 
 // ----------------------------------------------------------------------
 
@@ -44,12 +44,23 @@ export function NavList({ data }: NavListProps) {
   );
 
   if (data.children) {
+    // `data.children` comes in two shapes depending on the nav config:
+    // mega-menu style groups (`{ subheader, items }[]`), or a flat list of
+    // nested nav items (no `subheader`/`items` wrapper). NavSectionVertical
+    // only understands the former, so wrap the latter into a single
+    // unlabeled group instead of passing it through (which would crash on
+    // `group.items` being undefined).
+    const groupedChildren =
+      data.children.length > 0 && 'subheader' in data.children[0]
+        ? (data.children as { subheader: string; items: NavItemBaseProps[] }[])
+        : [{ items: data.children as NavItemBaseProps[] }];
+
     return (
       <NavLi>
         {renderNavItem}
         <Collapse in={openMenu}>
           <NavSectionVertical
-            data={data.children}
+            data={groupedChildren}
             slotProps={{ rootItem: { sx: { minHeight: 36 } } }}
             sx={{
               px: 1.5,

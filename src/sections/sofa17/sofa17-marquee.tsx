@@ -3,10 +3,8 @@ import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { varAlpha } from 'src/theme/styles';
-
-import { useSofa17Content } from './sofa17-i18n';
 import { SOFA17_COLORS } from './sofa17-data';
+import { useSofa17Content } from './sofa17-i18n';
 
 // ----------------------------------------------------------------------
 

@@ -3,10 +3,10 @@ import Stack from '@mui/material/Stack';
 import { BackToTop } from 'src/components/animate/back-to-top';
 import { ScrollProgress, useScrollProgress } from 'src/components/animate/scroll-progress';
 
-import { SofaHero } from '../sofa-hero';
-import { SofaAbout } from '../sofa-about';
-import { SofaFaqs } from '../sofa-faqs';
 import { SofaCta } from '../sofa-cta';
+import { SofaHero } from '../sofa-hero';
+import { SofaFaqs } from '../sofa-faqs';
+import { SofaAbout } from '../sofa-about';
 import { SofaSteps } from '../sofa-steps';
 import { SofaProducts } from '../sofa-products';
 import { SofaFeatures } from '../sofa-features';

@@ -5,8 +5,8 @@ import Stack from '@mui/material/Stack';
 
 import { varAlpha } from 'src/theme/styles';
 
-import { useSofa16Content } from './sofa16-i18n';
 import { SOFA16_COLORS } from './sofa16-data';
+import { useSofa16Content } from './sofa16-i18n';
 
 // ----------------------------------------------------------------------
 

@@ -7,6 +7,16 @@ import { Iconify } from 'src/components/iconify';
 export const sofa3NavData = [
   { title: 'Trang chủ', path: '/sofa3', icon: <Iconify width={22} icon="solar:home-2-bold-duotone" /> },
   {
+    title: 'Giới thiệu công ty',
+    path: '/sofa3/about',
+    icon: <Iconify width={22} icon="solar:info-circle-bold-duotone" />,
+  },
+  {
+    title: 'Tất cả sản phẩm',
+    path: '/sofa3/products',
+    icon: <Iconify width={22} icon="solar:bag-check-bold-duotone" />,
+  },
+  {
     title: 'Sản phẩm',
     path: '/sofa3#products',
     icon: <Iconify width={22} icon="solar:armchair-bold-duotone" />,

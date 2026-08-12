@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,15 +7,13 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
 import { SOFA11_PAGE_IMAGES } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
 
 const DESIGN_SERVICES: Record<string, { title: string; subtitle: string; content: { heading: string; body: string }[] }> = {
   default: { title: 'THIẾT KẾ NỘI THẤT', subtitle: 'Thiết kế không gian pop tổng thể — từ ý tưởng đến bùng nổ.', content: [{ heading: 'Tư vấn', body: 'Tư vấn phong cách pop, màu chói, vật liệu.' }, { heading: 'Thiết kế 3D', body: 'Bản vẽ 3D chi tiết trong 24h.' }, { heading: 'Sản xuất', body: 'Sản xuất sofa theo bản vẽ, 7-14 ngày.' }, { heading: 'Lắp đặt', body: 'Lắp đặt miễn phí, bảo hành 10 năm.' }] },
@@ -33,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{data.title} — Sofa11</title></Helmet>
-      <Sofa11PageHero overline="DỊCH VỤ" title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={SOFA11_PAGE_IMAGES.service1} />
+      <Sofa11PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA11_PAGE_IMAGES.service1} />
 
       <Sofa11Section>
         <Grid container spacing={5} alignItems="center">

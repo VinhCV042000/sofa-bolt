@@ -16,13 +16,18 @@ export type NavItemBaseProps = {
   title: string;
   path: string;
   icon?: string | React.ReactNode;
-  children?: {
-    subheader: string;
-    items: {
-      title: string;
-      path: string;
-    }[];
-  }[];
+  // Some nav configs (mega-menu demos) group children under a subheader,
+  // while others (the sofaN product nav configs) nest plain nav items
+  // recursively. Both shapes are rendered at runtime, so both are accepted here.
+  children?:
+    | {
+        subheader: string;
+        items: {
+          title: string;
+          path: string;
+        }[];
+      }[]
+    | NavItemBaseProps[];
 };
 
 export type NavItemProps = ButtonBaseProps & NavItemBaseProps & NavItemStateProps;

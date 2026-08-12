@@ -1,26 +1,24 @@
-import { Helmet } from 'react-helmet-async';
-
 import { useState } from 'react';
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-
-import { useParams } from 'react-router-dom';
+import Grid from '@mui/material/Unstable_Grid2';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
 import { SOFA11_PAGE_BLOG_POSTS } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
 
 export default function Page() {
   const params = useParams();
@@ -32,7 +30,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{post.title} — Sofa11 Blog</title></Helmet>
-      <Sofa11PageHero overline="BLOG" title={<><span>{post.title.toUpperCase()}</span></>} subtitle={post.excerpt} image={post.image} />
+      <Sofa11PageHero overline="BLOG" title={<span>{post.title.toUpperCase()}</span>} subtitle={post.excerpt} image={post.image} />
 
       <Sofa11Section>
         <Grid container spacing={5}>
@@ -56,7 +54,7 @@ export default function Page() {
                 <Typography variant="h5" sx={{ fontWeight: 900, color: SOFA11_COLORS.cream, textTransform: 'uppercase' }}>Bình luận ({comments.length})</Typography>
                 {comments.map((c, i) => (
                   <Stack key={i} direction="row" spacing={2} sx={{ p: 2, borderRadius: '12px 12px 12px 0', bgcolor: sofa11Alpha(SOFA11_COLORS.grape, 0.5), border: `1px solid ${sofa11Alpha(SOFA11_COLORS.cream, 0.08)}` }}>
-                    <Avatar sx={{ bgcolor: SOFA11_COLORS.stone || '#8C8275', color: SOFA11_COLORS.cream }}>K{i + 1}</Avatar>
+                    <Avatar sx={{ bgcolor: '#8C8275', color: SOFA11_COLORS.cream }}>K{i + 1}</Avatar>
                     <Typography variant="body2" sx={{ color: sofa11Alpha(SOFA11_COLORS.cream, 0.6) }}>{c}</Typography>
                   </Stack>
                 ))}

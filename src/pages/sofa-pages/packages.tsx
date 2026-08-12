@@ -1,14 +1,13 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -98,7 +97,7 @@ export default function Page() {
         <Container component={MotionViewport}>
           <Grid container spacing={3} alignItems="stretch">
             {SOFA_PACKAGES.map((pkg) => {
-              const popular = (pkg as any).popular;
+              const {popular} = (pkg as any);
               return (
                 <Grid key={pkg.id} xs={12} md={4}>
                   <Stack

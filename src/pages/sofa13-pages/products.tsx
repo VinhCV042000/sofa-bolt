@@ -1,19 +1,21 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
 
 import { RouterLink } from 'src/routes/components';
 
+import { varFade } from 'src/components/animate';
+
 import { sofa13Alpha, SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
-import { Sofa13PageHero, Sofa13Section } from 'src/sections/sofa13-pages/sofa13-page-hero';
-import { SOFA13_PAGE_PRODUCTS, SOFA13_PAGE_IMAGES, SOFA13_PAGE_PRODUCT_CATEGORIES, sofa13FormatPrice } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
+import { sofa13FormatPrice, SOFA13_PAGE_IMAGES, SOFA13_PAGE_PRODUCTS, SOFA13_PAGE_PRODUCT_CATEGORIES } from 'src/sections/sofa13-pages/sofa13-pages-data';
 
 export default function Page() {
   return (
@@ -31,9 +33,9 @@ export default function Page() {
                     {key === 'types' ? 'LOẠI SOFA' : key === 'styles' ? 'PHONG CÁCH' : key === 'spaces' ? 'KHÔNG GIAN' : key === 'sizes' ? 'KÍCH THƯỚC' : 'GIÁ'}
                   </Typography>
                   {items.map((item: any) => (
-                    <RouterLink key={item.slug} href={`/sofa13/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA13_COLORS.gold } }}>
+                    <Link component={RouterLink} key={item.slug} href={`/sofa13/products/category/${item.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA13_COLORS.gold } }}>
                       <Typography variant="body2" sx={{ color: sofa13Alpha(SOFA13_COLORS.ivory, 0.5), transition: 'color 0.2s', fontWeight: 700 }}>{item.label}</Typography>
-                    </RouterLink>
+                    </Link>
                   ))}
                 </Stack>
               ))}

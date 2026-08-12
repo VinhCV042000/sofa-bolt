@@ -20,7 +20,7 @@ type TextProps = {
   variants?: MotionProps['variants'];
 };
 
-type Props = StackProps & {
+type Props = Omit<StackProps, 'title'> & {
   txtGradient?: string;
   title: React.ReactNode;
   caption?: React.ReactNode;

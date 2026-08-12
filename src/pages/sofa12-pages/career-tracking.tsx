@@ -2,12 +2,12 @@ import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 
 import { Iconify } from 'src/components/iconify';
+
 import { Sofa12PageHero } from 'src/sections/sofa12-pages/sofa12-page-hero';
 import { SOFA12_PAGE_IMAGES } from 'src/sections/sofa12-pages/sofa12-pages-data';
 

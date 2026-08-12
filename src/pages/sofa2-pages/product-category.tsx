@@ -1,15 +1,14 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-
-import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -21,8 +20,8 @@ import { varFade, MotionViewport } from 'src/components/animate';
 import { Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import {
   SOFA2_PRODUCTS,
-  SOFA2_PRODUCT_CATEGORIES,
   formatSofa2Price,
+  SOFA2_PRODUCT_CATEGORIES,
 } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
@@ -39,13 +38,11 @@ export default function Page() {
   const { slug = '' } = useParams();
 
   // find matching label across all filter groups
-  const matchLabel = (() => {
-    for (const group of FILTER_GROUPS) {
-      const found = SOFA2_PRODUCT_CATEGORIES[group.key].find((c) => c.slug === slug);
-      if (found) return found.label;
-    }
-    return null;
-  })();
+  const matchLabel = FILTER_GROUPS.reduce<string | null>((result, group) => {
+    if (result) return result;
+    const found = SOFA2_PRODUCT_CATEGORIES[group.key].find((c) => c.slug === slug);
+    return found ? found.label : null;
+  }, null);
 
   // filter products by category or style matching slug
   const filtered = slug

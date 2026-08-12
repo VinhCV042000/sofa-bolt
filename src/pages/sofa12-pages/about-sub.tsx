@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { Sofa12PageHero } from 'src/sections/sofa12-pages/sofa12-page-hero';
-import { SOFA12_PAGE_IMAGES, SOFA12_PAGE_MILESTONES, SOFA12_PAGE_COMPANY_INFO } from 'src/sections/sofa12-pages/sofa12-pages-data';
+import { SOFA12_PAGE_IMAGES, SOFA12_PAGE_MILESTONES } from 'src/sections/sofa12-pages/sofa12-pages-data';
 
 const SECTIONS: Record<string, { title: string; overline: string; image: string; content: string[] }> = {
   history: { title: 'Lịch sử hình thành', overline: 'Lịch sử', image: 'historyHero', content: [

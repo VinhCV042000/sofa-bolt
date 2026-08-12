@@ -1,23 +1,21 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { useState } from 'react';
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Chip from '@mui/material/Chip';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section } from 'src/sections/sofa14-pages/sofa14-page-hero';
-import { SOFA14_PAGE_PROJECTS, SOFA14_PAGE_PROJECT_TYPES, SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_PROJECTS, SOFA14_PAGE_PROJECT_TYPES } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 export default function Page() {
   const [filter, setFilter] = useState('all');

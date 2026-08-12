@@ -1,19 +1,16 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
 import { SOFA11_PAGE_IMAGES, SOFA11_PAGE_COMPANY_INFO } from 'src/sections/sofa11-pages/sofa11-pages-data';
 
 const SECTIONS: Record<string, { title: string; overline: string; subtitle: string; image: string; content: { heading: string; body: string }[] }> = {
@@ -38,7 +35,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{data.title} — Sofa11</title></Helmet>
-      <Sofa11PageHero overline={data.overline} title={<><span>{data.title}</span></>} subtitle={data.subtitle} image={data.image} />
+      <Sofa11PageHero overline={data.overline} title={<span>{data.title}</span>} subtitle={data.subtitle} image={data.image} />
 
       {section === 'gallery' ? (
         <Sofa11Section>

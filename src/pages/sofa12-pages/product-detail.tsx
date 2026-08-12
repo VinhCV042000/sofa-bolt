@@ -3,21 +3,22 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa12PageHero } from 'src/sections/sofa12-pages/sofa12-page-hero';
-import { SOFA12_PAGE_IMAGES, SOFA12_PAGE_PRODUCTS, formatSofa12PagePrice } from 'src/sections/sofa12-pages/sofa12-pages-data';
+import { SOFA12_PAGE_PRODUCTS, formatSofa12PagePrice } from 'src/sections/sofa12-pages/sofa12-pages-data';
 
 export default function Page() {
   const { id } = useParams();

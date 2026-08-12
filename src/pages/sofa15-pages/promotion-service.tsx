@@ -1,23 +1,24 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { RouterLink } from 'src/routes/components';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
-import { RouterLink } from 'src/routes/components';
-import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section, Sofa15Card } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_PROMOTION_SERVICES, SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Card, Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { SOFA15_PAGE_IMAGES, SOFA15_PAGE_PROMOTION_SERVICES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -28,7 +29,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{service.title} — Sofa15</title></Helmet>
-      <Sofa15PageHero overline="KHUYẾN MÃI" title={<><span>{service.title.toUpperCase()}</span></>} subtitle={service.description} image={SOFA15_PAGE_IMAGES.prod1} />
+      <Sofa15PageHero overline="KHUYẾN MÃI" title={<span>{service.title.toUpperCase()}</span>} subtitle={service.description} image={SOFA15_PAGE_IMAGES.prod1} />
 
       <Sofa15Section bg="black">
         <Grid container spacing={5} alignItems="center">
@@ -48,11 +49,11 @@ export default function Page() {
                 </Stack>
                 <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>{service.description}</Typography>
                 <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>Dịch vụ {service.title.toLowerCase()} của Sofa15 được thực hiện bởi đội ngũ kỹ thuật viên chuyên nghiệp, sử dụng vật liệu và dung dịch chính hãng. Cam kết chất lượng và bảo hành sau dịch vụ.</Typography>
-                <RouterLink href="/sofa15/showrooms/visit" sx={{ textDecoration: 'none' }}>
+                <Link component={RouterLink} href="/sofa15/showrooms/visit" sx={{ textDecoration: 'none' }}>
                   <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 4, py: 1.75, width: 'fit-content', fontWeight: 'fontWeightMedium', color: SOFA15_COLORS.black, bgcolor: SOFA15_COLORS.gold, border: `1px solid ${SOFA15_COLORS.gold}`, '&:hover': { bgcolor: SOFA15_COLORS.goldLight } }}>
                     <Iconify icon="solar:phone-bold-duotone" width={18} /> Đặt lịch dịch vụ
                   </Stack>
-                </RouterLink>
+                </Link>
               </Stack>
             </Sofa15Card>
           </Grid>

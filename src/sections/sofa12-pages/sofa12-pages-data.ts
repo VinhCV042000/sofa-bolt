@@ -207,4 +207,4 @@ export const SOFA12_PAGE_MILESTONES = [
 ];
 
 export const formatSofa12PagePrice = (price: number): string =>
-  new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+  `${new Intl.NumberFormat('vi-VN').format(price)  }đ`;

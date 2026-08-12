@@ -13,8 +13,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { sofa13Alpha, SOFA13_COLORS } from './sofa13-data';
 import { useSofa13Content } from './sofa13-i18n';
+import { sofa13Alpha, SOFA13_COLORS } from './sofa13-data';
 
 // ----------------------------------------------------------------------
 

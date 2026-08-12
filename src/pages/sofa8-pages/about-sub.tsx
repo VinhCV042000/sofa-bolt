@@ -1,23 +1,19 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { useParams } from 'react-router-dom';
+import { textGradient } from 'src/theme/styles';
 
-import { varAlpha, textGradient } from 'src/theme/styles';
-
-import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
-import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
+import { Sofa8Section, Sofa8PageHero } from 'src/sections/sofa8-pages/sofa8-page-hero';
 import {
   SOFA8_PAGE_IMAGES,
   SOFA8_PAGE_COMPANY_INFO,
@@ -169,9 +165,7 @@ export default function Page() {
       <Sofa8PageHero
         overline={data.overline}
         title={
-          <>
-            <span>{data.title}</span>
-          </>
+          <span>{data.title}</span>
         }
         subtitle={data.subtitle}
         image={data.image}

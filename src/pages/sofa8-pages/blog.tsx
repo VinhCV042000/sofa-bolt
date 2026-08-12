@@ -1,22 +1,23 @@
+import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
-import { m } from 'framer-motion';
-
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varAlpha } from 'src/theme/styles';
+
+import { varFade } from 'src/components/animate';
+
 import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
-import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
-import { SOFA8_PAGE_BLOG_POSTS, SOFA8_PAGE_BLOG_CATEGORIES, SOFA8_PAGE_IMAGES } from 'src/sections/sofa8-pages/sofa8-pages-data';
+import { Sofa8Section, Sofa8PageHero } from 'src/sections/sofa8-pages/sofa8-page-hero';
+import { SOFA8_PAGE_IMAGES, SOFA8_PAGE_BLOG_POSTS, SOFA8_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa8-pages/sofa8-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -35,9 +36,9 @@ export default function Page() {
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ position: 'sticky', top: 80 }}>
               <Typography variant="overline" sx={{ color: 'text.disabled', letterSpacing: 2 }}>CHUYÊN MỤC</Typography>
               {SOFA8_PAGE_BLOG_CATEGORIES.map((cat) => (
-                <RouterLink key={cat.slug} href={`/sofa8/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA8_COLORS.coral } }}>
+                <Link component={RouterLink} key={cat.slug} href={`/sofa8/blog/category/${cat.slug}`} sx={{ textDecoration: 'none', '&:hover .MuiTypography-root': { color: SOFA8_COLORS.coral } }}>
                   <Typography variant="body2" sx={{ color: 'text.secondary', transition: 'color 0.2s' }}>{cat.label}</Typography>
-                </RouterLink>
+                </Link>
               ))}
             </Stack>
           </Grid>

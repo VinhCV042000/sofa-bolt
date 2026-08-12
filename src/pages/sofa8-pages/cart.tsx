@@ -1,24 +1,25 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
 
-import { varAlpha } from 'src/theme/styles';
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { varAlpha } from 'src/theme/styles';
+
+import { Iconify } from 'src/components/iconify';
+import { varFade } from 'src/components/animate';
+
 import { SOFA8_COLORS } from 'src/sections/sofa8/sofa8-data';
-import { Sofa8PageHero, Sofa8Section } from 'src/sections/sofa8-pages/sofa8-page-hero';
-import { SOFA8_PAGE_PRODUCTS, SOFA8_PAGE_IMAGES, formatSofa8Price } from 'src/sections/sofa8-pages/sofa8-pages-data';
+import { Sofa8Section, Sofa8PageHero } from 'src/sections/sofa8-pages/sofa8-page-hero';
+import { formatSofa8Price, SOFA8_PAGE_IMAGES, SOFA8_PAGE_PRODUCTS } from 'src/sections/sofa8-pages/sofa8-pages-data';
 
 export default function Page() {
   const theme = useTheme();

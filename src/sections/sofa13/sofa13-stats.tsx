@@ -7,10 +7,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { AnimateCountUp, varFade, MotionViewport } from 'src/components/animate';
+import { varFade, AnimateCountUp, MotionViewport } from 'src/components/animate';
 
-import { sofa13Alpha, SOFA13_COLORS, SOFA13_STATS_META } from './sofa13-data';
 import { useSofa13Content } from './sofa13-i18n';
+import { sofa13Alpha, SOFA13_COLORS, SOFA13_STATS_META } from './sofa13-data';
 
 // ----------------------------------------------------------------------
 

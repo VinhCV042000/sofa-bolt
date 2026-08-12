@@ -15,8 +15,8 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { useSofa20Content } from './sofa20-i18n';
 import { SOFA20_COLORS } from './sofa20-data';
+import { useSofa20Content } from './sofa20-i18n';
 
 // ----------------------------------------------------------------------
 

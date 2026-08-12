@@ -13,7 +13,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA9_COLORS, SOFA9_FEATURES, SOFA9_IMAGES } from './sofa9-data';
+import { SOFA9_COLORS, SOFA9_IMAGES, SOFA9_FEATURES } from './sofa9-data';
 
 // ----------------------------------------------------------------------
 

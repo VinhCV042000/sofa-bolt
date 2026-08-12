@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-type FormHeadProps = BoxProps & {
+type FormHeadProps = Omit<BoxProps, 'title'> & {
   icon?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;

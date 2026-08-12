@@ -15,7 +15,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { SOFA7_COLORS, SOFA7_FAQS } from './sofa7-data';
+import { SOFA7_FAQS, SOFA7_COLORS } from './sofa7-data';
 
 // ----------------------------------------------------------------------
 

@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 
 import Link from '@mui/material/Link';
 
@@ -51,7 +52,27 @@ type ComponentTag = {
   [key: string]: any;
 };
 
-const rehypePlugins = [rehypeRaw, rehypeHighlight, [remarkGfm, { singleTilde: false }]];
+// `rehype-raw` parses raw HTML embedded in markdown but does not sanitize it
+// (any <script>/onerror/etc. would render as-is). Since this content may
+// ultimately come from a CMS/admin-authored field rather than a fully
+// trusted source, sanitize it before syntax highlighting. The default
+// schema is extended to keep the `className` that `rehype-highlight` adds
+// for code/language styling.
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [...(defaultSchema.attributes?.code ?? []), 'className'],
+    span: [...(defaultSchema.attributes?.span ?? []), 'className'],
+  },
+};
+
+const rehypePlugins = [
+  rehypeRaw,
+  [rehypeSanitize, sanitizeSchema],
+  rehypeHighlight,
+  [remarkGfm, { singleTilde: false }],
+];
 
 const components = {
   img: ({ ...other }: ComponentTag) => (

@@ -1,21 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-
-import { useParams } from 'react-router-dom';
 
 import { RouterLink } from 'src/routes/components';
 
 import { sofa11Alpha, SOFA11_COLORS } from 'src/sections/sofa11/sofa11-data';
-import { Sofa11PageHero, Sofa11Section } from 'src/sections/sofa11-pages/sofa11-page-hero';
-import { SOFA11_PAGE_PRODUCTS, SOFA11_PAGE_COLLECTIONS, formatSofa11Price } from 'src/sections/sofa11-pages/sofa11-pages-data';
+import { Sofa11Section, Sofa11PageHero } from 'src/sections/sofa11-pages/sofa11-page-hero';
+import { formatSofa11Price, SOFA11_PAGE_PRODUCTS, SOFA11_PAGE_COLLECTIONS } from 'src/sections/sofa11-pages/sofa11-pages-data';
 
 export default function Page() {
   const params = useParams();
@@ -25,7 +22,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{collection.name} — Sofa11</title></Helmet>
-      <Sofa11PageHero overline="BỘ SƯU TẬP" title={<><span>{collection.name.toUpperCase()}</span></>} subtitle={collection.description} image={collection.image} />
+      <Sofa11PageHero overline="BỘ SƯU TẬP" title={<span>{collection.name.toUpperCase()}</span>} subtitle={collection.description} image={collection.image} />
 
       <Sofa11Section>
         <Grid container spacing={3}>

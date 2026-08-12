@@ -8,7 +8,9 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha } from 'src/theme/styles';
+
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa12PageHero } from 'src/sections/sofa12-pages/sofa12-page-hero';

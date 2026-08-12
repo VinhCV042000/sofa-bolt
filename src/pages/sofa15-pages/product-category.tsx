@@ -1,25 +1,24 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
-
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
-import Chip from '@mui/material/Chip';
-import { useTheme } from '@mui/material/styles';
-
 import { useParams } from 'react-router-dom';
 
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { RouterLink } from 'src/routes/components';
+
 import { varAlpha, textGradient } from 'src/theme/styles';
 
+import { Iconify } from 'src/components/iconify';
+
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
-import { Sofa15PageHero, Sofa15Section } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_IMAGES, SOFA15_PAGE_PRODUCT_CATEGORIES, sofa15FormatPrice } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
+import { sofa15FormatPrice, SOFA15_PAGE_IMAGES, SOFA15_PAGE_PRODUCTS, SOFA15_PAGE_PRODUCT_CATEGORIES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 
 export default function Page() {
   const theme = useTheme();
@@ -33,11 +32,11 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{label} — Sofa15</title></Helmet>
-      <Sofa15PageHero overline="DANH MỤC" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} tác phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA15_PAGE_IMAGES.prod1} />
+      <Sofa15PageHero overline="DANH MỤC" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} tác phẩm trong danh mục ${label.toLowerCase()}.`} image={SOFA15_PAGE_IMAGES.prod1} />
 
       <Sofa15Section bg="black">
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 4, flexWrap: 'wrap' }}>
-          <RouterLink href="/sofa15/products" sx={{ textDecoration: 'none' }}><Typography variant="body2" sx={{ color: varAlpha('#FFFFFF', 0.4), fontWeight: 'fontWeightLight', '&:hover': { color: SOFA15_COLORS.gold } }}>Sản phẩm</Typography></RouterLink>
+          <Link component={RouterLink} href="/sofa15/products" sx={{ textDecoration: 'none' }}><Typography variant="body2" sx={{ color: varAlpha('#FFFFFF', 0.4), fontWeight: 'fontWeightLight', '&:hover': { color: SOFA15_COLORS.gold } }}>Sản phẩm</Typography></Link>
           <Iconify icon="solar:alt-arrow-right-linear" width={16} sx={{ color: varAlpha('#FFFFFF', 0.2) }} />
           <Typography variant="body2" sx={{ color: SOFA15_COLORS.gold, fontWeight: 'fontWeightMedium' }}>{label}</Typography>
         </Stack>

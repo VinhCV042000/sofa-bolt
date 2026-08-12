@@ -10,11 +10,10 @@ import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 
-
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
-import { sofa11Alpha, SOFA11_COLORS, SOFA11_FAQS } from './sofa11-data';
+import { sofa11Alpha, SOFA11_FAQS, SOFA11_COLORS } from './sofa11-data';
 
 // ----------------------------------------------------------------------
 

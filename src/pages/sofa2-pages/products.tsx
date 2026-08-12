@@ -1,15 +1,14 @@
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -21,8 +20,8 @@ import { varFade, MotionViewport } from 'src/components/animate';
 import { Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import {
   SOFA2_PRODUCTS,
-  SOFA2_PRODUCT_CATEGORIES,
   formatSofa2Price,
+  SOFA2_PRODUCT_CATEGORIES,
 } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------

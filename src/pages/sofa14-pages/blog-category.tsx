@@ -1,22 +1,19 @@
 import { Helmet } from 'react-helmet-async';
-
-import { m } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
 
-import { useParams } from 'react-router-dom';
-
-import { Iconify } from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
 import { RouterLink } from 'src/routes/components';
 
+import { Iconify } from 'src/components/iconify';
+
 import { sofa14Alpha, SOFA14_COLORS } from 'src/sections/sofa14/sofa14-data';
-import { Sofa14PageHero, Sofa14Section } from 'src/sections/sofa14-pages/sofa14-page-hero';
-import { SOFA14_PAGE_BLOG_POSTS, SOFA14_PAGE_BLOG_CATEGORIES, SOFA14_PAGE_IMAGES } from 'src/sections/sofa14-pages/sofa14-pages-data';
+import { Sofa14Section, Sofa14PageHero } from 'src/sections/sofa14-pages/sofa14-page-hero';
+import { SOFA14_PAGE_IMAGES, SOFA14_PAGE_BLOG_POSTS, SOFA14_PAGE_BLOG_CATEGORIES } from 'src/sections/sofa14-pages/sofa14-pages-data';
 
 export default function Page() {
   const params = useParams();
@@ -28,7 +25,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>{label} — Sofa14 Blog</title></Helmet>
-      <Sofa14PageHero overline="BLOG" title={<><span>{label.toUpperCase()}</span></>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA14_PAGE_IMAGES.blog1} />
+      <Sofa14PageHero overline="BLOG" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA14_PAGE_IMAGES.blog1} />
 
       <Sofa14Section>
         {filtered.length === 0 ? (

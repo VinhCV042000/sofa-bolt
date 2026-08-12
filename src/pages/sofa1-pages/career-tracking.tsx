@@ -1,22 +1,21 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-
 import { m } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { varAlpha, textGradient } from 'src/theme/styles';
+import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
-import { varFade, MotionViewport } from 'src/components/animate';
+import { varFade } from 'src/components/animate';
 
-import { Sofa1PageHero, Sofa1Section } from 'src/sections/sofa1-pages/sofa1-page-hero';
+import { Sofa1Section, Sofa1PageHero } from 'src/sections/sofa1-pages/sofa1-page-hero';
 import { SOFA1_PAGE_IMAGES, SOFA1_COMPANY_INFO } from 'src/sections/sofa1-pages/sofa1-pages-data';
 
 // ----------------------------------------------------------------------
@@ -119,7 +118,7 @@ export default function Page() {
               {!searched && (
                 <Stack direction="row" spacing={1.5} alignItems="center" sx={{ p: 2, borderRadius: 1.5, bgcolor: (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04) }}>
                   <Iconify icon="solar:info-circle-bold-duotone" width={24} sx={{ color: 'text.disabled' }} />
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>Nhập thông tin và nhấn "Tra cứu" để xem tình trạng hồ sơ.</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>Nhập thông tin và nhấn &ldquo;Tra cứu&rdquo; để xem tình trạng hồ sơ.</Typography>
                 </Stack>
               )}
             </Stack>

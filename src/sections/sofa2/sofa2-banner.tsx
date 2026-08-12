@@ -1,7 +1,7 @@
 import type { BoxProps } from '@mui/material/Box';
 
-import { m, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { m, useScroll, useTransform } from 'framer-motion';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
