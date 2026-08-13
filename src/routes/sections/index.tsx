@@ -529,6 +529,19 @@ const Sofa15CareerDetailPage = lazy(() => import('src/pages/sofa15-pages/career-
 const Sofa15CareerApplyPage = lazy(() => import('src/pages/sofa15-pages/career-apply'));
 const Sofa15CareerTrackingPage = lazy(() => import('src/pages/sofa15-pages/career-tracking'));
 const Sofa15ContactPage = lazy(() => import('src/pages/sofa15-pages/contact'));
+const Sofa15AuthPage = lazy(() => import('src/pages/sofa15-pages/auth'));
+const Sofa15AccountPage = lazy(() => import('src/pages/sofa15-pages/account'));
+const Sofa15B2bPage = lazy(() => import('src/pages/sofa15-pages/b2b'));
+const Sofa15CartPage = lazy(() => import('src/pages/sofa15-pages/cart'));
+const Sofa15CheckoutPage = lazy(() => import('src/pages/sofa15-pages/checkout'));
+const Sofa15CheckoutSuccessPage = lazy(() => import('src/pages/sofa15-pages/checkout-success'));
+const Sofa15OrderTrackingPage = lazy(() => import('src/pages/sofa15-pages/order-tracking'));
+const Sofa15SearchPage = lazy(() => import('src/pages/sofa15-pages/search'));
+const Sofa15ComparePage = lazy(() => import('src/pages/sofa15-pages/compare'));
+const Sofa15SupportPage = lazy(() => import('src/pages/sofa15-pages/support'));
+const Sofa15FaqPage = lazy(() => import('src/pages/sofa15-pages/faq'));
+const Sofa15PolicyPage = lazy(() => import('src/pages/sofa15-pages/policy'));
+const Sofa15MemberPage = lazy(() => import('src/pages/sofa15-pages/member'));
 
 // SOFA16 PAGES
 const Sofa16AboutPage = lazy(() => import('src/pages/sofa16-pages/about'));
@@ -5828,6 +5841,177 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa15PagesNavData }}>
             <Sofa15ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa15/auth/:mode',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AuthPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15B2bPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/b2b/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15B2bPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/search',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15SearchPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/compare',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ComparePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/support/:topic',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/policy/:type',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15MemberPage />
           </MainLayout>
         </Suspense>
       ),
