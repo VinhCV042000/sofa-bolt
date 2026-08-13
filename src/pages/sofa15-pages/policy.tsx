@@ -9,9 +9,9 @@ import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
 import { SOFA15_POLICIES } from 'src/sections/sofa15-pages/sofa15-shop-data';
-import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 import { Sofa15Panel, Sofa15LinkGrid } from 'src/sections/sofa15-pages/sofa15-shop-ui';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 
 export default function Page() {
   const { type = 'shipping' } = useParams();

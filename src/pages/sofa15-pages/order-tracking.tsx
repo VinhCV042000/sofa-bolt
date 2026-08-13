@@ -12,8 +12,8 @@ import { Iconify } from 'src/components/iconify';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
 import { SOFA15_ORDER_STEPS } from 'src/sections/sofa15-pages/sofa15-shop-data';
-import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { Sofa15Panel, sofa15FieldSx, sofa15GoldButtonSx } from 'src/sections/sofa15-pages/sofa15-shop-ui';
 
 export default function Page() {

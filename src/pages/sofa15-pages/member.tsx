@@ -6,10 +6,10 @@ import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
 
-import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
-import { Sofa15Panel, Sofa15LinkGrid, Sofa15SectionTitle } from 'src/sections/sofa15-pages/sofa15-shop-ui';
+import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
 import { SOFA15_MEMBER_DEALER, SOFA15_MEMBER_CUSTOMER } from 'src/sections/sofa15-pages/sofa15-shop-data';
+import { Sofa15Panel, Sofa15LinkGrid, Sofa15SectionTitle } from 'src/sections/sofa15-pages/sofa15-shop-ui';
 
 export default function Page() {
   const { section } = useParams();

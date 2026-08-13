@@ -13,8 +13,8 @@ import { varAlpha } from 'src/theme/styles';
 
 import { SOFA15_COLORS } from 'src/sections/sofa15/sofa15-data';
 import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { sofa15Price, sofa15FieldSx, sofa15GoldButtonSx } from 'src/sections/sofa15-pages/sofa15-shop-ui';
 import { SOFA15_PAGE_IMAGES, SOFA15_PAGE_PRODUCTS } from 'src/sections/sofa15-pages/sofa15-pages-data';
+import { sofa15Price, sofa15FieldSx, sofa15GoldButtonSx } from 'src/sections/sofa15-pages/sofa15-shop-ui';
 
 export default function Page() {
   return (

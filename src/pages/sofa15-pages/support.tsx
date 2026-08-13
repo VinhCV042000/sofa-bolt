@@ -8,13 +8,13 @@ import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
 
+import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 import { SOFA15_SUPPORT_TOPICS } from 'src/sections/sofa15-pages/sofa15-shop-data';
 import { Sofa15Section, Sofa15PageHero } from 'src/sections/sofa15-pages/sofa15-page-hero';
-import { SOFA15_PAGE_IMAGES } from 'src/sections/sofa15-pages/sofa15-pages-data';
 import {
   Sofa15Panel,
-  Sofa15LinkGrid,
   sofa15FieldSx,
+  Sofa15LinkGrid,
   Sofa15SectionTitle,
   sofa15GoldButtonSx,
 } from 'src/sections/sofa15-pages/sofa15-shop-ui';
