@@ -399,6 +399,29 @@ const Sofa10ServiceProductionPage = lazy(() => import('src/pages/sofa10-pages/se
 const Sofa10BlogPage = lazy(() => import('src/pages/sofa10-pages/blog'));
 const Sofa10BlogCategoryPage = lazy(() => import('src/pages/sofa10-pages/blog-category'));
 const Sofa10BlogDetailPage = lazy(() => import('src/pages/sofa10-pages/blog-detail'));
+const Sofa10PromotionsPage = lazy(() => import('src/pages/sofa10-pages/promotions'));
+const Sofa10PromotionServicePage = lazy(() => import('src/pages/sofa10-pages/promotion-service'));
+const Sofa10CareersPage = lazy(() => import('src/pages/sofa10-pages/careers'));
+const Sofa10CareerDetailPage = lazy(() => import('src/pages/sofa10-pages/career-detail'));
+const Sofa10CareerApplyPage = lazy(() => import('src/pages/sofa10-pages/career-apply'));
+const Sofa10CareerTrackingPage = lazy(() => import('src/pages/sofa10-pages/career-tracking'));
+const Sofa10ContactPage = lazy(() => import('src/pages/sofa10-pages/contact'));
+const Sofa10AccountPage = lazy(() => import('src/pages/sofa10-pages/account'));
+const Sofa10AccountSectionPage = lazy(() => import('src/pages/sofa10-pages/account-section'));
+const Sofa10B2BPage = lazy(() => import('src/pages/sofa10-pages/b2b'));
+const Sofa10B2BRegisterPage = lazy(() => import('src/pages/sofa10-pages/b2b-register'));
+const Sofa10B2BQuotePage = lazy(() => import('src/pages/sofa10-pages/b2b-quote'));
+const Sofa10B2BOEMPage = lazy(() => import('src/pages/sofa10-pages/b2b-oem'));
+const Sofa10B2BPolicyPage = lazy(() => import('src/pages/sofa10-pages/b2b-policy'));
+const Sofa10CartPage = lazy(() => import('src/pages/sofa10-pages/cart'));
+const Sofa10CheckoutPage = lazy(() => import('src/pages/sofa10-pages/checkout'));
+const Sofa10CheckoutSuccessPage = lazy(() => import('src/pages/sofa10-pages/checkout-success'));
+const Sofa10OrderTrackingPage = lazy(() => import('src/pages/sofa10-pages/order-tracking'));
+const Sofa10PaymentPage = lazy(() => import('src/pages/sofa10-pages/payment'));
+const Sofa10SupportPage = lazy(() => import('src/pages/sofa10-pages/support'));
+const Sofa10FaqPage = lazy(() => import('src/pages/sofa10-pages/faq'));
+const Sofa10PolicyPage = lazy(() => import('src/pages/sofa10-pages/policy'));
+const Sofa10MemberPage = lazy(() => import('src/pages/sofa10-pages/member'));
 
 // SOFA11 PAGES
 const Sofa11AboutPage = lazy(() => import('src/pages/sofa11-pages/about'));
@@ -4464,6 +4487,246 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa10PagesNavData }}>
             <Sofa10BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10AccountSectionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10B2BPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/b2b/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10B2BRegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/b2b/quote',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10B2BQuotePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/b2b/oem',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10B2BOEMPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/b2b/policy',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/payment',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10PaymentPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/policy/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa10PagesNavData }}>
+            <Sofa10MemberPage />
           </MainLayout>
         </Suspense>
       ),
