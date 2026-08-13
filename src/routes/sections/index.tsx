@@ -529,18 +529,19 @@ const Sofa15CareerDetailPage = lazy(() => import('src/pages/sofa15-pages/career-
 const Sofa15CareerApplyPage = lazy(() => import('src/pages/sofa15-pages/career-apply'));
 const Sofa15CareerTrackingPage = lazy(() => import('src/pages/sofa15-pages/career-tracking'));
 const Sofa15ContactPage = lazy(() => import('src/pages/sofa15-pages/contact'));
+const Sofa15AuthPage = lazy(() => import('src/pages/sofa15-pages/auth'));
 const Sofa15AccountPage = lazy(() => import('src/pages/sofa15-pages/account'));
 const Sofa15B2bPage = lazy(() => import('src/pages/sofa15-pages/b2b'));
 const Sofa15CartPage = lazy(() => import('src/pages/sofa15-pages/cart'));
 const Sofa15CheckoutPage = lazy(() => import('src/pages/sofa15-pages/checkout'));
 const Sofa15CheckoutSuccessPage = lazy(() => import('src/pages/sofa15-pages/checkout-success'));
 const Sofa15OrderTrackingPage = lazy(() => import('src/pages/sofa15-pages/order-tracking'));
-const Sofa15FaqPage = lazy(() => import('src/pages/sofa15-pages/faq'));
+const Sofa15SearchPage = lazy(() => import('src/pages/sofa15-pages/search'));
+const Sofa15ComparePage = lazy(() => import('src/pages/sofa15-pages/compare'));
 const Sofa15SupportPage = lazy(() => import('src/pages/sofa15-pages/support'));
+const Sofa15FaqPage = lazy(() => import('src/pages/sofa15-pages/faq'));
 const Sofa15PolicyPage = lazy(() => import('src/pages/sofa15-pages/policy'));
 const Sofa15MemberPage = lazy(() => import('src/pages/sofa15-pages/member'));
-const Sofa15ComparePage = lazy(() => import('src/pages/sofa15-pages/compare'));
-const Sofa15SearchPage = lazy(() => import('src/pages/sofa15-pages/search'));
 
 // SOFA16 PAGES
 const Sofa16AboutPage = lazy(() => import('src/pages/sofa16-pages/about'));
@@ -647,6 +648,7 @@ export function Router() {
         </Suspense>
       ),
     },
+
     {
       path: '/sofa6',
       element: (
@@ -657,6 +659,7 @@ export function Router() {
         </Suspense>
       ),
     },
+
     {
       path: '/sofa7',
       element: (
@@ -667,6 +670,7 @@ export function Router() {
         </Suspense>
       ),
     },
+
     {
       path: '/sofa8',
       element: (
@@ -677,6 +681,7 @@ export function Router() {
         </Suspense>
       ),
     },
+
     {
       path: '/sofa9',
       element: (
@@ -5840,6 +5845,17 @@ export function Router() {
         </Suspense>
       ),
     },
+
+    {
+      path: '/sofa15/auth/:mode',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15AuthPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
     {
       path: '/sofa15/account',
       element: (
@@ -5921,11 +5937,21 @@ export function Router() {
       ),
     },
     {
-      path: '/sofa15/faq',
+      path: '/sofa15/search',
       element: (
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa15PagesNavData }}>
-            <Sofa15FaqPage />
+            <Sofa15SearchPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/compare',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15ComparePage />
           </MainLayout>
         </Suspense>
       ),
@@ -5941,11 +5967,21 @@ export function Router() {
       ),
     },
     {
-      path: '/sofa15/support/:section',
+      path: '/sofa15/support/:topic',
       element: (
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa15PagesNavData }}>
             <Sofa15SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa15/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa15PagesNavData }}>
+            <Sofa15FaqPage />
           </MainLayout>
         </Suspense>
       ),
@@ -5976,26 +6012,6 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa15PagesNavData }}>
             <Sofa15MemberPage />
-          </MainLayout>
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa15/compare',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <MainLayout data={{ nav: sofa15PagesNavData }}>
-            <Sofa15ComparePage />
-          </MainLayout>
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa15/search',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <MainLayout data={{ nav: sofa15PagesNavData }}>
-            <Sofa15SearchPage />
           </MainLayout>
         </Suspense>
       ),
