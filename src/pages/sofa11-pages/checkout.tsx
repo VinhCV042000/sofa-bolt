@@ -32,7 +32,7 @@ export default function Page() {
         <title>Thanh toán — Sofa11</title>
       </Helmet>
 
-      <Sofa11PageHero overline="THANH TOÁN" title={<>THANH <span>TOÁN</span></>} subtitle="Hoàn tất đơn hàng retro của bạn." image={SOFA11_PAGE_IMAGES.product1} />
+      <Sofa11PageHero overline="THANH TOÁN" title={<>THANH <span>TOÁN</span></>} subtitle="Hoàn tất đơn hàng retro của bạn." image={SOFA11_PAGE_IMAGES.product7} />
 
       <Sofa11Section>
         <Grid container spacing={5}>

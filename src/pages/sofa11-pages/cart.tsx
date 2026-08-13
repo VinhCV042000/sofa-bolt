@@ -32,7 +32,7 @@ export default function Page() {
         <title>Giỏ hàng — Sofa11</title>
       </Helmet>
 
-      <Sofa11PageHero overline="GIỎ HÀNG" title={<>GIỎ <span>HÀNG</span></>} subtitle={`${cartItems.length} sản phẩm trong giỏ hàng`} image={SOFA11_PAGE_IMAGES.product1} />
+      <Sofa11PageHero overline="GIỎ HÀNG" title={<>GIỎ <span>HÀNG</span></>} subtitle={`${cartItems.length} sản phẩm trong giỏ hàng`} image={SOFA11_PAGE_IMAGES.product7} />
 
       <Sofa11Section>
         <Grid container spacing={4}>
