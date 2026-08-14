@@ -37,6 +37,7 @@ import { sofa12PagesNavData } from 'src/layouts/config-nav-sofa12-pages';
 import { sofa13PagesNavData } from 'src/layouts/config-nav-sofa13-pages';
 import { sofa14PagesNavData } from 'src/layouts/config-nav-sofa14-pages';
 import { sofa15PagesNavData } from 'src/layouts/config-nav-sofa15-pages';
+import { sofa17PagesNavData } from 'src/layouts/config-nav-sofa17-pages';
 import { sofa16PagesNavData } from 'src/layouts/config-nav-sofa16-pages';
 import { sofa18PagesNavData } from 'src/layouts/config-nav-sofa18-pages';
 
@@ -620,6 +621,44 @@ const Sofa15SupportPage = lazy(() => import('src/pages/sofa15-pages/support'));
 const Sofa15FaqPage = lazy(() => import('src/pages/sofa15-pages/faq'));
 const Sofa15PolicyPage = lazy(() => import('src/pages/sofa15-pages/policy'));
 const Sofa15MemberPage = lazy(() => import('src/pages/sofa15-pages/member'));
+const Sofa17AboutPage = lazy(() => import('src/pages/sofa17-pages/about'));
+const Sofa17AboutSubPage = lazy(() => import('src/pages/sofa17-pages/about-sub'));
+const Sofa17ProductsPage = lazy(() => import('src/pages/sofa17-pages/products'));
+const Sofa17ProductCategoryPage = lazy(() => import('src/pages/sofa17-pages/product-category'));
+const Sofa17ProductDetailPage = lazy(() => import('src/pages/sofa17-pages/product-detail'));
+const Sofa17CollectionsPage = lazy(() => import('src/pages/sofa17-pages/collections'));
+const Sofa17CollectionDetailPage = lazy(() => import('src/pages/sofa17-pages/collection-detail'));
+const Sofa17ProjectsPage = lazy(() => import('src/pages/sofa17-pages/projects'));
+const Sofa17ProjectDetailPage = lazy(() => import('src/pages/sofa17-pages/project-detail'));
+const Sofa17ShowroomsPage = lazy(() => import('src/pages/sofa17-pages/showrooms'));
+const Sofa17ShowroomDetailPage = lazy(() => import('src/pages/sofa17-pages/showroom-detail'));
+const Sofa17ShowroomVisitPage = lazy(() => import('src/pages/sofa17-pages/showroom-visit'));
+const Sofa17ServicesPage = lazy(() => import('src/pages/sofa17-pages/services'));
+const Sofa17ServiceDesignPage = lazy(() => import('src/pages/sofa17-pages/service-design'));
+const Sofa17ServiceProductionPage = lazy(() => import('src/pages/sofa17-pages/service-production'));
+const Sofa17BlogPage = lazy(() => import('src/pages/sofa17-pages/blog'));
+const Sofa17BlogCategoryPage = lazy(() => import('src/pages/sofa17-pages/blog-category'));
+const Sofa17BlogDetailPage = lazy(() => import('src/pages/sofa17-pages/blog-detail'));
+const Sofa17PromotionsPage = lazy(() => import('src/pages/sofa17-pages/promotions'));
+const Sofa17PromotionServicePage = lazy(() => import('src/pages/sofa17-pages/promotion-service'));
+const Sofa17CareersPage = lazy(() => import('src/pages/sofa17-pages/careers'));
+const Sofa17CareerDetailPage = lazy(() => import('src/pages/sofa17-pages/career-detail'));
+const Sofa17CareerApplyPage = lazy(() => import('src/pages/sofa17-pages/career-apply'));
+const Sofa17CareerTrackingPage = lazy(() => import('src/pages/sofa17-pages/career-tracking'));
+const Sofa17ContactPage = lazy(() => import('src/pages/sofa17-pages/contact'));
+const Sofa17AuthPage = lazy(() => import('src/pages/sofa17-pages/auth'));
+const Sofa17AccountPage = lazy(() => import('src/pages/sofa17-pages/account'));
+const Sofa17B2bPage = lazy(() => import('src/pages/sofa17-pages/b2b'));
+const Sofa17CartPage = lazy(() => import('src/pages/sofa17-pages/cart'));
+const Sofa17CheckoutPage = lazy(() => import('src/pages/sofa17-pages/checkout'));
+const Sofa17CheckoutSuccessPage = lazy(() => import('src/pages/sofa17-pages/checkout-success'));
+const Sofa17OrderTrackingPage = lazy(() => import('src/pages/sofa17-pages/order-tracking'));
+const Sofa17SearchPage = lazy(() => import('src/pages/sofa17-pages/search'));
+const Sofa17ComparePage = lazy(() => import('src/pages/sofa17-pages/compare'));
+const Sofa17SupportPage = lazy(() => import('src/pages/sofa17-pages/support'));
+const Sofa17FaqPage = lazy(() => import('src/pages/sofa17-pages/faq'));
+const Sofa17PolicyPage = lazy(() => import('src/pages/sofa17-pages/policy'));
+const Sofa17MemberPage = lazy(() => import('src/pages/sofa17-pages/member'));
 
 // SOFA16 PAGES
 const Sofa16AboutPage = lazy(() => import('src/pages/sofa16-pages/about'));
@@ -6925,6 +6964,459 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa15PagesNavData }}>
             <Sofa15MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    // SOFA17 PAGES
+    {
+      path: '/sofa17/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/about/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17AboutSubPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/products',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ProductsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/products/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ProductCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/products/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ProductDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/collections',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CollectionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/collections/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CollectionDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/projects',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ProjectsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/projects/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ProjectDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/showrooms',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ShowroomsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/showrooms/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ShowroomDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/showrooms/visit',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/showrooms/consult',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ShowroomVisitPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/services',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ServicesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/services/design',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/services/design/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ServiceDesignPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/services/production',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/services/production/:sub',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ServiceProductionPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/blog',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17BlogPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/blog/category/:slug',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17BlogCategoryPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/blog/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17BlogDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/promotions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17PromotionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/promotions/:service',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17PromotionServicePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/careers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CareersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/careers/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CareerDetailPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/careers/apply/:id',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/careers/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CareerTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/contact',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ContactPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    {
+      path: '/sofa17/auth/:mode',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17AuthPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/account',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/account/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17AccountPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/b2b',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17B2bPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/b2b/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17B2bPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/cart',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CartPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/checkout',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CheckoutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/checkout/success',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17CheckoutSuccessPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/orders/tracking',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17OrderTrackingPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/search',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17SearchPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/compare',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17ComparePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/support',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/support/:topic',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/faq',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17FaqPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/policy/:type',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17PolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/member',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/member/:section',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17MemberPage />
           </MainLayout>
         </Suspense>
       ),
