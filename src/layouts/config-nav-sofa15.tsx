@@ -1,21 +1,11 @@
-import { paths } from 'src/routes/paths';
-
 import { Iconify } from 'src/components/iconify';
+
+import { sofa15PagesNavData } from './config-nav-sofa15-pages';
 
 // ----------------------------------------------------------------------
 
 export const sofa15NavData = [
   { title: 'Trang chủ', path: '/sofa15', icon: <Iconify width={22} icon="solar:home-2-bold-duotone" /> },
-  {
-    title: 'Giới thiệu công ty',
-    path: '/sofa15/about',
-    icon: <Iconify width={22} icon="solar:info-circle-bold-duotone" />,
-  },
-  {
-    title: 'Tất cả sản phẩm',
-    path: '/sofa15/products',
-    icon: <Iconify width={22} icon="solar:bag-check-bold-duotone" />,
-  },
   {
     title: 'Di sản',
     path: '/sofa15#story',
@@ -41,9 +31,5 @@ export const sofa15NavData = [
     path: '/sofa15#testimonials',
     icon: <Iconify width={22} icon="solar:star-bold-duotone" />,
   },
-  {
-    title: 'Liên hệ',
-    path: paths.contact,
-    icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
-  },
+  ...sofa15PagesNavData.filter((item) => item.path !== '/sofa15'),
 ];
