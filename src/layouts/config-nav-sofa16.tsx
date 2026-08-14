@@ -1,6 +1,6 @@
-import { paths } from 'src/routes/paths';
-
 import { Iconify } from 'src/components/iconify';
+
+import { sofa16PagesNavData } from './config-nav-sofa16-pages';
 
 // ----------------------------------------------------------------------
 
@@ -41,9 +41,5 @@ export const sofa16NavData = [
     path: '/sofa16#testimonials',
     icon: <Iconify width={22} icon="solar:star-bold-duotone" />,
   },
-  {
-    title: 'Liên hệ',
-    path: paths.contact,
-    icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
-  },
+  ...sofa16PagesNavData.filter((item) => !['/sofa16', '/sofa16/about', '/sofa16/products'].includes(item.path)),
 ];
