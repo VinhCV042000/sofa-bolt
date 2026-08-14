@@ -20,6 +20,19 @@ export const SOFA17_COLORS = {
   sand: '#D4B896',
   brass: '#B8860B',
   white: '#FFFFFF',
+  // --- page-tree aliases (sub-pages under /sofa17) ---
+  gold: '#D4A017',
+  goldLight: '#E8B83D',
+  goldDark: '#B8860B',
+  black: '#101A1A',
+  charcoal: '#16302F',
+  charcoalLight: '#1E3D3C',
+  emerald: '#1A6B6B',
+  emeraldLight: '#2E8A8A',
+  ivory: '#F5E6D3',
+  ivoryDark: '#E8D5B7',
+  pearl: '#FBF3E4',
+  burgundy: '#9B2335',
 };
 
 export const SOFA17_IMAGES = {
@@ -44,6 +57,7 @@ export const SOFA17_IMAGES = {
   cta: 'https://images.pexels.com/photos/36493384/pexels-photo-36493384.jpeg?auto=compress&cs=tinysrgb&w=1200',
   lantern: 'https://images.pexels.com/photos/36521644/pexels-photo-36521644.jpeg?auto=compress&cs=tinysrgb&w=600',
   zellige: 'https://images.pexels.com/photos/34296099/pexels-photo-34296099.jpeg?auto=compress&cs=tinysrgb&w=900',
+  deco1: 'https://images.pexels.com/photos/36521644/pexels-photo-36521644.jpeg?auto=compress&cs=tinysrgb&w=400',
 };
 
 export const SOFA17_PROMO_ICONS = [
