@@ -106,14 +106,14 @@ export function Sofa17SectionTitle({ children }: { children: React.ReactNode }) 
 }
 
 export const sofa17FieldSx = {
-  '& .MuiInputBase-root': { borderRadius: 0, color: '#FFFFFF' },
+  '& .MuiInputBase-root': { borderRadius: 3, color: '#FFFFFF' },
   '& .MuiOutlinedInput-notchedOutline': { borderColor: varAlpha(SOFA17_COLORS.gold, 0.3) },
   '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: varAlpha(SOFA17_COLORS.gold, 0.6) },
   '& .MuiInputLabel-root': { color: varAlpha('#FFFFFF', 0.5) },
 } as const;
 
 export const sofa17GoldButtonSx = {
-  borderRadius: 0,
+  borderRadius: 3,
   color: SOFA17_COLORS.black,
   bgcolor: SOFA17_COLORS.gold,
   '&:hover': { bgcolor: SOFA17_COLORS.goldLight },

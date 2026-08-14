@@ -41,15 +41,28 @@ export function Sofa17PageHero({ title, subtitle, image, overline, sx, ...other 
       {...other}
     >
       <Box sx={{ inset: 0, position: 'absolute', backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: `linear-gradient(110deg, ${varAlpha(SOFA17_COLORS.black, 0.92)} 0%, ${varAlpha(SOFA17_COLORS.black, 0.6)} 55%, ${varAlpha(SOFA17_COLORS.emerald, 0.3)} 100%), url(${image})` }} />
-      <Box sx={{ position: 'absolute', top: 24, left: 24, right: 24, bottom: 24, border: `1px solid ${varAlpha(SOFA17_COLORS.gold, 0.2)}`, borderRadius: 2, zIndex: 1, pointerEvents: 'none' }} />
-      {[
-        { top: 16, left: 16, borderTop: `2px solid ${SOFA17_COLORS.gold}`, borderLeft: `2px solid ${SOFA17_COLORS.gold}` },
-        { top: 16, right: 16, borderTop: `2px solid ${SOFA17_COLORS.gold}`, borderRight: `2px solid ${SOFA17_COLORS.gold}` },
-        { bottom: 16, left: 16, borderBottom: `2px solid ${SOFA17_COLORS.gold}`, borderLeft: `2px solid ${SOFA17_COLORS.gold}` },
-        { bottom: 16, right: 16, borderBottom: `2px solid ${SOFA17_COLORS.gold}`, borderRight: `2px solid ${SOFA17_COLORS.gold}` },
-      ].map((style, i) => (
-        <Box key={i} sx={{ position: 'absolute', width: 24, height: 24, zIndex: 2, ...style }} />
-      ))}
+      <Box
+        sx={{
+          zIndex: 1,
+          inset: 24,
+          position: 'absolute',
+          pointerEvents: 'none',
+          borderRadius: '160px 160px 24px 24px',
+          border: `1px solid ${varAlpha(SOFA17_COLORS.saffron, 0.35)}`,
+        }}
+      />
+      <Box
+        sx={{
+          zIndex: 1,
+          inset: 0,
+          opacity: 0.16,
+          position: 'absolute',
+          pointerEvents: 'none',
+          backgroundSize: '64px 64px',
+          backgroundImage: `radial-gradient(${SOFA17_COLORS.saffron} 1.5px, transparent 1.6px), radial-gradient(${SOFA17_COLORS.tealLight} 1.5px, transparent 1.6px)`,
+          backgroundPosition: '0 0, 32px 32px',
+        }}
+      />
       <Container component={MotionContainer} sx={{ position: 'relative', zIndex: 9, py: { xs: 8, md: 10 } }}>
         <Stack spacing={3} sx={{ maxWidth: 680 }}>
           {overline && (
@@ -86,7 +99,7 @@ export function Sofa17Section({ children, bg = 'black', py = { xs: 8, md: 12 } }
 
 export function Sofa17Card({ children, accent = SOFA17_COLORS.gold, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps & Partial<MotionProps>) {
   return (
-    <Box sx={{ p: 4, borderRadius: 0, bgcolor: SOFA17_COLORS.charcoal, border: `1px solid ${varAlpha(accent, 0.3)}`, ...sx }} {...other}>
+    <Box sx={{ p: 4, borderRadius: 3, bgcolor: SOFA17_COLORS.charcoal, border: `1px solid ${varAlpha(accent, 0.3)}`, ...sx }} {...other}>
       {children}
     </Box>
   );
