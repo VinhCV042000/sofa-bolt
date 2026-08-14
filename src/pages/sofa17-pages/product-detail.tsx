@@ -115,7 +115,7 @@ export default function Page() {
               </Sofa17Card>
             )}
             {tab === 1 && <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, maxWidth: 700, fontWeight: 'fontWeightLight' }}>Đặt sofa trên mặt phẳng, tránh va đập mạnh. Không đặt gần nguồn nhiệt. Sử dụng khăn mềm để vệ sinh hàng ngày.</Typography>}
-            {tab === 2 && <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, maxWidth: 700, fontWeight: 'fontWeightLight' }}>Da: lau bằng khăn mềm, dung dịch chuyên dụng. Velvet: hút bụi, giặt khô.</Typography>}
+            {tab === 2 && <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, maxWidth: 700, fontWeight: 'fontWeightLight' }}>Da: lau bằng khăn mềm, dung dịch chuyên dụng. Dệt tay: hút bụi, giặt khô.</Typography>}
             {tab === 3 && (
               <Stack spacing={3}>
                 {[1, 2, 3].map((i) => (
@@ -125,7 +125,7 @@ export default function Page() {
                         <Box sx={{ width: 36, height: 36, bgcolor: [SOFA17_COLORS.gold, SOFA17_COLORS.emerald, SOFA17_COLORS.burgundy][i - 1], color: SOFA17_COLORS.black, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'fontWeightMedium' }}>{i}</Box>
                         <Box><Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightMedium', color: 'common.white' }}>Khách hàng {i}</Typography><Rating value={5} readOnly size="small" sx={{ '& .MuiRating-iconFilled': { color: SOFA17_COLORS.gold } }} /></Box>
                       </Stack>
-                      <Typography variant="body2" sx={{ color: varAlpha('#FFFFFF', 0.5), fontWeight: 'fontWeightLight' }}>Tuyệt tác Riad Ma-rốc! Phòng khách của tôi như một không gian Riad 1920s!</Typography>
+                      <Typography variant="body2" sx={{ color: varAlpha('#FFFFFF', 0.5), fontWeight: 'fontWeightLight' }}>Tuyệt tác Riad Ma-rốc! Phòng khách của tôi như một không gian Riad Marrakech!</Typography>
                     </Stack>
                   </Sofa17Card>
                 ))}

@@ -21,7 +21,7 @@ import { Sofa17Card, Sofa17Section, Sofa17PageHero } from 'src/sections/sofa17-p
 const APPLICATIONS = [
   { id: '1', position: 'Thợ may da cao cấp', status: 'Đang xem', date: '15/01/2025' },
   { id: '2', position: 'Stylist nội thất Riad Ma-rốc', status: 'Phỏng vấn', date: '10/01/2025' },
-  { id: '3', position: 'Thợ bọc velvet', status: 'Đã nhận', date: '05/01/2025' },
+  { id: '3', position: 'Thợ bọc vải dệt tay', status: 'Đã nhận', date: '05/01/2025' },
 ];
 
 export default function Page() {

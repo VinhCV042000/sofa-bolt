@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>Sản phẩm — Sofa17</title></Helmet>
-      <Sofa17PageHero overline="SẢN PHẨM" title={<>SOFA17 <span>TÁC PHẨM</span></>} subtitle="Da thật, velvet emerald, burgundy. Mỗi tác phẩm là một tuyệt tác Riad." image={SOFA17_PAGE_IMAGES.prod1} />
+      <Sofa17PageHero overline="SẢN PHẨM" title={<>SOFA17 <span>TÁC PHẨM</span></>} subtitle="Da thật, dệt tay souk, burgundy. Mỗi tác phẩm là một tuyệt tác Riad." image={SOFA17_PAGE_IMAGES.prod1} />
 
       <Sofa17Section bg="black">
         <Grid container spacing={4}>

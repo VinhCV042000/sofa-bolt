@@ -1,5 +1,5 @@
 // SOFA17 PAGES — data for all sub-pages scoped under /sofa17/
-// Brand: MOROCCAN RIAD — opulent gold, deep black, emerald, 1920s geometric luxury
+// Brand: MOROCCAN RIAD — opulent gold, deep black, emerald, Marrakech geometric luxury
 // ----------------------------------------------------------------------
 
 import { varAlpha } from 'src/theme/styles';
@@ -49,10 +49,10 @@ export const SOFA17_PAGE_IMAGES = {
 
 export const SOFA17_PAGE_PRODUCTS = [
   { id: '1', name: 'Riad Gold Sofa', slug: 'gatsby-gold-sofa', category: 'sofa-da', style: 'tan-co-dien', price: 45000000, oldPrice: 52000000, image: SOFA17_PAGE_IMAGES.prod1, images: [SOFA17_PAGE_IMAGES.prod1, SOFA17_PAGE_IMAGES.gallery1], material: 'Da nhập khẩu · Khung gỗ sồi', size: '240x95cm', colors: [SOFA17_COLORS.gold, SOFA17_COLORS.emerald, SOFA17_COLORS.burgundy], colorNames: ['Gold', 'Emerald', 'Burgundy'], rating: 5.0, reviews: 28, badge: 'bestseller', description: 'Riad Gold Sofa — da thật phủ vàng, họa tiết Riad Ma-rốc.' },
-  { id: '2', name: 'Emerald Deco Sofa', slug: 'emerald-deco-sofa', category: 'sofa-velvet', style: 'tan-co-dien', price: 38000000, image: SOFA17_PAGE_IMAGES.prod2, images: [SOFA17_PAGE_IMAGES.prod2, SOFA17_PAGE_IMAGES.gallery3], material: 'Velvet emerald · Khung gỗ', size: '220x90cm', colors: [SOFA17_COLORS.emerald, SOFA17_COLORS.gold, SOFA17_COLORS.black], colorNames: ['Emerald', 'Gold', 'Black'], rating: 4.9, reviews: 42, badge: 'new', description: 'Emerald Deco Sofa — velvet xanh ngọc, sang trọng 1920s.' },
+  { id: '2', name: 'Emerald Deco Sofa', slug: 'emerald-deco-sofa', category: 'sofa-vải dệt tay', style: 'tan-co-dien', price: 38000000, image: SOFA17_PAGE_IMAGES.prod2, images: [SOFA17_PAGE_IMAGES.prod2, SOFA17_PAGE_IMAGES.gallery3], material: 'Dệt tay souk · Khung gỗ', size: '220x90cm', colors: [SOFA17_COLORS.emerald, SOFA17_COLORS.gold, SOFA17_COLORS.black], colorNames: ['Emerald', 'Gold', 'Black'], rating: 4.9, reviews: 42, badge: 'new', description: 'Emerald Deco Sofa — vải dệt tay xanh ngọc, tinh thần riad Marrakech.' },
   { id: '3', name: 'Black Pearl Sofa', slug: 'black-pearl-sofa', category: 'sofa-da', style: 'luxury', price: 55000000, image: SOFA17_PAGE_IMAGES.prod3, images: [SOFA17_PAGE_IMAGES.prod3, SOFA17_PAGE_IMAGES.gallery5], material: 'Da đen · Khung inox mạ vàng', size: '260x100cm', colors: [SOFA17_COLORS.black, SOFA17_COLORS.gold], colorNames: ['Black', 'Gold'], rating: 5.0, reviews: 15, description: 'Black Pearl Sofa — da đen, viền vàng, đỉnh cao Riad Ma-rốc.' },
   { id: '4', name: 'Ivory Silk Sofa', slug: 'ivory-silk-sofa', category: 'sofa-vai', style: 'tan-co-dien', price: 32000000, oldPrice: 38000000, image: SOFA17_PAGE_IMAGES.prod4, images: [SOFA17_PAGE_IMAGES.prod4], material: 'Lụa ivory · Khung gỗ', size: '210x88cm', colors: [SOFA17_COLORS.ivory, SOFA17_COLORS.gold, SOFA17_COLORS.emerald], colorNames: ['Ivory', 'Gold', 'Emerald'], rating: 4.8, reviews: 33, description: 'Ivory Silk Sofa — lụa ngà, thanh lịch Riad.' },
-  { id: '5', name: 'Burgundy Velvet Sofa', slug: 'burgundy-velvet-sofa', category: 'sofa-velvet', style: 'luxury', price: 42000000, image: SOFA17_PAGE_IMAGES.prod5, images: [SOFA17_PAGE_IMAGES.prod5], material: 'Velvet burgundy · Khung gỗ', size: '230x92cm', colors: [SOFA17_COLORS.burgundy, SOFA17_COLORS.gold], colorNames: ['Burgundy', 'Gold'], rating: 4.9, reviews: 21, badge: 'limited', description: 'Burgundy Velvet Sofa — velvet rượu vang, quyền lực.' },
+  { id: '5', name: 'Burgundy Dệt tay Sofa', slug: 'burgundy-vải dệt tay-sofa', category: 'sofa-vải dệt tay', style: 'luxury', price: 42000000, image: SOFA17_PAGE_IMAGES.prod5, images: [SOFA17_PAGE_IMAGES.prod5], material: 'Dệt tay burgundy · Khung gỗ', size: '230x92cm', colors: [SOFA17_COLORS.burgundy, SOFA17_COLORS.gold], colorNames: ['Burgundy', 'Gold'], rating: 4.9, reviews: 21, badge: 'limited', description: 'Burgundy Dệt tay Sofa — vải dệt tay rượu vang, quyền lực.' },
   { id: '6', name: 'Deco Gold Accent Chair', slug: 'deco-gold-accent-chair', category: 'sofa-don', style: 'tan-co-dien', price: 18000000, image: SOFA17_PAGE_IMAGES.prod6, images: [SOFA17_PAGE_IMAGES.prod6], material: 'Da · Khung inox mạ vàng', size: '90x85cm', colors: [SOFA17_COLORS.gold, SOFA17_COLORS.black], colorNames: ['Gold', 'Black'], rating: 4.9, reviews: 17, badge: 'bestseller', description: 'Ghế đơn Deco — da vàng, chân inox mạ. Tuyệt tác Riad Ma-rốc.' },
   { id: '7', name: 'Riad L-Shape Gold', slug: 'gatsby-l-shape-gold', category: 'sofa-goc-chu-l', style: 'tan-co-dien', price: 68000000, image: SOFA17_PAGE_IMAGES.product7, images: [SOFA17_PAGE_IMAGES.product7], material: 'Da · Module góc', size: '300x200cm', colors: [SOFA17_COLORS.gold, SOFA17_COLORS.black, SOFA17_COLORS.emerald], colorNames: ['Gold', 'Black', 'Emerald'], rating: 5.0, reviews: 8, badge: 'new', description: 'Sofa góc Riad — da phủ vàng, module Riad Ma-rốc.' },
   { id: '8', name: 'Pearl Recliner Deco', slug: 'pearl-recliner-deco', category: 'sofa-recliner', style: 'luxury', price: 35000000, image: SOFA17_PAGE_IMAGES.product8, images: [SOFA17_PAGE_IMAGES.product8], material: 'Da pearl · Cơ chế recliner', size: '210x95cm', colors: [SOFA17_COLORS.pearl, SOFA17_COLORS.gold], colorNames: ['Pearl', 'Gold'], rating: 4.8, reviews: 12, description: 'Recliner Pearl — da ngọc trai, ngả điện, viền vàng.' },
@@ -64,16 +64,16 @@ export const SOFA17_PAGE_COLLECTIONS = [
   { id: 'new', name: 'Bộ sưu tập mới', slug: 'new', description: 'Tuyệt tác Riad Ma-rốc mới nhất 2025', image: SOFA17_PAGE_IMAGES.prod1, count: '10 mẫu', accent: SOFA17_COLORS.gold },
   { id: 'featured', name: 'Bộ sưu tập nổi bật', slug: 'featured', description: 'Tác phẩm Riad được yêu thích nhất', image: SOFA17_PAGE_IMAGES.prod2, count: '8 mẫu', accent: SOFA17_COLORS.emerald },
   { id: 'seasonal', name: 'Bộ sưu tập theo mùa', slug: 'seasonal', description: 'Sofa phù hợp từng mùa — tone Riad', image: SOFA17_PAGE_IMAGES.prod3, count: '6 mẫu', accent: SOFA17_COLORS.burgundy },
-  { id: 'luxury', name: 'Bộ sưu tập Luxury', slug: 'luxury', description: 'Da thật và velvet cao cấp nhất', image: SOFA17_PAGE_IMAGES.prod5, count: '7 mẫu', accent: SOFA17_COLORS.gold },
+  { id: 'luxury', name: 'Bộ sưu tập Luxury', slug: 'luxury', description: 'Da thật và vải dệt tay cao cấp nhất', image: SOFA17_PAGE_IMAGES.prod5, count: '7 mẫu', accent: SOFA17_COLORS.gold },
   { id: 'bestseller', name: 'Bộ sưu tập Bestseller', slug: 'bestseller', description: 'Những mẫu sofa bán chạy nhất', image: SOFA17_PAGE_IMAGES.prod6, count: '9 mẫu', accent: SOFA17_COLORS.emerald },
 ];
 
 export const SOFA17_PAGE_PROJECTS = [
-  { id: '1', name: 'The Grand Hotel', type: 'khach-san', typeLabel: 'Dự án khách sạn', location: 'Hà Nội', image: SOFA17_PAGE_IMAGES.project1, year: '2024', description: 'Sofa Riad Gold cho khách sạn The Grand. Sang trọng 1920s.' },
+  { id: '1', name: 'The Grand Hotel', type: 'khach-san', typeLabel: 'Dự án khách sạn', location: 'Hà Nội', image: SOFA17_PAGE_IMAGES.project1, year: '2024', description: 'Sofa Riad Gold cho khách sạn The Grand. Sang trọng Marrakech.' },
   { id: '2', name: 'Emerald Mansion', type: 'biet-thu', typeLabel: 'Dự án biệt thự', location: 'Đà Nẵng', image: SOFA17_PAGE_IMAGES.project2, year: '2024', description: 'Sofa Emerald Deco cho biệt thự Emerald. Quyền lực và sang trọng.' },
   { id: '3', name: 'Black Pearl Resort', type: 'resort', typeLabel: 'Dự án resort', location: 'Phú Quốc', image: SOFA17_PAGE_IMAGES.project3, year: '2023', description: 'Sofa Black Pearl cho resort 5 sao. Đỉnh cao Riad Ma-rốc.' },
   { id: '4', name: 'Ivory Tower Office', type: 'van-phong', typeLabel: 'Dự án văn phòng', location: 'Hà Nội', image: SOFA17_PAGE_IMAGES.project4, year: '2024', description: 'Sofa Ivory Silk cho văn phòng Ivory Tower. Thanh lịch Riad.' },
-  { id: '5', name: 'Burgundy Restaurant', type: 'nha-hang', typeLabel: 'Dự án nhà hàng', location: 'TP.HCM', image: SOFA17_PAGE_IMAGES.project5, year: '2023', description: 'Sofa Burgundy Velvet cho nhà hàng fine dining. Quyền lực.' },
+  { id: '5', name: 'Burgundy Restaurant', type: 'nha-hang', typeLabel: 'Dự án nhà hàng', location: 'TP.HCM', image: SOFA17_PAGE_IMAGES.project5, year: '2023', description: 'Sofa Burgundy Dệt tay cho nhà hàng fine dining. Quyền lực.' },
   { id: '6', name: 'Riad Showroom', type: 'showroom', typeLabel: 'Dự án showroom', location: 'TP.HCM', image: SOFA17_PAGE_IMAGES.project6, year: '2025', description: 'Sofa Riad Gold cho showroom cao cấp. Tuyệt tác Riad Ma-rốc.' },
 ];
 
@@ -87,12 +87,12 @@ export const SOFA17_PAGE_PROJECT_TYPES = [
 ];
 
 export const SOFA17_PAGE_BLOG_POSTS = [
-  { id: '1', title: 'Riad Ma-rốc: Lối sống thượng lưu 1920s', slug: 'riad-loi-song-thuong-luu-1920s', category: 'xu-huong-noi-that', categoryLabel: 'Xu hướng nội thất', excerpt: 'Riad Ma-rốc — vàng, đen, ngọc lục bảo, 1920s.', content: 'Riad Ma-rốc là phong cách thiết kế thịnh hành năm 1920s...', image: SOFA17_PAGE_IMAGES.blog1, author: 'Nghiêm Tuấn', date: '15/01/2025', readTime: '5 phút' },
+  { id: '1', title: 'Riad Ma-rốc: Lối sống thượng lưu Marrakech', slug: 'riad-loi-song-thuong-luu-Marrakech', category: 'xu-huong-noi-that', categoryLabel: 'Xu hướng nội thất', excerpt: 'Riad Ma-rốc — nghệ tây, xanh teal, đỏ ruby, Marrakech.', content: 'Riad Ma-rốc là phong cách thiết kế thịnh hành năm Marrakech...', image: SOFA17_PAGE_IMAGES.blog1, author: 'Nghiêm Tuấn', date: '15/01/2025', readTime: '5 phút' },
   { id: '2', title: 'Chọn da thật: Hướng dẫn', slug: 'chon-da-that-huong-dan', category: 'kinh-nghiem-chon-sofa', categoryLabel: 'Kinh nghiệm chọn sofa', excerpt: 'Da thật — cách chọn da cao cấp.', content: 'Da thật là vật liệu chủ đạo của Sofa17...', image: SOFA17_PAGE_IMAGES.blog2, author: 'Lê Hà', date: '10/01/2025', readTime: '4 phút' },
   { id: '3', title: 'Bảo quản da vàng', slug: 'bao-quan-da-vang', category: 'huong-dan-bao-quan', categoryLabel: 'Hướng dẫn bảo quản', excerpt: 'Da vàng — cách chăm sóc đẳng cấp.', content: 'Da vàng cần chăm sóc đặc biệt...', image: SOFA17_PAGE_IMAGES.blog3, author: 'Minh Khôi', date: '05/01/2025', readTime: '4 phút' },
   { id: '4', title: 'Phong thủy phòng khách Riad Ma-rốc', slug: 'phong-thuy-phong-khach-riad', category: 'phong-thuy-noi-that', categoryLabel: 'Phong thủy nội thất', excerpt: 'Riad Ma-rốc và phong thủy — có hợp không?', content: 'Riad Ma-rốc thuộc kim và thổ...', image: SOFA17_PAGE_IMAGES.blog4, author: 'Nghiêm Tuấn', date: '28/12/2024', readTime: '6 phút' },
-  { id: '5', title: 'Velvet emerald: Vật liệu quyền lực', slug: 'velvet-emerald-vat-lieu-quyen-luc', category: 'kien-thuc-vat-lieu', categoryLabel: 'Kiến thức vật liệu', excerpt: 'Velvet emerald — cảm giác Riad.', content: 'Velvet emerald mang cảm giác quyền lực...', image: SOFA17_PAGE_IMAGES.blog5, author: 'Lê Hà', date: '20/12/2024', readTime: '5 phút' },
-  { id: '6', title: 'Thiết kế phòng khách Riad Ma-rốc', slug: 'thiet-ke-phong-khach-riad', category: 'thiet-ke-phong-khach', categoryLabel: 'Thiết kế phòng khách', excerpt: 'Bí quyết tạo không gian 1920s.', content: 'Riad Ma-rốc, vàng, đen, ngọc lục bảo...', image: SOFA17_PAGE_IMAGES.blog6, author: 'Minh Khôi', date: '15/12/2024', readTime: '5 phút' },
+  { id: '5', title: 'Dệt tay souk: Vật liệu quyền lực', slug: 'vải dệt tay-emerald-vat-lieu-quyen-luc', category: 'kien-thuc-vat-lieu', categoryLabel: 'Kiến thức vật liệu', excerpt: 'Dệt tay souk — cảm giác Riad.', content: 'Dệt tay souk mang cảm giác quyền lực...', image: SOFA17_PAGE_IMAGES.blog5, author: 'Lê Hà', date: '20/12/2024', readTime: '5 phút' },
+  { id: '6', title: 'Thiết kế phòng khách Riad Ma-rốc', slug: 'thiet-ke-phong-khach-riad', category: 'thiet-ke-phong-khach', categoryLabel: 'Thiết kế phòng khách', excerpt: 'Bí quyết tạo không gian Marrakech.', content: 'Riad Ma-rốc, nghệ tây, xanh teal, đỏ ruby...', image: SOFA17_PAGE_IMAGES.blog6, author: 'Minh Khôi', date: '15/12/2024', readTime: '5 phút' },
 ];
 
 export const SOFA17_PAGE_BLOG_CATEGORIES = [
@@ -117,7 +117,7 @@ export const SOFA17_PAGE_SHOWROOMS = [
 export const SOFA17_PAGE_CAREERS = [
   { id: '1', title: 'Thợ may da cao cấp', location: 'Hà Nội', type: 'Toàn thời gian', salary: '15-25 triệu', description: 'Tìm thợ có kinh nghiệm may da thật cao cấp.', requirements: ['3+ năm kinh nghiệm may da', 'Biết xử lý da thật', 'Tỉ mỉ, cẩn thận'] },
   { id: '2', title: 'Stylist nội thất Riad Ma-rốc', location: 'TP.HCM', type: 'Toàn thời gian', salary: '12-20 triệu', description: 'Tư vấn khách hàng về sofa Riad Ma-rốc.', requirements: ['2+ năm kinh nghiệm sales nội thất', 'Am hiểu Riad Ma-rốc', 'Giao tiếp tốt'] },
-  { id: '3', title: 'Thợ bọc velvet', location: 'Đà Nẵng', type: 'Toàn thời gian', salary: '15-25 triệu', description: 'Phụ trách bọc velvet emerald, burgundy.', requirements: ['Kinh nghiệm bọc velvet', 'Am hiểu velvet cao cấp', 'Tỉ mỉ'] },
+  { id: '3', title: 'Thợ bọc vải dệt tay', location: 'Đà Nẵng', type: 'Toàn thời gian', salary: '15-25 triệu', description: 'Phụ trách bọc dệt tay souk, burgundy.', requirements: ['Kinh nghiệm bọc vải dệt tay', 'Am hiểu vải dệt tay cao cấp', 'Tỉ mỉ'] },
   { id: '4', title: 'Thiết kế 3D Riad Ma-rốc', location: 'Hà Nội', type: 'Toàn thời gian', salary: '18-30 triệu', description: 'Thiết kế bản vẽ 3D cho khách đặt sofa Riad Ma-rốc.', requirements: ['Thành thạo Sketchup, 3ds Max', '3+ năm kinh nghiệm thiết kế', 'Am hiểu Riad Ma-rốc'] },
 ];
 
@@ -171,7 +171,7 @@ export const SOFA17_PAGE_PRODUCT_CATEGORIES = {
 
 export const SOFA17_PAGE_COMPANY_INFO = {
   name: 'Sofa17',
-  tagline: 'MOROCCAN RIAD — Opulent gold, deep black, emerald, 1920s geometric luxury.',
+  tagline: 'MOROCCAN RIAD — Sofa riad Ma-rốc: dệt tay nhuộm chợ souk, khung gỗ tuyết tùng Atlas, hoa văn zellige.',
   phone: '024 3555 8888',
   email: 'concierge@sofa17.vn',
   address: '88 Trần Duy Hưng, Cầu Giấy, Hà Nội',
@@ -188,13 +188,13 @@ export const SOFA17_PAGE_PROMOTION_SERVICES = [
   { slug: 'warranty', title: 'Bảo hành', icon: 'solar:shield-check-bold-duotone', description: 'Bảo hành 10 năm cho khung và đệm. Hỗ trợ sửa chữa miễn phí.' },
   { slug: 'maintenance', title: 'Bảo trì', icon: 'solar:settings-bold-duotone', description: 'Thay áo bọc da, làm mới sofa với chi phí ưu đãi.' },
   { slug: 'repair', title: 'Sửa chữa', icon: 'solar:hammer-bold-duotone', description: 'Sửa chữa sofa: thay đệm, bọc lại, sửa khung.' },
-  { slug: 'cleaning', title: 'Vệ sinh sofa', icon: 'solar:water-bold-duotone', description: 'Giặt khô, làm sạch sâu da và velvet.' },
+  { slug: 'cleaning', title: 'Vệ sinh sofa', icon: 'solar:water-bold-duotone', description: 'Giặt khô, làm sạch sâu da và vải dệt tay.' },
   { slug: 'returns', title: 'Đổi trả hàng', icon: 'solar:refresh-circle-bold-duotone', description: '30 ngày đổi trả. Hỗ trợ sửa chữa miễn phí.' },
 ];
 
 export const SOFA17_PAGE_FAQS = [
   { question: 'Da thật có dễ bẩn không?', answer: 'Da thật của Sofa17 phủ lớp chống thấm, lau sạch trong 30 giây.' },
-  { question: 'Velvet emerald có bền không?', answer: 'Velvet emerald độ bền 8-10 năm. Cần chăm sóc định kỳ.' },
+  { question: 'Dệt tay souk có bền không?', answer: 'Dệt tay souk độ bền 8-10 năm. Cần chăm sóc định kỳ.' },
   { question: 'Tôi có thể đặt màu riêng?', answer: 'Có. Gold, emerald, burgundy, black — phối theo ý. Render 3D 24h.' },
   { question: 'Sofa Riad Ma-rốc có hợp không gian nhỏ?', answer: 'Dòng Deco Accent phù hợp không gian nhỏ.' },
   { question: 'Chính sách giao hàng?', answer: 'Giao lắp miễn phí nội thành. Ngoại thành 2-4 ngày.' },

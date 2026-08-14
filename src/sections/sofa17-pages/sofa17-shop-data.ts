@@ -74,7 +74,7 @@ export const SOFA17_POLICIES: Record<string, { title: string; intro: string; ite
 };
 
 export const SOFA17_CART_ITEMS = [
-  { id: 'gatsby-01', name: 'Riad Velvet Chesterfield', variant: 'Nhung Emerald · 3 chỗ', price: 68000000, qty: 1, image: SOFA17_PAGE_IMAGES.product7 },
+  { id: 'gatsby-01', name: 'Riad Dệt tay Chesterfield', variant: 'Nhung Emerald · 3 chỗ', price: 68000000, qty: 1, image: SOFA17_PAGE_IMAGES.product7 },
   { id: 'gatsby-02', name: 'Deco Fan Lounge', variant: 'Da bò Ý Cognac · 2 chỗ', price: 42000000, qty: 2, image: SOFA17_PAGE_IMAGES.product8 },
 ];
 

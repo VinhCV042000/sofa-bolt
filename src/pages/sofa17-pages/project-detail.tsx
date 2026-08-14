@@ -42,7 +42,7 @@ export default function Page() {
               <Stack spacing={2}>
                 <Typography variant="h4" sx={{ fontWeight: 'fontWeightLight', color: 'common.white', fontFamily: theme.typography.fontSecondaryFamily }}>Mô tả dự án</Typography>
                 <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>{project.description}</Typography>
-                <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>Dự án {project.name} là minh chứng cho chất lượng và thẩm mỹ Riad Ma-rốc của Sofa17. Vàng, đen, ngọc lục bảo — Riad 1920s!</Typography>
+                <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>Dự án {project.name} là minh chứng cho chất lượng và thẩm mỹ Riad Ma-rốc của Sofa17. Vàng, đen, xanh ngọc riad — Riad Marrakech!</Typography>
               </Stack>
               <Stack spacing={2}>
                 <Typography variant="h5" sx={{ fontWeight: 'fontWeightMedium', color: SOFA17_COLORS.gold }}>Album ảnh</Typography>
@@ -56,7 +56,7 @@ export default function Page() {
                 <Stack spacing={2}>
                   <Typography variant="h5" sx={{ fontWeight: 'fontWeightMedium', color: SOFA17_COLORS.gold }}>Đánh giá khách hàng</Typography>
                   <Rating value={5} readOnly sx={{ '& .MuiRating-iconFilled': { color: SOFA17_COLORS.gold } }} />
-                  <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>&ldquo;Sofa17 đã biến không gian của chúng tôi thành một nơi sang trọng. Da thật, velvet emerald — tuyệt tác Riad!&rdquo;</Typography>
+                  <Typography sx={{ color: varAlpha('#FFFFFF', 0.5), lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>&ldquo;Sofa17 đã biến không gian của chúng tôi thành một nơi sang trọng. Da thật, dệt tay souk — tuyệt tác Riad!&rdquo;</Typography>
                   <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightMedium', color: 'common.white' }}>— Chủ dự án {project.name}</Typography>
                 </Stack>
               </Sofa17Card>

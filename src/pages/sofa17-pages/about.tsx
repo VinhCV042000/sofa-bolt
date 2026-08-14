@@ -44,7 +44,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>Về Sofa17 — Riad Ma-rốc</title></Helmet>
-      <Sofa17PageHero overline="VỀ CHÚNG TÔI" title={<>VỀ <span>SOFA17</span></>} subtitle="MOROCCAN RIAD — 10+ năm thủ công da thật và velvet, sang trọng 1920s." image={SOFA17_PAGE_IMAGES.aboutHero} />
+      <Sofa17PageHero overline="VỀ CHÚNG TÔI" title={<>VỀ <span>SOFA17</span></>} subtitle="MOROCCAN RIAD — 10+ năm thủ công dệt tay và gỗ tuyết tùng, tinh thần riad Marrakech." image={SOFA17_PAGE_IMAGES.aboutHero} />
 
       <Sofa17Section bg="black">
         <Grid container spacing={{ xs: 5, md: 8 }} alignItems="center">
@@ -57,13 +57,13 @@ export default function Page() {
             <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inRight}>
               <Stack direction="row" alignItems="center" spacing={1.5}>
                 <Box sx={{ width: 32, height: 1.5, bgcolor: SOFA17_COLORS.gold }} />
-                <Typography variant="overline" sx={{ color: SOFA17_COLORS.gold, letterSpacing: 4, fontWeight: 'fontWeightMedium' }}>ART DECO · SINCE 2015</Typography>
+                <Typography variant="overline" sx={{ color: SOFA17_COLORS.gold, letterSpacing: 4, fontWeight: 'fontWeightMedium' }}>RIAD MARRAKECH · SINCE 2015</Typography>
               </Stack>
               <Typography variant="h2" sx={{ fontWeight: 'fontWeightLight', color: 'common.white', fontFamily: theme.typography.fontSecondaryFamily, '& span': { ...textGradient(`90deg, ${SOFA17_COLORS.goldLight} 0%, ${SOFA17_COLORS.gold} 50%, ${SOFA17_COLORS.goldDark} 100%`), fontStyle: 'italic' } }}>
-                TỪ XƯỞNG NHỎ <span>ĐẾN GATSBY</span>
+                TỪ XƯỞNG NHỎ <span>ĐẾN RIAD</span>
               </Typography>
               <Typography sx={{ color: varAlpha(theme.vars.palette.common.whiteChannel, 0.6), lineHeight: 2, fontWeight: 'fontWeightLight' }}>
-                Sofa17 ra đời năm {SOFA17_PAGE_COMPANY_INFO.founded} từ một xưởng nhỏ tại Hà Nội. Bắt đầu với triết lý Riad Ma-rốc — vàng, đen, ngọc lục bảo.
+                Sofa17 ra đời năm {SOFA17_PAGE_COMPANY_INFO.founded} từ một xưởng nhỏ tại Hà Nội. Bắt đầu với triết lý Riad Ma-rốc — nghệ tây, xanh teal, đỏ ruby.
               </Typography>
               <Typography sx={{ color: varAlpha(theme.vars.palette.common.whiteChannel, 0.6), lineHeight: 2, fontWeight: 'fontWeightLight' }}>
                 {SOFA17_PAGE_COMPANY_INFO.tagline}. 10+ năm thủ công, 3,200+ tác phẩm đã giao.
@@ -135,7 +135,7 @@ export default function Page() {
         <Sofa17Card accent={SOFA17_COLORS.gold} sx={{ maxWidth: 720, mx: 'auto', textAlign: 'center', p: { xs: 5, md: 8 } }}>
           <Stack spacing={4} alignItems="center">
             <Typography variant="h3" sx={{ fontWeight: 'fontWeightLight', color: 'common.white', fontFamily: theme.typography.fontSecondaryFamily, '& span': { ...textGradient(`90deg, ${SOFA17_COLORS.goldLight} 0%, ${SOFA17_COLORS.gold} 50%, ${SOFA17_COLORS.goldDark} 100%`), fontStyle: 'italic' } }}>
-              GATSBY <span>GOLD</span>
+              RIAD <span>GOLD</span>
             </Typography>
             <Typography sx={{ color: varAlpha('#FFFFFF', 0.5) }}>Ghé showroom hoặc đặt lịch tư vấn để trải nghiệm sofa Riad Ma-rốc.</Typography>
             <Stack direction="row" spacing={2} flexWrap="wrap" justifyContent="center">
