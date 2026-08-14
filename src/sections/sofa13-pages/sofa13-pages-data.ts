@@ -5,6 +5,7 @@
 import { SOFA13_IMAGES, SOFA13_COLORS, sofa13FormatPrice } from '../sofa13/sofa13-data';
 
 export { sofa13FormatPrice };
+export const formatSofa13Price = sofa13FormatPrice;
 
 export const SOFA13_PAGE_IMAGES = {
   ...SOFA13_IMAGES,
