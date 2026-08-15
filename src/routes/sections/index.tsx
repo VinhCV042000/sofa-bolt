@@ -7452,6 +7452,13 @@ export function Router() {
     {
       path: '/sofa17/member/:section',
       element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa17PagesNavData }}>
+            <Sofa17MemberPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
 
     // SOFA16 PAGES
     {
