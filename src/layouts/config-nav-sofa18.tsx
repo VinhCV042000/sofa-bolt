@@ -1,6 +1,6 @@
-import { paths } from 'src/routes/paths';
-
 import { Iconify } from 'src/components/iconify';
+
+import { sofa18PagesNavData } from './config-nav-sofa18-pages';
 
 // ----------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ export const sofa18NavData = [
     icon: <Iconify width={22} icon="solar:bag-check-bold-duotone" />,
   },
   {
-    title: 'Triết lý',
+    title: 'Nguồn gốc',
     path: '/sofa18#story',
-    icon: <Iconify width={22} icon="solar:leaf-bold-duotone" />,
+    icon: <Iconify width={22} icon="solar:water-bold-duotone" />,
   },
   {
     title: 'Bộ sưu tập',
     path: '/sofa18#collections',
-    icon: <Iconify width={22} icon="solar:moon-stars-bold-duotone" />,
+    icon: <Iconify width={22} icon="solar:sun-bold-duotone" />,
   },
   {
     title: 'Tác phẩm',
@@ -32,7 +32,7 @@ export const sofa18NavData = [
     icon: <Iconify width={22} icon="solar:armchair-bold-duotone" />,
   },
   {
-    title: 'Không gian',
+    title: 'Biệt thự',
     path: '/sofa18#gallery',
     icon: <Iconify width={22} icon="solar:gallery-bold-duotone" />,
   },
@@ -41,9 +41,5 @@ export const sofa18NavData = [
     path: '/sofa18#testimonials',
     icon: <Iconify width={22} icon="solar:star-bold-duotone" />,
   },
-  {
-    title: 'Liên hệ',
-    path: paths.contact,
-    icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
-  },
+  ...sofa18PagesNavData.filter((item) => !['/sofa18', '/sofa18/about', '/sofa18/products'].includes(item.path)),
 ];
