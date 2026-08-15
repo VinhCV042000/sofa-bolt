@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{`${current?.title ?? 'Chính sách'} — Sofa5`}</title></Helmet>
+      <Helmet><title>{`${current?.title ?? 'Chính sách'} — Sofa Royale`}</title></Helmet>
 
       <Sofa5PageHero
         overline="CHÍNH SÁCH"

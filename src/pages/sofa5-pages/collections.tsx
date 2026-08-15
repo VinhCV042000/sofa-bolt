@@ -16,7 +16,7 @@ export default function Page() {
   const theme = useTheme();
   return (
     <>
-      <Helmet><title>Bộ sưu tập — Sofa5</title></Helmet>
+      <Helmet><title>Bộ sưu tập — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="BỘ SƯU TẬP" title={<>BỘ SƯU <span>TẬP</span></>} subtitle="Terracotta, Olive, Azure — mỗi bộ sưu tập một tone Riviera." image={SOFA5_PAGE_IMAGES.product2} />
 
       <Sofa5Section bg="cream">

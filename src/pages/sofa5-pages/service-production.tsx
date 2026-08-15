@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{data.title} — Sofa5</title></Helmet>
+      <Helmet><title>{data.title} — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="DỊCH VỤ" title={<span>{data.title}</span>} subtitle={data.subtitle} image={SOFA5_PAGE_IMAGES.service2} />
 
       <Sofa5Section bg="cream">

@@ -17,7 +17,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{`${current?.title ?? 'Khu vực thành viên'} — Sofa5`}</title></Helmet>
+      <Helmet><title>{`${current?.title ?? 'Khu vực thành viên'} — Sofa Royale`}</title></Helmet>
 
       <Sofa5PageHero
         overline="THÀNH VIÊN"

@@ -16,7 +16,7 @@ import { sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
 export default function Page() {
   return (
     <>
-      <Helmet><title>Thanh toán thành công — Sofa5</title></Helmet>
+      <Helmet><title>Thanh toán thành công — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="HOÀN TẤT" title={<>ĐẶT HÀNG <span>THÀNH CÔNG</span></>} subtitle="Cảm ơn bạn đã tin chọn Sofa5 Riviera." image={SOFA5_PAGE_IMAGES.showroom1} />
 

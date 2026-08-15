@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Sản phẩm — Monaco-An</title>
+        <title>Sản phẩm — Sofa Royale</title>
       </Helmet>
 
       <Sofa5PageHero overline="SẢN PHẨM" title={<>TÁC <span>PHẨM</span></>} subtitle="Sofa hoàng gia thủ công — da bò Ý, hemp, gỗ óc chó walnut." image={SOFA5_PAGE_IMAGES.product1} />

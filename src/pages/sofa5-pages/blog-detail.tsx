@@ -33,7 +33,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{post.title} — Sofa5 Blog</title></Helmet>
+      <Helmet><title>{post.title} — Sofa Royale Blog</title></Helmet>
       <Sofa5PageHero overline="BLOG" title={<span>{post.title.toUpperCase()}</span>} subtitle={post.excerpt} image={post.image} />
 
       <Sofa5Section bg="cream">

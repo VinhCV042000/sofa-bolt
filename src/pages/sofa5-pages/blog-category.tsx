@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{label} — Sofa5 Blog</title></Helmet>
+      <Helmet><title>{label} — Sofa Royale Blog</title></Helmet>
       <Sofa5PageHero overline="BLOG" title={<span>{label.toUpperCase()}</span>} subtitle={`${filtered.length} bài viết trong chuyên mục ${label.toLowerCase()}.`} image={SOFA5_PAGE_IMAGES.blog1} />
 
       <Sofa5Section bg="cream">

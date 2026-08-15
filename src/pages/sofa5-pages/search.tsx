@@ -20,7 +20,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>Tìm kiếm sản phẩm — Sofa5</title></Helmet>
+      <Helmet><title>Tìm kiếm sản phẩm — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="TÌM KIẾM" title={<>TÌM KIẾM <span>SẢN PHẨM</span></>} subtitle="Tìm nhanh mẫu sofa theo tên hoặc bộ sưu tập." image={SOFA5_PAGE_IMAGES.product3} />
 

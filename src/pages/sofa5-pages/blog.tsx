@@ -23,7 +23,7 @@ export default function Page() {
   const theme = useTheme();
   return (
     <>
-      <Helmet><title>Blog — Sofa5</title></Helmet>
+      <Helmet><title>Blog — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="BLOG" title={<>B<span>LOG</span></>} subtitle="Tin tức, kiến thức, triết lý Mediterranean và nội thất Riviera." image={SOFA5_PAGE_IMAGES.blog1} />
 
       <Sofa5Section bg="cream">

@@ -29,7 +29,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Lịch sử — Monaco-An</title>
+        <title>Lịch sử — Sofa Royale</title>
       </Helmet>
 
       <Sofa5PageHero overline="LỊCH SỬ" title={<>LỊCH SỬ <span>HÌNH THÀNH</span></>} subtitle="50 năm hoàng gia — từ xưởng nhỏ Louis đến atelier quốc tế." image={SOFA5_PAGE_IMAGES.historyHero} />

@@ -19,7 +19,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{`${auth?.title ?? current?.title ?? 'Tài khoản khách hàng'} — Sofa5`}</title></Helmet>
+      <Helmet><title>{`${auth?.title ?? current?.title ?? 'Tài khoản khách hàng'} — Sofa Royale`}</title></Helmet>
 
       <Sofa5PageHero
         overline="TÀI KHOẢN"

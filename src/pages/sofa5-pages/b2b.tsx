@@ -21,7 +21,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{`${current?.title ?? 'Đại lý B2B'} — Sofa5`}</title></Helmet>
+      <Helmet><title>{`${current?.title ?? 'Đại lý B2B'} — Sofa Royale`}</title></Helmet>
 
       <Sofa5PageHero
         overline="ĐẠI LÝ B2B"

@@ -24,7 +24,7 @@ const ROWS: { label: string; key: 'price' | 'material' | 'size' | 'rating' }[] =
 export default function Page() {
   return (
     <>
-      <Helmet><title>So sánh sản phẩm — Sofa5</title></Helmet>
+      <Helmet><title>So sánh sản phẩm — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="SO SÁNH" title={<>SO SÁNH <span>SẢN PHẨM</span></>} subtitle="Đối chiếu thông số các mẫu sofa bạn quan tâm." image={SOFA5_PAGE_IMAGES.product4} />
 

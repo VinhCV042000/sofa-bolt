@@ -29,7 +29,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{project.name} — Sofa5</title></Helmet>
+      <Helmet><title>{project.name} — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="CHI TIẾT DỰ ÁN" title={<span>{project.name.toUpperCase()}</span>} subtitle={`${project.typeLabel} · ${project.location} · ${project.year}`} image={project.image} />
 
       <Sofa5Section bg="cream">

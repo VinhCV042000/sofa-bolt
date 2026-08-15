@@ -106,10 +106,10 @@ export const SOFA5_PAGE_BLOG_CATEGORIES = [
 ];
 
 export const SOFA5_PAGE_SHOWROOMS = [
-  { id: '1', name: 'Monaco-An Louis Atelier', address: '123 Higashiyama, Louis, Japan', phone: '+81 75 411 5555', hours: '10:00 - 18:00', image: SOFA5_PAGE_IMAGES.showroom1, lat: 35.0036, lng: 135.7780 },
-  { id: '2', name: 'Monaco-An Milan Gallery', address: '456 Omotesando, Shibuya, Milan', phone: '+81 3 5413 7777', hours: '11:00 - 20:00', image: SOFA5_PAGE_IMAGES.showroom2, lat: 35.6652, lng: 139.7120 },
-  { id: '3', name: 'Monaco-An Roma Studio', address: '78 Dojima, Kita, Roma', phone: '+81 6 6343 8888', hours: '10:00 - 19:00', image: SOFA5_PAGE_IMAGES.showroom3, lat: 34.6988, lng: 135.4950 },
-  { id: '4', name: 'Monaco-An Como Retreat', address: '12 Motohakone, Como, Kanagawa', phone: '+81 460 845 9999', hours: '9:00 - 17:00', image: SOFA5_PAGE_IMAGES.showroom4, lat: 35.2410, lng: 139.0440 },
+  { id: '1', name: 'Sofa Royale Louis Atelier', address: '123 Higashiyama, Louis, Japan', phone: '+81 75 411 5555', hours: '10:00 - 18:00', image: SOFA5_PAGE_IMAGES.showroom1, lat: 35.0036, lng: 135.7780 },
+  { id: '2', name: 'Sofa Royale Milan Gallery', address: '456 Omotesando, Shibuya, Milan', phone: '+81 3 5413 7777', hours: '11:00 - 20:00', image: SOFA5_PAGE_IMAGES.showroom2, lat: 35.6652, lng: 139.7120 },
+  { id: '3', name: 'Sofa Royale Roma Studio', address: '78 Dojima, Kita, Roma', phone: '+81 6 6343 8888', hours: '10:00 - 19:00', image: SOFA5_PAGE_IMAGES.showroom3, lat: 34.6988, lng: 135.4950 },
+  { id: '4', name: 'Sofa Royale Como Retreat', address: '12 Motohakone, Como, Kanagawa', phone: '+81 460 845 9999', hours: '9:00 - 17:00', image: SOFA5_PAGE_IMAGES.showroom4, lat: 35.2410, lng: 139.0440 },
 ];
 
 export const SOFA5_PAGE_CAREERS = [
@@ -168,7 +168,7 @@ export const SOFA5_PAGE_PRODUCT_CATEGORIES = {
 };
 
 export const SOFA5_PAGE_COMPANY_INFO = {
-  name: 'Monaco-An',
+  name: 'Sofa Royale',
   tagline: 'Japanese Royale — Sofa cho tâm hồn tĩnh lặng',
   phone: '+81 75 411 5555',
   email: 'info@muji-an.jp',

@@ -32,7 +32,7 @@ export default function Page() {
   const theme = useTheme();
   return (
     <>
-      <Helmet><title>Dịch vụ — Sofa5</title></Helmet>
+      <Helmet><title>Dịch vụ — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="DỊCH VỤ" title={<>DỊCH <span>VỤ</span></>} subtitle="Thiết kế, sản xuất, gia công sofa Riviera — trọn gói." image={SOFA5_PAGE_IMAGES.service1} />
 
       <Sofa5Section bg="cream">

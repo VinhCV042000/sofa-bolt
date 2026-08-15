@@ -16,7 +16,7 @@ import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page
 import { SOFA5_PAGE_IMAGES, SOFA5_PAGE_COMPANY_INFO } from 'src/sections/sofa5-pages/sofa5-pages-data';
 
 const ABOUT_ITEMS = [
-  { heading: 'Giới thiệu công ty', body: 'Monaco-An — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay, da bò Ý hữu cơ.' },
+  { heading: 'Giới thiệu công ty', body: 'Sofa Royale — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay, da bò Ý hữu cơ.' },
   { heading: 'Lịch sử hình thành', body: 'Thành lập 1972 bởi Tanaka-sensei tại Louis. Từ xưởng nhỏ đến atelier quốc tế, vẫn giữ triết lý hoàng gia.' },
   { heading: 'Tầm nhìn & sứ mệnh', body: 'Mang sự tĩnh lặng của Louis về mỗi ngôi nhà. Sofa nuôi dưỡng thiền, tôn vinh tự nhiên.' },
   { heading: 'Giá trị cốt lõi', body: 'Royale, thủ công, bền vững, sửa chữa trọn đời. Mỗi tác phẩm là câu chuyện độc nhất.' },
@@ -36,10 +36,10 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Giới thiệu — Monaco-An</title>
+        <title>Giới thiệu — Sofa Royale</title>
       </Helmet>
 
-      <Sofa5PageHero overline="GIỚI THIỆU" title={<>GIỚI <span>THIỆU</span></>} subtitle="Monaco-An — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay." image={SOFA5_PAGE_IMAGES.aboutHero} />
+      <Sofa5PageHero overline="GIỚI THIỆU" title={<>GIỚI <span>THIỆU</span></>} subtitle="Sofa Royale — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay." image={SOFA5_PAGE_IMAGES.aboutHero} />
 
       <Sofa5Section>
         <Grid container spacing={4}>

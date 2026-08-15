@@ -21,7 +21,7 @@ export default function Page() {
   const theme = useTheme();
   return (
     <>
-      <Helmet><title>Showroom — Sofa5</title></Helmet>
+      <Helmet><title>Showroom — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="SHOWROOM" title={<>SHOW<span>ROOM</span></>} subtitle="Trải nghiệm sofa Mediterranean trực tiếp tại 4 showroom trên toàn quốc." image={SOFA5_PAGE_IMAGES.showroom1} />
 
       <Sofa5Section bg="cream">

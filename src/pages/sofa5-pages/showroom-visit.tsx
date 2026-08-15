@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>Đặt lịch — Sofa5</title></Helmet>
+      <Helmet><title>Đặt lịch — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="ĐẶT LỊCH" title={<>ĐẶT <span>LỊCH</span></>} subtitle="Đặt lịch tham quan showroom hoặc tư vấn Mediterranean miễn phí." image={SOFA5_PAGE_IMAGES.showroom1} />
 
       <Sofa5Section bg="cream">

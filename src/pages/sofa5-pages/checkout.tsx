@@ -20,7 +20,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>Thanh toán — Sofa5</title></Helmet>
+      <Helmet><title>Thanh toán — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="THANH TOÁN" title={<>THANH <span>TOÁN</span></>} subtitle="Hoàn tất thông tin giao hàng và phương thức thanh toán." image={SOFA5_PAGE_IMAGES.product2} />
 

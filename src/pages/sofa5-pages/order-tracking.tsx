@@ -17,7 +17,7 @@ import { Sofa5Panel, sofa5FieldSx, sofa5ButtonSx } from 'src/sections/sofa5-page
 export default function Page() {
   return (
     <>
-      <Helmet><title>Theo dõi đơn hàng — Sofa5</title></Helmet>
+      <Helmet><title>Theo dõi đơn hàng — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="ĐƠN HÀNG" title={<>THEO DÕI <span>ĐƠN HÀNG</span></>} subtitle="Nhập mã đơn hàng để xem tiến độ sản xuất và giao nhận." image={SOFA5_PAGE_IMAGES.workshop} />
 

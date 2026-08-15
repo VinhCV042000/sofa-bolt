@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{catLabel} — Monaco-An</title>
+        <title>{catLabel} — Sofa Royale</title>
       </Helmet>
 
       <Sofa5PageHero overline="DANH MỤC" title={<>{catLabel.toUpperCase()}</>} subtitle="Sofa hoàng gia theo danh mục." image={SOFA5_PAGE_IMAGES.product1} />

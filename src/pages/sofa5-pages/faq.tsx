@@ -17,7 +17,7 @@ import { SOFA5_PAGE_FAQS, SOFA5_PAGE_IMAGES } from 'src/sections/sofa5-pages/sof
 export default function Page() {
   return (
     <>
-      <Helmet><title>FAQ — Sofa5</title></Helmet>
+      <Helmet><title>FAQ — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="HỖ TRỢ" title={<>CÂU HỎI <span>THƯỜNG GẶP</span></>} subtitle="Giải đáp nhanh về sản phẩm, giao hàng và bảo hành." image={SOFA5_PAGE_IMAGES.service2} />
 

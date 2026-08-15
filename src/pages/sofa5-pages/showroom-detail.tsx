@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{showroom.name} — Sofa5</title></Helmet>
+      <Helmet><title>{showroom.name} — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="SHOWROOM" title={<span>{showroom.name.toUpperCase()}</span>} subtitle={showroom.address} image={showroom.image} />
 
       <Sofa5Section bg="cream">

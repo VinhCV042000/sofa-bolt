@@ -16,7 +16,7 @@ import { Sofa5Panel, sofa5FieldSx, sofa5ButtonSx } from 'src/sections/sofa5-page
 export default function Page() {
   return (
     <>
-      <Helmet><title>Liên hệ — Sofa5</title></Helmet>
+      <Helmet><title>Liên hệ — Sofa Royale</title></Helmet>
 
       <Sofa5PageHero overline="LIÊN HỆ" title={<>LIÊN <span>HỆ</span></>} subtitle="Đội ngũ Sofa5 sẵn sàng tư vấn không gian Địa Trung Hải cho bạn." image={SOFA5_PAGE_IMAGES.contact} />
 

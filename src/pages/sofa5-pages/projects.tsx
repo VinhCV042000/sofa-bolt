@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>Dự án — Sofa5</title></Helmet>
+      <Helmet><title>Dự án — Sofa Royale</title></Helmet>
       <Sofa5PageHero overline="DỰ ÁN" title={<>PORT<span>FOLIO</span></>} subtitle="Biệt thự, resort, khách sạn, nhà hàng — sofa Riviera cho mọi không gian." image={SOFA5_PAGE_IMAGES.project1} />
 
       <Sofa5Section bg="cream">

@@ -46,7 +46,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{product.name} — Monaco-An</title>
+        <title>{product.name} — Sofa Royale</title>
       </Helmet>
 
       <Sofa5PageHero overline="CHI TIẾT" title={<>{product.name.toUpperCase()}</>} subtitle={product.description} image={product.image} />
