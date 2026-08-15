@@ -115,11 +115,28 @@ export function Sofa18PageHero({ title, subtitle, image, overline, sx, ...other 
   );
 }
 
-export function Sofa18Section({ children, bg = 'default', py = { xs: 8, md: 12 } }: { children: React.ReactNode; bg?: 'default' | 'paper' | 'grey'; py?: { xs: number; md: number } }) {
-  const bgcolor = bg === 'paper' ? 'background.paper' : bg === 'grey' ? (t: any) => varAlpha(t.vars.palette.grey['500Channel'], 0.04) : 'background.default';
+export function Sofa18Section({ children, bg = 'default', py = { xs: 8, md: 12 } }: { children: React.ReactNode; bg?: string; py?: { xs: number; md: number } }) {
+  const palette = SOFA18_COLORS as Record<string, string>;
+  const bgcolor =
+    bg === 'paper'
+      ? 'background.paper'
+      : bg === 'grey'
+        ? (t: any) => varAlpha(t.vars.palette.grey['500Channel'], 0.04)
+        : bg === 'default'
+          ? 'background.default'
+          : (palette[bg] ?? 'background.default');
+
   return (
-    <Box component="section" sx={{ py, bgcolor }}>
+    <Box component="section" sx={{ py, bgcolor, ...(bg !== 'default' && bg !== 'paper' && bg !== 'grey' && { color: SOFA18_COLORS.ink }) }}>
       <Container>{children}</Container>
+    </Box>
+  );
+}
+
+export function Sofa18Card({ children, accent = SOFA18_COLORS.clay, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps) {
+  return (
+    <Box sx={{ p: 4, borderRadius: 3, bgcolor: SOFA18_COLORS.creamLight, border: `1px solid ${varAlpha(accent, 0.25)}`, ...sx }} {...other}>
+      {children}
     </Box>
   );
 }
