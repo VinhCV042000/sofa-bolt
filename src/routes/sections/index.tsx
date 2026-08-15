@@ -38,6 +38,7 @@ import { sofa13PagesNavData } from 'src/layouts/config-nav-sofa13-pages';
 import { sofa14PagesNavData } from 'src/layouts/config-nav-sofa14-pages';
 import { sofa15PagesNavData } from 'src/layouts/config-nav-sofa15-pages';
 import { sofa17PagesNavData } from 'src/layouts/config-nav-sofa17-pages';
+import { sofa20PagesNavData } from 'src/layouts/config-nav-sofa20-pages';
 import { sofa16PagesNavData } from 'src/layouts/config-nav-sofa16-pages';
 import { sofa18PagesNavData } from 'src/layouts/config-nav-sofa18-pages';
 
