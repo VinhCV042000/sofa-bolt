@@ -43,7 +43,7 @@ export default function Page() {
                 <Sofa5Panel title="Mô tả công việc">
                   <Stack direction="row" spacing={1}>
                     <Chip label={job.location} size="small" sx={{ bgcolor: varAlpha(SOFA5_COLORS.clay, 0.15), color: SOFA5_COLORS.clayDeep }} />
-                    <Chip label={job.type} size="small" sx={{ bgcolor: varAlpha(SOFA5_COLORS.vàng đồng, 0.15), color: SOFA5_COLORS.vàng đồngDeep }} />
+                    <Chip label={job.type} size="small" sx={{ bgcolor: varAlpha(SOFA5_COLORS.sage, 0.15), color: SOFA5_COLORS.sageDeep }} />
                     <Chip label={job.salary} size="small" sx={{ bgcolor: varAlpha(SOFA5_COLORS.rust, 0.15), color: SOFA5_COLORS.ruby }} />
                   </Stack>
                   <Typography variant="body2" sx={{ color: SOFA5_COLORS.inkSoft, lineHeight: 2 }}>{job.description}</Typography>

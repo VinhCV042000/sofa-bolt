@@ -55,7 +55,7 @@ export function Sofa5PageHero({ title, subtitle, image, overline, sx, ...other }
           right: '8%',
           width: 160,
           height: 160,
-          bgcolor: SOFA5_COLORS.vàng đồng,
+          bgcolor: SOFA5_COLORS.sage,
           borderRadius: '50%',
           opacity: 0.6,
           zIndex: 1,
@@ -79,7 +79,7 @@ export function Sofa5PageHero({ title, subtitle, image, overline, sx, ...other }
           {overline && (
             <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
               <Stack direction="row" alignItems="center" spacing={1.5}>
-                <Box sx={{ width: 8, height: 40, bgcolor: SOFA5_COLORS.vàng đồng, borderRadius: 4 }} />
+                <Box sx={{ width: 8, height: 40, bgcolor: SOFA5_COLORS.sage, borderRadius: 4 }} />
                 <Typography variant="overline" sx={{ color: SOFA5_COLORS.clayLight, letterSpacing: 4, fontWeight: 'fontWeightBold' }}>
                   {overline}
                 </Typography>
@@ -96,7 +96,7 @@ export function Sofa5PageHero({ title, subtitle, image, overline, sx, ...other }
                 textTransform: 'uppercase',
                 letterSpacing: -1,
                 '& span': {
-                  ...textGradient(`90deg, ${SOFA5_COLORS.vàng đồng} 0%, ${SOFA5_COLORS.clay} 100%`),
+                  ...textGradient(`90deg, ${SOFA5_COLORS.sage} 0%, ${SOFA5_COLORS.clay} 100%`),
                 },
               }}
             >

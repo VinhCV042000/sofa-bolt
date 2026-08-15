@@ -22,7 +22,7 @@ export default function Page() {
 
       <Sofa5Section bg="cream">
         <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', py: 6 }}>
-          <Iconify icon="solar:check-circle-bold-duotone" width={96} sx={{ color: SOFA5_COLORS.vàng đồng }} />
+          <Iconify icon="solar:check-circle-bold-duotone" width={96} sx={{ color: SOFA5_COLORS.sage }} />
           <Typography variant="h4" sx={{ color: SOFA5_COLORS.ink, fontWeight: 'fontWeightLight' }}>Mã đơn hàng: SF16-2026-0912</Typography>
           <Typography variant="body1" sx={{ color: SOFA5_COLORS.inkSoft, maxWidth: 520, lineHeight: 2 }}>
             Chúng tôi đã gửi email xác nhận. Tư vấn viên sẽ liên hệ trong vòng 24 giờ để xác nhận lịch giao lắp.

@@ -47,7 +47,7 @@ export default function Page() {
           <Grid xs={12} md={6}>
             <Stack spacing={3}>
               {data.content.map((item, i) => (
-                <Sofa5Card key={i} accent={[SOFA5_COLORS.clay, SOFA5_COLORS.vàng đồng, SOFA5_COLORS.rust, SOFA5_COLORS.clayDeep][i % 4]}>
+                <Sofa5Card key={i} accent={[SOFA5_COLORS.clay, SOFA5_COLORS.sage, SOFA5_COLORS.rust, SOFA5_COLORS.clayDeep][i % 4]}>
                   <Stack direction="row" spacing={2} alignItems="flex-start">
                     <Box sx={{ width: 10, height: 10, mt: 1.5, bgcolor: SOFA5_COLORS.clay, borderRadius: '50%', flexShrink: 0 }} />
                     <Stack spacing={1}>

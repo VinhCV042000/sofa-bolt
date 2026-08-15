@@ -51,11 +51,11 @@ export default function Page() {
                 <Stack component={RouterLink} href={`/sofa5/products/${p.slug}`} spacing={1.5} sx={{ textDecoration: 'none', height: 1 }}>
                   <Box sx={{ overflow: 'hidden', borderRadius: 2, aspectRatio: '4/5', position: 'relative' }}>
                     <Box component="img" src={p.image} alt={p.name} sx={{ width: 1, height: 1, objectFit: 'cover', transition: 'transform 0.4s', '&:hover': { transform: 'scale(1.05)' } }} />
-                    {p.badge && <Chip label={p.badge} size="small" sx={{ position: 'absolute', top: 12, left: 12, bgcolor: SOFA5_COLORS.vàng đồng, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
+                    {p.badge && <Chip label={p.badge} size="small" sx={{ position: 'absolute', top: 12, left: 12, bgcolor: SOFA5_COLORS.sage, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
                   </Box>
                   <Typography variant="subtitle1" sx={{ fontWeight: 'fontWeightBold', color: 'text.primary' }}>{p.name}</Typography>
                   <Typography variant="caption" sx={{ color: 'text.secondary' }}>{p.material}</Typography>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.vàng đồngDeep }}>{formatSofa5Price(p.price)}</Typography>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.sageDeep }}>{formatSofa5Price(p.price)}</Typography>
                 </Stack>
               </Box>
             </Grid>

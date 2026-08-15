@@ -56,7 +56,7 @@ export default function Page() {
                 {SOFA5_PAGE_COMPANY_INFO.stats.map((stat) => (
                   <Grid key={stat.label} xs={6} sm={3}>
                     <Stack spacing={1} sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}` }}>
-                      <Typography variant="h5" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.vàng đồngDeep }}>{stat.value}</Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.sageDeep }}>{stat.value}</Typography>
                       <Typography variant="caption" sx={{ color: 'text.secondary' }}>{stat.label}</Typography>
                     </Stack>
                   </Grid>

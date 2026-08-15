@@ -60,7 +60,7 @@ export default function Page() {
               </Box>
               <Stack direction="row" spacing={2}>
                 {product.images?.map((img, i) => (
-                  <Box key={i} sx={{ width: 80, height: 80, borderRadius: 2, overflow: 'hidden', border: `2px solid ${i === 0 ? SOFA5_COLORS.vàng đồng : 'transparent'}` }}>
+                  <Box key={i} sx={{ width: 80, height: 80, borderRadius: 2, overflow: 'hidden', border: `2px solid ${i === 0 ? SOFA5_COLORS.sage : 'transparent'}` }}>
                     <Box component="img" src={img} alt={`${product.name} ${i + 1}`} sx={{ width: 1, height: 1, objectFit: 'cover' }} />
                   </Box>
                 ))}
@@ -74,13 +74,13 @@ export default function Page() {
           <Grid xs={12} md={6}>
             <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inRight}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Rating value={product.rating} readOnly precision={0.1} sx={{ color: SOFA5_COLORS.vàng đồng }} />
+                <Rating value={product.rating} readOnly precision={0.1} sx={{ color: SOFA5_COLORS.sage }} />
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>{product.rating} ({product.reviews} đánh giá)</Typography>
               </Stack>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Typography variant="h4" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.vàng đồngDeep }}>{formatSofa5Price(product.price)}</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.sageDeep }}>{formatSofa5Price(product.price)}</Typography>
                 {product.oldPrice && <Typography variant="h6" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>{formatSofa5Price(product.oldPrice)}</Typography>}
-                {product.badge && <Chip label={product.badge} sx={{ bgcolor: SOFA5_COLORS.vàng đồng, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
+                {product.badge && <Chip label={product.badge} sx={{ bgcolor: SOFA5_COLORS.sage, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
               </Stack>
               <Stack spacing={1}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>Chất liệu: {product.material}</Typography>
@@ -102,7 +102,7 @@ export default function Page() {
                 </Grid>
               </Stack>
               <Stack direction="row" spacing={2}>
-                <Button size="large" variant="contained" startIcon={<Iconify icon="solar:cart-large-bold-duotone" />} sx={{ bgcolor: SOFA5_COLORS.vàng đồngDeep, color: 'common.white', fontWeight: 'fontWeightBold', '&:hover': { bgcolor: SOFA5_COLORS.vàng đồng } }}>Thêm vào giỏ</Button>
+                <Button size="large" variant="contained" startIcon={<Iconify icon="solar:cart-large-bold-duotone" />} sx={{ bgcolor: SOFA5_COLORS.sageDeep, color: 'common.white', fontWeight: 'fontWeightBold', '&:hover': { bgcolor: SOFA5_COLORS.sage } }}>Thêm vào giỏ</Button>
                 <Button component={RouterLink} href="/sofa5/cart" size="large" variant="outlined" sx={{ borderColor: SOFA5_COLORS.clay, color: SOFA5_COLORS.charcoal, fontWeight: 'fontWeightBold' }}>Mua ngay</Button>
               </Stack>
             </Stack>
@@ -140,9 +140,9 @@ export default function Page() {
               {[1, 2, 3].map((i) => (
                 <Stack key={i} spacing={1} sx={{ p: 3, borderRadius: 2, bgcolor: 'background.default', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}` }}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar sx={{ bgcolor: SOFA5_COLORS.vàng đồng, width: 40, height: 40 }} />
+                    <Avatar sx={{ bgcolor: SOFA5_COLORS.sage, width: 40, height: 40 }} />
                     <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold' }}>Khách hàng {i}</Typography>
-                    <Rating value={5} readOnly size="small" sx={{ color: SOFA5_COLORS.vàng đồng }} />
+                    <Rating value={5} readOnly size="small" sx={{ color: SOFA5_COLORS.sage }} />
                   </Stack>
                   <Typography sx={{ color: 'text.secondary' }}>Sofa tuyệt vời, mang lại tĩnh lặng cho phòng khách. Da bò Ý êm, khung gỗ óc chó thơm.</Typography>
                 </Stack>
@@ -153,7 +153,7 @@ export default function Page() {
             <Stack spacing={3} sx={{ maxWidth: 800 }}>
               <Stack spacing={2}>
                 <TextField fullWidth label="Câu hỏi của bạn" multiline rows={2} />
-                <Button variant="contained" sx={{ alignSelf: 'flex-start', bgcolor: SOFA5_COLORS.vàng đồngDeep, color: 'common.white' }}>Gửi câu hỏi</Button>
+                <Button variant="contained" sx={{ alignSelf: 'flex-start', bgcolor: SOFA5_COLORS.sageDeep, color: 'common.white' }}>Gửi câu hỏi</Button>
               </Stack>
               <Typography sx={{ color: 'text.secondary' }}>Chưa có câu hỏi. Hãy là người đầu tiên!</Typography>
             </Stack>
@@ -171,7 +171,7 @@ export default function Page() {
                   <Box component="img" src={p.image} alt={p.name} sx={{ width: 1, height: 1, objectFit: 'cover' }} />
                 </Box>
                 <Typography variant="caption" sx={{ fontWeight: 'fontWeightBold', color: 'text.primary' }}>{p.name}</Typography>
-                <Typography variant="caption" sx={{ color: SOFA5_COLORS.vàng đồngDeep }}>{formatSofa5Price(p.price)}</Typography>
+                <Typography variant="caption" sx={{ color: SOFA5_COLORS.sageDeep }}>{formatSofa5Price(p.price)}</Typography>
               </Stack>
             </Grid>
           ))}

@@ -39,7 +39,7 @@ export default function Page() {
           {TIMELINE.map((item, i) => (
             <Stack key={i} direction="row" spacing={4} alignItems="flex-start">
               <Stack spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
-                <Box sx={{ width: 64, height: 64, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: varAlpha(SOFA5_COLORS.vàng đồng, 0.12), color: SOFA5_COLORS.vàng đồngDeep, fontWeight: 'fontWeightBold', fontSize: 14 }}>{item.year}</Box>
+                <Box sx={{ width: 64, height: 64, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: varAlpha(SOFA5_COLORS.sage, 0.12), color: SOFA5_COLORS.sageDeep, fontWeight: 'fontWeightBold', fontSize: 14 }}>{item.year}</Box>
                 {i < TIMELINE.length - 1 && <Box sx={{ width: 2, flex: 1, minHeight: 40, bgcolor: varAlpha(SOFA5_COLORS.clay, 0.2) }} />}
               </Stack>
               <Stack spacing={1} sx={{ pb: 4 }}>
