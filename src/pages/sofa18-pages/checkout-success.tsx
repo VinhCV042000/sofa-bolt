@@ -18,7 +18,7 @@ export default function Page() {
     <>
       <Helmet><title>Thanh toán thành công — Sofa18</title></Helmet>
 
-      <Sofa18PageHero overline="HOÀN TẤT" title={<>ĐẶT HÀNG <span>THÀNH CÔNG</span></>} subtitle="Cảm ơn bạn đã tin chọn Sofa18 Riviera." image={SOFA18_PAGE_IMAGES.gallery1} />
+      <Sofa18PageHero overline="HOÀN TẤT" title={<>ĐẶT HÀNG <span>THÀNH CÔNG</span></>} subtitle="Cảm ơn bạn đã tin chọn Sofa18 Riviera." image={SOFA18_PAGE_IMAGES.showroom1} />
 
       <Sofa18Section bg="cream">
         <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', py: 6 }}>

@@ -59,11 +59,11 @@ export const SOFA18_PAGE_PRODUCTS = [
 ];
 
 export const SOFA18_PAGE_COLLECTIONS = [
-  { id: 'new', name: 'Bộ sưu tập mới', slug: 'new', description: 'Tác phẩm wabi-sabi mới nhất 2025', image: SOFA18_PAGE_IMAGES.product1, count: '14 tác phẩm' },
-  { id: 'featured', name: 'Bộ sưu tập nổi bật', description: 'Thiết kế được trân quý nhất', slug: 'featured', image: SOFA18_PAGE_IMAGES.product3, count: '11 tác phẩm' },
-  { id: 'seasonal', name: 'Bộ sưu tập theo mùa', slug: 'seasonal', description: 'Bốn mùa — Haru, Natsu, Aki, Fuyu', image: SOFA18_PAGE_IMAGES.product2, count: '8 tác phẩm' },
-  { id: 'luxury', name: 'Bộ sưu tập Luxury', slug: 'luxury', description: 'Cao cấp nhất — linen, boucle premium', image: SOFA18_PAGE_IMAGES.product4, count: '9 tác phẩm' },
-  { id: 'bestseller', name: 'Bộ sưu tập Bestseller', slug: 'bestseller', description: 'Tác phẩm bán chạy nhất', image: SOFA18_PAGE_IMAGES.product5, count: '12 tác phẩm' },
+  { id: 'new', name: 'Bộ sưu tập mới', slug: 'new', description: 'Tác phẩm wabi-sabi mới nhất 2025', image: SOFA18_PAGE_IMAGES.product1, count: '14 tác phẩm', accent: '#B8A088' },
+  { id: 'featured', name: 'Bộ sưu tập nổi bật', description: 'Thiết kế được trân quý nhất', slug: 'featured', image: SOFA18_PAGE_IMAGES.product3, count: '11 tác phẩm', accent: '#8A9A7B' },
+  { id: 'seasonal', name: 'Bộ sưu tập theo mùa', slug: 'seasonal', description: 'Bốn mùa — Haru, Natsu, Aki, Fuyu', image: SOFA18_PAGE_IMAGES.product2, count: '8 tác phẩm', accent: '#3A3530' },
+  { id: 'luxury', name: 'Bộ sưu tập Luxury', slug: 'luxury', description: 'Cao cấp nhất — linen, boucle premium', image: SOFA18_PAGE_IMAGES.product4, count: '9 tác phẩm', accent: '#A8704F' },
+  { id: 'bestseller', name: 'Bộ sưu tập Bestseller', slug: 'bestseller', description: 'Tác phẩm bán chạy nhất', image: SOFA18_PAGE_IMAGES.product5, count: '12 tác phẩm', accent: '#D4C5B0' },
 ];
 
 export const SOFA18_PAGE_PROJECTS = [

@@ -22,7 +22,7 @@ export default function Page() {
     <>
       <Helmet><title>Thanh toán — Sofa18</title></Helmet>
 
-      <Sofa18PageHero overline="THANH TOÁN" title={<>THANH <span>TOÁN</span></>} subtitle="Hoàn tất thông tin giao hàng và phương thức thanh toán." image={SOFA18_PAGE_IMAGES.prod2} />
+      <Sofa18PageHero overline="THANH TOÁN" title={<>THANH <span>TOÁN</span></>} subtitle="Hoàn tất thông tin giao hàng và phương thức thanh toán." image={SOFA18_PAGE_IMAGES.product2} />
 
       <Sofa18Section bg="cream">
         <Grid container spacing={4}>

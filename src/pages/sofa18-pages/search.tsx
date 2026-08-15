@@ -22,7 +22,7 @@ export default function Page() {
     <>
       <Helmet><title>Tìm kiếm sản phẩm — Sofa18</title></Helmet>
 
-      <Sofa18PageHero overline="TÌM KIẾM" title={<>TÌM KIẾM <span>SẢN PHẨM</span></>} subtitle="Tìm nhanh mẫu sofa theo tên hoặc bộ sưu tập." image={SOFA18_PAGE_IMAGES.prod3} />
+      <Sofa18PageHero overline="TÌM KIẾM" title={<>TÌM KIẾM <span>SẢN PHẨM</span></>} subtitle="Tìm nhanh mẫu sofa theo tên hoặc bộ sưu tập." image={SOFA18_PAGE_IMAGES.product3} />
 
       <Sofa18Section bg="cream">
         <Stack spacing={4}>

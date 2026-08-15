@@ -17,7 +17,7 @@ export default function Page() {
   return (
     <>
       <Helmet><title>Bộ sưu tập — Sofa18</title></Helmet>
-      <Sofa18PageHero overline="BỘ SƯU TẬP" title={<>BỘ SƯU <span>TẬP</span></>} subtitle="Terracotta, Olive, Azure — mỗi bộ sưu tập một tone Riviera." image={SOFA18_PAGE_IMAGES.prod2} />
+      <Sofa18PageHero overline="BỘ SƯU TẬP" title={<>BỘ SƯU <span>TẬP</span></>} subtitle="Terracotta, Olive, Azure — mỗi bộ sưu tập một tone Riviera." image={SOFA18_PAGE_IMAGES.product2} />
 
       <Sofa18Section bg="cream">
         <Grid container spacing={4}>

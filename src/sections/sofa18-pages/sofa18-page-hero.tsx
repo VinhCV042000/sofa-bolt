@@ -1,3 +1,4 @@
+import type { MotionProps } from 'framer-motion';
 import type { BoxProps } from '@mui/material/Box';
 
 import { m } from 'framer-motion';
@@ -133,7 +134,7 @@ export function Sofa18Section({ children, bg = 'default', py = { xs: 8, md: 12 }
   );
 }
 
-export function Sofa18Card({ children, accent = SOFA18_COLORS.clay, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps) {
+export function Sofa18Card({ children, accent = SOFA18_COLORS.clay, sx, ...other }: { children: React.ReactNode; accent?: string } & BoxProps & Partial<MotionProps>) {
   return (
     <Box sx={{ p: 4, borderRadius: 3, bgcolor: SOFA18_COLORS.creamLight, border: `1px solid ${varAlpha(accent, 0.25)}`, ...sx }} {...other}>
       {children}

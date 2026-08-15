@@ -22,7 +22,7 @@ export default function Page() {
     <>
       <Helmet><title>Giỏ hàng — Sofa18</title></Helmet>
 
-      <Sofa18PageHero overline="GIỎ HÀNG" title={<>GIỎ <span>HÀNG</span></>} subtitle="Kiểm tra sản phẩm trước khi thanh toán." image={SOFA18_PAGE_IMAGES.prod1} />
+      <Sofa18PageHero overline="GIỎ HÀNG" title={<>GIỎ <span>HÀNG</span></>} subtitle="Kiểm tra sản phẩm trước khi thanh toán." image={SOFA18_PAGE_IMAGES.product1} />
 
       <Sofa18Section bg="cream">
         <Grid container spacing={4}>

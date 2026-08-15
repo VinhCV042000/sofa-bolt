@@ -26,7 +26,7 @@ export default function Page() {
     <>
       <Helmet><title>So sánh sản phẩm — Sofa18</title></Helmet>
 
-      <Sofa18PageHero overline="SO SÁNH" title={<>SO SÁNH <span>SẢN PHẨM</span></>} subtitle="Đối chiếu thông số các mẫu sofa bạn quan tâm." image={SOFA18_PAGE_IMAGES.prod4} />
+      <Sofa18PageHero overline="SO SÁNH" title={<>SO SÁNH <span>SẢN PHẨM</span></>} subtitle="Đối chiếu thông số các mẫu sofa bạn quan tâm." image={SOFA18_PAGE_IMAGES.product4} />
 
       <Sofa18Section bg="cream">
         <Box sx={{ overflowX: 'auto' }}>
