@@ -1,6 +1,27 @@
 // SOFA5 — Elegant, luxurious, dark gold — "Sofa Royale" style
 // ----------------------------------------------------------------------
 
+export const SOFA5_COLORS = {
+  clay: '#C9A227',
+  clayDeep: '#9B7B18',
+  clayLight: '#E4C97E',
+  sage: '#B08D57',
+  sageDeep: '#8A6B3D',
+  sageLight: '#D5B98A',
+  charcoal: '#161310',
+  charcoalDeep: '#0B0A08',
+  charcoalLight: '#2C2823',
+  cream: '#F1EADD',
+  creamLight: '#FBF7EF',
+  creamDeep: '#E3D9C6',
+  ink: '#14110C',
+  inkSoft: '#6B6357',
+  paper: '#FFFDF8',
+  rust: '#9B7B18',
+  ruby: '#7A2E2E',
+  white: '#FFFFFF',
+};
+
 export const SOFA5_IMAGES = {
   hero: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=1920',
   about: 'https://images.pexels.com/photos/1660797/pexels-photo-1660797.jpeg?auto=compress&cs=tinysrgb&w=900',
