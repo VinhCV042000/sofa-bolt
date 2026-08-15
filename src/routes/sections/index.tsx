@@ -7452,6 +7452,20 @@ export function Router() {
     {
       path: '/sofa17/member/:section',
       element: (
+
+    // SOFA16 PAGES
+    {
+      path: '/sofa16/about',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa16PagesNavData }}>
+            <Sofa16AboutPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    // SOFA20 PAGES
     {
       path: '/sofa20/about',
       element: (
@@ -7899,18 +7913,6 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa17PagesNavData }}>
             <Sofa17MemberPage />
-          </MainLayout>
-        </Suspense>
-      ),
-    },
-
-    // SOFA16 PAGES
-    {
-      path: '/sofa16/about',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <MainLayout data={{ nav: sofa16PagesNavData }}>
-            <Sofa16AboutPage />
           </MainLayout>
         </Suspense>
       ),
