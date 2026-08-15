@@ -56,7 +56,7 @@ export default function Page() {
                 <Stack spacing={2}>
                   <Typography variant="h5" sx={{ fontWeight: 'fontWeightMedium', color: SOFA5_COLORS.clayDeep }}>Đánh giá khách hàng</Typography>
                   <Rating value={5} readOnly sx={{ '& .MuiRating-iconFilled': { color: SOFA5_COLORS.clay } }} />
-                  <Typography sx={{ color: SOFA5_COLORS.inkSoft, lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>&ldquo;Sofa5 đã biến không gian của chúng tôi thành một nơi ấm áp. Linen terracotta, olive — tuyệt tác Riviera!&rdquo;</Typography>
+                  <Typography sx={{ color: SOFA5_COLORS.inkSoft, lineHeight: 1.9, fontWeight: 'fontWeightLight' }}>&ldquo;Sofa5 đã biến không gian của chúng tôi thành một nơi ấm áp. Da bò Ý terracotta, olive — tuyệt tác Riviera!&rdquo;</Typography>
                   <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightMedium', color: SOFA5_COLORS.ink }}>— Chủ dự án {project.name}</Typography>
                 </Stack>
               </Sofa5Card>

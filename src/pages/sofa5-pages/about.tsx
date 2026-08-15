@@ -16,18 +16,18 @@ import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page
 import { SOFA5_PAGE_IMAGES, SOFA5_PAGE_COMPANY_INFO } from 'src/sections/sofa5-pages/sofa5-pages-data';
 
 const ABOUT_ITEMS = [
-  { heading: 'Giới thiệu công ty', body: 'Muji-An — xưởng sofa wabi-sabi Kyoto từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay, linen hữu cơ.' },
-  { heading: 'Lịch sử hình thành', body: 'Thành lập 1972 bởi Tanaka-sensei tại Kyoto. Từ xưởng nhỏ đến atelier quốc tế, vẫn giữ triết lý wabi-sabi.' },
-  { heading: 'Tầm nhìn & sứ mệnh', body: 'Mang sự tĩnh lặng của Kyoto về mỗi ngôi nhà. Sofa nuôi dưỡng thiền, tôn vinh tự nhiên.' },
-  { heading: 'Giá trị cốt lõi', body: 'Wabi-sabi, thủ công, bền vững, sửa chữa trọn đời. Mỗi tác phẩm là câu chuyện độc nhất.' },
-  { heading: 'Nhà máy sản xuất', body: 'Xưởng Kyoto 2000m², bào tay hinoki, đan linen không nhuộm. 30 nghệ nhân.' },
+  { heading: 'Giới thiệu công ty', body: 'Monaco-An — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay, da bò Ý hữu cơ.' },
+  { heading: 'Lịch sử hình thành', body: 'Thành lập 1972 bởi Tanaka-sensei tại Louis. Từ xưởng nhỏ đến atelier quốc tế, vẫn giữ triết lý hoàng gia.' },
+  { heading: 'Tầm nhìn & sứ mệnh', body: 'Mang sự tĩnh lặng của Louis về mỗi ngôi nhà. Sofa nuôi dưỡng thiền, tôn vinh tự nhiên.' },
+  { heading: 'Giá trị cốt lõi', body: 'Royale, thủ công, bền vững, sửa chữa trọn đời. Mỗi tác phẩm là câu chuyện độc nhất.' },
+  { heading: 'Nhà máy sản xuất', body: 'Xưởng Louis 2000m², bào tay gỗ óc chó, đan da bò Ý không nhuộm. 30 nghệ nhân.' },
   { heading: 'Quy trình sản xuất', body: 'Tư vấn → bào tay → đan tự nhiên → giao hàng trọn đời. 12-16 tuần cho định chế.' },
-  { heading: 'Công nghệ sản xuất', body: 'Bào tay truyền thống + CNC precision. Linen đan tay, không máy. Kintsugi repair.' },
-  { heading: 'Chứng nhận chất lượng', body: 'FSC® hinoki, GOTS® linen, ISO 9001. Chứng nhận nguồn rừng Yoshino.' },
+  { heading: 'Công nghệ sản xuất', body: 'Bào tay truyền thống + CNC precision. Da bò Ý đan tay, không máy. Baroque repair.' },
+  { heading: 'Chứng nhận chất lượng', body: 'FSC® gỗ óc chó, GOTS® da bò Ý, ISO 9001. Chứng nhận nguồn rừng Yoshino.' },
   { heading: 'Đội ngũ nhân sự', body: '30 nghệ nhân: mộc, đan, thiết kế. Tanaka-sensei dẫn dắt từ 1972.' },
-  { heading: 'Đối tác', body: 'Rừng Yoshino, flax farm Hokkaido, boutique Kyoto–Tokyo–Paris.' },
-  { heading: 'Hình ảnh công ty', body: 'Xưởng, atelier, gallery. Không gian wabi-sambi tại Kyoto.' },
-  { heading: 'Video giới thiệu', body: 'Phim tài liệu 1972–2025: 50 năm wabi-sabi. Sắp ra mắt.' },
+  { heading: 'Đối tác', body: 'Rừng Yoshino, flax farm Hokkaido, boutique Louis–Milan–Paris.' },
+  { heading: 'Hình ảnh công ty', body: 'Xưởng, atelier, gallery. Không gian hoàng gia-sambi tại Louis.' },
+  { heading: 'Video giới thiệu', body: 'Phim tài liệu 1972–2025: 50 năm hoàng gia. Sắp ra mắt.' },
 ];
 
 export default function Page() {
@@ -36,16 +36,16 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Giới thiệu — Muji-An</title>
+        <title>Giới thiệu — Monaco-An</title>
       </Helmet>
 
-      <Sofa5PageHero overline="GIỚI THIỆU" title={<>GIỚI <span>THIỆU</span></>} subtitle="Muji-An — xưởng sofa wabi-sabi Kyoto từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay." image={SOFA5_PAGE_IMAGES.aboutHero} />
+      <Sofa5PageHero overline="GIỚI THIỆU" title={<>GIỚI <span>THIỆU</span></>} subtitle="Monaco-An — xưởng sofa hoàng gia Louis từ 1972. Tôn vinh sự không hoàn hảo, thủ công bào tay." image={SOFA5_PAGE_IMAGES.aboutHero} />
 
       <Sofa5Section>
         <Grid container spacing={4}>
           <Grid xs={12} md={6}>
             <Box sx={{ overflow: 'hidden', borderRadius: 3, aspectRatio: '4/3' }} component={m.div} variants={varFade({ distance: 24 }).inLeft}>
-              <Box component="img" src={SOFA5_PAGE_IMAGES.workshop} alt="Xưởng Kyoto" sx={{ width: 1, height: 1, objectFit: 'cover' }} />
+              <Box component="img" src={SOFA5_PAGE_IMAGES.workshop} alt="Xưởng Louis" sx={{ width: 1, height: 1, objectFit: 'cover' }} />
             </Box>
           </Grid>
           <Grid xs={12} md={6}>
@@ -56,7 +56,7 @@ export default function Page() {
                 {SOFA5_PAGE_COMPANY_INFO.stats.map((stat) => (
                   <Grid key={stat.label} xs={6} sm={3}>
                     <Stack spacing={1} sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}` }}>
-                      <Typography variant="h5" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.sageDeep }}>{stat.value}</Typography>
+                      <Typography variant="h5" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.vàng đồngDeep }}>{stat.value}</Typography>
                       <Typography variant="caption" sx={{ color: 'text.secondary' }}>{stat.label}</Typography>
                     </Stack>
                   </Grid>

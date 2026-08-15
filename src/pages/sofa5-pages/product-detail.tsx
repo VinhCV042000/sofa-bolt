@@ -46,7 +46,7 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title>{product.name} — Muji-An</title>
+        <title>{product.name} — Monaco-An</title>
       </Helmet>
 
       <Sofa5PageHero overline="CHI TIẾT" title={<>{product.name.toUpperCase()}</>} subtitle={product.description} image={product.image} />
@@ -60,7 +60,7 @@ export default function Page() {
               </Box>
               <Stack direction="row" spacing={2}>
                 {product.images?.map((img, i) => (
-                  <Box key={i} sx={{ width: 80, height: 80, borderRadius: 2, overflow: 'hidden', border: `2px solid ${i === 0 ? SOFA5_COLORS.sage : 'transparent'}` }}>
+                  <Box key={i} sx={{ width: 80, height: 80, borderRadius: 2, overflow: 'hidden', border: `2px solid ${i === 0 ? SOFA5_COLORS.vàng đồng : 'transparent'}` }}>
                     <Box component="img" src={img} alt={`${product.name} ${i + 1}`} sx={{ width: 1, height: 1, objectFit: 'cover' }} />
                   </Box>
                 ))}
@@ -74,13 +74,13 @@ export default function Page() {
           <Grid xs={12} md={6}>
             <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inRight}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Rating value={product.rating} readOnly precision={0.1} sx={{ color: SOFA5_COLORS.sage }} />
+                <Rating value={product.rating} readOnly precision={0.1} sx={{ color: SOFA5_COLORS.vàng đồng }} />
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>{product.rating} ({product.reviews} đánh giá)</Typography>
               </Stack>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Typography variant="h4" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.sageDeep }}>{formatSofa5Price(product.price)}</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'fontWeightBold', color: SOFA5_COLORS.vàng đồngDeep }}>{formatSofa5Price(product.price)}</Typography>
                 {product.oldPrice && <Typography variant="h6" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>{formatSofa5Price(product.oldPrice)}</Typography>}
-                {product.badge && <Chip label={product.badge} sx={{ bgcolor: SOFA5_COLORS.sage, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
+                {product.badge && <Chip label={product.badge} sx={{ bgcolor: SOFA5_COLORS.vàng đồng, color: 'common.white', fontWeight: 'fontWeightBold' }} />}
               </Stack>
               <Stack spacing={1}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>Chất liệu: {product.material}</Typography>
@@ -102,7 +102,7 @@ export default function Page() {
                 </Grid>
               </Stack>
               <Stack direction="row" spacing={2}>
-                <Button size="large" variant="contained" startIcon={<Iconify icon="solar:cart-large-bold-duotone" />} sx={{ bgcolor: SOFA5_COLORS.sageDeep, color: 'common.white', fontWeight: 'fontWeightBold', '&:hover': { bgcolor: SOFA5_COLORS.sage } }}>Thêm vào giỏ</Button>
+                <Button size="large" variant="contained" startIcon={<Iconify icon="solar:cart-large-bold-duotone" />} sx={{ bgcolor: SOFA5_COLORS.vàng đồngDeep, color: 'common.white', fontWeight: 'fontWeightBold', '&:hover': { bgcolor: SOFA5_COLORS.vàng đồng } }}>Thêm vào giỏ</Button>
                 <Button component={RouterLink} href="/sofa5/cart" size="large" variant="outlined" sx={{ borderColor: SOFA5_COLORS.clay, color: SOFA5_COLORS.charcoal, fontWeight: 'fontWeightBold' }}>Mua ngay</Button>
               </Stack>
             </Stack>
@@ -116,11 +116,11 @@ export default function Page() {
             {TABS.map((t) => <Tab key={t.value} value={t.value} label={t.label} />)}
           </Tabs>
 
-          {tab === 'info' && <Typography sx={{ color: 'text.secondary', lineHeight: 1.8, maxWidth: 800 }}>{product.description} Linen hữu cơ không nhuộm, đan tay. Khung hinoki bào tay từ rừng Yoshino. Mỗi tác phẩm độc nhất, tôn vinh wabi-sabi.</Typography>}
+          {tab === 'info' && <Typography sx={{ color: 'text.secondary', lineHeight: 1.8, maxWidth: 800 }}>{product.description} Da bò Ý hữu cơ không nhuộm, đan tay. Khung gỗ óc chó bào tay từ rừng Yoshino. Mỗi tác phẩm độc nhất, tôn vinh hoàng gia.</Typography>}
           {tab === 'specs' && (
             <Stack spacing={1} sx={{ maxWidth: 600 }}>
               {[
-                ['Chất liệu', product.material], ['Kích thước', product.size], ['Khung', 'Hinoki cedar (FSC®)'], ['Bọc', 'Linen GOTS® / Hemp'], ['Đệm', 'HR foam 40D'], ['Tải trọng', '300kg'], ['Bảo hành', '10 năm + trọn đời kintsugi'],
+                ['Chất liệu', product.material], ['Kích thước', product.size], ['Khung', 'Óc chó walnut (FSC®)'], ['Bọc', 'Da bò Ý GOTS® / Hemp'], ['Đệm', 'HR foam 40D'], ['Tải trọng', '300kg'], ['Bảo hành', '10 năm + trọn đời kintsugi'],
               ].map(([k, v]) => (
                 <Stack key={k} direction="row" justifyContent="space-between" sx={{ py: 1, borderBottom: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.08)}` }}>
                   <Typography variant="body2" sx={{ fontWeight: 'fontWeightBold' }}>{k}</Typography>
@@ -132,7 +132,7 @@ export default function Page() {
           {tab === 'guide' && (
             <Stack spacing={3} sx={{ maxWidth: 800 }}>
               <Box><Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold', mb: 1 }}>Hướng dẫn sử dụng</Typography><Typography sx={{ color: 'text.secondary', lineHeight: 1.7 }}>Tránh ánh nắng trực tiếp. Không đặt gần nguồn nhiệt. Lật đệm định kỳ.</Typography></Box>
-              <Box><Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold', mb: 1 }}>Hướng dẫn bảo quản</Typography><Typography sx={{ color: 'text.secondary', lineHeight: 1.7 }}>Giặt khô linen. Không dùng hóa chất mạnh. Phơi bóng râm. Kintsugi repair cho vết nứt.</Typography></Box>
+              <Box><Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold', mb: 1 }}>Hướng dẫn bảo quản</Typography><Typography sx={{ color: 'text.secondary', lineHeight: 1.7 }}>Giặt khô da bò Ý. Không dùng hóa chất mạnh. Phơi bóng râm. Baroque repair cho vết nứt.</Typography></Box>
             </Stack>
           )}
           {tab === 'reviews' && (
@@ -140,11 +140,11 @@ export default function Page() {
               {[1, 2, 3].map((i) => (
                 <Stack key={i} spacing={1} sx={{ p: 3, borderRadius: 2, bgcolor: 'background.default', border: `1px solid ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}` }}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar sx={{ bgcolor: SOFA5_COLORS.sage, width: 40, height: 40 }} />
+                    <Avatar sx={{ bgcolor: SOFA5_COLORS.vàng đồng, width: 40, height: 40 }} />
                     <Typography variant="subtitle2" sx={{ fontWeight: 'fontWeightBold' }}>Khách hàng {i}</Typography>
-                    <Rating value={5} readOnly size="small" sx={{ color: SOFA5_COLORS.sage }} />
+                    <Rating value={5} readOnly size="small" sx={{ color: SOFA5_COLORS.vàng đồng }} />
                   </Stack>
-                  <Typography sx={{ color: 'text.secondary' }}>Sofa tuyệt vời, mang lại tĩnh lặng cho phòng khách. Linen êm, khung hinoki thơm.</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>Sofa tuyệt vời, mang lại tĩnh lặng cho phòng khách. Da bò Ý êm, khung gỗ óc chó thơm.</Typography>
                 </Stack>
               ))}
             </Stack>
@@ -153,7 +153,7 @@ export default function Page() {
             <Stack spacing={3} sx={{ maxWidth: 800 }}>
               <Stack spacing={2}>
                 <TextField fullWidth label="Câu hỏi của bạn" multiline rows={2} />
-                <Button variant="contained" sx={{ alignSelf: 'flex-start', bgcolor: SOFA5_COLORS.sageDeep, color: 'common.white' }}>Gửi câu hỏi</Button>
+                <Button variant="contained" sx={{ alignSelf: 'flex-start', bgcolor: SOFA5_COLORS.vàng đồngDeep, color: 'common.white' }}>Gửi câu hỏi</Button>
               </Stack>
               <Typography sx={{ color: 'text.secondary' }}>Chưa có câu hỏi. Hãy là người đầu tiên!</Typography>
             </Stack>
@@ -171,7 +171,7 @@ export default function Page() {
                   <Box component="img" src={p.image} alt={p.name} sx={{ width: 1, height: 1, objectFit: 'cover' }} />
                 </Box>
                 <Typography variant="caption" sx={{ fontWeight: 'fontWeightBold', color: 'text.primary' }}>{p.name}</Typography>
-                <Typography variant="caption" sx={{ color: SOFA5_COLORS.sageDeep }}>{formatSofa5Price(p.price)}</Typography>
+                <Typography variant="caption" sx={{ color: SOFA5_COLORS.vàng đồngDeep }}>{formatSofa5Price(p.price)}</Typography>
               </Stack>
             </Grid>
           ))}

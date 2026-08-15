@@ -18,13 +18,13 @@ import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page
 
 const SERVICES = [
   { title: 'Thiết kế nội thất', icon: 'solar:pen-bold-duotone', desc: 'Thiết kế không gian Mediterranean tổng thể.', path: '/sofa5/services/design', accent: SOFA5_COLORS.clay },
-  { title: 'Thiết kế sofa theo yêu cầu', icon: 'solar:armchair-bold-duotone', desc: 'Sofa Riviera theo kích thước, màu riêng.', path: '/sofa5/services/design/custom', accent: SOFA5_COLORS.sage },
+  { title: 'Thiết kế sofa theo yêu cầu', icon: 'solar:armchair-bold-duotone', desc: 'Sofa Riviera theo kích thước, màu riêng.', path: '/sofa5/services/design/custom', accent: SOFA5_COLORS.vàng đồng },
   { title: 'Thiết kế 3D', icon: 'solar:cube-bold-duotone', desc: 'Bản vẽ 3D trong 24h.', path: '/sofa5/services/design/3d', accent: SOFA5_COLORS.rust },
   { title: 'Tư vấn bố trí nội thất', icon: 'solar:widget-bold-duotone', desc: 'Tư vấn sắp xếp không gian Riviera.', path: '/sofa5/services/design/consult', accent: SOFA5_COLORS.clay },
-  { title: 'Dịch vụ sản xuất', icon: 'solar:tools-bold-duotone', desc: 'Gia công sofa Riviera chuyên nghiệp.', path: '/sofa5/services/production', accent: SOFA5_COLORS.sage },
+  { title: 'Dịch vụ sản xuất', icon: 'solar:tools-bold-duotone', desc: 'Gia công sofa Riviera chuyên nghiệp.', path: '/sofa5/services/production', accent: SOFA5_COLORS.vàng đồng },
   { title: 'Gia công sofa', icon: 'solar:hammer-bold-duotone', desc: 'Gia công theo bản vẽ.', path: '/sofa5/services/production/crafting', accent: SOFA5_COLORS.rust },
   { title: 'Sofa OEM', icon: 'solar:box-bold-duotone', desc: 'Sản xuất theo thương hiệu riêng.', path: '/sofa5/services/production/oem', accent: SOFA5_COLORS.clay },
-  { title: 'Sofa ODM', icon: 'solar:cart-bold-duotone', desc: 'Thiết kế và sản xuất ODM.', path: '/sofa5/services/production/odm', accent: SOFA5_COLORS.sage },
+  { title: 'Sofa ODM', icon: 'solar:cart-bold-duotone', desc: 'Thiết kế và sản xuất ODM.', path: '/sofa5/services/production/odm', accent: SOFA5_COLORS.vàng đồng },
   { title: 'Đặt hàng theo dự án', icon: 'solar:buildings-bold-duotone', desc: 'Sản xuất cho dự án lớn.', path: '/sofa5/services/production/project', accent: SOFA5_COLORS.rust },
 ];
 

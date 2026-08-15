@@ -57,9 +57,9 @@ export default function Page() {
               <Stack spacing={3}>
                 <Typography variant="h5" sx={{ fontWeight: 'fontWeightLight', color: SOFA5_COLORS.ink, fontFamily: theme.typography.fontSecondaryFamily }}>Bình luận ({comments.length})</Typography>
                 {comments.map((c, i) => (
-                  <Sofa5Card key={i} accent={[SOFA5_COLORS.clay, SOFA5_COLORS.sage, SOFA5_COLORS.rust][i % 3]}>
+                  <Sofa5Card key={i} accent={[SOFA5_COLORS.clay, SOFA5_COLORS.vàng đồng, SOFA5_COLORS.rust][i % 3]}>
                     <Stack direction="row" spacing={2}>
-                      <Avatar sx={{ bgcolor: [SOFA5_COLORS.clay, SOFA5_COLORS.sage, SOFA5_COLORS.rust][i % 3], color: 'common.white', fontWeight: 'fontWeightMedium' }}>{i + 1}</Avatar>
+                      <Avatar sx={{ bgcolor: [SOFA5_COLORS.clay, SOFA5_COLORS.vàng đồng, SOFA5_COLORS.rust][i % 3], color: 'common.white', fontWeight: 'fontWeightMedium' }}>{i + 1}</Avatar>
                       <Typography variant="body2" sx={{ color: SOFA5_COLORS.inkSoft }}>{c}</Typography>
                     </Stack>
                   </Sofa5Card>

@@ -43,14 +43,14 @@ export const SOFA5_POLICIES: Record<string, { title: string; body: string[] }> =
     body: [
       'Miễn phí giao lắp nội thành Hà Nội, TP.HCM, Đà Nẵng với đơn từ 15 triệu.',
       'Khu vực ngoại thành và tỉnh: 2-5 ngày làm việc, phí tính theo khoảng cách.',
-      'Sản phẩm đặt riêng (custom linen) cần 15-25 ngày sản xuất trước khi giao.',
+      'Sản phẩm đặt riêng (custom da bò Ý) cần 15-25 ngày sản xuất trước khi giao.',
     ],
   },
   warranty: {
     title: 'Chính sách bảo hành',
     body: [
       'Bảo hành 10 năm khung gỗ sồi và hệ đệm.',
-      'Bảo hành 2 năm cho lớp bọc linen và cơ chế recliner.',
+      'Bảo hành 2 năm cho lớp bọc da bò Ý và cơ chế recliner.',
       'Không áp dụng cho hư hỏng do tác động ngoại lực, hóa chất hoặc tự ý sửa chữa.',
     ],
   },
@@ -101,7 +101,7 @@ export const SOFA5_CART_ITEMS = SOFA5_PAGE_PRODUCTS.slice(0, 3).map((p, i) => ({
 
 export const SOFA5_ORDER_STEPS = [
   { label: 'Đã tiếp nhận', desc: 'Đơn hàng được xác nhận bởi Sofa5.' },
-  { label: 'Đang sản xuất', desc: 'Nghệ nhân cắt may linen và dựng khung.' },
+  { label: 'Đang sản xuất', desc: 'Nghệ nhân cắt may da bò Ý và dựng khung.' },
   { label: 'Kiểm định chất lượng', desc: 'Kiểm tra đường may, khung và đệm.' },
   { label: 'Đang vận chuyển', desc: 'Sản phẩm trên đường tới địa chỉ của bạn.' },
   { label: 'Đã giao', desc: 'Giao và lắp đặt hoàn tất.' },

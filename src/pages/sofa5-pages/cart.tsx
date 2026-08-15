@@ -52,7 +52,7 @@ export default function Page() {
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="body2" sx={{ color: SOFA5_COLORS.inkSoft }}>Giao lắp</Typography>
-                  <Typography variant="subtitle2" sx={{ color: SOFA5_COLORS.sageDeep }}>Miễn phí</Typography>
+                  <Typography variant="subtitle2" sx={{ color: SOFA5_COLORS.vàng đồngDeep }}>Miễn phí</Typography>
                 </Stack>
                 <Divider sx={{ borderStyle: 'dashed' }} />
                 <Stack direction="row" justifyContent="space-between">
