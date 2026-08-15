@@ -12,6 +12,9 @@ export function sofa19FormatPrice(value: number) {
 
 export const SOFA19_PAGE_IMAGES = {
   ...SOFA19_IMAGES,
+  story1: SOFA19_IMAGES.story,
+  story2: SOFA19_IMAGES.gallery2,
+  prod7: SOFA19_IMAGES.prod1,
   aboutHero: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920',
   historyHero: 'https://images.pexels.com/photos/1148955/pexels-photo-1148955.jpeg?auto=compress&cs=tinysrgb&w=1920',
   workshop: 'https://images.pexels.com/photos/6316515/pexels-photo-6316515.jpeg?auto=compress&cs=tinysrgb&w=1200',
