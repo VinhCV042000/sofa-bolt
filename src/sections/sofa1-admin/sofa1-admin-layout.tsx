@@ -56,7 +56,7 @@ function AdminNavContent() {
         </Box>
       </Stack>
 
-      <Scrollbar fillContent sx={{ px: 1.5, pb: 3 }}>
+      <Scrollbar sx={{ px: 1.5, pb: 3, flex: '1 1 auto' }}>
         <ListItemButton
           component={RouterLink}
           href="/sofa1/admin"
