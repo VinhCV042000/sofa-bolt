@@ -24,20 +24,6 @@ export const SOFA20_COLORS = {
   rust: '#8B4513',
   steel: '#6B6B6B',
   white: '#FFFFFF',
-  // --- page-tree aliases (sub-pages under /sofa20) ---
-  gold: '#C9A227',
-  goldLight: '#E0BC3A',
-  goldDark: '#A88618',
-  black: '#1A1816',
-  charcoalDeepAlt: '#151311',
-  emerald: '#B87333',
-  emeraldLight: '#D49A5C',
-  ivory: '#F0E6D2',
-  ivoryDark: '#E0D3B8',
-  pearl: '#F8F1E4',
-  burgundy: '#8B4513',
-  saffron: '#CC5500',
-  tealLight: '#D49A5C',
 };
 
 export const SOFA20_IMAGES = {
@@ -61,9 +47,6 @@ export const SOFA20_IMAGES = {
   gallery6: 'https://images.pexels.com/photos/38807188/pexels-photo-38807188.jpeg?auto=compress&cs=tinysrgb&w=700',
   cta: 'https://images.pexels.com/photos/6612784/pexels-photo-6612784.jpeg?auto=compress&cs=tinysrgb&w=1200',
   gear: 'https://images.pexels.com/photos/4760575/pexels-photo-4760575.jpeg?auto=compress&cs=tinysrgb&w=600',
-  lantern: 'https://images.pexels.com/photos/4760575/pexels-photo-4760575.jpeg?auto=compress&cs=tinysrgb&w=600',
-  zellige: 'https://images.pexels.com/photos/14724663/pexels-photo-14724663.jpeg?auto=compress&cs=tinysrgb&w=900',
-  deco1: 'https://images.pexels.com/photos/4760575/pexels-photo-4760575.jpeg?auto=compress&cs=tinysrgb&w=400',
 };
 
 export const SOFA20_PROMO_ICONS = [

@@ -1,852 +1,544 @@
-// SOFA1 ADMIN — cấu hình toàn bộ khu quản trị /sofa1/admin
-// Mỗi module gồm: KPI, cột bảng và dữ liệu mẫu.
+// SOFA1 ADMIN — cấu hình menu quản trị & dữ liệu mẫu cho từng màn hình
 // ----------------------------------------------------------------------
 
-export type AdminColumnType = 'text' | 'sub' | 'badge' | 'money' | 'number' | 'date';
-
-export type AdminColumn = {
-  key: string;
-  label: string;
-  type: AdminColumnType;
-};
-
-export type AdminModule = {
+export type Sofa1AdminSection = {
   slug: string;
-  title: string;
+  name: string;
   desc: string;
-  icon: string;
-  kpis: { label: string; value: string; delta?: string }[];
-  columns: AdminColumn[];
+  kpis: { label: string; value: string; note?: string }[];
+  columns: string[];
   rows: (string | number)[][];
 };
 
-export type AdminGroup = {
+export type Sofa1AdminGroup = {
   slug: string;
-  title: string;
+  name: string;
   icon: string;
-  modules: AdminModule[];
+  desc: string;
+  sections: Sofa1AdminSection[];
 };
 
-// helper: 'Tiêu đề|badge' -> column
-const col = (spec: string, index: number): AdminColumn => {
-  const [label, type = 'text'] = spec.split('|');
-  return { key: `c${index}`, label, type: type as AdminColumnType };
-};
-
-const mod = (
+const s = (
   slug: string,
-  title: string,
+  name: string,
   desc: string,
-  icon: string,
   kpis: [string, string, string?][],
-  columnSpecs: string[],
+  columns: string[],
   rows: (string | number)[][]
-): AdminModule => ({
+): Sofa1AdminSection => ({
   slug,
-  title,
+  name,
   desc,
-  icon,
-  kpis: kpis.map(([label, value, delta]) => ({ label, value, delta })),
-  columns: columnSpecs.map(col),
+  kpis: kpis.map(([label, value, note]) => ({ label, value, note })),
+  columns,
   rows,
 });
 
-// ----------------------------------------------------------------------
-// CMS
-// ----------------------------------------------------------------------
+const STATUS = ['Đang hoạt động', 'Bản nháp', 'Chờ duyệt', 'Tạm ẩn'];
 
-const CMS_PAGE_COLS = ['Tiêu đề|text', 'Đường dẫn|sub', 'Trạng thái|badge', 'Người sửa|text', 'Cập nhật|date'];
+const page = (title: string, path: string, i: number): (string | number)[] => [
+  title,
+  path,
+  STATUS[i % STATUS.length],
+  `${12 + i * 3}/08/2026`,
+  'Admin',
+];
 
-const cmsPage = (slug: string, title: string, desc: string, icon: string, rows: (string | number)[][]) =>
-  mod(
-    slug,
-    title,
-    desc,
-    icon,
-    [
-      ['Khối nội dung', `${rows.length}`, '+2'],
-      ['Đang xuất bản', `${rows.filter((r) => r[2] === 'Xuất bản').length}`],
-      ['Bản nháp', `${rows.filter((r) => r[2] === 'Nháp').length}`],
-      ['Lượt xem 30 ngày', '12.480', '+8%'],
+export const SOFA1_ADMIN_GROUPS: Sofa1AdminGroup[] = [
+  {
+    slug: 'cms',
+    name: 'CMS',
+    icon: 'solar:documents-bold-duotone',
+    desc: 'Quản trị nội dung toàn bộ website: trang, menu, banner, slider và SEO trang tĩnh.',
+    sections: [
+      s('home', 'Trang chủ', 'Bố cục và các khối nội dung trang chủ.',
+        [['Khối nội dung', '12'], ['Đang hiển thị', '10'], ['Lượt xem/tháng', '48.520']],
+        ['Khối', 'Vị trí', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        ['Hero Slider', 'Hero banner', 'Bộ sưu tập nổi bật', 'Sản phẩm bán chạy', 'Dự án tiêu biểu', 'Đánh giá khách hàng', 'Blog mới nhất', 'Đăng ký nhận tin']
+          .map((t, i) => [t, `Section ${i + 1}`, STATUS[i % STATUS.length], `${5 + i}/08/2026`, 'Admin'])),
+      s('about', 'Trang giới thiệu', 'Nội dung câu chuyện thương hiệu, xưởng sản xuất, đội ngũ.',
+        [['Trang con', '6'], ['Đang hiển thị', '6'], ['Lượt xem/tháng', '9.140']],
+        ['Trang', 'Đường dẫn', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        [['Câu chuyện thương hiệu', '/sofa1/about'], ['Lịch sử phát triển', '/sofa1/about/history'],
+         ['Xưởng sản xuất', '/sofa1/about/workshop'], ['Công nghệ', '/sofa1/about/technology'],
+         ['Đội ngũ', '/sofa1/about/team'], ['Chứng nhận', '/sofa1/about/certificates']]
+          .map(([t, p], i) => page(t, p, i))),
+      s('contact', 'Trang liên hệ', 'Thông tin liên hệ, bản đồ, biểu mẫu.',
+        [['Biểu mẫu', '3'], ['Yêu cầu mới', '27'], ['Thời gian phản hồi', '1,8 giờ']],
+        ['Mục', 'Đường dẫn', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        [['Form liên hệ', '/sofa1/contact'], ['Bản đồ showroom', '/sofa1/contact#map'],
+         ['Hotline & email', '/sofa1/contact#info'], ['Đặt lịch tư vấn', '/sofa1/showrooms/consult']]
+          .map(([t, p], i) => page(t, p, i))),
+      s('policy', 'Trang chính sách', 'Bảo hành, đổi trả, vận chuyển, thanh toán, bảo mật.',
+        [['Chính sách', '6'], ['Đã công bố', '5'], ['Chờ duyệt', '1']],
+        ['Chính sách', 'Đường dẫn', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        [['Chính sách bảo hành', '/sofa1/policy/warranty'], ['Chính sách đổi trả', '/sofa1/policy/return'],
+         ['Chính sách vận chuyển', '/sofa1/policy/shipping'], ['Chính sách thanh toán', '/sofa1/policy/payment'],
+         ['Chính sách bảo mật', '/sofa1/policy/privacy'], ['Chính sách đại lý', '/sofa1/b2b/policy']]
+          .map(([t, p], i) => page(t, p, i))),
+      s('terms', 'Trang điều khoản', 'Điều khoản sử dụng, mua bán, thành viên.',
+        [['Văn bản', '4'], ['Phiên bản mới nhất', 'v3.2'], ['Hiệu lực', '01/08/2026']],
+        ['Điều khoản', 'Đường dẫn', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        [['Điều khoản sử dụng', '/sofa1/policy/terms'], ['Điều khoản mua bán', '/sofa1/policy/purchase'],
+         ['Điều khoản thành viên', '/sofa1/policy/member'], ['Thoả thuận đại lý', '/sofa1/policy/dealer']]
+          .map(([t, p], i) => page(t, p, i))),
+      s('faq', 'Trang FAQ', 'Câu hỏi thường gặp theo nhóm chủ đề.',
+        [['Câu hỏi', '38'], ['Nhóm chủ đề', '6'], ['Hữu ích', '92%']],
+        ['Câu hỏi', 'Nhóm', 'Trạng thái', 'Cập nhật', 'Lượt xem'],
+        [['Da bò thật khác da công nghiệp?', 'Chất liệu', 1420], ['Có thể đổi trả không?', 'Đổi trả', 980],
+         ['Bảo hành gồm những gì?', 'Bảo hành', 1310], ['Giao hàng bao lâu?', 'Vận chuyển', 2050],
+         ['Có trả góp không?', 'Thanh toán', 1730], ['Đặt đóng theo yêu cầu?', 'Sản phẩm', 860]]
+          .map(([q, g, v], i) => [q, g, STATUS[i % 2], `${9 + i}/08/2026`, v])),
+      s('blog', 'Trang blog', 'Bài viết, chuyên mục, tác giả và lịch xuất bản.',
+        [['Bài viết', '124'], ['Chuyên mục', '8'], ['Bài chờ duyệt', '5']],
+        ['Tiêu đề', 'Chuyên mục', 'Trạng thái', 'Xuất bản', 'Lượt đọc'],
+        [['Chọn sofa cho phòng khách nhỏ', 'Tư vấn', 4120], ['Bảo quản sofa da đúng cách', 'Chăm sóc', 3380],
+         ['Xu hướng nội thất 2026', 'Xu hướng', 5210], ['Phối màu sofa với tường', 'Thiết kế', 2760],
+         ['Sofa vải hay sofa da?', 'Tư vấn', 6180], ['Quy trình đóng sofa thủ công', 'Hậu trường', 1940]]
+          .map(([t, c, v], i) => [t, c, STATUS[i % 3], `${3 + i}/08/2026`, v])),
+      s('menu', 'Menu', 'Cấu trúc menu chính, menu chân trang và menu di động.',
+        [['Menu', '4'], ['Mục menu', '58'], ['Cấp sâu nhất', '3']],
+        ['Menu', 'Vị trí', 'Số mục', 'Trạng thái', 'Cập nhật'],
+        [['Menu chính', 'Header', 24], ['Menu chân trang', 'Footer', 18],
+         ['Menu di động', 'Mobile', 22], ['Menu tài khoản', 'User', 9]]
+          .map(([n, p, c], i) => [n, p, c, STATUS[i % 2], `${11 + i}/08/2026`])),
+      s('banner', 'Banner', 'Banner quảng cáo theo vị trí và thời gian hiển thị.',
+        [['Banner', '16'], ['Đang chạy', '9'], ['CTR trung bình', '3,4%']],
+        ['Banner', 'Vị trí', 'Thời gian', 'Trạng thái', 'CTR'],
+        [['Ưu đãi tháng 8', 'Top bar'], ['Sofa da nhập khẩu', 'Sidebar'], ['Miễn phí giao lắp', 'Giữa trang'],
+         ['Bộ sưu tập Milano', 'Trang sản phẩm'], ['Đại lý toàn quốc', 'Footer']]
+          .map(([n, p], i) => [n, p, `01/08 - ${20 + i}/09`, STATUS[i % 2], `${(2.4 + i * 0.4).toFixed(1)}%`])),
+      s('slider', 'Slider', 'Slider trang chủ và trang danh mục.',
+        [['Slider', '5'], ['Slide', '21'], ['Tự động chuyển', '6 giây']],
+        ['Slider', 'Số slide', 'Trang áp dụng', 'Trạng thái', 'Cập nhật'],
+        [['Hero trang chủ', 5, 'Trang chủ'], ['Bộ sưu tập', 4, 'Collections'],
+         ['Dự án tiêu biểu', 6, 'Projects'], ['Showroom', 3, 'Showrooms'], ['Khuyến mãi', 3, 'Promotions']]
+          .map(([n, c, p], i) => [n, c, p, STATUS[i % 2], `${7 + i}/08/2026`])),
+      s('seo', 'SEO', 'Thẻ tiêu đề, mô tả, OG cho các trang nội dung.',
+        [['Trang đã tối ưu', '86%'], ['Thiếu meta', '14'], ['Điểm SEO', '91/100']],
+        ['Trang', 'Title', 'Độ dài mô tả', 'Trạng thái', 'Điểm'],
+        [['Trang chủ', 'Sofa thủ công cao cấp | Sofa1', 152], ['Sản phẩm', 'Sofa da & vải nhập khẩu', 148],
+         ['Bộ sưu tập', 'Bộ sưu tập sofa Milano', 139], ['Blog', 'Kiến thức nội thất', 126],
+         ['Liên hệ', 'Liên hệ showroom Sofa1', 118]]
+          .map(([p, t, l], i) => [p, t, `${l} ký tự`, i === 4 ? 'Cần tối ưu' : 'Tốt', 88 + i])),
+      s('static', 'Trang tĩnh', 'Các trang landing và trang nội dung độc lập.',
+        [['Trang tĩnh', '11'], ['Đang hiển thị', '9'], ['Bản nháp', '2']],
+        ['Trang', 'Đường dẫn', 'Trạng thái', 'Cập nhật', 'Người sửa'],
+        [['Hướng dẫn mua hàng', '/sofa1/support'], ['Tra cứu đơn hàng', '/sofa1/orders/tracking'],
+         ['Thanh toán', '/sofa1/payment'], ['Tuyển dụng', '/sofa1/careers'], ['Khuyến mãi', '/sofa1/promotions']]
+          .map(([t, p], i) => page(t, p, i))),
     ],
-    CMS_PAGE_COLS,
-    rows
-  );
-
-const CMS: AdminGroup = {
-  slug: 'cms',
-  title: 'CMS',
-  icon: 'solar:documents-bold-duotone',
-  modules: [
-    cmsPage('home', 'Trang chủ', 'Quản lý các khối nội dung trang chủ Casa Sofa.', 'solar:home-2-bold-duotone', [
-      ['Hero banner chính', '/sofa1', 'Xuất bản', 'Ngọc Anh', '12/08/2026'],
-      ['Danh mục nổi bật', '/sofa1#categories', 'Xuất bản', 'Minh Quân', '10/08/2026'],
-      ['Sản phẩm bán chạy', '/sofa1#products', 'Xuất bản', 'Ngọc Anh', '09/08/2026'],
-      ['Khối câu chuyện thương hiệu', '/sofa1#about', 'Nháp', 'Thu Hà', '05/08/2026'],
-      ['Cảm nhận khách hàng', '/sofa1#testimonials', 'Xuất bản', 'Minh Quân', '01/08/2026'],
-    ]),
-    cmsPage('about', 'Trang giới thiệu', 'Nội dung giới thiệu công ty và các trang con.', 'solar:info-circle-bold-duotone', [
-      ['Giới thiệu công ty', '/sofa1/about', 'Xuất bản', 'Thu Hà', '11/08/2026'],
-      ['Lịch sử hình thành', '/sofa1/about/history', 'Xuất bản', 'Thu Hà', '11/08/2026'],
-      ['Tầm nhìn & sứ mệnh', '/sofa1/about/vision', 'Xuất bản', 'Ngọc Anh', '08/08/2026'],
-      ['Nhà máy sản xuất', '/sofa1/about/factory', 'Nháp', 'Minh Quân', '02/08/2026'],
-      ['Đội ngũ nhân sự', '/sofa1/about/team', 'Xuất bản', 'Thu Hà', '28/07/2026'],
-    ]),
-    cmsPage('contact', 'Trang liên hệ', 'Thông tin liên hệ, bản đồ và biểu mẫu.', 'solar:phone-bold-duotone', [
-      ['Thông tin liên hệ', '/sofa1/contact', 'Xuất bản', 'Ngọc Anh', '12/08/2026'],
-      ['Biểu mẫu tư vấn', '/sofa1/contact#form', 'Xuất bản', 'Minh Quân', '07/08/2026'],
-      ['Bản đồ showroom', '/sofa1/contact#map', 'Xuất bản', 'Thu Hà', '30/07/2026'],
-    ]),
-    cmsPage('policy', 'Trang chính sách', 'Chính sách bảo hành, đổi trả, vận chuyển, bảo mật.', 'solar:shield-check-bold-duotone', [
-      ['Chính sách bảo hành', '/sofa1/policy/warranty', 'Xuất bản', 'Thu Hà', '06/08/2026'],
-      ['Chính sách đổi trả', '/sofa1/policy/return', 'Xuất bản', 'Thu Hà', '06/08/2026'],
-      ['Chính sách vận chuyển', '/sofa1/policy/shipping', 'Xuất bản', 'Ngọc Anh', '04/08/2026'],
-      ['Chính sách bảo mật', '/sofa1/policy/privacy', 'Nháp', 'Minh Quân', '29/07/2026'],
-    ]),
-    cmsPage('terms', 'Trang điều khoản', 'Điều khoản sử dụng và điều kiện giao dịch.', 'solar:document-text-bold-duotone', [
-      ['Điều khoản sử dụng', '/sofa1/policy/terms', 'Xuất bản', 'Thu Hà', '05/08/2026'],
-      ['Điều kiện thanh toán', '/sofa1/policy/payment-terms', 'Xuất bản', 'Ngọc Anh', '03/08/2026'],
-      ['Điều khoản B2B', '/sofa1/b2b/policy', 'Xuất bản', 'Minh Quân', '01/08/2026'],
-    ]),
-    cmsPage('faq', 'Trang FAQ', 'Bộ câu hỏi thường gặp theo chủ đề.', 'solar:question-circle-bold-duotone', [
-      ['FAQ mua hàng', '/sofa1/faq#mua-hang', 'Xuất bản', 'Ngọc Anh', '10/08/2026'],
-      ['FAQ bảo hành', '/sofa1/faq#bao-hanh', 'Xuất bản', 'Thu Hà', '09/08/2026'],
-      ['FAQ vận chuyển', '/sofa1/faq#van-chuyen', 'Xuất bản', 'Thu Hà', '09/08/2026'],
-      ['FAQ đặt đóng riêng', '/sofa1/faq#dat-dong', 'Nháp', 'Minh Quân', '27/07/2026'],
-    ]),
-    cmsPage('blog', 'Trang blog', 'Bài viết, chuyên mục và lịch xuất bản.', 'solar:notebook-bold-duotone', [
-      ['Cách chọn sofa cho phòng khách nhỏ', '/sofa1/blog/1', 'Xuất bản', 'Thu Hà', '12/08/2026'],
-      ['Phân biệt da bò thật và da PU', '/sofa1/blog/2', 'Xuất bản', 'Ngọc Anh', '08/08/2026'],
-      ['Bảo dưỡng sofa vải linen', '/sofa1/blog/3', 'Nháp', 'Minh Quân', '06/08/2026'],
-      ['Xu hướng nội thất 2026', '/sofa1/blog/4', 'Chờ duyệt', 'Thu Hà', '02/08/2026'],
-    ]),
-    mod(
-      'menu',
-      'Menu',
-      'Cấu trúc menu header, footer và menu di động.',
-      'solar:hamburger-menu-bold-duotone',
-      [['Menu đang dùng', '4'], ['Mục menu', '48'], ['Cấp sâu nhất', '3'], ['Liên kết hỏng', '0']],
-      ['Tên menu|text', 'Vị trí|sub', 'Số mục|number', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['Menu chính', 'header', 9, 'Hoạt động', '12/08/2026'],
-        ['Menu sản phẩm (mega)', 'header', 24, 'Hoạt động', '10/08/2026'],
-        ['Menu footer', 'footer', 12, 'Hoạt động', '04/08/2026'],
-        ['Menu di động', 'mobile', 9, 'Tạm dừng', '29/07/2026'],
-      ]
-    ),
-    mod(
-      'banner',
-      'Banner',
-      'Banner quảng cáo theo vị trí và thời gian hiển thị.',
-      'solar:gallery-wide-bold-duotone',
-      [['Banner hoạt động', '7'], ['Sắp hết hạn', '2'], ['CTR trung bình', '3,4%', '+0,6%'], ['Lượt hiển thị', '186.320']],
-      ['Tên banner|text', 'Vị trí|sub', 'Trạng thái|badge', 'Lượt click|number', 'Hết hạn|date'],
-      [
-        ['Ưu đãi tháng 8', 'home-top', 'Hoạt động', 4820, '31/08/2026'],
-        ['Bộ sưu tập da bò Ý', 'category-sidebar', 'Hoạt động', 1960, '15/09/2026'],
-        ['Miễn phí vận chuyển HN', 'checkout', 'Hoạt động', 980, '30/09/2026'],
-        ['Khai trương showroom Đà Nẵng', 'popup', 'Tạm dừng', 2410, '20/07/2026'],
-      ]
-    ),
-    mod(
-      'slider',
-      'Slider',
-      'Slide hero trang chủ và trang danh mục.',
-      'solar:slider-horizontal-bold-duotone',
-      [['Slider', '3'], ['Tổng slide', '11'], ['Thời gian chuyển', '6s'], ['Tỉ lệ tương tác', '5,1%']],
-      ['Tên slider|text', 'Trang áp dụng|sub', 'Số slide|number', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['Hero trang chủ', '/sofa1', 5, 'Hoạt động', '12/08/2026'],
-        ['Slider bộ sưu tập', '/sofa1/collections', 4, 'Hoạt động', '06/08/2026'],
-        ['Slider showroom', '/sofa1/showrooms', 2, 'Nháp', '28/07/2026'],
-      ]
-    ),
-    mod(
-      'seo',
-      'SEO',
-      'Thẻ meta mặc định và cấu hình chia sẻ mạng xã hội.',
-      'solar:magnifer-bold-duotone',
-      [['Trang đã tối ưu', '128'], ['Thiếu meta', '6'], ['Điểm SEO', '92/100', '+4'], ['Từ khóa top 10', '43']],
-      ['Trang|text', 'Meta title|sub', 'Độ dài|number', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['Trang chủ', 'Casa Sofa - Sofa da bò thủ công cao cấp', 46, 'Tốt', '12/08/2026'],
-        ['Danh mục sofa da', 'Sofa da bò thật nhập khẩu Ý | Casa Sofa', 42, 'Tốt', '09/08/2026'],
-        ['Trang liên hệ', 'Liên hệ Casa Sofa', 21, 'Cần bổ sung', '01/08/2026'],
-        ['Blog', 'Kiến thức nội thất & sofa | Casa Sofa', 39, 'Tốt', '30/07/2026'],
-      ]
-    ),
-    cmsPage('static', 'Trang tĩnh', 'Các trang nội dung độc lập.', 'solar:file-bold-duotone', [
-      ['Hướng dẫn mua hàng', '/sofa1/support', 'Xuất bản', 'Ngọc Anh', '11/08/2026'],
-      ['Tra cứu bảo hành', '/sofa1/support#warranty', 'Xuất bản', 'Thu Hà', '07/08/2026'],
-      ['Tuyển dụng', '/sofa1/careers', 'Xuất bản', 'Minh Quân', '03/08/2026'],
-      ['Đối tác thiết kế', '/sofa1/b2b', 'Nháp', 'Ngọc Anh', '26/07/2026'],
-    ]),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// SẢN PHẨM
-// ----------------------------------------------------------------------
-
-const PRODUCTS: AdminGroup = {
-  slug: 'products',
-  title: 'Sản phẩm',
-  icon: 'solar:box-bold-duotone',
-  modules: [
-    mod(
-      'categories',
-      'Danh mục',
-      'Cây danh mục sản phẩm và số lượng SKU.',
-      'solar:widget-4-bold-duotone',
-      [['Danh mục', '12'], ['Danh mục cha', '4'], ['SKU liên kết', '186'], ['Ẩn', '1']],
-      ['Danh mục|text', 'Slug|sub', 'Danh mục cha|text', 'Số SKU|number', 'Trạng thái|badge'],
-      [
-        ['Sofa da bò', 'sofa-da', '—', 48, 'Hiển thị'],
-        ['Sofa vải linen', 'sofa-vai', '—', 52, 'Hiển thị'],
-        ['Sofa góc L', 'sofa-goc-l', 'Sofa da bò', 34, 'Hiển thị'],
-        ['Sofa đơn thư giãn', 'sofa-don', '—', 28, 'Hiển thị'],
-        ['Phụ kiện & gối tựa', 'phu-kien', '—', 24, 'Ẩn'],
-      ]
-    ),
-    mod(
-      'items',
-      'Sản phẩm',
-      'Danh sách sản phẩm, giá bán và tình trạng đăng bán.',
-      'solar:sofa-bold-duotone',
-      [['Tổng sản phẩm', '186'], ['Đang bán', '171'], ['Hết hàng', '9'], ['Chờ duyệt', '6']],
-      ['Sản phẩm|text', 'SKU|sub', 'Danh mục|text', 'Giá bán|money', 'Trạng thái|badge'],
-      [
-        ['Sofa Roma Da Bò Nâu', 'CS-ROM-001', 'Sofa da bò', 28500000, 'Đang bán'],
-        ['Sofa Milano Linen Be', 'CS-MIL-014', 'Sofa vải linen', 12500000, 'Đang bán'],
-        ['Sofa Góc Torino', 'CS-TOR-032', 'Sofa góc L', 34900000, 'Đang bán'],
-        ['Ghế Đơn Firenze', 'CS-FIR-008', 'Sofa đơn thư giãn', 8900000, 'Hết hàng'],
-        ['Sofa Napoli Da Bò Đen', 'CS-NAP-021', 'Sofa da bò', 31200000, 'Chờ duyệt'],
-      ]
-    ),
-    mod(
-      'attributes',
-      'Thuộc tính',
-      'Bộ thuộc tính dùng để tạo biến thể.',
-      'solar:tuning-2-bold-duotone',
-      [['Thuộc tính', '9'], ['Giá trị', '64'], ['Dùng cho lọc', '6'], ['Bắt buộc', '3']],
-      ['Thuộc tính|text', 'Mã|sub', 'Số giá trị|number', 'Dùng lọc|badge', 'Cập nhật|date'],
-      [
-        ['Chất liệu', 'material', 8, 'Có', '10/08/2026'],
-        ['Màu sắc', 'color', 14, 'Có', '10/08/2026'],
-        ['Kích thước', 'size', 11, 'Có', '05/08/2026'],
-        ['Kiểu chân', 'leg-type', 6, 'Không', '01/08/2026'],
-        ['Độ cứng đệm', 'firmness', 4, 'Có', '25/07/2026'],
-      ]
-    ),
-    mod(
-      'variants',
-      'Biến thể sản phẩm',
-      'Biến thể theo màu, kích thước và chất liệu.',
-      'solar:layers-bold-duotone',
-      [['Biến thể', '742'], ['Đang bán', '698'], ['Ngừng bán', '31'], ['Chờ ảnh', '13']],
-      ['Biến thể|text', 'SKU|sub', 'Tùy chọn|text', 'Giá|money', 'Tồn|number'],
-      [
-        ['Sofa Roma - Nâu 220cm', 'CS-ROM-001-N220', 'Nâu / 220cm', 28500000, 12],
-        ['Sofa Roma - Đen 220cm', 'CS-ROM-001-D220', 'Đen / 220cm', 28500000, 5],
-        ['Sofa Milano - Be 180cm', 'CS-MIL-014-B180', 'Be / 180cm', 12500000, 24],
-        ['Sofa Milano - Xám 200cm', 'CS-MIL-014-X200', 'Xám / 200cm', 13800000, 3],
-        ['Ghế Firenze - Nâu', 'CS-FIR-008-N', 'Nâu / 1 chỗ', 8900000, 0],
-      ]
-    ),
-    mod(
-      'stock',
-      'Kho hàng',
-      'Tồn kho theo sản phẩm và điểm lưu trữ.',
-      'solar:box-minimalistic-bold-duotone',
-      [['SKU tồn kho', '742'], ['Sắp hết', '18'], ['Hết hàng', '9'], ['Giá trị tồn', '18,4 tỷ']],
-      ['SKU|text', 'Kho|sub', 'Tồn thực|number', 'Đang giữ|number', 'Trạng thái|badge'],
-      [
-        ['CS-ROM-001-N220', 'Kho Hà Nội', 12, 3, 'Đủ hàng'],
-        ['CS-MIL-014-B180', 'Kho Hà Nội', 24, 6, 'Đủ hàng'],
-        ['CS-MIL-014-X200', 'Kho HCM', 3, 2, 'Sắp hết'],
-        ['CS-TOR-032-N', 'Kho Đà Nẵng', 7, 1, 'Đủ hàng'],
-        ['CS-FIR-008-N', 'Kho HCM', 0, 0, 'Hết hàng'],
-      ]
-    ),
-    mod(
-      'pricing',
-      'Giá bán',
-      'Bảng giá niêm yết, giá khuyến mãi và giá đại lý.',
-      'solar:tag-price-bold-duotone',
-      [['Bảng giá', '4'], ['SKU giảm giá', '86'], ['Mức giảm TB', '18%'], ['Biên lợi nhuận', '32%']],
-      ['SKU|text', 'Bảng giá|sub', 'Giá niêm yết|money', 'Giá bán|money', 'Hiệu lực|date'],
-      [
-        ['CS-ROM-001', 'Bán lẻ', 36000000, 28500000, '31/08/2026'],
-        ['CS-MIL-014', 'Bán lẻ', 16800000, 12500000, '31/08/2026'],
-        ['CS-TOR-032', 'Bán lẻ', 39900000, 34900000, '15/09/2026'],
-        ['CS-ROM-001', 'Đại lý B2B', 36000000, 24500000, '31/12/2026'],
-        ['CS-MIL-014', 'Dự án', 16800000, 11200000, '31/12/2026'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// KHO HÀNG
-// ----------------------------------------------------------------------
-
-const WAREHOUSE: AdminGroup = {
-  slug: 'warehouse',
-  title: 'Kho hàng',
-  icon: 'solar:warehouse-bold-duotone',
-  modules: [
-    mod(
-      'overview',
-      'Kho hàng',
-      'Nhập xuất tồn, điều chuyển và kiểm kê giữa các kho.',
-      'solar:warehouse-bold-duotone',
-      [['Điểm kho', '4'], ['Phiếu nhập tháng', '38'], ['Phiếu xuất tháng', '126'], ['Chênh lệch kiểm kê', '0,4%']],
-      ['Mã phiếu|text', 'Loại|badge', 'Kho|sub', 'Số lượng|number', 'Ngày|date'],
-      [
-        ['PN-2608-014', 'Nhập', 'Kho Hà Nội', 48, '12/08/2026'],
-        ['PX-2608-092', 'Xuất', 'Kho Hà Nội', 12, '12/08/2026'],
-        ['PC-2608-006', 'Điều chuyển', 'HN → ĐN', 9, '11/08/2026'],
-        ['PK-2608-002', 'Kiểm kê', 'Kho HCM', 320, '09/08/2026'],
-        ['PN-2608-013', 'Nhập', 'Kho HCM', 64, '07/08/2026'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// ĐƠN HÀNG
-// ----------------------------------------------------------------------
-
-const ORDERS: AdminGroup = {
-  slug: 'orders',
-  title: 'Đơn hàng',
-  icon: 'solar:cart-large-2-bold-duotone',
-  modules: [
-    mod(
-      'list',
-      'Đơn hàng',
-      'Toàn bộ đơn hàng và trạng thái xử lý.',
-      'solar:bill-list-bold-duotone',
-      [['Đơn tháng này', '312', '+14%'], ['Chờ xử lý', '27'], ['Giá trị TB', '18,6 tr'], ['Tỉ lệ hủy', '2,1%']],
-      ['Mã đơn|text', 'Khách hàng|sub', 'Giá trị|money', 'Trạng thái|badge', 'Ngày đặt|date'],
-      [
-        ['CS-26081201', 'Nguyễn Thu Trang', 28500000, 'Đang giao', '12/08/2026'],
-        ['CS-26081198', 'Trần Minh Đức', 41300000, 'Chờ xử lý', '12/08/2026'],
-        ['CS-26081187', 'Lê Hoàng Nam', 12500000, 'Hoàn tất', '11/08/2026'],
-        ['CS-26081172', 'Công ty CP Nội Thất An Phú', 186000000, 'Đang sản xuất', '09/08/2026'],
-        ['CS-26081160', 'Phạm Thùy Linh', 8900000, 'Đã hủy', '08/08/2026'],
-      ]
-    ),
-    mod(
-      'payments',
-      'Thanh toán',
-      'Giao dịch thanh toán theo cổng và trạng thái đối soát.',
-      'solar:card-bold-duotone',
-      [['Đã thu tháng', '5,82 tỷ', '+11%'], ['Chờ đối soát', '184 tr'], ['Thất bại', '9'], ['Hoàn tất', '298']],
-      ['Mã giao dịch|text', 'Đơn hàng|sub', 'Cổng|text', 'Số tiền|money', 'Trạng thái|badge'],
-      [
-        ['TT-908212', 'CS-26081201', 'VNPay', 28500000, 'Thành công'],
-        ['TT-908205', 'CS-26081198', 'Chuyển khoản', 20000000, 'Chờ đối soát'],
-        ['TT-908191', 'CS-26081187', 'Momo', 12500000, 'Thành công'],
-        ['TT-908180', 'CS-26081172', 'Chuyển khoản', 93000000, 'Thành công'],
-        ['TT-908166', 'CS-26081160', 'Thẻ quốc tế', 8900000, 'Thất bại'],
-      ]
-    ),
-    mod(
-      'shipping',
-      'Vận chuyển',
-      'Vận đơn, đối tác giao hàng và lịch lắp đặt.',
-      'solar:delivery-bold-duotone',
-      [['Vận đơn đang chạy', '64'], ['Giao đúng hẹn', '96,2%'], ['Chờ lắp đặt', '18'], ['Sự cố', '3']],
-      ['Vận đơn|text', 'Đơn hàng|sub', 'Đối tác|text', 'Khu vực|text', 'Trạng thái|badge'],
-      [
-        ['VD-77120', 'CS-26081201', 'Đội xe Casa', 'Hà Nội', 'Đang giao'],
-        ['VD-77118', 'CS-26081187', 'Viettel Post', 'Hải Phòng', 'Đã giao'],
-        ['VD-77111', 'CS-26081172', 'Đội xe Casa', 'TP.HCM', 'Chờ lắp đặt'],
-        ['VD-77104', 'CS-26081155', 'GHN', 'Đà Nẵng', 'Sự cố'],
-      ]
-    ),
-    mod(
-      'refunds',
-      'Hoàn tiền',
-      'Yêu cầu hoàn tiền và tiến độ xử lý.',
-      'solar:banknote-2-bold-duotone',
-      [['Yêu cầu tháng', '14'], ['Đã hoàn', '11'], ['Số tiền hoàn', '96,4 tr'], ['Thời gian TB', '2,4 ngày']],
-      ['Mã yêu cầu|text', 'Đơn hàng|sub', 'Lý do|text', 'Số tiền|money', 'Trạng thái|badge'],
-      [
-        ['HT-3012', 'CS-26081160', 'Khách hủy đơn', 8900000, 'Đã hoàn'],
-        ['HT-3011', 'CS-26081142', 'Giao chậm', 3000000, 'Đang xử lý'],
-        ['HT-3009', 'CS-26081120', 'Sai màu', 12500000, 'Đã hoàn'],
-        ['HT-3006', 'CS-26081098', 'Lỗi khung gỗ', 28500000, 'Chờ duyệt'],
-      ]
-    ),
-    mod(
-      'returns',
-      'Đổi trả',
-      'Phiếu đổi trả, kiểm tra hàng và kết quả xử lý.',
-      'solar:refresh-square-bold-duotone',
-      [['Phiếu đổi trả', '22'], ['Đổi sản phẩm', '13'], ['Trả hàng', '9'], ['Tỉ lệ đổi trả', '1,8%']],
-      ['Mã phiếu|text', 'Đơn hàng|sub', 'Sản phẩm|text', 'Hình thức|badge', 'Ngày|date'],
-      [
-        ['DT-1204', 'CS-26081120', 'Sofa Milano Linen Be', 'Đổi', '11/08/2026'],
-        ['DT-1203', 'CS-26081098', 'Sofa Roma Da Bò Nâu', 'Trả', '09/08/2026'],
-        ['DT-1201', 'CS-26081077', 'Ghế Đơn Firenze', 'Đổi', '06/08/2026'],
-        ['DT-1198', 'CS-26081040', 'Sofa Góc Torino', 'Trả', '02/08/2026'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// CRM
-// ----------------------------------------------------------------------
-
-const CRM: AdminGroup = {
-  slug: 'crm',
-  title: 'CRM',
-  icon: 'solar:users-group-two-rounded-bold-duotone',
-  modules: [
-    mod(
-      'customers',
-      'Khách hàng',
-      'Hồ sơ khách hàng, phân hạng và giá trị vòng đời.',
-      'solar:user-id-bold-duotone',
-      [['Khách hàng', '8.420', '+256'], ['Khách VIP', '318'], ['Mua lại', '24%'], ['LTV trung bình', '31,2 tr']],
-      ['Khách hàng|text', 'Điện thoại|sub', 'Hạng|badge', 'Tổng chi tiêu|money', 'Đơn gần nhất|date'],
-      [
-        ['Nguyễn Thu Trang', '0912 xxx 481', 'VIP', 96400000, '12/08/2026'],
-        ['Trần Minh Đức', '0987 xxx 220', 'Thân thiết', 41300000, '12/08/2026'],
-        ['Lê Hoàng Nam', '0903 xxx 776', 'Mới', 12500000, '11/08/2026'],
-        ['Công ty CP Nội Thất An Phú', '0243 xxx 118', 'Doanh nghiệp', 682000000, '09/08/2026'],
-        ['Phạm Thùy Linh', '0977 xxx 302', 'Thân thiết', 38900000, '08/08/2026'],
-      ]
-    ),
-    mod(
-      'leads',
-      'Leads',
-      'Khách tiềm năng từ form, hotline và showroom.',
-      'solar:magnet-bold-duotone',
-      [['Leads tháng', '486', '+18%'], ['Đang chăm sóc', '132'], ['Chuyển đổi', '21,4%'], ['Nguồn tốt nhất', 'Google Ads']],
-      ['Tên|text', 'Nguồn|sub', 'Nhu cầu|text', 'Nhân viên|text', 'Trạng thái|badge'],
-      [
-        ['Vũ Đình Khoa', 'Google Ads', 'Sofa góc phòng khách', 'Ngọc Anh', 'Mới'],
-        ['Đỗ Mai Chi', 'Facebook', 'Sofa da 3 chỗ', 'Minh Quân', 'Đang tư vấn'],
-        ['Hoàng Văn Sơn', 'Showroom HN', 'Đóng theo yêu cầu', 'Thu Hà', 'Đã báo giá'],
-        ['Cty TNHH Hòa Bình', 'Giới thiệu', 'Dự án khách sạn 40 phòng', 'Minh Quân', 'Đàm phán'],
-        ['Nguyễn Bảo Ngọc', 'Zalo OA', 'Ghế đơn thư giãn', 'Ngọc Anh', 'Nguội'],
-      ]
-    ),
-    mod(
-      'purchase-history',
-      'Lịch sử mua hàng',
-      'Dòng thời gian giao dịch của từng khách hàng.',
-      'solar:history-bold-duotone',
-      [['Giao dịch', '12.640'], ['Khách mua lại', '2.014'], ['Chu kỳ mua lại', '14 tháng'], ['Giá trị TB', '18,6 tr']],
-      ['Khách hàng|text', 'Đơn hàng|sub', 'Sản phẩm|text', 'Giá trị|money', 'Ngày|date'],
-      [
-        ['Nguyễn Thu Trang', 'CS-26081201', 'Sofa Roma Da Bò Nâu', 28500000, '12/08/2026'],
-        ['Nguyễn Thu Trang', 'CS-25110455', 'Ghế Đơn Firenze', 8900000, '04/11/2025'],
-        ['Trần Minh Đức', 'CS-26081198', 'Sofa Góc Torino', 41300000, '12/08/2026'],
-        ['Phạm Thùy Linh', 'CS-26071033', 'Sofa Milano Linen Be', 12500000, '19/07/2026'],
-      ]
-    ),
-    mod(
-      'care',
-      'Chăm sóc khách hàng',
-      'Ticket hỗ trợ, bảo hành và mức độ hài lòng.',
-      'solar:chat-round-call-bold-duotone',
-      [['Ticket mở', '38'], ['Đã xử lý tháng', '214'], ['Phản hồi TB', '46 phút'], ['CSAT', '4,8/5']],
-      ['Ticket|text', 'Khách hàng|sub', 'Chủ đề|text', 'Ưu tiên|badge', 'Cập nhật|date'],
-      [
-        ['TK-8821', 'Lê Hoàng Nam', 'Hỏi lịch giao hàng', 'Thường', '12/08/2026'],
-        ['TK-8818', 'Phạm Thùy Linh', 'Bảo hành khung sofa', 'Cao', '11/08/2026'],
-        ['TK-8815', 'Trần Minh Đức', 'Đổi màu vải', 'Thường', '10/08/2026'],
-        ['TK-8809', 'Cty An Phú', 'Yêu cầu xuất hóa đơn', 'Khẩn', '09/08/2026'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// MARKETING
-// ----------------------------------------------------------------------
-
-const MARKETING: AdminGroup = {
-  slug: 'marketing',
-  title: 'Marketing',
-  icon: 'solar:megaphone-bold-duotone',
-  modules: [
-    mod(
-      'email',
-      'Email Marketing',
-      'Chiến dịch email, tỉ lệ mở và doanh thu quy đổi.',
-      'solar:letter-bold-duotone',
-      [['Chiến dịch tháng', '9'], ['Tỉ lệ mở', '38,4%', '+2,1%'], ['Tỉ lệ click', '6,2%'], ['Doanh thu quy đổi', '412 tr']],
-      ['Chiến dịch|text', 'Tệp khách|sub', 'Đã gửi|number', 'Tỉ lệ mở|text', 'Trạng thái|badge'],
-      [
-        ['Ưu đãi tháng 8', 'Toàn bộ khách hàng', 8420, '41,2%', 'Hoàn tất'],
-        ['Giới thiệu BST da bò Ý', 'Khách VIP', 318, '62,5%', 'Hoàn tất'],
-        ['Nhắc giỏ hàng bỏ quên', 'Tự động', 1264, '33,8%', 'Đang chạy'],
-        ['Bảo dưỡng sofa mùa mưa', 'Khách 12 tháng', 2140, '—', 'Lên lịch'],
-      ]
-    ),
-    mod(
-      'sms',
-      'SMS Marketing',
-      'Tin nhắn thương hiệu và tin chăm sóc sau bán.',
-      'solar:chat-square-call-bold-duotone',
-      [['Tin đã gửi', '18.400'], ['Tỉ lệ nhận', '98,6%'], ['Click link', '4,1%'], ['Chi phí', '12,4 tr']],
-      ['Chiến dịch|text', 'Brandname|sub', 'Đã gửi|number', 'Chi phí|money', 'Trạng thái|badge'],
-      [
-        ['Sale 8/8', 'CASASOFA', 8200, 5740000, 'Hoàn tất'],
-        ['Nhắc lịch lắp đặt', 'CASASOFA', 640, 448000, 'Đang chạy'],
-        ['Sinh nhật khách hàng', 'CASASOFA', 312, 218000, 'Đang chạy'],
-        ['Khảo sát hài lòng', 'CASASOFA', 1180, 826000, 'Lên lịch'],
-      ]
-    ),
-    mod(
-      'push',
-      'Push Notification',
-      'Thông báo đẩy web và ứng dụng.',
-      'solar:bell-bing-bold-duotone',
-      [['Người đăng ký', '24.180'], ['Tỉ lệ mở', '9,4%'], ['Đã gửi tháng', '11'], ['Hủy đăng ký', '0,8%']],
-      ['Thông báo|text', 'Đối tượng|sub', 'Đã gửi|number', 'Tỉ lệ mở|text', 'Trạng thái|badge'],
-      [
-        ['Flash sale 3 giờ vàng', 'Toàn bộ', 24180, '12,1%', 'Hoàn tất'],
-        ['Hàng mới về BST Torino', 'Đã xem sofa góc', 6420, '15,6%', 'Hoàn tất'],
-        ['Giảm 10% cho khách quay lại', 'Không mua 90 ngày', 3180, '—', 'Lên lịch'],
-      ]
-    ),
-    mod(
-      'coupon',
-      'Coupon',
-      'Mã giảm giá, điều kiện áp dụng và hiệu quả.',
-      'solar:ticket-sale-bold-duotone',
-      [['Mã đang chạy', '12'], ['Lượt dùng', '1.482'], ['Giá trị giảm', '286 tr'], ['Doanh thu kèm', '3,2 tỷ']],
-      ['Mã|text', 'Điều kiện|sub', 'Giảm|text', 'Đã dùng|number', 'Hết hạn|date'],
-      [
-        ['CASA8', 'Đơn từ 10 triệu', '8%', 486, '31/08/2026'],
-        ['FREESHIPHN', 'Nội thành Hà Nội', 'Miễn ship', 312, '30/09/2026'],
-        ['VIP15', 'Khách hạng VIP', '15%', 96, '31/12/2026'],
-        ['NEW500', 'Khách mới', '500.000đ', 588, '31/08/2026'],
-      ]
-    ),
-    mod(
-      'affiliate',
-      'Affiliate',
-      'Cộng tác viên, hoa hồng và đơn giới thiệu.',
-      'solar:share-circle-bold-duotone',
-      [['Cộng tác viên', '186'], ['Đơn giới thiệu', '214'], ['Hoa hồng tháng', '184 tr'], ['Tỉ lệ duyệt', '92%']],
-      ['Cộng tác viên|text', 'Mã giới thiệu|sub', 'Đơn|number', 'Hoa hồng|money', 'Trạng thái|badge'],
-      [
-        ['Nội Thất Review', 'NTR2026', 42, 62400000, 'Hoạt động'],
-        ['KTS Trần Hải', 'KTSHAI', 28, 48900000, 'Hoạt động'],
-        ['Blog Nhà Đẹp', 'NHADEP', 19, 21600000, 'Hoạt động'],
-        ['Nguyễn Văn Tuấn', 'TUAN88', 6, 5400000, 'Chờ duyệt'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// ANALYTICS
-// ----------------------------------------------------------------------
-
-const ANALYTICS: AdminGroup = {
-  slug: 'analytics',
-  title: 'Analytics',
-  icon: 'solar:chart-square-bold-duotone',
-  modules: [
-    mod(
-      'revenue',
-      'Doanh thu',
-      'Doanh thu theo kênh, khu vực và thời gian.',
-      'solar:dollar-minimalistic-bold-duotone',
-      [['Doanh thu tháng', '5,82 tỷ', '+11%'], ['Cùng kỳ', '5,24 tỷ'], ['Lợi nhuận gộp', '1,86 tỷ'], ['Đơn TB', '18,6 tr']],
-      ['Kênh|text', 'Khu vực|sub', 'Doanh thu|money', 'Số đơn|number', 'Tăng trưởng|text'],
-      [
-        ['Website', 'Toàn quốc', 2480000000, 138, '+14%'],
-        ['Showroom Hà Nội', 'Miền Bắc', 1620000000, 84, '+7%'],
-        ['Showroom TP.HCM', 'Miền Nam', 1180000000, 62, '+9%'],
-        ['Dự án B2B', 'Toàn quốc', 540000000, 12, '+22%'],
-      ]
-    ),
-    mod(
-      'best-sellers',
-      'Sản phẩm bán chạy',
-      'Xếp hạng sản phẩm theo doanh số và doanh thu.',
-      'solar:medal-star-bold-duotone',
-      [['SKU bán chạy', '20'], ['Top 1', 'Sofa Roma'], ['Doanh số top 10', '62%'], ['Sản phẩm mới lọt top', '3']],
-      ['Sản phẩm|text', 'Danh mục|sub', 'Đã bán|number', 'Doanh thu|money', 'Xu hướng|badge'],
-      [
-        ['Sofa Roma Da Bò Nâu', 'Sofa da bò', 42, 1197000000, 'Tăng'],
-        ['Sofa Milano Linen Be', 'Sofa vải linen', 68, 850000000, 'Tăng'],
-        ['Sofa Góc Torino', 'Sofa góc L', 24, 837600000, 'Ổn định'],
-        ['Ghế Đơn Firenze', 'Sofa đơn', 51, 453900000, 'Giảm'],
-      ]
-    ),
-    mod(
-      'traffic',
-      'Nguồn truy cập',
-      'Lưu lượng theo kênh và chất lượng phiên.',
-      'solar:global-bold-duotone',
-      [['Phiên tháng', '186.400', '+9%'], ['Người dùng mới', '72%'], ['Thời gian TB', '3:12'], ['Thoát', '41,6%']],
-      ['Nguồn|text', 'Loại|sub', 'Phiên|number', 'Tỉ lệ thoát|text', 'Chuyển đổi|text'],
-      [
-        ['Google Organic', 'Tự nhiên', 82400, '38,2%', '2,4%'],
-        ['Google Ads', 'Trả phí', 41200, '44,1%', '3,1%'],
-        ['Facebook', 'Mạng xã hội', 28600, '52,4%', '1,2%'],
-        ['Trực tiếp', 'Direct', 24100, '33,8%', '3,8%'],
-        ['Zalo OA', 'Mạng xã hội', 10100, '46,2%', '2,0%'],
-      ]
-    ),
-    mod(
-      'behavior',
-      'Hành vi khách hàng',
-      'Hành trình xem trang và tương tác chính.',
-      'solar:routing-2-bold-duotone',
-      [['Trang/phiên', '4,2'], ['Thêm giỏ hàng', '8.240'], ['Bỏ giỏ hàng', '68%'], ['Xem 3D/AR', '3.180']],
-      ['Sự kiện|text', 'Trang|sub', 'Số lần|number', 'Tỉ lệ|text', 'Xu hướng|badge'],
-      [
-        ['Xem chi tiết sản phẩm', '/sofa1/products/:slug', 96400, '51,7%', 'Tăng'],
-        ['Thêm vào giỏ', '/sofa1/products/:slug', 8240, '8,5%', 'Tăng'],
-        ['Bắt đầu thanh toán', '/sofa1/checkout', 2640, '32,0%', 'Ổn định'],
-        ['Đặt lịch showroom', '/sofa1/showrooms/visit', 1180, '0,6%', 'Tăng'],
-      ]
-    ),
-    mod(
-      'conversion',
-      'Tỷ lệ chuyển đổi',
-      'Phễu chuyển đổi từ truy cập tới đơn hoàn tất.',
-      'solar:filter-bold-duotone',
-      [['Chuyển đổi chung', '2,4%', '+0,3%'], ['Web → giỏ', '8,5%'], ['Giỏ → thanh toán', '32%'], ['Thanh toán → đơn', '78%']],
-      ['Bước phễu|text', 'Kênh|sub', 'Người dùng|number', 'Tỉ lệ chuyển|text', 'Rời bỏ|text'],
-      [
-        ['Truy cập', 'Tất cả', 186400, '100%', '—'],
-        ['Xem sản phẩm', 'Tất cả', 96400, '51,7%', '48,3%'],
-        ['Thêm giỏ hàng', 'Tất cả', 8240, '8,5%', '91,5%'],
-        ['Thanh toán', 'Tất cả', 2640, '32,0%', '68,0%'],
-        ['Đặt hàng thành công', 'Tất cả', 2059, '78,0%', '22,0%'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// SEO
-// ----------------------------------------------------------------------
-
-const seoMod = (slug: string, title: string, desc: string, icon: string, rows: (string | number)[][]) =>
-  mod(
-    slug,
-    title,
-    desc,
-    icon,
-    [
-      ['Trang theo dõi', `${rows.length * 8}`],
-      ['Từ khóa top 10', '43', '+6'],
-      ['Điểm tối ưu TB', '91/100'],
-      ['Lỗi cần xử lý', '4'],
+  },
+  {
+    slug: 'products',
+    name: 'Sản phẩm',
+    icon: 'solar:box-bold-duotone',
+    desc: 'Quản lý danh mục, sản phẩm, thuộc tính, biến thể, tồn kho và giá bán.',
+    sections: [
+      s('categories', 'Danh mục', 'Cây danh mục sản phẩm nhiều cấp.',
+        [['Danh mục', '24'], ['Danh mục cha', '6'], ['Sản phẩm chưa gán', '3']],
+        ['Danh mục', 'Danh mục cha', 'Số sản phẩm', 'Trạng thái', 'Thứ tự'],
+        [['Sofa da', '—', 48], ['Sofa vải', '—', 62], ['Sofa góc', 'Sofa vải', 31],
+         ['Sofa băng', 'Sofa vải', 24], ['Ghế thư giãn', '—', 18], ['Bàn trà', '—', 26]]
+          .map(([n, p, c], i) => [n, p, c, STATUS[i % 2], i + 1])),
+      s('products', 'Sản phẩm', 'Danh sách sản phẩm, ảnh, mô tả và trạng thái bán.',
+        [['Sản phẩm', '186'], ['Đang bán', '164'], ['Hết hàng', '9']],
+        ['Mã', 'Tên sản phẩm', 'Danh mục', 'Giá bán', 'Trạng thái'],
+        [['SF-1001', 'Sofa da Milano 3 chỗ', 'Sofa da', '42.900.000đ'],
+         ['SF-1002', 'Sofa góc Verona L', 'Sofa góc', '36.500.000đ'],
+         ['SF-1003', 'Sofa băng Torino', 'Sofa băng', '18.900.000đ'],
+         ['SF-1004', 'Ghế thư giãn Firenze', 'Ghế thư giãn', '12.400.000đ'],
+         ['SF-1005', 'Sofa vải Como 2 chỗ', 'Sofa vải', '15.800.000đ'],
+         ['SF-1006', 'Bàn trà Roma', 'Bàn trà', '6.200.000đ']]
+          .map(([c, n, cat, p], i) => [c, n, cat, p, i === 5 ? 'Hết hàng' : 'Đang bán'])),
+      s('attributes', 'Thuộc tính', 'Chất liệu, màu sắc, kích thước, kiểu dáng.',
+        [['Thuộc tính', '14'], ['Giá trị', '96'], ['Dùng cho lọc', '8']],
+        ['Thuộc tính', 'Kiểu', 'Số giá trị', 'Dùng lọc', 'Trạng thái'],
+        [['Chất liệu', 'Chọn 1', 8], ['Màu sắc', 'Bảng màu', 24], ['Kích thước', 'Chọn 1', 12],
+         ['Số chỗ ngồi', 'Chọn 1', 6], ['Kiểu chân', 'Chọn 1', 5], ['Độ cứng đệm', 'Thanh trượt', 4]]
+          .map(([n, t, c], i) => [n, t, c, i < 4 ? 'Có' : 'Không', STATUS[i % 2]])),
+      s('variants', 'Biến thể sản phẩm', 'Tổ hợp biến thể theo SKU.',
+        [['Biến thể', '742'], ['SKU hoạt động', '681'], ['Thiếu ảnh', '12']],
+        ['SKU', 'Sản phẩm', 'Biến thể', 'Tồn kho', 'Giá'],
+        [['SF-1001-BRN-3S', 'Sofa da Milano', 'Nâu / 3 chỗ', 12, '42.900.000đ'],
+         ['SF-1001-BLK-3S', 'Sofa da Milano', 'Đen / 3 chỗ', 8, '42.900.000đ'],
+         ['SF-1002-GRY-L', 'Sofa góc Verona', 'Xám / Góc trái', 5, '36.500.000đ'],
+         ['SF-1003-BEI-B', 'Sofa băng Torino', 'Be / Băng dài', 0, '18.900.000đ'],
+         ['SF-1005-GRN-2S', 'Sofa vải Como', 'Xanh rêu / 2 chỗ', 17, '15.800.000đ']]),
+      s('inventory', 'Kho hàng', 'Tồn kho theo sản phẩm và kho.',
+        [['SKU tồn', '681'], ['Sắp hết', '23'], ['Giá trị tồn', '18,4 tỷ']],
+        ['SKU', 'Sản phẩm', 'Kho', 'Tồn', 'Ngưỡng cảnh báo'],
+        [['SF-1001-BRN-3S', 'Sofa da Milano', 'Kho Hà Nội', 12, 5],
+         ['SF-1002-GRY-L', 'Sofa góc Verona', 'Kho HCM', 5, 5],
+         ['SF-1003-BEI-B', 'Sofa băng Torino', 'Kho Đà Nẵng', 0, 3],
+         ['SF-1005-GRN-2S', 'Sofa vải Como', 'Kho Hà Nội', 17, 6],
+         ['SF-1006-OAK', 'Bàn trà Roma', 'Kho HCM', 2, 4]]),
+      s('pricing', 'Giá bán', 'Bảng giá, giá khuyến mãi và giá đại lý.',
+        [['Bảng giá', '4'], ['Đang khuyến mãi', '32 SP'], ['Biên lợi nhuận TB', '38%']],
+        ['Sản phẩm', 'Giá niêm yết', 'Giá khuyến mãi', 'Giá đại lý', 'Hiệu lực'],
+        [['Sofa da Milano 3 chỗ', '42.900.000đ', '38.610.000đ', '33.200.000đ'],
+         ['Sofa góc Verona L', '36.500.000đ', '34.675.000đ', '28.400.000đ'],
+         ['Sofa băng Torino', '18.900.000đ', '—', '14.900.000đ'],
+         ['Sofa vải Como 2 chỗ', '15.800.000đ', '14.220.000đ', '12.100.000đ'],
+         ['Bàn trà Roma', '6.200.000đ', '—', '4.800.000đ']]
+          .map((r, i) => [...r, `01/08 - ${25 + i}/09/2026`])),
     ],
-    ['Trang|text', 'Từ khóa chính|sub', 'Vị trí|number', 'Lượt hiển thị|number', 'Trạng thái|badge'],
-    rows
-  );
-
-const SEO: AdminGroup = {
-  slug: 'seo',
-  title: 'SEO',
-  icon: 'solar:magnifer-zoom-in-bold-duotone',
-  modules: [
-    seoMod('category', 'Trang danh mục', 'Tối ưu SEO cho các trang danh mục sản phẩm.', 'solar:widget-4-bold-duotone', [
-      ['Sofa da bò', 'sofa da bò thật', 4, 28400, 'Tốt'],
-      ['Sofa vải linen', 'sofa vải linen', 7, 18200, 'Tốt'],
-      ['Sofa góc L', 'sofa góc l đẹp', 11, 12400, 'Cần cải thiện'],
-      ['Sofa đơn', 'ghế sofa đơn', 9, 8600, 'Tốt'],
-    ]),
-    seoMod('product', 'Trang sản phẩm', 'Tối ưu tiêu đề, mô tả và ảnh sản phẩm.', 'solar:sofa-bold-duotone', [
-      ['Sofa Roma Da Bò Nâu', 'sofa roma da bò', 2, 14200, 'Tốt'],
-      ['Sofa Milano Linen Be', 'sofa milano linen', 5, 9800, 'Tốt'],
-      ['Sofa Góc Torino', 'sofa góc torino', 14, 6400, 'Cần cải thiện'],
-      ['Ghế Đơn Firenze', 'ghế đơn firenze', 8, 4100, 'Tốt'],
-    ]),
-    seoMod('collection', 'Trang bộ sưu tập', 'SEO cho landing page bộ sưu tập.', 'solar:widget-5-bold-duotone', [
-      ['BST Da Bò Ý', 'bộ sưu tập sofa da ý', 6, 7200, 'Tốt'],
-      ['BST Linen Bắc Âu', 'sofa linen bắc âu', 12, 4800, 'Cần cải thiện'],
-      ['BST Tối Giản', 'sofa tối giản', 9, 5600, 'Tốt'],
-    ]),
-    seoMod('project', 'Trang dự án', 'SEO cho các trang dự án đã thực hiện.', 'solar:buildings-3-bold-duotone', [
-      ['Dự án Vinhomes Ocean Park', 'nội thất vinhomes', 15, 3400, 'Cần cải thiện'],
-      ['Khách sạn Sapa Retreat', 'nội thất khách sạn', 18, 2600, 'Cần cải thiện'],
-      ['Penthouse Sunshine City', 'nội thất penthouse', 10, 3100, 'Tốt'],
-    ]),
-    seoMod('showroom', 'Trang showroom', 'SEO địa phương cho từng showroom.', 'solar:shop-bold-duotone', [
-      ['Showroom Hà Nội', 'showroom sofa hà nội', 3, 11600, 'Tốt'],
-      ['Showroom TP.HCM', 'showroom sofa tphcm', 5, 10200, 'Tốt'],
-      ['Showroom Đà Nẵng', 'showroom sofa đà nẵng', 7, 4800, 'Tốt'],
-    ]),
-    seoMod('blog', 'Trang blog', 'SEO nội dung và liên kết nội bộ.', 'solar:notebook-bold-duotone', [
-      ['Chọn sofa phòng khách nhỏ', 'sofa cho phòng khách nhỏ', 4, 16800, 'Tốt'],
-      ['Phân biệt da bò và da PU', 'da bò thật và da pu', 2, 21400, 'Tốt'],
-      ['Bảo dưỡng sofa vải', 'cách vệ sinh sofa vải', 8, 12600, 'Cần cải thiện'],
-    ]),
-    seoMod('brand', 'Trang thương hiệu', 'Nhận diện thương hiệu trên kết quả tìm kiếm.', 'solar:crown-bold-duotone', [
-      ['Casa Sofa', 'casa sofa', 1, 32400, 'Tốt'],
-      ['Về chúng tôi', 'casa sofa là ai', 1, 6200, 'Tốt'],
-      ['Đánh giá Casa Sofa', 'casa sofa review', 3, 4400, 'Tốt'],
-    ]),
-    mod(
-      'sitemap',
-      'Sitemap',
-      'Sơ đồ trang XML gửi tới công cụ tìm kiếm.',
-      'solar:siderbar-bold-duotone',
-      [['URL trong sitemap', '482'], ['Đã lập chỉ mục', '461'], ['Loại trừ', '21'], ['Gửi gần nhất', '12/08/2026']],
-      ['Tệp sitemap|text', 'Đường dẫn|sub', 'Số URL|number', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['sitemap-index', '/sitemap.xml', 6, 'Đã gửi', '12/08/2026'],
-        ['sitemap-products', '/sitemap-products.xml', 186, 'Đã gửi', '12/08/2026'],
-        ['sitemap-blog', '/sitemap-blog.xml', 94, 'Đã gửi', '11/08/2026'],
-        ['sitemap-pages', '/sitemap-pages.xml', 48, 'Đã gửi', '08/08/2026'],
-      ]
-    ),
-    mod(
-      'robots',
-      'Robots',
-      'Quy tắc thu thập dữ liệu cho robot tìm kiếm.',
-      'solar:shield-network-bold-duotone',
-      [['Quy tắc', '9'], ['Bot chặn', '2'], ['Đường dẫn chặn', '5'], ['Kiểm tra gần nhất', '12/08/2026']],
-      ['User-agent|text', 'Quy tắc|sub', 'Đường dẫn|text', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['*', 'Allow', '/', 'Hoạt động', '12/08/2026'],
-        ['*', 'Disallow', '/sofa1/admin', 'Hoạt động', '12/08/2026'],
-        ['*', 'Disallow', '/sofa1/checkout', 'Hoạt động', '12/08/2026'],
-        ['AhrefsBot', 'Disallow', '/', 'Hoạt động', '06/08/2026'],
-      ]
-    ),
-    mod(
-      'schema',
-      'Schema',
-      'Dữ liệu có cấu trúc JSON-LD theo loại trang.',
-      'solar:code-square-bold-duotone',
-      [['Loại schema', '7'], ['Trang áp dụng', '412'], ['Lỗi', '2'], ['Cảnh báo', '5']],
-      ['Loại schema|text', 'Áp dụng cho|sub', 'Số trang|number', 'Trạng thái|badge', 'Cập nhật|date'],
-      [
-        ['Product', 'Trang sản phẩm', 186, 'Hợp lệ', '12/08/2026'],
-        ['BreadcrumbList', 'Toàn site', 412, 'Hợp lệ', '12/08/2026'],
-        ['LocalBusiness', 'Trang showroom', 4, 'Hợp lệ', '09/08/2026'],
-        ['Article', 'Trang blog', 94, 'Cảnh báo', '07/08/2026'],
-        ['FAQPage', 'Trang FAQ', 1, 'Lỗi', '02/08/2026'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-// PHÂN QUYỀN
-// ----------------------------------------------------------------------
-
-const ACCESS: AdminGroup = {
-  slug: 'access',
-  title: 'Phân quyền',
-  icon: 'solar:lock-keyhole-bold-duotone',
-  modules: [
-    mod(
-      'users',
-      'Người dùng',
-      'Tài khoản quản trị và trạng thái đăng nhập.',
-      'solar:user-bold-duotone',
-      [['Tài khoản', '24'], ['Đang hoạt động', '21'], ['Bật 2FA', '18'], ['Khóa', '3']],
-      ['Người dùng|text', 'Email|sub', 'Vai trò|text', 'Trạng thái|badge', 'Đăng nhập|date'],
-      [
-        ['Nguyễn Ngọc Anh', 'ngocanh@casasofa.vn', 'Quản trị viên', 'Hoạt động', '12/08/2026'],
-        ['Trần Minh Quân', 'quan@casasofa.vn', 'Biên tập nội dung', 'Hoạt động', '12/08/2026'],
-        ['Lê Thu Hà', 'thuha@casasofa.vn', 'Marketing', 'Hoạt động', '11/08/2026'],
-        ['Phạm Quốc Việt', 'viet@casasofa.vn', 'Kho vận', 'Hoạt động', '10/08/2026'],
-        ['Đỗ Hải Yến', 'yen@casasofa.vn', 'CSKH', 'Khóa', '22/07/2026'],
-      ]
-    ),
-    mod(
-      'roles',
-      'Vai trò',
-      'Nhóm vai trò và phạm vi truy cập.',
-      'solar:users-group-rounded-bold-duotone',
-      [['Vai trò', '6'], ['Vai trò tùy chỉnh', '3'], ['Người dùng gán', '24'], ['Vai trò mặc định', 'Nhân viên']],
-      ['Vai trò|text', 'Mã|sub', 'Số quyền|number', 'Người dùng|number', 'Trạng thái|badge'],
-      [
-        ['Quản trị viên', 'admin', 48, 3, 'Hoạt động'],
-        ['Quản lý bán hàng', 'sales-manager', 26, 5, 'Hoạt động'],
-        ['Biên tập nội dung', 'editor', 18, 4, 'Hoạt động'],
-        ['Marketing', 'marketing', 20, 4, 'Hoạt động'],
-        ['Kho vận', 'warehouse', 12, 6, 'Hoạt động'],
-      ]
-    ),
-    mod(
-      'permissions',
-      'Quyền hạn',
-      'Chi tiết quyền theo module chức năng.',
-      'solar:key-bold-duotone',
-      [['Quyền', '48'], ['Nhóm quyền', '9'], ['Quyền nhạy cảm', '7'], ['Cập nhật gần nhất', '11/08/2026']],
-      ['Quyền|text', 'Mã|sub', 'Nhóm|text', 'Mức độ|badge', 'Vai trò gán|number'],
-      [
-        ['Xem đơn hàng', 'order.read', 'Đơn hàng', 'Cơ bản', 5],
-        ['Hoàn tiền đơn hàng', 'order.refund', 'Đơn hàng', 'Nhạy cảm', 2],
-        ['Sửa giá bán', 'price.update', 'Sản phẩm', 'Nhạy cảm', 2],
-        ['Xuất báo cáo doanh thu', 'report.export', 'Analytics', 'Nhạy cảm', 3],
-        ['Đăng bài blog', 'blog.publish', 'CMS', 'Cơ bản', 3],
-      ]
-    ),
-    mod(
-      'audit-log',
-      'Nhật ký hệ thống',
-      'Lịch sử thao tác và cảnh báo bảo mật.',
-      'solar:clipboard-list-bold-duotone',
-      [['Sự kiện 24h', '486'], ['Thao tác nhạy cảm', '14'], ['Đăng nhập lỗi', '9'], ['Cảnh báo', '2']],
-      ['Thời điểm|text', 'Người dùng|sub', 'Hành động|text', 'Đối tượng|text', 'Kết quả|badge'],
-      [
-        ['12/08/2026 09:41', 'ngocanh@casasofa.vn', 'Cập nhật giá bán', 'CS-ROM-001', 'Thành công'],
-        ['12/08/2026 09:12', 'quan@casasofa.vn', 'Xuất bản bài viết', 'blog/4', 'Thành công'],
-        ['12/08/2026 08:55', 'viet@casasofa.vn', 'Tạo phiếu nhập', 'PN-2608-014', 'Thành công'],
-        ['11/08/2026 22:04', 'unknown', 'Đăng nhập', 'admin', 'Thất bại'],
-        ['11/08/2026 17:30', 'ngocanh@casasofa.vn', 'Hoàn tiền', 'HT-3012', 'Thành công'],
-      ]
-    ),
-  ],
-};
-
-// ----------------------------------------------------------------------
-
-export const SOFA1_ADMIN_GROUPS: AdminGroup[] = [
-  CMS,
-  PRODUCTS,
-  WAREHOUSE,
-  ORDERS,
-  CRM,
-  MARKETING,
-  ANALYTICS,
-  SEO,
-  ACCESS,
+  },
+  {
+    slug: 'warehouse',
+    name: 'Kho hàng',
+    icon: 'solar:box-minimalistic-bold-duotone',
+    desc: 'Quản lý kho, nhập xuất, kiểm kê và điều chuyển hàng hoá.',
+    sections: [
+      s('overview', 'Tổng quan kho', 'Tình trạng tồn kho theo từng kho.',
+        [['Kho', '4'], ['SKU', '681'], ['Giá trị tồn', '18,4 tỷ'], ['Sắp hết', '23']],
+        ['Kho', 'Địa điểm', 'SKU', 'Tồn', 'Sức chứa'],
+        [['Kho Hà Nội', 'Long Biên, Hà Nội', 248, 1420, '78%'],
+         ['Kho HCM', 'Thủ Đức, TP.HCM', 262, 1610, '84%'],
+         ['Kho Đà Nẵng', 'Liên Chiểu, Đà Nẵng', 96, 480, '52%'],
+         ['Kho xưởng', 'Hà Nam', 75, 320, '41%']]),
+      s('receipts', 'Nhập kho', 'Phiếu nhập từ xưởng và nhà cung cấp.',
+        [['Phiếu tháng này', '38'], ['Chờ duyệt', '4'], ['Giá trị nhập', '3,2 tỷ']],
+        ['Mã phiếu', 'Nguồn', 'Số lượng', 'Ngày', 'Trạng thái'],
+        [['PN-2608-01', 'Xưởng Hà Nam', 84], ['PN-2608-02', 'NCC Da Italia', 120],
+         ['PN-2608-03', 'NCC Khung gỗ', 60], ['PN-2608-04', 'Xưởng Hà Nam', 45]]
+          .map(([m, n, q], i) => [m, n, q, `${10 + i}/08/2026`, i === 3 ? 'Chờ duyệt' : 'Hoàn tất'])),
+      s('issues', 'Xuất kho', 'Phiếu xuất giao khách và điều chuyển.',
+        [['Phiếu tháng này', '146'], ['Đang giao', '22'], ['Giá trị xuất', '5,8 tỷ']],
+        ['Mã phiếu', 'Đích đến', 'Số lượng', 'Ngày', 'Trạng thái'],
+        [['PX-2608-11', 'Đơn #10238', 1], ['PX-2608-12', 'Đại lý Hải Phòng', 12],
+         ['PX-2608-13', 'Showroom Cầu Giấy', 6], ['PX-2608-14', 'Đơn #10244', 2]]
+          .map(([m, n, q], i) => [m, n, q, `${12 + i}/08/2026`, i % 2 ? 'Đang giao' : 'Hoàn tất'])),
+      s('stocktake', 'Kiểm kê', 'Đợt kiểm kê định kỳ và chênh lệch.',
+        [['Đợt kiểm kê', '6/năm'], ['Chênh lệch', '0,4%'], ['Gần nhất', '31/07/2026']],
+        ['Đợt', 'Kho', 'SKU kiểm', 'Chênh lệch', 'Trạng thái'],
+        [['KK-2607', 'Kho Hà Nội', 248, '-3'], ['KK-2607', 'Kho HCM', 262, '+1'],
+         ['KK-2607', 'Kho Đà Nẵng', 96, '0'], ['KK-2608', 'Kho xưởng', 75, 'Đang kiểm']]
+          .map((r, i) => [...r, i === 3 ? 'Đang thực hiện' : 'Hoàn tất'])),
+      s('transfers', 'Điều chuyển', 'Điều chuyển hàng giữa các kho và showroom.',
+        [['Lệnh tháng này', '14'], ['Đang vận chuyển', '3'], ['Thời gian TB', '2,1 ngày']],
+        ['Mã lệnh', 'Từ kho', 'Đến kho', 'Số lượng', 'Trạng thái'],
+        [['DC-2608-01', 'Kho HCM', 'Kho Đà Nẵng', 18], ['DC-2608-02', 'Kho Hà Nội', 'Showroom Cầu Giấy', 6],
+         ['DC-2608-03', 'Kho xưởng', 'Kho Hà Nội', 32]]
+          .map((r, i) => [...r, i === 2 ? 'Đang vận chuyển' : 'Hoàn tất'])),
+    ],
+  },
+  {
+    slug: 'orders',
+    name: 'Đơn hàng',
+    icon: 'solar:cart-large-2-bold-duotone',
+    desc: 'Xử lý đơn hàng, thanh toán, vận chuyển, hoàn tiền và đổi trả.',
+    sections: [
+      s('orders', 'Đơn hàng', 'Danh sách đơn hàng theo trạng thái xử lý.',
+        [['Đơn tháng này', '412'], ['Chờ xử lý', '28'], ['Doanh thu', '6,4 tỷ'], ['Giá trị TB', '15,6 triệu']],
+        ['Mã đơn', 'Khách hàng', 'Sản phẩm', 'Tổng tiền', 'Trạng thái'],
+        [['#10238', 'Nguyễn Minh Anh', 'Sofa da Milano 3 chỗ', '42.900.000đ', 'Đang sản xuất'],
+         ['#10239', 'Trần Quốc Bảo', 'Sofa góc Verona L', '36.500.000đ', 'Chờ xác nhận'],
+         ['#10240', 'Lê Thu Hà', 'Sofa băng Torino x2', '37.800.000đ', 'Đang giao'],
+         ['#10241', 'Phạm Văn Dũng', 'Ghế thư giãn Firenze', '12.400.000đ', 'Hoàn tất'],
+         ['#10242', 'Đỗ Khánh Linh', 'Sofa vải Como 2 chỗ', '15.800.000đ', 'Hoàn tất'],
+         ['#10243', 'Vũ Hoàng Nam', 'Bàn trà Roma x3', '18.600.000đ', 'Đã huỷ']]),
+      s('payments', 'Thanh toán', 'Giao dịch thanh toán và đối soát.',
+        [['Giao dịch', '389'], ['Thành công', '96,4%'], ['Chờ đối soát', '11']],
+        ['Mã GD', 'Đơn hàng', 'Phương thức', 'Số tiền', 'Trạng thái'],
+        [['TT-88231', '#10238', 'Chuyển khoản', '42.900.000đ', 'Thành công'],
+         ['TT-88232', '#10239', 'Trả góp 0%', '36.500.000đ', 'Chờ duyệt'],
+         ['TT-88233', '#10240', 'COD', '37.800.000đ', 'Chờ thu'],
+         ['TT-88234', '#10241', 'Thẻ tín dụng', '12.400.000đ', 'Thành công'],
+         ['TT-88235', '#10243', 'Ví điện tử', '18.600.000đ', 'Đã hoàn']]),
+      s('shipping', 'Vận chuyển', 'Đơn vận, lịch giao lắp và trạng thái giao hàng.',
+        [['Đơn vận', '198'], ['Đang giao', '34'], ['Giao đúng hẹn', '97,1%']],
+        ['Mã vận đơn', 'Đơn hàng', 'Đơn vị', 'Lịch giao', 'Trạng thái'],
+        [['VD-5521', '#10240', 'Đội giao lắp nội bộ', '18/08/2026', 'Đang giao'],
+         ['VD-5522', '#10238', 'Đội giao lắp nội bộ', '26/08/2026', 'Chờ xuất kho'],
+         ['VD-5523', '#10241', 'GHTK Cồng kềnh', '14/08/2026', 'Đã giao'],
+         ['VD-5524', '#10242', 'Viettel Post', '13/08/2026', 'Đã giao']]),
+      s('refunds', 'Hoàn tiền', 'Yêu cầu hoàn tiền và tiến độ xử lý.',
+        [['Yêu cầu', '9'], ['Đã hoàn', '6'], ['Giá trị hoàn', '84,2 triệu']],
+        ['Mã', 'Đơn hàng', 'Lý do', 'Số tiền', 'Trạng thái'],
+        [['HT-201', '#10243', 'Khách huỷ đơn', '18.600.000đ', 'Đã hoàn'],
+         ['HT-202', '#10199', 'Giao chậm', '5.000.000đ', 'Đang xử lý'],
+         ['HT-203', '#10187', 'Lỗi sản xuất', '15.800.000đ', 'Đã hoàn'],
+         ['HT-204', '#10221', 'Sai màu đặt', '12.400.000đ', 'Chờ duyệt']]),
+      s('returns', 'Đổi trả', 'Phiếu đổi trả trong 30 ngày và bảo hành.',
+        [['Phiếu đổi trả', '14'], ['Tỷ lệ đổi trả', '1,2%'], ['Xử lý TB', '3,4 ngày']],
+        ['Mã', 'Đơn hàng', 'Sản phẩm', 'Hình thức', 'Trạng thái'],
+        [['DT-118', '#10187', 'Sofa vải Como', 'Đổi sản phẩm', 'Hoàn tất'],
+         ['DT-119', '#10221', 'Ghế thư giãn Firenze', 'Đổi màu', 'Đang xử lý'],
+         ['DT-120', '#10205', 'Bàn trà Roma', 'Trả hàng', 'Chờ nhận hàng'],
+         ['DT-121', '#10193', 'Sofa băng Torino', 'Bảo hành', 'Đang sửa chữa']]),
+    ],
+  },
+  {
+    slug: 'crm',
+    name: 'CRM',
+    icon: 'solar:users-group-rounded-bold-duotone',
+    desc: 'Khách hàng, leads, lịch sử mua hàng và chăm sóc sau bán.',
+    sections: [
+      s('customers', 'Khách hàng', 'Hồ sơ khách hàng và phân nhóm.',
+        [['Khách hàng', '4.286'], ['Khách VIP', '184'], ['Mua lại', '31%']],
+        ['Khách hàng', 'Điện thoại', 'Nhóm', 'Số đơn', 'Tổng chi tiêu'],
+        [['Nguyễn Minh Anh', '0912 xxx 481', 'VIP', 6, '182.400.000đ'],
+         ['Trần Quốc Bảo', '0987 xxx 220', 'Thân thiết', 3, '78.200.000đ'],
+         ['Lê Thu Hà', '0903 xxx 117', 'Mới', 1, '37.800.000đ'],
+         ['Phạm Văn Dũng', '0938 xxx 654', 'Thân thiết', 4, '96.100.000đ'],
+         ['Đỗ Khánh Linh', '0911 xxx 903', 'Mới', 1, '15.800.000đ']]),
+      s('leads', 'Leads', 'Khách tiềm năng theo nguồn và giai đoạn.',
+        [['Leads tháng', '638'], ['Đang chăm sóc', '212'], ['Tỷ lệ chốt', '18,4%']],
+        ['Lead', 'Nguồn', 'Nhu cầu', 'Giai đoạn', 'Phụ trách'],
+        [['Hoàng Anh Tuấn', 'Facebook Ads', 'Sofa góc phòng khách', 'Tư vấn', 'Ngọc Anh'],
+         ['Mai Phương', 'Google Ads', 'Sofa da 3 chỗ', 'Báo giá', 'Hải Nam'],
+         ['Công ty TNHH Vạn Phát', 'Giới thiệu', 'Nội thất văn phòng', 'Đàm phán', 'Thu Trang'],
+         ['Nguyễn Đức Hải', 'Showroom', 'Ghế thư giãn', 'Mới', 'Ngọc Anh'],
+         ['Trịnh Bảo Ngọc', 'Zalo OA', 'Sofa vải 2 chỗ', 'Tư vấn', 'Hải Nam']]),
+      s('purchase-history', 'Lịch sử mua hàng', 'Toàn bộ giao dịch theo khách hàng.',
+        [['Giao dịch', '9.412'], ['Giá trị TB', '15,6 triệu'], ['Chu kỳ mua lại', '14 tháng']],
+        ['Khách hàng', 'Đơn hàng', 'Ngày mua', 'Giá trị', 'Kênh'],
+        [['Nguyễn Minh Anh', '#10238', '12/08/2026', '42.900.000đ', 'Website'],
+         ['Nguyễn Minh Anh', '#09871', '03/02/2026', '28.600.000đ', 'Showroom'],
+         ['Phạm Văn Dũng', '#10241', '10/08/2026', '12.400.000đ', 'Website'],
+         ['Trần Quốc Bảo', '#10239', '11/08/2026', '36.500.000đ', 'Hotline'],
+         ['Lê Thu Hà', '#10240', '11/08/2026', '37.800.000đ', 'Website']]),
+      s('care', 'Chăm sóc khách hàng', 'Ticket hỗ trợ, bảo trì và khảo sát hài lòng.',
+        [['Ticket mở', '26'], ['Hài lòng', '4,8/5'], ['Phản hồi TB', '1,8 giờ']],
+        ['Ticket', 'Khách hàng', 'Chủ đề', 'Mức ưu tiên', 'Trạng thái'],
+        [['#TK-771', 'Lê Thu Hà', 'Hẹn lịch giao lắp', 'Trung bình', 'Đang xử lý'],
+         ['#TK-772', 'Phạm Văn Dũng', 'Bảo trì đệm', 'Thấp', 'Đã lên lịch'],
+         ['#TK-773', 'Nguyễn Minh Anh', 'Tư vấn phối màu', 'Thấp', 'Hoàn tất'],
+         ['#TK-774', 'Đỗ Khánh Linh', 'Khiếu nại vết xước', 'Cao', 'Đang xử lý']]),
+    ],
+  },
+  {
+    slug: 'marketing',
+    name: 'Marketing',
+    icon: 'solar:megaphone-bold-duotone',
+    desc: 'Chiến dịch email, SMS, push, mã giảm giá và affiliate.',
+    sections: [
+      s('email', 'Email Marketing', 'Chiến dịch email và tự động hoá.',
+        [['Chiến dịch', '18'], ['Tỷ lệ mở', '38,2%'], ['Tỷ lệ click', '6,4%']],
+        ['Chiến dịch', 'Tệp gửi', 'Đã gửi', 'Tỷ lệ mở', 'Trạng thái'],
+        [['Ưu đãi tháng 8', 'Toàn bộ', 12400, '41,2%', 'Đã gửi'],
+         ['Giỏ hàng bỏ quên', 'Tự động', 860, '52,7%', 'Đang chạy'],
+         ['Ra mắt BST Milano', 'Khách VIP', 1840, '48,1%', 'Đã gửi'],
+         ['Chăm sóc sau mua', 'Tự động', 640, '61,3%', 'Đang chạy'],
+         ['Newsletter tuần', 'Đăng ký', 9800, '29,4%', 'Lên lịch']]),
+      s('sms', 'SMS Marketing', 'Tin nhắn chăm sóc và khuyến mãi.',
+        [['Tin đã gửi', '24.800'], ['Tỷ lệ nhận', '98,6%'], ['Chi phí/tin', '290đ']],
+        ['Chiến dịch', 'Tệp gửi', 'Đã gửi', 'Tỷ lệ click', 'Trạng thái'],
+        [['Flash sale cuối tuần', 'Khách cũ', 8200, '4,1%', 'Đã gửi'],
+         ['Nhắc lịch giao lắp', 'Tự động', 412, '—', 'Đang chạy'],
+         ['Sinh nhật khách hàng', 'Tự động', 186, '7,8%', 'Đang chạy'],
+         ['Mời tham quan showroom', 'Lead', 3600, '3,2%', 'Đã gửi']]),
+      s('push', 'Push Notification', 'Thông báo đẩy web và ứng dụng.',
+        [['Người đăng ký', '18.240'], ['Tỷ lệ click', '5,7%'], ['Huỷ đăng ký', '1,2%']],
+        ['Thông báo', 'Đối tượng', 'Đã gửi', 'Click', 'Trạng thái'],
+        [['Giảm 10% sofa da', 'Tất cả', 18240, '6,2%', 'Đã gửi'],
+         ['Hàng về kho', 'Quan tâm SP', 2400, '9,4%', 'Đã gửi'],
+         ['Đơn hàng đang giao', 'Tự động', 340, '31,8%', 'Đang chạy'],
+         ['Blog mới', 'Đọc blog', 5600, '3,1%', 'Lên lịch']]),
+      s('coupon', 'Coupon', 'Mã giảm giá theo chiến dịch và điều kiện áp dụng.',
+        [['Mã đang chạy', '12'], ['Lượt dùng', '1.284'], ['Doanh thu từ mã', '1,8 tỷ']],
+        ['Mã', 'Ưu đãi', 'Điều kiện', 'Đã dùng', 'Hiệu lực'],
+        [['SOFA10', 'Giảm 10%', 'Đơn từ 20 triệu', 412, '01/08 - 31/08'],
+         ['FREESHIP', 'Miễn phí giao lắp', 'Nội thành', 286, '01/08 - 30/09'],
+         ['NEW500', 'Giảm 500.000đ', 'Khách mới', 194, '01/07 - 31/12'],
+         ['VIP15', 'Giảm 15%', 'Khách VIP', 88, '01/08 - 31/08'],
+         ['B2B20', 'Giảm 20%', 'Đại lý', 304, 'Không giới hạn']]),
+      s('affiliate', 'Affiliate', 'Cộng tác viên, hoa hồng và thanh toán.',
+        [['Cộng tác viên', '146'], ['Đơn giới thiệu', '318'], ['Hoa hồng tháng', '184 triệu']],
+        ['Cộng tác viên', 'Kênh', 'Đơn', 'Doanh thu', 'Hoa hồng'],
+        [['Nội Thất Review', 'YouTube', 68, '1,2 tỷ', '60.000.000đ'],
+         ['Home Decor VN', 'Facebook', 52, '860 triệu', '43.000.000đ'],
+         ['Chị Hà Decor', 'TikTok', 44, '620 triệu', '31.000.000đ'],
+         ['Blog Sống Đẹp', 'Website', 31, '410 triệu', '20.500.000đ']]),
+    ],
+  },
+  {
+    slug: 'analytics',
+    name: 'Analytics',
+    icon: 'solar:chart-square-bold-duotone',
+    desc: 'Doanh thu, sản phẩm bán chạy, nguồn truy cập, hành vi và chuyển đổi.',
+    sections: [
+      s('revenue', 'Doanh thu', 'Doanh thu theo thời gian, kênh và khu vực.',
+        [['Doanh thu tháng', '6,4 tỷ'], ['Tăng trưởng', '+18,2%'], ['Đơn hàng', '412'], ['AOV', '15,6 triệu']],
+        ['Kênh', 'Doanh thu', 'Đơn hàng', 'AOV', 'Tăng trưởng'],
+        [['Website', '3,1 tỷ', 198, '15,6 triệu', '+22%'],
+         ['Showroom', '2,0 tỷ', 108, '18,5 triệu', '+11%'],
+         ['Đại lý B2B', '980 triệu', 64, '15,3 triệu', '+26%'],
+         ['Hotline', '320 triệu', 42, '7,6 triệu', '-4%']]),
+      s('best-sellers', 'Sản phẩm bán chạy', 'Top sản phẩm theo doanh số và số lượng.',
+        [['SKU bán chạy', '32'], ['Top 10 chiếm', '46% DT'], ['Tồn xoay vòng', '5,2 lần/năm']],
+        ['Sản phẩm', 'Đã bán', 'Doanh thu', 'Tồn kho', 'Xu hướng'],
+        [['Sofa da Milano 3 chỗ', 48, '2,05 tỷ', 12, '↑ 24%'],
+         ['Sofa góc Verona L', 36, '1,31 tỷ', 5, '↑ 12%'],
+         ['Sofa vải Como 2 chỗ', 62, '980 triệu', 17, '↑ 31%'],
+         ['Sofa băng Torino', 28, '529 triệu', 0, '↓ 6%'],
+         ['Ghế thư giãn Firenze', 41, '508 triệu', 9, '↑ 8%']]),
+      s('traffic', 'Nguồn truy cập', 'Lưu lượng theo kênh và chiến dịch.',
+        [['Phiên/tháng', '186.400'], ['Người dùng mới', '68%'], ['Thời gian TB', '3:12']],
+        ['Nguồn', 'Phiên', 'Tỷ lệ', 'Thoát', 'Chuyển đổi'],
+        [['Google Organic', 78400, '42,1%', '38%', '2,8%'],
+         ['Google Ads', 41200, '22,1%', '46%', '3,4%'],
+         ['Facebook', 32800, '17,6%', '52%', '1,9%'],
+         ['Trực tiếp', 21600, '11,6%', '34%', '4,1%'],
+         ['Giới thiệu', 12400, '6,6%', '41%', '2,2%']]),
+      s('behavior', 'Hành vi khách hàng', 'Trang được xem, luồng di chuyển và tương tác.',
+        [['Trang/phiên', '4,6'], ['Thêm giỏ hàng', '8,2%'], ['Xem 3D/AR', '12.400 lượt']],
+        ['Trang', 'Lượt xem', 'Thời gian TB', 'Thoát', 'Thêm giỏ'],
+        [['Trang chủ', 62400, '1:48', '28%', '—'],
+         ['Danh sách sản phẩm', 48200, '3:24', '31%', '6,1%'],
+         ['Chi tiết sản phẩm', 39800, '4:12', '26%', '14,8%'],
+         ['Bộ sưu tập', 18600, '2:36', '38%', '4,2%'],
+         ['Blog', 16400, '5:02', '62%', '0,4%']]),
+      s('conversion', 'Tỷ lệ chuyển đổi', 'Phễu chuyển đổi từ truy cập đến đơn hàng.',
+        [['Chuyển đổi', '2,9%'], ['Bỏ giỏ hàng', '64,2%'], ['Chuyển đổi showroom', '31,4%']],
+        ['Bước phễu', 'Người dùng', 'Tỷ lệ giữ', 'Rời bỏ', 'Ghi chú'],
+        [['Truy cập', 186400, '100%', '—', 'Tổng phiên'],
+         ['Xem sản phẩm', 96200, '51,6%', '48,4%', 'Cần tối ưu danh mục'],
+         ['Thêm giỏ hàng', 15280, '15,9%', '84,1%', 'Ưu đãi giao lắp'],
+         ['Thanh toán', 8420, '55,1%', '44,9%', 'Rút gọn biểu mẫu'],
+         ['Đặt hàng', 5410, '64,2%', '35,8%', 'Hỗ trợ trả góp']]),
+    ],
+  },
+  {
+    slug: 'seo',
+    name: 'SEO',
+    icon: 'solar:magnifer-bold-duotone',
+    desc: 'Tối ưu SEO cho từng nhóm trang, sitemap, robots và schema.',
+    sections: [
+      s('category', 'Trang danh mục', 'Tối ưu tiêu đề, mô tả và nội dung danh mục.',
+        [['Trang', '24'], ['Đã tối ưu', '21'], ['Từ khoá top 10', '86']],
+        ['Danh mục', 'Từ khoá chính', 'Thứ hạng', 'Điểm SEO', 'Trạng thái'],
+        [['Sofa da', 'sofa da cao cấp', 3, 94], ['Sofa vải', 'sofa vải đẹp', 6, 89],
+         ['Sofa góc', 'sofa góc phòng khách', 4, 92], ['Sofa băng', 'sofa băng giá rẻ', 11, 78],
+         ['Ghế thư giãn', 'ghế thư giãn nhập khẩu', 8, 84]]
+          .map((r, i) => [...r, i === 3 ? 'Cần tối ưu' : 'Tốt'])),
+      s('product', 'Trang sản phẩm', 'Meta, ảnh alt và schema sản phẩm.',
+        [['Sản phẩm', '186'], ['Có schema', '178'], ['Thiếu alt ảnh', '22']],
+        ['Sản phẩm', 'Từ khoá', 'Thứ hạng', 'Schema', 'Trạng thái'],
+        [['Sofa da Milano 3 chỗ', 'sofa da milano', 2, 'Product + Review'],
+         ['Sofa góc Verona L', 'sofa góc verona', 5, 'Product'],
+         ['Sofa vải Como 2 chỗ', 'sofa vải 2 chỗ', 9, 'Product'],
+         ['Sofa băng Torino', 'sofa băng torino', 7, 'Thiếu'],
+         ['Ghế thư giãn Firenze', 'ghế thư giãn da', 12, 'Product']]
+          .map((r, i) => [...r, i === 3 ? 'Cần bổ sung' : 'Tốt'])),
+      s('collection', 'Trang bộ sưu tập', 'SEO cho landing bộ sưu tập.',
+        [['Bộ sưu tập', '9'], ['Đã tối ưu', '8'], ['Traffic/tháng', '18.600']],
+        ['Bộ sưu tập', 'Từ khoá', 'Truy cập', 'Điểm SEO', 'Trạng thái'],
+        [['Milano', 'bộ sưu tập sofa milano', 6200, 93], ['Verona', 'sofa verona', 4100, 88],
+         ['Como', 'sofa como', 3400, 85], ['Torino', 'sofa torino', 2600, 81],
+         ['Firenze', 'ghế firenze', 2300, 76]]
+          .map((r, i) => [...r, i === 4 ? 'Cần tối ưu' : 'Tốt'])),
+      s('project', 'Trang dự án', 'SEO cho trang dự án thi công.',
+        [['Dự án', '38'], ['Đã tối ưu', '31'], ['Truy cập', '9.200']],
+        ['Dự án', 'Từ khoá', 'Truy cập', 'Điểm SEO', 'Trạng thái'],
+        [['Penthouse Vinhomes', 'nội thất penthouse', 2400, 90],
+         ['Villa Ecopark', 'nội thất villa', 1900, 87],
+         ['Khách sạn Đà Nẵng', 'nội thất khách sạn', 1600, 82],
+         ['Căn hộ Masteri', 'sofa căn hộ', 1500, 79],
+         ['Văn phòng Keangnam', 'sofa văn phòng', 1200, 74]]
+          .map((r, i) => [...r, i > 3 ? 'Cần tối ưu' : 'Tốt'])),
+      s('showroom', 'Trang showroom', 'SEO local cho từng showroom.',
+        [['Showroom', '6'], ['Google Business', '6'], ['Đánh giá TB', '4,8/5']],
+        ['Showroom', 'Từ khoá địa phương', 'Thứ hạng', 'Đánh giá', 'Trạng thái'],
+        [['Cầu Giấy, Hà Nội', 'showroom sofa cầu giấy', 1, '4,9/5'],
+         ['Long Biên, Hà Nội', 'sofa long biên', 2, '4,8/5'],
+         ['Quận 7, TP.HCM', 'showroom sofa quận 7', 3, '4,7/5'],
+         ['Thủ Đức, TP.HCM', 'sofa thủ đức', 4, '4,8/5'],
+         ['Hải Châu, Đà Nẵng', 'sofa đà nẵng', 2, '4,9/5']]
+          .map((r) => [...r, 'Tốt'])),
+      s('blog', 'Trang blog', 'SEO nội dung, internal link và từ khoá dài.',
+        [['Bài viết', '124'], ['Từ khoá top 10', '212'], ['Traffic organic', '42.600']],
+        ['Bài viết', 'Từ khoá', 'Thứ hạng', 'Truy cập', 'Trạng thái'],
+        [['Chọn sofa cho phòng khách nhỏ', 'sofa phòng khách nhỏ', 2, 8400],
+         ['Bảo quản sofa da đúng cách', 'bảo quản sofa da', 1, 6200],
+         ['Xu hướng nội thất 2026', 'xu hướng nội thất 2026', 4, 5100],
+         ['Sofa vải hay sofa da?', 'nên mua sofa vải hay da', 3, 7300],
+         ['Phối màu sofa với tường', 'phối màu sofa', 9, 2600]]
+          .map((r, i) => [...r, i === 4 ? 'Cần tối ưu' : 'Tốt'])),
+      s('brand', 'Trang thương hiệu', 'Trang thương hiệu và entity SEO.',
+        [['Trang thương hiệu', '5'], ['Backlink', '1.284'], ['Điểm uy tín', '46/100']],
+        ['Thương hiệu', 'Đường dẫn', 'Backlink', 'Điểm SEO', 'Trạng thái'],
+        [['Sofa1 Handcraft', '/sofa1/about', 620, 92], ['Milano Leather', '/sofa1/collections/milano', 240, 86],
+         ['Como Fabric', '/sofa1/collections/como', 180, 82], ['Verona Design', '/sofa1/collections/verona', 152, 80],
+         ['Torino Classic', '/sofa1/collections/torino', 92, 74]]
+          .map((r, i) => [...r, i === 4 ? 'Cần tối ưu' : 'Tốt'])),
+      s('sitemap', 'Sitemap', 'Sơ đồ trang XML gửi tới công cụ tìm kiếm.',
+        [['URL', '486'], ['Đã lập chỉ mục', '452'], ['Lỗi', '4']],
+        ['Sitemap', 'Số URL', 'Đã index', 'Cập nhật', 'Trạng thái'],
+        [['sitemap-index.xml', 486, 452], ['sitemap-products.xml', 186, 179],
+         ['sitemap-collections.xml', 9, 9], ['sitemap-blog.xml', 124, 118],
+         ['sitemap-pages.xml', 42, 40]]
+          .map((r, i) => [...r, `${13 + i}/08/2026`, i === 3 ? 'Có cảnh báo' : 'Tốt'])),
+      s('robots', 'Robots', 'Quy tắc thu thập dữ liệu cho từng bot.',
+        [['Quy tắc', '12'], ['Chặn', '5 đường dẫn'], ['Cập nhật', '10/08/2026']],
+        ['User-agent', 'Quy tắc', 'Đường dẫn', 'Trạng thái', 'Cập nhật'],
+        [['*', 'Allow', '/'], ['*', 'Disallow', '/sofa1/admin'], ['*', 'Disallow', '/sofa1/checkout'],
+         ['*', 'Disallow', '/sofa1/account'], ['Googlebot', 'Allow', '/sofa1/products']]
+          .map((r, i) => [...r, 'Đang áp dụng', `${10 + (i % 3)}/08/2026`])),
+      s('schema', 'Schema', 'Dữ liệu có cấu trúc theo loại trang.',
+        [['Loại schema', '8'], ['Trang có schema', '92%'], ['Lỗi kiểm tra', '3']],
+        ['Loại schema', 'Áp dụng cho', 'Số trang', 'Lỗi', 'Trạng thái'],
+        [['Organization', 'Toàn site', 1, 0], ['Product', 'Trang sản phẩm', 178, 2],
+         ['BreadcrumbList', 'Toàn site', 486, 0], ['Article', 'Blog', 124, 1],
+         ['LocalBusiness', 'Showroom', 6, 0], ['FAQPage', 'FAQ', 1, 0]]
+          .map((r) => [...r, Number(r[3]) > 0 ? 'Cần sửa' : 'Tốt'])),
+    ],
+  },
+  {
+    slug: 'permissions',
+    name: 'Phân quyền',
+    icon: 'solar:shield-user-bold-duotone',
+    desc: 'Người dùng hệ thống, vai trò, quyền hạn và nhật ký hoạt động.',
+    sections: [
+      s('users', 'Người dùng', 'Tài khoản quản trị và nhân sự.',
+        [['Người dùng', '38'], ['Đang hoạt động', '34'], ['Bật 2FA', '29']],
+        ['Người dùng', 'Email', 'Vai trò', '2FA', 'Trạng thái'],
+        [['Nguyễn Ngọc Anh', 'ngocanh@sofa1.vn', 'Quản trị viên', 'Bật'],
+         ['Trần Hải Nam', 'hainam@sofa1.vn', 'Quản lý bán hàng', 'Bật'],
+         ['Lê Thu Trang', 'thutrang@sofa1.vn', 'Biên tập nội dung', 'Tắt'],
+         ['Phạm Đức Long', 'duclong@sofa1.vn', 'Quản lý kho', 'Bật'],
+         ['Vũ Mai Chi', 'maichi@sofa1.vn', 'Marketing', 'Bật']]
+          .map((r, i) => [...r, i === 2 ? 'Tạm khoá' : 'Đang hoạt động'])),
+      s('roles', 'Vai trò', 'Nhóm vai trò và phạm vi truy cập.',
+        [['Vai trò', '7'], ['Vai trò tuỳ chỉnh', '3'], ['Người dùng/vai trò TB', '5,4']],
+        ['Vai trò', 'Mô tả', 'Số người dùng', 'Số quyền', 'Trạng thái'],
+        [['Quản trị viên', 'Toàn quyền hệ thống', 3, 64],
+         ['Quản lý bán hàng', 'Đơn hàng, CRM, báo cáo', 8, 32],
+         ['Biên tập nội dung', 'CMS, blog, SEO', 6, 24],
+         ['Quản lý kho', 'Kho hàng, tồn kho', 5, 18],
+         ['Marketing', 'Chiến dịch, coupon', 7, 21],
+         ['Cộng tác viên', 'Xem báo cáo affiliate', 9, 6]]
+          .map((r) => [...r, 'Đang hoạt động'])),
+      s('permissions', 'Quyền hạn', 'Ma trận quyền theo module.',
+        [['Quyền', '64'], ['Module', '9'], ['Quyền nhạy cảm', '11']],
+        ['Module', 'Xem', 'Tạo', 'Sửa', 'Xoá'],
+        [['CMS', 'Tất cả', 'Biên tập trở lên', 'Biên tập trở lên', 'Quản trị'],
+         ['Sản phẩm', 'Tất cả', 'Quản lý', 'Quản lý', 'Quản trị'],
+         ['Kho hàng', 'Quản lý kho', 'Quản lý kho', 'Quản lý kho', 'Quản trị'],
+         ['Đơn hàng', 'Bán hàng', 'Bán hàng', 'Bán hàng', 'Quản trị'],
+         ['CRM', 'Bán hàng', 'Bán hàng', 'Bán hàng', 'Quản trị'],
+         ['Marketing', 'Marketing', 'Marketing', 'Marketing', 'Quản trị'],
+         ['Analytics', 'Tất cả', '—', '—', '—'],
+         ['SEO', 'Biên tập', 'Biên tập', 'Biên tập', 'Quản trị'],
+         ['Phân quyền', 'Quản trị', 'Quản trị', 'Quản trị', 'Quản trị']]),
+      s('logs', 'Nhật ký hệ thống', 'Lịch sử thao tác và đăng nhập.',
+        [['Sự kiện hôm nay', '412'], ['Cảnh báo', '3'], ['Đăng nhập thất bại', '7']],
+        ['Thời gian', 'Người dùng', 'Hành động', 'Đối tượng', 'IP'],
+        [['16/08 09:42', 'Nguyễn Ngọc Anh', 'Cập nhật giá', 'SF-1001', '113.161.x.x'],
+         ['16/08 09:18', 'Phạm Đức Long', 'Duyệt phiếu nhập', 'PN-2608-04', '171.244.x.x'],
+         ['16/08 08:56', 'Lê Thu Trang', 'Xuất bản bài viết', 'Xu hướng 2026', '14.161.x.x'],
+         ['16/08 08:30', 'Vũ Mai Chi', 'Tạo coupon', 'SOFA10', '203.113.x.x'],
+         ['16/08 08:02', 'Hệ thống', 'Đăng nhập thất bại', 'admin@sofa1.vn', '45.128.x.x']]),
+    ],
+  },
 ];
 
-export const SOFA1_ADMIN_ROOT = '/sofa1/admin';
+export const findSofa1AdminGroup = (slug?: string) =>
+  SOFA1_ADMIN_GROUPS.find((g) => g.slug === slug);
 
-export const findSofa1AdminModule = (groupSlug?: string, moduleSlug?: string) => {
-  const group = SOFA1_ADMIN_GROUPS.find((g) => g.slug === groupSlug);
-  if (!group) return null;
-  const module = group.modules.find((m) => m.slug === moduleSlug);
-  if (!module) return null;
-  return { group, module };
+export const findSofa1AdminSection = (groupSlug?: string, sectionSlug?: string) => {
+  const group = findSofa1AdminGroup(groupSlug);
+  if (!group) return undefined;
+  return group.sections.find((x) => x.slug === sectionSlug);
 };
-
-export const SOFA1_ADMIN_OVERVIEW_KPIS = [
-  { label: 'Doanh thu tháng', value: '5,82 tỷ', delta: '+11%', icon: 'solar:dollar-minimalistic-bold-duotone' },
-  { label: 'Đơn hàng', value: '312', delta: '+14%', icon: 'solar:cart-large-2-bold-duotone' },
-  { label: 'Khách hàng mới', value: '256', delta: '+8%', icon: 'solar:user-plus-bold-duotone' },
-  { label: 'Tỷ lệ chuyển đổi', value: '2,4%', delta: '+0,3%', icon: 'solar:chart-2-bold-duotone' },
-];
-
-export const SOFA1_ADMIN_RECENT = [
-  { title: 'Đơn CS-26081201 chuyển sang Đang giao', time: '12 phút trước', icon: 'solar:delivery-bold-duotone' },
-  { title: 'Ngọc Anh cập nhật giá SKU CS-ROM-001', time: '1 giờ trước', icon: 'solar:tag-price-bold-duotone' },
-  { title: 'Chiến dịch "Ưu đãi tháng 8" đã gửi 8.420 email', time: '3 giờ trước', icon: 'solar:letter-bold-duotone' },
-  { title: 'Phiếu nhập PN-2608-014 nhập 48 sản phẩm', time: '5 giờ trước', icon: 'solar:box-bold-duotone' },
-  { title: 'Ticket TK-8809 được nâng mức ưu tiên Khẩn', time: 'Hôm qua', icon: 'solar:chat-round-call-bold-duotone' },
-];
