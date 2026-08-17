@@ -100,6 +100,8 @@ const Sofa8MemberPage = lazy(() => import('src/pages/sofa8-pages/member'));
 // SOFA1 PAGES
 const Sofa1AdminDashboardPage = lazy(() => import('src/pages/sofa1-admin'));
 const Sofa1AdminModulePage = lazy(() => import('src/pages/sofa1-admin/module'));
+const Sofa2AdminDashboardPage = lazy(() => import('src/pages/sofa2-admin'));
+const Sofa2AdminModulePage = lazy(() => import('src/pages/sofa2-admin/module'));
 const Sofa1AboutPage = lazy(() => import('src/pages/sofa1-pages/about'));
 const Sofa1AboutSubPage = lazy(() => import('src/pages/sofa1-pages/about-sub'));
 const Sofa1ProductsPage = lazy(() => import('src/pages/sofa1-pages/products'));
@@ -1563,6 +1565,32 @@ export function Router() {
           <MainLayout data={{ nav: sofa8PagesNavData }}>
             <Sofa8MemberPage />
           </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    // SOFA2 ADMIN
+    {
+      path: '/sofa2/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminModulePage />
         </Suspense>
       ),
     },
