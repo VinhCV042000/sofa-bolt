@@ -78,12 +78,12 @@ const CMS_GROUP: Sofa3AdminGroup = {
   name: 'CMS',
   icon: 'solar:documents-bold-duotone',
   modules: [
-    cmsPage('home', 'Trang chủ', '/sofa1'),
-    cmsPage('about', 'Trang giới thiệu', '/sofa1/about'),
-    cmsPage('contact', 'Trang liên hệ', '/sofa1/contact'),
-    cmsPage('policy', 'Trang chính sách', '/sofa1/policy'),
-    cmsPage('terms', 'Trang điều khoản', '/sofa1/policy/terms'),
-    cmsPage('faq', 'Trang FAQ', '/sofa1/faq'),
+    cmsPage('home', 'Trang chủ', '/sofa3'),
+    cmsPage('about', 'Trang giới thiệu', '/sofa3/about'),
+    cmsPage('contact', 'Trang liên hệ', '/sofa3/contact'),
+    cmsPage('policy', 'Trang chính sách', '/sofa3/policy'),
+    cmsPage('terms', 'Trang điều khoản', '/sofa3/policy/terms'),
+    cmsPage('faq', 'Trang FAQ', '/sofa3/faq'),
     mod(
       'blog',
       'Trang blog',
@@ -202,10 +202,10 @@ const CMS_GROUP: Sofa3AdminGroup = {
         STATUS_COL,
       ],
       [
-        { page: '/sofa1', title: 'SOFA1 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
-        { page: '/sofa1/about', title: 'Về chúng tôi | SOFA1', length: 42, status: 'Tốt' },
-        { page: '/sofa1/faq', title: '', length: 0, status: 'Thiếu meta' },
-        { page: '/sofa1/policy', title: 'Chính sách mua hàng SOFA1', length: 48, status: 'Tốt' },
+        { page: '/sofa3', title: 'SOFA3 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
+        { page: '/sofa3/about', title: 'Về chúng tôi | SOFA3', length: 42, status: 'Tốt' },
+        { page: '/sofa3/faq', title: '', length: 0, status: 'Thiếu meta' },
+        { page: '/sofa3/policy', title: 'Chính sách mua hàng SOFA3', length: 48, status: 'Tốt' },
       ],
       ['Quét lại']
     ),
@@ -227,9 +227,9 @@ const CMS_GROUP: Sofa3AdminGroup = {
         { key: 'updated', label: 'Cập nhật' },
       ],
       [
-        { title: 'Hướng dẫn đo kích thước', slug: '/sofa1/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
-        { title: 'Cam kết chất liệu', slug: '/sofa1/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
-        { title: 'Tuyển đại lý 2026', slug: '/sofa1/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
+        { title: 'Hướng dẫn đo kích thước', slug: '/sofa3/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
+        { title: 'Cam kết chất liệu', slug: '/sofa3/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
+        { title: 'Tuyển đại lý 2026', slug: '/sofa3/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
       ],
       ['Tạo trang']
     ),
@@ -790,7 +790,7 @@ const MARKETING_GROUP: Sofa3AdminGroup = {
         { label: 'Tin đã gửi', value: '48.2K' },
         { label: 'Tỷ lệ nhận', value: '98.4%' },
         { label: 'Chi phí tháng', value: '32 tr' },
-        { label: 'Brandname', value: 'SOFA1' },
+        { label: 'Brandname', value: 'SOFA3' },
       ],
       [
         { key: 'campaign', label: 'Chiến dịch' },
@@ -1044,7 +1044,7 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA1`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
+      { url: sample, title: `${name} – SOFA3`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
       { url: `${sample}/linen`, title: 'Sofa vải linen cao cấp', keyword: 'sofa vải linen', position: 7, status: 'Tốt' },
       { url: `${sample}/da-bo`, title: '', keyword: 'sofa da bò', position: 18, status: 'Thiếu meta' },
       { url: `${sample}/goc-l`, title: 'Sofa góc L hiện đại', keyword: 'sofa góc l', position: 11, status: 'Cần cải thiện' },
@@ -1057,13 +1057,13 @@ const SEO_GROUP: Sofa3AdminGroup = {
   name: 'SEO',
   icon: 'solar:graph-new-bold-duotone',
   modules: [
-    seoPage('category', 'Trang danh mục', '/sofa1/products/category'),
-    seoPage('product', 'Trang sản phẩm', '/sofa1/products'),
-    seoPage('collection', 'Trang bộ sưu tập', '/sofa1/collections'),
-    seoPage('project', 'Trang dự án', '/sofa1/projects'),
-    seoPage('showroom', 'Trang showroom', '/sofa1/showrooms'),
-    seoPage('blog', 'Trang blog', '/sofa1/blog'),
-    seoPage('brand', 'Trang thương hiệu', '/sofa1/about'),
+    seoPage('category', 'Trang danh mục', '/sofa3/products/category'),
+    seoPage('product', 'Trang sản phẩm', '/sofa3/products'),
+    seoPage('collection', 'Trang bộ sưu tập', '/sofa3/collections'),
+    seoPage('project', 'Trang dự án', '/sofa3/projects'),
+    seoPage('showroom', 'Trang showroom', '/sofa3/showrooms'),
+    seoPage('blog', 'Trang blog', '/sofa3/blog'),
+    seoPage('brand', 'Trang thương hiệu', '/sofa3/about'),
     mod(
       'sitemap',
       'Sitemap',
@@ -1109,7 +1109,7 @@ const SEO_GROUP: Sofa3AdminGroup = {
       [
         { agent: '*', rule: 'Allow', path: '/', status: 'Hoạt động' },
         { agent: '*', rule: 'Disallow', path: '/sofa3/admin', status: 'Hoạt động' },
-        { agent: '*', rule: 'Disallow', path: '/sofa1/cart', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa3/cart', status: 'Hoạt động' },
         { agent: 'Googlebot', rule: 'Allow', path: '/', status: 'Hoạt động' },
       ],
       ['Sửa robots.txt']
@@ -1171,10 +1171,10 @@ const ACCESS_GROUP: Sofa3AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Ngọc Anh', email: 'ngocanh@sofa1.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
-        { name: 'Minh Quân', email: 'quan@sofa1.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
-        { name: 'Thu Hà', email: 'ha@sofa1.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
-        { name: 'Gia Bảo', email: 'bao@sofa1.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
+        { name: 'Ngọc Anh', email: 'ngocanh@sofa3.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
+        { name: 'Minh Quân', email: 'quan@sofa3.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
+        { name: 'Thu Hà', email: 'ha@sofa3.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
+        { name: 'Gia Bảo', email: 'bao@sofa3.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
       ],
       ['Mời người dùng']
     ),

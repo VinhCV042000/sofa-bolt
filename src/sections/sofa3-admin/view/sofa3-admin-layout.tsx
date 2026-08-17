@@ -203,7 +203,7 @@ export function Sofa3AdminLayout({
           </Typography>
         </Box>
         <Tooltip title="Về trang bán hàng">
-          <IconButton component={RouterLink} href="/sofa1" sx={{ color: alpha(TEXT, 0.7) }}>
+          <IconButton component={RouterLink} href="/sofa3" sx={{ color: alpha(TEXT, 0.7) }}>
             <Iconify icon="solar:logout-3-bold-duotone" width={20} />
           </IconButton>
         </Tooltip>
