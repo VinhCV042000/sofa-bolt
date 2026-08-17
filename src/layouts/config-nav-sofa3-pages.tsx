@@ -160,7 +160,7 @@ export const sofa3PagesNavData = [
       { title: 'Tổng quan', path: '/sofa3/admin' },
       { title: 'CMS', path: '/sofa3/admin/cms' },
       { title: 'Sản phẩm', path: '/sofa3/admin/catalog' },
-      { title: 'Kho hàng', path: '/sofa3/admin/inventory' },
+      { title: 'Kho hàng', path: '/sofa3/admin/warehouse' },
       { title: 'Đơn hàng', path: '/sofa3/admin/orders' },
       { title: 'CRM', path: '/sofa3/admin/crm' },
       { title: 'Marketing', path: '/sofa3/admin/marketing' },
