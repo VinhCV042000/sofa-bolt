@@ -98,6 +98,8 @@ const Sofa8PolicyPage = lazy(() => import('src/pages/sofa8-pages/policy'));
 const Sofa8MemberPage = lazy(() => import('src/pages/sofa8-pages/member'));
 
 // SOFA1 PAGES
+const Sofa1AdminDashboardPage = lazy(() => import('src/pages/sofa1-admin'));
+const Sofa1AdminModulePage = lazy(() => import('src/pages/sofa1-admin/module'));
 const Sofa1AboutPage = lazy(() => import('src/pages/sofa1-pages/about'));
 const Sofa1AboutSubPage = lazy(() => import('src/pages/sofa1-pages/about-sub'));
 const Sofa1ProductsPage = lazy(() => import('src/pages/sofa1-pages/products'));
@@ -1565,7 +1567,34 @@ export function Router() {
       ),
     },
 
+    // SOFA1 ADMIN
+    {
+      path: '/sofa1/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminModulePage />
+        </Suspense>
+      ),
+    },
+
     // SOFA1 PAGES
+
     {
       path: '/sofa1/about',
       element: (
