@@ -79,7 +79,7 @@ export function Sofa4AdminLayout({
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
-            Casa Sofa
+            Sofa4 Studio
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }}>
             Trung tâm quản trị
