@@ -11,9 +11,9 @@ import { RouterLink } from 'src/routes/components';
 
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
 import { SOFA16_CART_ITEMS } from 'src/sections/sofa16-pages/sofa16-shop-data';
+import { Sofa16Panel, sofa16ButtonSx } from 'src/sections/sofa16-pages/sofa16-shop-ui';
 import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
 import { sofa16FormatPrice, SOFA16_PAGE_IMAGES } from 'src/sections/sofa16-pages/sofa16-pages-data';
-import { Sofa16Panel, sofa16ButtonSx } from 'src/sections/sofa16-pages/sofa16-shop-ui';
 
 export default function Page() {
   const subtotal = SOFA16_CART_ITEMS.reduce((sum, i) => sum + i.price * i.qty, 0);

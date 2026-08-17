@@ -11,9 +11,9 @@ import { RouterLink } from 'src/routes/components';
 
 import { SOFA18_COLORS } from 'src/sections/sofa18/sofa18-data';
 import { SOFA18_CART_ITEMS } from 'src/sections/sofa18-pages/sofa18-shop-data';
+import { Sofa18Panel, sofa18ButtonSx } from 'src/sections/sofa18-pages/sofa18-shop-ui';
 import { Sofa18Section, Sofa18PageHero } from 'src/sections/sofa18-pages/sofa18-page-hero';
 import { sofa18FormatPrice, SOFA18_PAGE_IMAGES } from 'src/sections/sofa18-pages/sofa18-pages-data';
-import { Sofa18Panel, sofa18ButtonSx } from 'src/sections/sofa18-pages/sofa18-shop-ui';
 
 export default function Page() {
   const subtotal = SOFA18_CART_ITEMS.reduce((sum, i) => sum + i.price * i.qty, 0);

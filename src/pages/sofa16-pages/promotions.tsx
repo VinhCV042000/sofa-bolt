@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
 import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
-import { SOFA16_PAGE_IMAGES, SOFA16_PAGE_PROMOTION_SERVICES } from 'src/sections/sofa16-pages/sofa16-pages-data';
 import { Sofa16Panel, Sofa16LinkGrid, Sofa16SectionTitle } from 'src/sections/sofa16-pages/sofa16-shop-ui';
+import { SOFA16_PAGE_IMAGES, SOFA16_PAGE_PROMOTION_SERVICES } from 'src/sections/sofa16-pages/sofa16-pages-data';
 
 export default function Page() {
   const { slug } = useParams();

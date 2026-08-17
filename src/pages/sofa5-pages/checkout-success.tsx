@@ -9,9 +9,9 @@ import { RouterLink } from 'src/routes/components';
 import { Iconify } from 'src/components/iconify';
 
 import { SOFA5_COLORS } from 'src/sections/sofa5/sofa5-data';
+import { sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
 import { SOFA5_PAGE_IMAGES } from 'src/sections/sofa5-pages/sofa5-pages-data';
 import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page-hero';
-import { sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
 
 export default function Page() {
   return (
