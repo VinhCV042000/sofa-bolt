@@ -22,7 +22,11 @@ import TableContainer from '@mui/material/TableContainer';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa1AdminLayout, SOFA1_ADMIN_THEME } from './sofa1-admin-layout';
-import { SOFA1_ADMIN_ROOT, SOFA1_ADMIN_GROUPS, findSofa1AdminModule } from '../sofa1-admin-data';
+import {
+  SOFA1_ADMIN_ROOT,
+  SOFA1_ADMIN_GROUPS,
+  findSofa1AdminModule,
+} from '../sofa1-admin-data.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -38,8 +42,7 @@ const statusColor = (value: string) => {
 };
 
 const formatCell = (value: string | number, type?: string) => {
-  if (type === 'money' && typeof value === 'number')
-    return `${value.toLocaleString('vi-VN')} ₫`;
+  if (type === 'money' && typeof value === 'number') return `${value.toLocaleString('vi-VN')} ₫`;
   if (type === 'number' && typeof value === 'number') return value.toLocaleString('vi-VN');
   return value;
 };
@@ -182,7 +185,10 @@ export function Sofa1AdminModuleView() {
                                   color={statusColor(String(value)) as any}
                                 />
                               ) : (
-                                <Typography variant="body2" sx={{ fontWeight: col.key === module.columns[0].key ? 600 : 400 }}>
+                                <Typography
+                                  variant="body2"
+                                  sx={{ fontWeight: col.key === module.columns[0].key ? 600 : 400 }}
+                                >
                                   {formatCell(value, col.type)}
                                 </Typography>
                               )}
@@ -191,16 +197,32 @@ export function Sofa1AdminModuleView() {
                         })}
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            <Iconify icon="solar:eye-bold-duotone" width={18} sx={{ color: 'text.disabled' }} />
-                            <Iconify icon="solar:pen-bold-duotone" width={18} sx={{ color: 'text.disabled' }} />
-                            <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} sx={{ color: 'text.disabled' }} />
+                            <Iconify
+                              icon="solar:eye-bold-duotone"
+                              width={18}
+                              sx={{ color: 'text.disabled' }}
+                            />
+                            <Iconify
+                              icon="solar:pen-bold-duotone"
+                              width={18}
+                              sx={{ color: 'text.disabled' }}
+                            />
+                            <Iconify
+                              icon="solar:trash-bin-trash-bold-duotone"
+                              width={18}
+                              sx={{ color: 'text.disabled' }}
+                            />
                           </Stack>
                         </TableCell>
                       </TableRow>
                     ))}
                     {!rows.length && (
                       <TableRow>
-                        <TableCell colSpan={module.columns.length + 1} align="center" sx={{ py: 6 }}>
+                        <TableCell
+                          colSpan={module.columns.length + 1}
+                          align="center"
+                          sx={{ py: 6 }}
+                        >
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Không tìm thấy dữ liệu phù hợp.
                           </Typography>

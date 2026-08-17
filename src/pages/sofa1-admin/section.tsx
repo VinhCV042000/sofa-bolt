@@ -4,15 +4,15 @@ import { Navigate } from 'react-router-dom';
 import { useParams } from 'src/routes/hooks';
 
 import {
+  findSofa1AdminGroup,
+  findSofa1AdminSection,
+} from 'src/sections/sofa1-admin/sofa1-admin-config';
+import {
   Sofa1AdminKpis,
   Sofa1AdminTable,
   Sofa1AdminLayout,
   Sofa1AdminHeading,
 } from 'src/sections/sofa1-admin/sofa1-admin-layout';
-import {
-  findSofa1AdminGroup,
-  findSofa1AdminSection,
-} from 'src/sections/sofa1-admin/sofa1-admin-config';
 
 // ----------------------------------------------------------------------
 

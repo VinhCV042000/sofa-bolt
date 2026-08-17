@@ -1964,33 +1964,6 @@ export function Router() {
         </Suspense>
       ),
     },
-
-    // SOFA1 ADMIN
-    {
-      path: '/sofa1/admin',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa1AdminPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa1/admin/:group',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa1AdminGroupPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa1/admin/:group/:section',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa1AdminSectionPage />
-        </Suspense>
-      ),
-    },
-
     // SOFA2 PAGES
     {
       path: '/sofa2/about',
