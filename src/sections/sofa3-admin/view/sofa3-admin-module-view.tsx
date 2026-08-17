@@ -146,7 +146,7 @@ export function Sofa3AdminModuleView() {
                       color="inherit"
                       sx={
                         index === 0
-                          ? { bgcolor: SURFACE, '&:hover': { bgcolor: '#3A2C24' } }
+                          ? { bgcolor: SURFACE, '&:hover': { bgcolor: '#24382C' } }
                           : undefined
                       }
                       startIcon={index === 0 ? <Iconify icon="mingcute:add-line" /> : undefined}
@@ -157,7 +157,7 @@ export function Sofa3AdminModuleView() {
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha('#8A6A45', 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#4A6B4F', 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -215,7 +215,7 @@ export function Sofa3AdminModuleView() {
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{ p: 2, borderTop: `1px solid ${alpha('#8A6A45', 0.16)}` }}
+                sx={{ p: 2, borderTop: `1px solid ${alpha('#4A6B4F', 0.16)}` }}
               >
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   Hiển thị {rows.length} / {module.rows.length} bản ghi
@@ -223,7 +223,7 @@ export function Sofa3AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ bgcolor: alpha(ACCENT, 0.14), color: '#7A5A2E' }}
+                  sx={{ bgcolor: alpha(ACCENT, 0.14), color: '#2F5137' }}
                 />
               </Stack>
             </Card>

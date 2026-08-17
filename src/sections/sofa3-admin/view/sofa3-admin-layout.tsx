@@ -25,10 +25,10 @@ import { SOFA3_ADMIN_ROOT, SOFA3_ADMIN_GROUPS } from '../sofa3-admin-data';
 
 const NAV_WIDTH = 280;
 
-const BG = '#1C1613';
-const SURFACE = '#241C18';
-const ACCENT = '#C8A165';
-const TEXT = '#EDE3D6';
+const BG = '#12211A';
+const SURFACE = '#192C22';
+const ACCENT = '#8FBF6B';
+const TEXT = '#E6F0E4';
 
 type Props = {
   children: React.ReactNode;
@@ -75,7 +75,7 @@ export function Sofa3AdminLayout({
             color: ACCENT,
           }}
         >
-          <Iconify icon="solar:armchair-2-bold-duotone" width={24} />
+          <Iconify icon="solar:leaf-bold-duotone" width={24} />
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
@@ -212,7 +212,7 @@ export function Sofa3AdminLayout({
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F6F1EA' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F2F6F0' }}>
       {isDesktop ? (
         <Box
           component="aside"
@@ -235,7 +235,7 @@ export function Sofa3AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#8A6A45', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#4A6B4F', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -257,7 +257,7 @@ export function Sofa3AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#7A5A2E', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#2F5137', fontWeight: 600 }}
               />
             </Stack>
           </Container>

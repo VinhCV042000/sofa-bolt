@@ -78,7 +78,7 @@ export function Sofa3AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#8A6A45', 0.2)}`,
+                        border: `1px solid ${alpha('#4A6B4F', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -92,7 +92,7 @@ export function Sofa3AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#8A6A45',
+                          color: '#4A6B4F',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
