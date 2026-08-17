@@ -10,8 +10,8 @@ import { Iconify } from 'src/components/iconify';
 
 import { SOFA5_COLORS } from 'src/sections/sofa5/sofa5-data';
 import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page-hero';
-import { SOFA5_PAGE_IMAGES, SOFA5_PAGE_SHOWROOMS, SOFA5_PAGE_COMPANY_INFO } from 'src/sections/sofa5-pages/sofa5-pages-data';
 import { Sofa5Panel, sofa5FieldSx, sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
+import { SOFA5_PAGE_IMAGES, SOFA5_PAGE_SHOWROOMS, SOFA5_PAGE_COMPANY_INFO } from 'src/sections/sofa5-pages/sofa5-pages-data';
 
 export default function Page() {
   return (

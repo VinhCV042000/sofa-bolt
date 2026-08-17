@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import { RouterLink } from 'src/routes/components';
 
 import { SOFA5_COLORS } from 'src/sections/sofa5/sofa5-data';
-import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page-hero';
 import { sofa5FieldSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
+import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page-hero';
 import { sofa5FormatPrice, SOFA5_PAGE_IMAGES, SOFA5_PAGE_PRODUCTS } from 'src/sections/sofa5-pages/sofa5-pages-data';
 
 export default function Page() {

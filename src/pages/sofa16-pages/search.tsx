@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import { RouterLink } from 'src/routes/components';
 
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
-import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
 import { sofa16FieldSx } from 'src/sections/sofa16-pages/sofa16-shop-ui';
+import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
 import { sofa16FormatPrice, SOFA16_PAGE_IMAGES, SOFA16_PAGE_PRODUCTS } from 'src/sections/sofa16-pages/sofa16-pages-data';
 
 export default function Page() {

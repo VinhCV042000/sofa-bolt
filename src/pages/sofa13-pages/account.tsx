@@ -19,7 +19,7 @@ import { varFade } from 'src/components/animate';
 
 import { SOFA13_COLORS } from 'src/sections/sofa13/sofa13-data';
 import { Sofa13Section, Sofa13PageHero } from 'src/sections/sofa13-pages/sofa13-page-hero';
-import { sofa13FormatPrice as formatSofa13Price, SOFA13_PAGE_IMAGES, SOFA13_PAGE_PRODUCTS } from 'src/sections/sofa13-pages/sofa13-pages-data';
+import { SOFA13_PAGE_IMAGES, SOFA13_PAGE_PRODUCTS, sofa13FormatPrice as formatSofa13Price } from 'src/sections/sofa13-pages/sofa13-pages-data';
 
 const ACCOUNT_SECTIONS = [
   { slug: 'profile', label: 'Hồ sơ cá nhân', icon: 'solar:user-bold-duotone' },

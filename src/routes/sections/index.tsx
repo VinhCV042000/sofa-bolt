@@ -31,6 +31,7 @@ import { sofa4PagesNavData } from 'src/layouts/config-nav-sofa4-pages';
 import { sofa6PagesNavData } from 'src/layouts/config-nav-sofa6-pages';
 import { sofa7PagesNavData } from 'src/layouts/config-nav-sofa7-pages';
 import { sofa9PagesNavData } from 'src/layouts/config-nav-sofa9-pages';
+import { sofa5PagesNavData } from 'src/layouts/config-nav-sofa5-pages';
 import { sofa10PagesNavData } from 'src/layouts/config-nav-sofa10-pages';
 import { sofa11PagesNavData } from 'src/layouts/config-nav-sofa11-pages';
 import { sofa12PagesNavData } from 'src/layouts/config-nav-sofa12-pages';
@@ -41,7 +42,6 @@ import { sofa15PagesNavData } from 'src/layouts/config-nav-sofa15-pages';
 import { sofa17PagesNavData } from 'src/layouts/config-nav-sofa17-pages';
 import { sofa20PagesNavData } from 'src/layouts/config-nav-sofa20-pages';
 import { sofa16PagesNavData } from 'src/layouts/config-nav-sofa16-pages';
-import { sofa5PagesNavData } from 'src/layouts/config-nav-sofa5-pages';
 import { sofa18PagesNavData } from 'src/layouts/config-nav-sofa18-pages';
 
 import { SplashScreen } from 'src/components/loading-screen';

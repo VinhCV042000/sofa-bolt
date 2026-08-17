@@ -10,8 +10,8 @@ import { Iconify } from 'src/components/iconify';
 
 import { SOFA16_COLORS } from 'src/sections/sofa16/sofa16-data';
 import { Sofa16Section, Sofa16PageHero } from 'src/sections/sofa16-pages/sofa16-page-hero';
-import { SOFA16_PAGE_IMAGES, SOFA16_PAGE_SHOWROOMS, SOFA16_PAGE_COMPANY_INFO } from 'src/sections/sofa16-pages/sofa16-pages-data';
 import { Sofa16Panel, sofa16FieldSx, sofa16ButtonSx } from 'src/sections/sofa16-pages/sofa16-shop-ui';
+import { SOFA16_PAGE_IMAGES, SOFA16_PAGE_SHOWROOMS, SOFA16_PAGE_COMPANY_INFO } from 'src/sections/sofa16-pages/sofa16-pages-data';
 
 export default function Page() {
   return (

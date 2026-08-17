@@ -11,9 +11,9 @@ import { RouterLink } from 'src/routes/components';
 
 import { SOFA5_COLORS } from 'src/sections/sofa5/sofa5-data';
 import { SOFA5_CART_ITEMS } from 'src/sections/sofa5-pages/sofa5-shop-data';
+import { Sofa5Panel, sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
 import { Sofa5Section, Sofa5PageHero } from 'src/sections/sofa5-pages/sofa5-page-hero';
 import { sofa5FormatPrice, SOFA5_PAGE_IMAGES } from 'src/sections/sofa5-pages/sofa5-pages-data';
-import { Sofa5Panel, sofa5ButtonSx } from 'src/sections/sofa5-pages/sofa5-shop-ui';
 
 export default function Page() {
   const subtotal = SOFA5_CART_ITEMS.reduce((sum, i) => sum + i.price * i.qty, 0);
