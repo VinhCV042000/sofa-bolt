@@ -152,4 +152,21 @@ export const sofa4PagesNavData = [
   { title: 'Giỏ hàng', path: '/sofa4/cart', icon: <Iconify width={22} icon="solar:cart-bold-duotone" /> },
   { title: 'Thanh toán', path: '/sofa4/payment', icon: <Iconify width={22} icon="solar:wallet-bold-duotone" /> },
   { title: 'Hỗ trợ', path: '/sofa4/support', icon: <Iconify width={22} icon="solar:question-circle-bold-duotone" /> },
+  {
+    title: 'Quản trị',
+    path: '/sofa4/admin',
+    icon: <Iconify width={22} icon="solar:widget-5-bold-duotone" />,
+    children: [
+      { title: 'Tổng quan', path: '/sofa4/admin' },
+      { title: 'CMS', path: '/sofa4/admin/cms' },
+      { title: 'Sản phẩm', path: '/sofa4/admin/catalog' },
+      { title: 'Kho hàng', path: '/sofa4/admin/warehouse' },
+      { title: 'Đơn hàng', path: '/sofa4/admin/orders' },
+      { title: 'CRM', path: '/sofa4/admin/crm' },
+      { title: 'Marketing', path: '/sofa4/admin/marketing' },
+      { title: 'Analytics', path: '/sofa4/admin/analytics' },
+      { title: 'SEO', path: '/sofa4/admin/seo' },
+      { title: 'Phân quyền', path: '/sofa4/admin/access' },
+    ],
+  },
 ];
