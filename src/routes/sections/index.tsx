@@ -1565,7 +1565,34 @@ export function Router() {
       ),
     },
 
+    // SOFA1 ADMIN
+    {
+      path: '/sofa1/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa1/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa1AdminModulePage />
+        </Suspense>
+      ),
+    },
+
     // SOFA1 PAGES
+
     {
       path: '/sofa1/about',
       element: (
