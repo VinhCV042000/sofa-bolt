@@ -98,6 +98,8 @@ const Sofa8PolicyPage = lazy(() => import('src/pages/sofa8-pages/policy'));
 const Sofa8MemberPage = lazy(() => import('src/pages/sofa8-pages/member'));
 
 // SOFA1 PAGES
+const Sofa1AdminDashboardPage = lazy(() => import('src/pages/sofa1-admin'));
+const Sofa1AdminModulePage = lazy(() => import('src/pages/sofa1-admin/module'));
 const Sofa1AboutPage = lazy(() => import('src/pages/sofa1-pages/about'));
 const Sofa1AboutSubPage = lazy(() => import('src/pages/sofa1-pages/about-sub'));
 const Sofa1ProductsPage = lazy(() => import('src/pages/sofa1-pages/products'));
