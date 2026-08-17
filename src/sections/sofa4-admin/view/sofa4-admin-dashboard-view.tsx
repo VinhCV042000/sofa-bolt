@@ -30,7 +30,7 @@ export function Sofa4AdminDashboardView() {
   return (
     <>
       <Helmet>
-        <title>Trung tâm quản trị | Casa Sofa</title>
+        <title>Trung tâm quản trị | Sofa4</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
