@@ -14,19 +14,19 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
+import { Sofa3AdminLayout, SOFA3_ADMIN_THEME } from './sofa3-admin-layout';
 import {
-  SOFA2_ADMIN_KPIS,
-  SOFA2_ADMIN_ROOT,
-  SOFA2_ADMIN_GROUPS,
-  SOFA2_ADMIN_ACTIVITIES,
-} from '../sofa2-admin-data';
+  SOFA3_ADMIN_KPIS,
+  SOFA3_ADMIN_ROOT,
+  SOFA3_ADMIN_GROUPS,
+  SOFA3_ADMIN_ACTIVITIES,
+} from '../sofa3-admin-data';
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA3_ADMIN_THEME;
 
-export function Sofa2AdminDashboardView() {
+export function Sofa3AdminDashboardView() {
   return (
     <>
       <Helmet>
@@ -34,12 +34,12 @@ export function Sofa2AdminDashboardView() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <Sofa2AdminLayout
+      <Sofa3AdminLayout
         title="Tổng quan hệ thống"
         subtitle="Bảng điều khiển tổng hợp toàn bộ nghiệp vụ: nội dung, sản phẩm, kho, đơn hàng, CRM, marketing, phân tích, SEO và phân quyền."
       >
         <Grid container spacing={3}>
-          {SOFA2_ADMIN_KPIS.map((kpi) => (
+          {SOFA3_ADMIN_KPIS.map((kpi) => (
             <Grid key={kpi.label} xs={12} sm={6} md={3}>
               <Card sx={{ p: 3, borderTop: `3px solid ${ACCENT}` }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -65,11 +65,11 @@ export function Sofa2AdminDashboardView() {
                 Nhóm chức năng quản trị
               </Typography>
               <Grid container spacing={2}>
-                {SOFA2_ADMIN_GROUPS.map((group) => (
+                {SOFA3_ADMIN_GROUPS.map((group) => (
                   <Grid key={group.slug} xs={12} sm={6}>
                     <ButtonBase
                       component={RouterLink}
-                      href={`${SOFA2_ADMIN_ROOT}/${group.slug}/${group.modules[0].slug}`}
+                      href={`${SOFA3_ADMIN_ROOT}/${group.slug}/${group.modules[0].slug}`}
                       sx={{
                         width: 1,
                         p: 2,
@@ -78,7 +78,7 @@ export function Sofa2AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#8A6A45', 0.2)}`,
+                        border: `1px solid ${alpha('#4A6B4F', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -92,7 +92,7 @@ export function Sofa2AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#8A6A45',
+                          color: '#4A6B4F',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
@@ -116,7 +116,7 @@ export function Sofa2AdminDashboardView() {
                 Hoạt động gần đây
               </Typography>
               <Stack spacing={2.5}>
-                {SOFA2_ADMIN_ACTIVITIES.map((item) => (
+                {SOFA3_ADMIN_ACTIVITIES.map((item) => (
                   <Stack key={item.text} direction="row" spacing={1.5}>
                     <Box
                       sx={{
@@ -152,7 +152,7 @@ export function Sofa2AdminDashboardView() {
             </Card>
           </Grid>
         </Grid>
-      </Sofa2AdminLayout>
+      </Sofa3AdminLayout>
     </>
   );
 }

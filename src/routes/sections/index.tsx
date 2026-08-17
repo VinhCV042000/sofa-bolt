@@ -100,8 +100,8 @@ const Sofa8MemberPage = lazy(() => import('src/pages/sofa8-pages/member'));
 // SOFA1 PAGES
 const Sofa1AdminDashboardPage = lazy(() => import('src/pages/sofa1-admin'));
 const Sofa1AdminModulePage = lazy(() => import('src/pages/sofa1-admin/module'));
-const Sofa2AdminDashboardPage = lazy(() => import('src/pages/sofa2-admin'));
-const Sofa2AdminModulePage = lazy(() => import('src/pages/sofa2-admin/module'));
+const Sofa3AdminDashboardPage = lazy(() => import('src/pages/sofa3-admin'));
+const Sofa3AdminModulePage = lazy(() => import('src/pages/sofa3-admin/module'));
 const Sofa1AboutPage = lazy(() => import('src/pages/sofa1-pages/about'));
 const Sofa1AboutSubPage = lazy(() => import('src/pages/sofa1-pages/about-sub'));
 const Sofa1ProductsPage = lazy(() => import('src/pages/sofa1-pages/products'));
@@ -1569,38 +1569,37 @@ export function Router() {
       ),
     },
 
-    // SOFA2 ADMIN
-    {
-      path: '/sofa2/admin',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa2AdminDashboardPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa2/admin/:group/:module',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa2AdminModulePage />
-        </Suspense>
-      ),
-    },
-    {
-      path: '/sofa2/admin/:group',
-      element: (
-        <Suspense fallback={<SplashScreen />}>
-          <Sofa2AdminModulePage />
-        </Suspense>
-      ),
-    },
-
     // SOFA1 ADMIN
     {
       path: '/sofa1/admin',
       element: (
         <Suspense fallback={<SplashScreen />}>
           <Sofa1AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    // SOFA3 ADMIN
+    {
+      path: '/sofa3/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa3AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa3AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa3/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa3AdminModulePage />
         </Suspense>
       ),
     },

@@ -1,26 +1,26 @@
-// SOFA2 ADMIN — cấu hình khu vực quản trị (dữ liệu demo)
+// SOFA3 ADMIN — cấu hình khu vực quản trị (dữ liệu demo)
 // ----------------------------------------------------------------------
 
-export const SOFA2_ADMIN_ROOT = '/sofa2/admin';
+export const SOFA3_ADMIN_ROOT = '/sofa3/admin';
 
-export type Sofa2AdminColumn = { key: string; label: string; type?: 'text' | 'status' | 'money' | 'number' };
+export type Sofa3AdminColumn = { key: string; label: string; type?: 'text' | 'status' | 'money' | 'number' };
 
-export type Sofa2AdminModule = {
+export type Sofa3AdminModule = {
   slug: string;
   name: string;
   description: string;
   icon: string;
   stats: { label: string; value: string; trend?: string }[];
-  columns: Sofa2AdminColumn[];
+  columns: Sofa3AdminColumn[];
   rows: Record<string, string | number>[];
   actions?: string[];
 };
 
-export type Sofa2AdminGroup = {
+export type Sofa3AdminGroup = {
   slug: string;
   name: string;
   icon: string;
-  modules: Sofa2AdminModule[];
+  modules: Sofa3AdminModule[];
 };
 
 const money = (v: number) => v;
@@ -30,15 +30,15 @@ function mod(
   name: string,
   description: string,
   icon: string,
-  stats: Sofa2AdminModule['stats'],
-  columns: Sofa2AdminColumn[],
+  stats: Sofa3AdminModule['stats'],
+  columns: Sofa3AdminColumn[],
   rows: Record<string, string | number>[],
   actions?: string[]
-): Sofa2AdminModule {
+): Sofa3AdminModule {
   return { slug, name, description, icon, stats, columns, rows, actions };
 }
 
-const STATUS_COL: Sofa2AdminColumn = { key: 'status', label: 'Trạng thái', type: 'status' };
+const STATUS_COL: Sofa3AdminColumn = { key: 'status', label: 'Trạng thái', type: 'status' };
 
 // ----------------------------------------------------------------------
 // CMS
@@ -73,17 +73,17 @@ const cmsPage = (slug: string, name: string, path: string) =>
     ['Thêm khối', 'Xem trước', 'Xuất bản']
   );
 
-const CMS_GROUP: Sofa2AdminGroup = {
+const CMS_GROUP: Sofa3AdminGroup = {
   slug: 'cms',
   name: 'CMS',
   icon: 'solar:documents-bold-duotone',
   modules: [
-    cmsPage('home', 'Trang chủ', '/sofa2'),
-    cmsPage('about', 'Trang giới thiệu', '/sofa2/about'),
-    cmsPage('contact', 'Trang liên hệ', '/sofa2/contact'),
-    cmsPage('policy', 'Trang chính sách', '/sofa2/policy'),
-    cmsPage('terms', 'Trang điều khoản', '/sofa2/policy/terms'),
-    cmsPage('faq', 'Trang FAQ', '/sofa2/faq'),
+    cmsPage('home', 'Trang chủ', '/sofa3'),
+    cmsPage('about', 'Trang giới thiệu', '/sofa3/about'),
+    cmsPage('contact', 'Trang liên hệ', '/sofa3/contact'),
+    cmsPage('policy', 'Trang chính sách', '/sofa3/policy'),
+    cmsPage('terms', 'Trang điều khoản', '/sofa3/policy/terms'),
+    cmsPage('faq', 'Trang FAQ', '/sofa3/faq'),
     mod(
       'blog',
       'Trang blog',
@@ -202,10 +202,10 @@ const CMS_GROUP: Sofa2AdminGroup = {
         STATUS_COL,
       ],
       [
-        { page: '/sofa2', title: 'SOFA2 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
-        { page: '/sofa2/about', title: 'Về chúng tôi | SOFA2', length: 42, status: 'Tốt' },
-        { page: '/sofa2/faq', title: '', length: 0, status: 'Thiếu meta' },
-        { page: '/sofa2/policy', title: 'Chính sách mua hàng SOFA2', length: 48, status: 'Tốt' },
+        { page: '/sofa3', title: 'SOFA3 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
+        { page: '/sofa3/about', title: 'Về chúng tôi | SOFA3', length: 42, status: 'Tốt' },
+        { page: '/sofa3/faq', title: '', length: 0, status: 'Thiếu meta' },
+        { page: '/sofa3/policy', title: 'Chính sách mua hàng SOFA3', length: 48, status: 'Tốt' },
       ],
       ['Quét lại']
     ),
@@ -227,9 +227,9 @@ const CMS_GROUP: Sofa2AdminGroup = {
         { key: 'updated', label: 'Cập nhật' },
       ],
       [
-        { title: 'Hướng dẫn đo kích thước', slug: '/sofa2/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
-        { title: 'Cam kết chất liệu', slug: '/sofa2/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
-        { title: 'Tuyển đại lý 2026', slug: '/sofa2/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
+        { title: 'Hướng dẫn đo kích thước', slug: '/sofa3/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
+        { title: 'Cam kết chất liệu', slug: '/sofa3/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
+        { title: 'Tuyển đại lý 2026', slug: '/sofa3/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
       ],
       ['Tạo trang']
     ),
@@ -240,7 +240,7 @@ const CMS_GROUP: Sofa2AdminGroup = {
 // SẢN PHẨM
 // ----------------------------------------------------------------------
 
-const PRODUCT_GROUP: Sofa2AdminGroup = {
+const PRODUCT_GROUP: Sofa3AdminGroup = {
   slug: 'catalog',
   name: 'Sản phẩm',
   icon: 'solar:box-bold-duotone',
@@ -409,7 +409,7 @@ const PRODUCT_GROUP: Sofa2AdminGroup = {
 // KHO HÀNG (nhóm riêng)
 // ----------------------------------------------------------------------
 
-const WAREHOUSE_GROUP: Sofa2AdminGroup = {
+const WAREHOUSE_GROUP: Sofa3AdminGroup = {
   slug: 'warehouse',
   name: 'Kho hàng',
   icon: 'solar:warehouse-bold-duotone',
@@ -498,7 +498,7 @@ const WAREHOUSE_GROUP: Sofa2AdminGroup = {
 // ĐƠN HÀNG
 // ----------------------------------------------------------------------
 
-const ORDER_GROUP: Sofa2AdminGroup = {
+const ORDER_GROUP: Sofa3AdminGroup = {
   slug: 'orders',
   name: 'Đơn hàng',
   icon: 'solar:cart-large-2-bold-duotone',
@@ -637,7 +637,7 @@ const ORDER_GROUP: Sofa2AdminGroup = {
 // CRM
 // ----------------------------------------------------------------------
 
-const CRM_GROUP: Sofa2AdminGroup = {
+const CRM_GROUP: Sofa3AdminGroup = {
   slug: 'crm',
   name: 'CRM',
   icon: 'solar:users-group-rounded-bold-duotone',
@@ -750,7 +750,7 @@ const CRM_GROUP: Sofa2AdminGroup = {
 // MARKETING
 // ----------------------------------------------------------------------
 
-const MARKETING_GROUP: Sofa2AdminGroup = {
+const MARKETING_GROUP: Sofa3AdminGroup = {
   slug: 'marketing',
   name: 'Marketing',
   icon: 'solar:megaphone-bold-duotone',
@@ -790,7 +790,7 @@ const MARKETING_GROUP: Sofa2AdminGroup = {
         { label: 'Tin đã gửi', value: '48.2K' },
         { label: 'Tỷ lệ nhận', value: '98.4%' },
         { label: 'Chi phí tháng', value: '32 tr' },
-        { label: 'Brandname', value: 'SOFA2' },
+        { label: 'Brandname', value: 'SOFA3' },
       ],
       [
         { key: 'campaign', label: 'Chiến dịch' },
@@ -889,7 +889,7 @@ const MARKETING_GROUP: Sofa2AdminGroup = {
 // ANALYTICS
 // ----------------------------------------------------------------------
 
-const ANALYTICS_GROUP: Sofa2AdminGroup = {
+const ANALYTICS_GROUP: Sofa3AdminGroup = {
   slug: 'analytics',
   name: 'Analytics',
   icon: 'solar:chart-2-bold-duotone',
@@ -1044,7 +1044,7 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA2`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
+      { url: sample, title: `${name} – SOFA3`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
       { url: `${sample}/linen`, title: 'Sofa vải linen cao cấp', keyword: 'sofa vải linen', position: 7, status: 'Tốt' },
       { url: `${sample}/da-bo`, title: '', keyword: 'sofa da bò', position: 18, status: 'Thiếu meta' },
       { url: `${sample}/goc-l`, title: 'Sofa góc L hiện đại', keyword: 'sofa góc l', position: 11, status: 'Cần cải thiện' },
@@ -1052,18 +1052,18 @@ const seoPage = (slug: string, name: string, sample: string) =>
     ['Quét SEO', 'Xuất báo cáo']
   );
 
-const SEO_GROUP: Sofa2AdminGroup = {
+const SEO_GROUP: Sofa3AdminGroup = {
   slug: 'seo',
   name: 'SEO',
   icon: 'solar:graph-new-bold-duotone',
   modules: [
-    seoPage('category', 'Trang danh mục', '/sofa2/products/category'),
-    seoPage('product', 'Trang sản phẩm', '/sofa2/products'),
-    seoPage('collection', 'Trang bộ sưu tập', '/sofa2/collections'),
-    seoPage('project', 'Trang dự án', '/sofa2/projects'),
-    seoPage('showroom', 'Trang showroom', '/sofa2/showrooms'),
-    seoPage('blog', 'Trang blog', '/sofa2/blog'),
-    seoPage('brand', 'Trang thương hiệu', '/sofa2/about'),
+    seoPage('category', 'Trang danh mục', '/sofa3/products/category'),
+    seoPage('product', 'Trang sản phẩm', '/sofa3/products'),
+    seoPage('collection', 'Trang bộ sưu tập', '/sofa3/collections'),
+    seoPage('project', 'Trang dự án', '/sofa3/projects'),
+    seoPage('showroom', 'Trang showroom', '/sofa3/showrooms'),
+    seoPage('blog', 'Trang blog', '/sofa3/blog'),
+    seoPage('brand', 'Trang thương hiệu', '/sofa3/about'),
     mod(
       'sitemap',
       'Sitemap',
@@ -1108,8 +1108,8 @@ const SEO_GROUP: Sofa2AdminGroup = {
       ],
       [
         { agent: '*', rule: 'Allow', path: '/', status: 'Hoạt động' },
-        { agent: '*', rule: 'Disallow', path: '/sofa2/admin', status: 'Hoạt động' },
-        { agent: '*', rule: 'Disallow', path: '/sofa2/cart', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa3/admin', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa3/cart', status: 'Hoạt động' },
         { agent: 'Googlebot', rule: 'Allow', path: '/', status: 'Hoạt động' },
       ],
       ['Sửa robots.txt']
@@ -1147,7 +1147,7 @@ const SEO_GROUP: Sofa2AdminGroup = {
 // PHÂN QUYỀN
 // ----------------------------------------------------------------------
 
-const ACCESS_GROUP: Sofa2AdminGroup = {
+const ACCESS_GROUP: Sofa3AdminGroup = {
   slug: 'access',
   name: 'Phân quyền',
   icon: 'solar:lock-keyhole-bold-duotone',
@@ -1171,10 +1171,10 @@ const ACCESS_GROUP: Sofa2AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Ngọc Anh', email: 'ngocanh@sofa2.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
-        { name: 'Minh Quân', email: 'quan@sofa2.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
-        { name: 'Thu Hà', email: 'ha@sofa2.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
-        { name: 'Gia Bảo', email: 'bao@sofa2.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
+        { name: 'Ngọc Anh', email: 'ngocanh@sofa3.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
+        { name: 'Minh Quân', email: 'quan@sofa3.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
+        { name: 'Thu Hà', email: 'ha@sofa3.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
+        { name: 'Gia Bảo', email: 'bao@sofa3.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
       ],
       ['Mời người dùng']
     ),
@@ -1258,7 +1258,7 @@ const ACCESS_GROUP: Sofa2AdminGroup = {
   ],
 };
 
-export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
+export const SOFA3_ADMIN_GROUPS: Sofa3AdminGroup[] = [
   CMS_GROUP,
   PRODUCT_GROUP,
   WAREHOUSE_GROUP,
@@ -1270,21 +1270,21 @@ export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   ACCESS_GROUP,
 ];
 
-export function findSofa2AdminModule(groupSlug?: string, moduleSlug?: string) {
-  const group = SOFA2_ADMIN_GROUPS.find((g) => g.slug === groupSlug);
+export function findSofa3AdminModule(groupSlug?: string, moduleSlug?: string) {
+  const group = SOFA3_ADMIN_GROUPS.find((g) => g.slug === groupSlug);
   if (!group) return null;
   const found = group.modules.find((m) => m.slug === moduleSlug) ?? group.modules[0];
   return { group, module: found };
 }
 
-export const SOFA2_ADMIN_KPIS = [
+export const SOFA3_ADMIN_KPIS = [
   { label: 'Doanh thu tháng', value: '6.8 tỷ', trend: '+11%', color: 'primary' as const },
   { label: 'Đơn hàng', value: '486', trend: '+14%', color: 'info' as const },
   { label: 'Khách hàng mới', value: '486', trend: '+9%', color: 'success' as const },
   { label: 'Tỷ lệ chuyển đổi', value: '2.04%', trend: '+0.3%', color: 'warning' as const },
 ];
 
-export const SOFA2_ADMIN_ACTIVITIES = [
+export const SOFA3_ADMIN_ACTIVITIES = [
   { time: '09:12', text: 'Ngọc Anh xuất bản lại Trang chủ', tag: 'CMS' },
   { time: '08:41', text: 'Duyệt hoàn tiền HT-2608-04 (18.9tr)', tag: 'Đơn hàng' },
   { time: '08:02', text: '23 đơn hàng mới chờ xác nhận', tag: 'Đơn hàng' },

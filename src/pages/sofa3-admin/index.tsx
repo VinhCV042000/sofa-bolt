@@ -1,7 +1,7 @@
-import { Sofa2AdminDashboardView } from 'src/sections/sofa2-admin/view';
+import { Sofa3AdminDashboardView } from 'src/sections/sofa3-admin/view';
 
 // ----------------------------------------------------------------------
 
 export default function Page() {
-  return <Sofa2AdminDashboardView />;
+  return <Sofa3AdminDashboardView />;
 }

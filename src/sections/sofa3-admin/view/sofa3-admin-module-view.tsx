@@ -21,12 +21,12 @@ import TableContainer from '@mui/material/TableContainer';
 
 import { Iconify } from 'src/components/iconify';
 
-import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
-import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../sofa2-admin-data';
+import { Sofa3AdminLayout, SOFA3_ADMIN_THEME } from './sofa3-admin-layout';
+import { SOFA3_ADMIN_ROOT, SOFA3_ADMIN_GROUPS, findSofa3AdminModule } from '../sofa3-admin-data';
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA3_ADMIN_THEME;
 
 const statusColor = (value: string) => {
   const v = value.toLowerCase();
@@ -44,15 +44,15 @@ const formatCell = (value: string | number, type?: string) => {
   return value;
 };
 
-export function Sofa2AdminModuleView() {
+export function Sofa3AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
   const [search, setSearch] = useState('');
 
-  const found = useMemo(() => findSofa2AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
+  const found = useMemo(() => findSofa3AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
 
   if (!found) {
-    const first = SOFA2_ADMIN_GROUPS[0];
-    return <Navigate to={`${SOFA2_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
+    const first = SOFA3_ADMIN_GROUPS[0];
+    return <Navigate to={`${SOFA3_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
   }
 
   const { group, module } = found;
@@ -70,7 +70,7 @@ export function Sofa2AdminModuleView() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <Sofa2AdminLayout
+      <Sofa3AdminLayout
         activeGroup={group.slug}
         activeModule={module.slug}
         breadcrumb={[group.name, module.name]}
@@ -146,7 +146,7 @@ export function Sofa2AdminModuleView() {
                       color="inherit"
                       sx={
                         index === 0
-                          ? { bgcolor: SURFACE, '&:hover': { bgcolor: '#3A2C24' } }
+                          ? { bgcolor: SURFACE, '&:hover': { bgcolor: '#24382C' } }
                           : undefined
                       }
                       startIcon={index === 0 ? <Iconify icon="mingcute:add-line" /> : undefined}
@@ -157,7 +157,7 @@ export function Sofa2AdminModuleView() {
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha('#8A6A45', 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#4A6B4F', 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -215,7 +215,7 @@ export function Sofa2AdminModuleView() {
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{ p: 2, borderTop: `1px solid ${alpha('#8A6A45', 0.16)}` }}
+                sx={{ p: 2, borderTop: `1px solid ${alpha('#4A6B4F', 0.16)}` }}
               >
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   Hiển thị {rows.length} / {module.rows.length} bản ghi
@@ -223,13 +223,13 @@ export function Sofa2AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ bgcolor: alpha(ACCENT, 0.14), color: '#7A5A2E' }}
+                  sx={{ bgcolor: alpha(ACCENT, 0.14), color: '#2F5137' }}
                 />
               </Stack>
             </Card>
           </Grid>
         </Grid>
-      </Sofa2AdminLayout>
+      </Sofa3AdminLayout>
     </>
   );
 }
