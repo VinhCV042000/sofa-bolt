@@ -19,16 +19,16 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { SOFA5_ADMIN_ROOT, SOFA5_ADMIN_GROUPS } from '../sofa5-admin-data';
+import { SOFA6_ADMIN_ROOT, SOFA6_ADMIN_GROUPS } from '../sofa6-admin-data';
 
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
 
-const BG = '#161310';
-const SURFACE = '#2C2823';
-const ACCENT = '#C9A227';
-const TEXT = '#F1EADD';
+const BG = '#3D2817';
+const SURFACE = '#5D4037';
+const ACCENT = '#E07A4F';
+const TEXT = '#F5EFE6';
 
 type Props = {
   children: React.ReactNode;
@@ -39,7 +39,7 @@ type Props = {
   breadcrumb?: string[];
 };
 
-export function Sofa5AdminLayout({
+export function Sofa6AdminLayout({
   children,
   activeGroup,
   activeModule,
@@ -50,7 +50,7 @@ export function Sofa5AdminLayout({
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
-    activeGroup ? [activeGroup] : [SOFA5_ADMIN_GROUPS[0].slug]
+    activeGroup ? [activeGroup] : [SOFA6_ADMIN_GROUPS[0].slug]
   );
 
   const toggleGroup = (slug: string) =>
@@ -75,11 +75,11 @@ export function Sofa5AdminLayout({
             color: ACCENT,
           }}
         >
-          <Iconify icon="solar:confetti-minimalistic-bold-duotone" width={24} />
+          <Iconify icon="solar:armchair-2-bold-duotone" width={24} />
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
-            Sofa Royale
+            Sofa6 Atelier
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }}>
             Trung tâm quản trị
@@ -90,7 +90,7 @@ export function Sofa5AdminLayout({
       <Box sx={{ flex: 1, overflowY: 'auto', px: 1.5, py: 2 }}>
         <ButtonBase
           component={RouterLink}
-          href={SOFA5_ADMIN_ROOT}
+          href={SOFA6_ADMIN_ROOT}
           sx={{
             width: 1,
             gap: 1.5,
@@ -110,7 +110,7 @@ export function Sofa5AdminLayout({
           </Typography>
         </ButtonBase>
 
-        {SOFA5_ADMIN_GROUPS.map((group) => {
+        {SOFA6_ADMIN_GROUPS.map((group) => {
           const open = openGroups.includes(group.slug);
           const isActiveGroup = activeGroup === group.slug;
 
@@ -157,7 +157,7 @@ export function Sofa5AdminLayout({
                       <ButtonBase
                         key={module.slug}
                         component={RouterLink}
-                        href={`${SOFA5_ADMIN_ROOT}/${group.slug}/${module.slug}`}
+                        href={`${SOFA6_ADMIN_ROOT}/${group.slug}/${module.slug}`}
                         sx={{
                           gap: 1.25,
                           px: 1.5,
@@ -203,7 +203,7 @@ export function Sofa5AdminLayout({
           </Typography>
         </Box>
         <Tooltip title="Về trang bán hàng">
-          <IconButton component={RouterLink} href="/sofa5" sx={{ color: alpha(TEXT, 0.7) }}>
+          <IconButton component={RouterLink} href="/sofa6" sx={{ color: alpha(TEXT, 0.7) }}>
             <Iconify icon="solar:logout-3-bold-duotone" width={20} />
           </IconButton>
         </Tooltip>
@@ -212,7 +212,7 @@ export function Sofa5AdminLayout({
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FBF7EF' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F4F7FB' }}>
       {isDesktop ? (
         <Box
           component="aside"
@@ -235,7 +235,7 @@ export function Sofa5AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#7A8AA8', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#A6634A', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -257,7 +257,7 @@ export function Sofa5AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#6B5310', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#A6634A', fontWeight: 600 }}
               />
             </Stack>
           </Container>
@@ -274,4 +274,4 @@ export function Sofa5AdminLayout({
   );
 }
 
-export const SOFA5_ADMIN_THEME = { BG, SURFACE, ACCENT, TEXT };
+export const SOFA6_ADMIN_THEME = { BG, SURFACE, ACCENT, TEXT };

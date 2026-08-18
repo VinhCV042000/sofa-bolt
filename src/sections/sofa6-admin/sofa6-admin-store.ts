@@ -1,10 +1,10 @@
 import { useCallback, useSyncExternalStore } from 'react';
 
-import { SOFA5_ADMIN_GROUPS } from './sofa5-admin-data';
+import { SOFA6_ADMIN_GROUPS } from './sofa6-admin-data';
 
 // ----------------------------------------------------------------------
-// Kho dữ liệu CRUD tại chỗ (in-memory) cho khu quản trị sofa5.
-// Dữ liệu khởi tạo từ SOFA5_ADMIN_GROUPS và giữ nguyên khi chuyển trang.
+// Kho dữ liệu CRUD tại chỗ (in-memory) cho khu quản trị sofa6.
+// Dữ liệu khởi tạo từ SOFA6_ADMIN_GROUPS và giữ nguyên khi chuyển trang.
 // ----------------------------------------------------------------------
 
 export type AdminRow = Record<string, string | number>;
@@ -15,7 +15,7 @@ const key = (group: string, module: string) => `${group}/${module}`;
 
 const store: Store = {};
 
-SOFA5_ADMIN_GROUPS.forEach((group) => {
+SOFA6_ADMIN_GROUPS.forEach((group) => {
   group.modules.forEach((module) => {
     store[key(group.slug, module.slug)] = module.rows.map((row) => ({ ...row }));
   });
@@ -32,7 +32,7 @@ const subscribe = (listener: () => void) => {
   };
 };
 
-export function useSofa5AdminRows(groupSlug: string, moduleSlug: string) {
+export function useSofa6AdminRows(groupSlug: string, moduleSlug: string) {
   const k = key(groupSlug, moduleSlug);
 
   const rows = useSyncExternalStore(

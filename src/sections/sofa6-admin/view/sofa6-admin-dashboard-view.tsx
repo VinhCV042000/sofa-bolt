@@ -14,33 +14,33 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { Sofa5AdminCharts } from './sofa5-admin-charts';
-import { Sofa5AdminLayout, SOFA5_ADMIN_THEME } from './sofa5-admin-layout';
+import { Sofa6AdminCharts } from './sofa6-admin-charts';
+import { Sofa6AdminLayout, SOFA6_ADMIN_THEME } from './sofa6-admin-layout';
 import {
-  SOFA5_ADMIN_KPIS,
-  SOFA5_ADMIN_ROOT,
-  SOFA5_ADMIN_GROUPS,
-  SOFA5_ADMIN_ACTIVITIES,
-} from '../sofa5-admin-data';
+  SOFA6_ADMIN_KPIS,
+  SOFA6_ADMIN_ROOT,
+  SOFA6_ADMIN_GROUPS,
+  SOFA6_ADMIN_ACTIVITIES,
+} from '../sofa6-admin-data';
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA5_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA6_ADMIN_THEME;
 
-export function Sofa5AdminDashboardView() {
+export function Sofa6AdminDashboardView() {
   return (
     <>
       <Helmet>
-        <title>Trung tâm quản trị | Sofa5</title>
+        <title>Trung tâm quản trị | Sofa6</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <Sofa5AdminLayout
+      <Sofa6AdminLayout
         title="Tổng quan hệ thống"
         subtitle="Bảng điều khiển tổng hợp toàn bộ nghiệp vụ: nội dung, sản phẩm, kho, đơn hàng, CRM, marketing, phân tích, SEO và phân quyền."
       >
         <Grid container spacing={3}>
-          {SOFA5_ADMIN_KPIS.map((kpi) => (
+          {SOFA6_ADMIN_KPIS.map((kpi) => (
             <Grid key={kpi.label} xs={12} sm={6} md={3}>
               <Card sx={{ p: 3, borderTop: `3px solid ${ACCENT}` }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -60,7 +60,9 @@ export function Sofa5AdminDashboardView() {
             </Grid>
           ))}
 
-          <Sofa5AdminCharts />
+          <Grid xs={12}>
+            <Sofa6AdminCharts />
+          </Grid>
 
           <Grid xs={12} md={8}>
             <Card sx={{ p: 3 }}>
@@ -68,11 +70,11 @@ export function Sofa5AdminDashboardView() {
                 Nhóm chức năng quản trị
               </Typography>
               <Grid container spacing={2}>
-                {SOFA5_ADMIN_GROUPS.map((group) => (
+                {SOFA6_ADMIN_GROUPS.map((group) => (
                   <Grid key={group.slug} xs={12} sm={6}>
                     <ButtonBase
                       component={RouterLink}
-                      href={`${SOFA5_ADMIN_ROOT}/${group.slug}/${group.modules[0].slug}`}
+                      href={`${SOFA6_ADMIN_ROOT}/${group.slug}/${group.modules[0].slug}`}
                       sx={{
                         width: 1,
                         p: 2,
@@ -81,7 +83,7 @@ export function Sofa5AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#7A8AA8', 0.2)}`,
+                        border: `1px solid ${alpha('#A6634A', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -95,7 +97,7 @@ export function Sofa5AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#7A8AA8',
+                          color: '#A6634A',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
@@ -119,7 +121,7 @@ export function Sofa5AdminDashboardView() {
                 Hoạt động gần đây
               </Typography>
               <Stack spacing={2.5}>
-                {SOFA5_ADMIN_ACTIVITIES.map((item) => (
+                {SOFA6_ADMIN_ACTIVITIES.map((item) => (
                   <Stack key={item.text} direction="row" spacing={1.5}>
                     <Box
                       sx={{
@@ -155,7 +157,7 @@ export function Sofa5AdminDashboardView() {
             </Card>
           </Grid>
         </Grid>
-      </Sofa5AdminLayout>
+      </Sofa6AdminLayout>
     </>
   );
 }

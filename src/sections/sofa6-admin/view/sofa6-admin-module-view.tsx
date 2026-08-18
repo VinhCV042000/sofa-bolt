@@ -31,13 +31,13 @@ import TablePagination from '@mui/material/TablePagination';
 
 import { Iconify } from 'src/components/iconify';
 
-import { type AdminRow, useSofa5AdminRows } from '../sofa5-admin-store';
-import { Sofa5AdminLayout, SOFA5_ADMIN_THEME } from './sofa5-admin-layout';
-import { SOFA5_ADMIN_ROOT, SOFA5_ADMIN_GROUPS, findSofa5AdminModule } from '../sofa5-admin-data';
+import { type AdminRow, useSofa6AdminRows } from '../sofa6-admin-store';
+import { Sofa6AdminLayout, SOFA6_ADMIN_THEME } from './sofa6-admin-layout';
+import { SOFA6_ADMIN_ROOT, SOFA6_ADMIN_GROUPS, findSofa6AdminModule } from '../sofa6-admin-data';
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA5_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA6_ADMIN_THEME;
 
 const statusColor = (value: string) => {
   const v = value.toLowerCase();
@@ -56,15 +56,15 @@ const formatCell = (value: string | number, type?: string) => {
 
 type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values: AdminRow };
 
-export function Sofa5AdminModuleView() {
+export function Sofa6AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
 
-  const found = useMemo(() => findSofa5AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
+  const found = useMemo(() => findSofa6AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
 
   const group = found?.group;
   const module = found?.module;
 
-  const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa5AdminRows(
+  const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa6AdminRows(
     group?.slug ?? '',
     module?.slug ?? ''
   );
@@ -87,8 +87,8 @@ export function Sofa5AdminModuleView() {
   });
 
   if (!found || !group || !module) {
-    const first = SOFA5_ADMIN_GROUPS[0];
-    return <Navigate to={`${SOFA5_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
+    const first = SOFA6_ADMIN_GROUPS[0];
+    return <Navigate to={`${SOFA6_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
   }
 
   const filtered = rows
@@ -174,11 +174,11 @@ export function Sofa5AdminModuleView() {
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | ${group.name} - Quản trị Sofa5`}</title>
+        <title>{`${module.name} | ${group.name} - Quản trị Sofa6`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <Sofa5AdminLayout
+      <Sofa6AdminLayout
         activeGroup={group.slug}
         activeModule={module.slug}
         breadcrumb={[group.name, module.name]}
@@ -279,7 +279,7 @@ export function Sofa5AdminModuleView() {
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha('#7A8AA8', 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#A6634A', 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -386,13 +386,13 @@ export function Sofa5AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#146A78' }}
+                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#A6634A' }}
                 />
               </Stack>
             </Card>
           </Grid>
         </Grid>
-      </Sofa5AdminLayout>
+      </Sofa6AdminLayout>
 
       {/* Form thêm / sửa */}
       <Dialog
