@@ -14,6 +14,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
+import { Sofa6AdminCharts } from './sofa6-admin-charts';
 import { Sofa6AdminLayout, SOFA6_ADMIN_THEME } from './sofa6-admin-layout';
 import {
   SOFA6_ADMIN_KPIS,
@@ -58,6 +59,10 @@ export function Sofa6AdminDashboardView() {
               </Card>
             </Grid>
           ))}
+
+          <Grid xs={12}>
+            <Sofa6AdminCharts />
+          </Grid>
 
           <Grid xs={12} md={8}>
             <Card sx={{ p: 3 }}>

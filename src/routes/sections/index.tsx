@@ -218,6 +218,8 @@ const Sofa3OrderTrackingPage = lazy(() => import('src/pages/sofa3-pages/order-tr
 const Sofa3PaymentPage = lazy(() => import('src/pages/sofa3-pages/payment'));
 const Sofa3SupportPage = lazy(() => import('src/pages/sofa3-pages/support'));
 
+const Sofa6AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
+const Sofa6AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
 const Sofa4AdminDashboardPage = lazy(() => import('src/pages/sofa4-admin'));
 const Sofa4AdminModulePage = lazy(() => import('src/pages/sofa4-admin/module'));
 
@@ -2764,6 +2766,32 @@ export function Router() {
           <MainLayout data={{ nav: sofa3PagesNavData }}>
             <Sofa3SupportPage />
           </MainLayout>
+        </Suspense>
+      ),
+    },
+
+    // SOFA6 ADMIN
+    {
+      path: '/sofa6/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa6AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa6AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa6/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa6AdminModulePage />
         </Suspense>
       ),
     },
