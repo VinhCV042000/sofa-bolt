@@ -235,7 +235,7 @@ export function Sofa6AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#7A8AA8', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#A6634A', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -257,7 +257,7 @@ export function Sofa6AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#146A78', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#A6634A', fontWeight: 600 }}
               />
             </Stack>
           </Container>

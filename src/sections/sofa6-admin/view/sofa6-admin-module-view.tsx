@@ -279,7 +279,7 @@ export function Sofa6AdminModuleView() {
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha('#7A8AA8', 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#A6634A', 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -386,7 +386,7 @@ export function Sofa6AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#146A78' }}
+                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#A6634A' }}
                 />
               </Stack>
             </Card>
