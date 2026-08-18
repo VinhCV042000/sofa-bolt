@@ -1,18 +1,28 @@
 // SOFA1 — Warm, earthy, artisan luxury style
 // ----------------------------------------------------------------------
+// This file is a thin adapter: all real content lives in
+// src/_mock/_sofa1.ts (shared with the admin dashboard). Editing a
+// product/category/etc. in the admin at /dashboard/sofa1/* updates what
+// renders here automatically — nothing below should hardcode content.
+
+import {
+  _sofa1Products,
+  _sofa1Categories,
+  SOFA1_MOCK_IMAGES,
+} from 'src/_mock/_sofa1';
 
 export const SOFA1_IMAGES = {
   hero: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920',
   about: 'https://images.pexels.com/photos/276624/pexels-photo-276624.jpeg?auto=compress&cs=tinysrgb&w=900',
   parallax: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=1600',
-  mat1: 'https://images.pexels.com/photos/275484/pexels-photo-275484.jpeg?auto=compress&cs=tinysrgb&w=600',
-  mat2: 'https://images.pexels.com/photos/675849/pexels-photo-675849.jpeg?auto=compress&cs=tinysrgb&w=600',
-  mat3: 'https://images.pexels.com/photos/691410/pexels-photo-691410.jpeg?auto=compress&cs=tinysrgb&w=600',
-  mat4: 'https://images.pexels.com/photos/164877/pexels-photo-164877.jpeg?auto=compress&cs=tinysrgb&w=600',
-  cat1: 'https://images.pexels.com/photos/276624/pexels-photo-276624.jpeg?auto=compress&cs=tinysrgb&w=700',
-  cat2: 'https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=700',
-  cat3: 'https://images.pexels.com/photos/675849/pexels-photo-675849.jpeg?auto=compress&cs=tinysrgb&w=700',
-  cat4: 'https://images.pexels.com/photos/275484/pexels-photo-275484.jpeg?auto=compress&cs=tinysrgb&w=700',
+  mat1: SOFA1_MOCK_IMAGES.product1,
+  mat2: SOFA1_MOCK_IMAGES.product2,
+  mat3: SOFA1_MOCK_IMAGES.product3,
+  mat4: SOFA1_MOCK_IMAGES.product4,
+  cat1: SOFA1_MOCK_IMAGES.cat1,
+  cat2: SOFA1_MOCK_IMAGES.cat2,
+  cat3: SOFA1_MOCK_IMAGES.cat3,
+  cat4: SOFA1_MOCK_IMAGES.cat4,
   gallery1: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=700',
   gallery2: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=700',
   gallery3: 'https://images.pexels.com/photos/164877/pexels-photo-164877.jpeg?auto=compress&cs=tinysrgb&w=700',
@@ -20,79 +30,40 @@ export const SOFA1_IMAGES = {
   cta: 'https://images.pexels.com/photos/1660797/pexels-photo-1660797.jpeg?auto=compress&cs=tinysrgb&w=1200',
 };
 
-export const SOFA1_CATEGORIES = [
-  {
-    title: 'Sofa Da Bò',
-    subtitle: 'Da bò thật nhập khẩu',
-    image: SOFA1_IMAGES.cat1,
-    items: 24,
-  },
-  {
-    title: 'Sofa Vải Linen',
-    subtitle: 'Vải linen cao cấp mềm mại',
-    image: SOFA1_IMAGES.cat2,
-    items: 32,
-  },
-  {
-    title: 'Sofa Góc L',
-    subtitle: 'Tối ưu không gian phòng khách',
-    image: SOFA1_IMAGES.cat3,
-    items: 18,
-  },
-  {
-    title: 'Sofa Đơn',
-    subtitle: 'Ghế thư giãn phòng đọc',
-    image: SOFA1_IMAGES.cat4,
-    items: 16,
-  },
-];
+// The homepage only ever showcased 4 curated categories — keep that curation,
+// but source the fields from the single admin-managed category list.
+const HOMEPAGE_CATEGORY_IDS = ['sofa-da', 'sofa-vai', 'sofa-goc-chu-l', 'sofa-don'];
 
-export const SOFA1_PRODUCTS = [
-  {
-    name: 'Sofa Roma Da Bò Nâu',
-    category: 'Sofa Da Bò',
-    price: 28500000,
-    oldPrice: 36000000,
-    rating: 4.9,
-    reviews: 124,
-    badge: 'Bestseller',
-    image: SOFA1_IMAGES.mat1,
-    colors: ['#6D4C41', '#3E2723', '#8D6E63'],
-  },
-  {
-    name: 'Sofa Milano Linen Be',
-    category: 'Sofa Vải Linen',
-    price: 12500000,
-    oldPrice: 16800000,
-    rating: 4.8,
-    reviews: 89,
-    badge: '-25%',
-    image: SOFA1_IMAGES.mat2,
-    colors: ['#D7CCC8', '#BCAAA4', '#A1887F'],
-  },
-  {
-    name: 'Sofa Góc Verona Xám',
-    category: 'Sofa Góc L',
-    price: 19900000,
-    oldPrice: 24900000,
-    rating: 5.0,
-    reviews: 156,
-    badge: 'Mới',
-    image: SOFA1_IMAGES.mat3,
-    colors: ['#455A64', '#607D8B', '#90A4AE'],
-  },
-  {
-    name: 'Ghế Napoli Đơn',
-    category: 'Sofa Đơn',
-    price: 6500000,
-    oldPrice: 8900000,
-    rating: 4.7,
-    reviews: 67,
-    badge: 'Bestseller',
-    image: SOFA1_IMAGES.mat4,
-    colors: ['#5D4037', '#8D6E63', '#A1887F'],
-  },
-];
+export const SOFA1_CATEGORIES = HOMEPAGE_CATEGORY_IDS.map((id) => {
+  const category = _sofa1Categories.find((item) => item.id === id)!;
+  return {
+    title: category.name,
+    subtitle: category.subtitle || '',
+    image: category.image,
+    items: category.itemCount,
+  };
+});
+
+// The homepage only ever showcased 4 hero products — keep that curation,
+// but source the fields (price, rating, stock...) from the admin-managed
+// product catalog so editing a product updates the homepage too.
+const HOMEPAGE_PRODUCT_IDS = ['1', '2', '3', '4'];
+
+export const SOFA1_PRODUCTS = HOMEPAGE_PRODUCT_IDS.map((id) => {
+  const product = _sofa1Products.find((item) => item.id === id)!;
+  const category = _sofa1Categories.find((item) => item.id === product.categoryId);
+  return {
+    name: product.name,
+    category: category?.name || '',
+    price: product.priceSale || product.price,
+    oldPrice: product.priceSale ? product.price : undefined,
+    rating: product.rating,
+    reviews: product.totalReviews,
+    badge: product.badge,
+    image: product.coverUrl,
+    colors: product.colors,
+  };
+});
 
 export const SOFA1_FEATURES = [
   {

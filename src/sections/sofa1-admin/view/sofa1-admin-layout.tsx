@@ -19,7 +19,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { SOFA1_ADMIN_ROOT, SOFA1_ADMIN_GROUPS } from '../sofa1-admin-data';
+import { SOFA1_ADMIN_ROOT, SOFA1_ADMIN_GROUPS } from 'src/sections/sofa1-admin/sofa1-admin-data';
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +54,9 @@ export function Sofa1AdminLayout({
   );
 
   const toggleGroup = (slug: string) =>
-    setOpenGroups((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
+    setOpenGroups((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+    );
 
   const nav = (
     <Stack sx={{ width: NAV_WIDTH, height: 1, bgcolor: BG, color: TEXT }}>
@@ -193,7 +195,9 @@ export function Sofa1AdminLayout({
 
       <Divider sx={{ borderColor: alpha(ACCENT, 0.16) }} />
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ p: 2 }}>
-        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>NA</Avatar>
+        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>
+          NA
+        </Avatar>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>
             Ngọc Anh
@@ -265,7 +269,9 @@ export function Sofa1AdminLayout({
 
         <Container maxWidth={false} sx={{ maxWidth: 1440, py: 4 }}>
           {subtitle && (
-            <Typography sx={{ mb: 3, color: 'text.secondary', maxWidth: 720 }}>{subtitle}</Typography>
+            <Typography sx={{ mb: 3, color: 'text.secondary', maxWidth: 720 }}>
+              {subtitle}
+            </Typography>
           )}
           {children}
         </Container>

@@ -159,6 +159,103 @@ export const navData = [
     ],
   },
   /**
+   * Sofa1
+   */
+  {
+    subheader: 'Sofa1',
+    items: [
+      {
+        title: 'Sản phẩm',
+        path: paths.dashboard.sofa1.product.root,
+        icon: ICONS.product,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.product.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.product.new },
+        ],
+      },
+      {
+        title: 'Danh mục',
+        path: paths.dashboard.sofa1.category.root,
+        icon: ICONS.label,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.category.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.category.new },
+        ],
+      },
+      {
+        title: 'Bộ sưu tập',
+        path: paths.dashboard.sofa1.collection.root,
+        icon: ICONS.folder,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.collection.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.collection.new },
+        ],
+      },
+      {
+        title: 'Dự án',
+        path: paths.dashboard.sofa1.project.root,
+        icon: ICONS.tour,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.project.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.project.new },
+        ],
+      },
+      {
+        title: 'Showroom',
+        path: paths.dashboard.sofa1.showroom.root,
+        icon: ICONS.banking,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.showroom.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.showroom.new },
+        ],
+      },
+      {
+        title: 'Bài viết',
+        path: paths.dashboard.sofa1.blog.root,
+        icon: ICONS.blog,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.blog.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.blog.new },
+        ],
+      },
+      {
+        title: 'Tuyển dụng',
+        path: paths.dashboard.sofa1.career.root,
+        icon: ICONS.job,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.career.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.career.new },
+        ],
+      },
+      {
+        title: 'Khuyến mãi',
+        path: paths.dashboard.sofa1.promotion.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'Danh sách', path: paths.dashboard.sofa1.promotion.root },
+          { title: 'Thêm mới', path: paths.dashboard.sofa1.promotion.new },
+        ],
+      },
+      { title: 'Đơn hàng', path: paths.dashboard.sofa1.order.root, icon: ICONS.order },
+      { title: 'Khách hàng', path: paths.dashboard.sofa1.customer.root, icon: ICONS.user },
+      {
+        title: 'KH doanh nghiệp',
+        path: paths.dashboard.sofa1.b2bLead.root,
+        icon: ICONS.invoice,
+      },
+      {
+        title: 'Liên hệ',
+        path: paths.dashboard.sofa1.contactMessage.root,
+        icon: ICONS.mail,
+      },
+      {
+        title: 'Đơn ứng tuyển',
+        path: paths.dashboard.sofa1.careerApplication.root,
+        icon: ICONS.course,
+      },
+    ],
+  },
+  /**
    * Item State
    */
   {

@@ -199,5 +199,65 @@ export const paths = {
         edit: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}/edit`,
       },
     },
+    sofa1: {
+      root: `${ROOTS.DASHBOARD}/sofa1`,
+      product: {
+        root: `${ROOTS.DASHBOARD}/sofa1/product`,
+        new: `${ROOTS.DASHBOARD}/sofa1/product/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/product/${id}/edit`,
+      },
+      category: {
+        root: `${ROOTS.DASHBOARD}/sofa1/category`,
+        new: `${ROOTS.DASHBOARD}/sofa1/category/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/category/${id}/edit`,
+      },
+      collection: {
+        root: `${ROOTS.DASHBOARD}/sofa1/collection`,
+        new: `${ROOTS.DASHBOARD}/sofa1/collection/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/collection/${id}/edit`,
+      },
+      project: {
+        root: `${ROOTS.DASHBOARD}/sofa1/project`,
+        new: `${ROOTS.DASHBOARD}/sofa1/project/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/project/${id}/edit`,
+      },
+      showroom: {
+        root: `${ROOTS.DASHBOARD}/sofa1/showroom`,
+        new: `${ROOTS.DASHBOARD}/sofa1/showroom/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/showroom/${id}/edit`,
+      },
+      blog: {
+        root: `${ROOTS.DASHBOARD}/sofa1/blog`,
+        new: `${ROOTS.DASHBOARD}/sofa1/blog/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/blog/${id}/edit`,
+      },
+      career: {
+        root: `${ROOTS.DASHBOARD}/sofa1/career`,
+        new: `${ROOTS.DASHBOARD}/sofa1/career/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/career/${id}/edit`,
+      },
+      promotion: {
+        root: `${ROOTS.DASHBOARD}/sofa1/promotion`,
+        new: `${ROOTS.DASHBOARD}/sofa1/promotion/new`,
+        edit: (id: string) => `${ROOTS.DASHBOARD}/sofa1/promotion/${id}/edit`,
+      },
+      order: {
+        root: `${ROOTS.DASHBOARD}/sofa1/order`,
+        details: (id: string) => `${ROOTS.DASHBOARD}/sofa1/order/${id}`,
+      },
+      customer: {
+        root: `${ROOTS.DASHBOARD}/sofa1/customer`,
+        details: (id: string) => `${ROOTS.DASHBOARD}/sofa1/customer/${id}`,
+      },
+      b2bLead: {
+        root: `${ROOTS.DASHBOARD}/sofa1/b2b-lead`,
+      },
+      contactMessage: {
+        root: `${ROOTS.DASHBOARD}/sofa1/contact-message`,
+      },
+      careerApplication: {
+        root: `${ROOTS.DASHBOARD}/sofa1/career-application`,
+      },
+    },
   },
 };

@@ -14,13 +14,14 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { Sofa1AdminLayout, SOFA1_ADMIN_THEME } from './sofa1-admin-layout';
 import {
   SOFA1_ADMIN_KPIS,
   SOFA1_ADMIN_ROOT,
   SOFA1_ADMIN_GROUPS,
   SOFA1_ADMIN_ACTIVITIES,
-} from '../sofa1-admin-data';
+} from 'src/sections/sofa1-admin/sofa1-admin-data';
+
+import { Sofa1AdminLayout, SOFA1_ADMIN_THEME } from './sofa1-admin-layout';
 
 // ----------------------------------------------------------------------
 
@@ -146,7 +147,11 @@ export function Sofa1AdminDashboardView() {
                 <LinearProgress
                   value={68}
                   variant="determinate"
-                  sx={{ height: 8, borderRadius: 1, [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT } }}
+                  sx={{
+                    height: 8,
+                    borderRadius: 1,
+                    [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT },
+                  }}
                 />
               </Box>
             </Card>
