@@ -14,6 +14,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
+import { Sofa5AdminCharts } from './sofa5-admin-charts';
 import { Sofa5AdminLayout, SOFA5_ADMIN_THEME } from './sofa5-admin-layout';
 import {
   SOFA5_ADMIN_KPIS,
@@ -58,6 +59,8 @@ export function Sofa5AdminDashboardView() {
               </Card>
             </Grid>
           ))}
+
+          <Sofa5AdminCharts />
 
           <Grid xs={12} md={8}>
             <Card sx={{ p: 3 }}>
