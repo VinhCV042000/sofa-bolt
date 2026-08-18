@@ -25,10 +25,10 @@ import { SOFA6_ADMIN_ROOT, SOFA6_ADMIN_GROUPS } from '../sofa6-admin-data';
 
 const NAV_WIDTH = 280;
 
-const BG = '#141B2E';
-const SURFACE = '#1E2841';
-const ACCENT = '#4ECDC4';
-const TEXT = '#EAF2FF';
+const BG = '#3D2817';
+const SURFACE = '#5D4037';
+const ACCENT = '#E07A4F';
+const TEXT = '#F5EFE6';
 
 type Props = {
   children: React.ReactNode;
@@ -75,11 +75,11 @@ export function Sofa6AdminLayout({
             color: ACCENT,
           }}
         >
-          <Iconify icon="solar:confetti-minimalistic-bold-duotone" width={24} />
+          <Iconify icon="solar:armchair-2-bold-duotone" width={24} />
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
-            Sofa6 Studio
+            Sofa6 Atelier
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }}>
             Trung tâm quản trị
