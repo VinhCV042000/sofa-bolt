@@ -25,10 +25,10 @@ import { SOFA5_ADMIN_ROOT, SOFA5_ADMIN_GROUPS } from '../sofa5-admin-data';
 
 const NAV_WIDTH = 280;
 
-const BG = '#141B2E';
-const SURFACE = '#1E2841';
-const ACCENT = '#4ECDC4';
-const TEXT = '#EAF2FF';
+const BG = '#161310';
+const SURFACE = '#2C2823';
+const ACCENT = '#C9A227';
+const TEXT = '#F1EADD';
 
 type Props = {
   children: React.ReactNode;
@@ -212,7 +212,7 @@ export function Sofa5AdminLayout({
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F4F7FB' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FBF7EF' }}>
       {isDesktop ? (
         <Box
           component="aside"
@@ -257,7 +257,7 @@ export function Sofa5AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#146A78', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#6B5310', fontWeight: 600 }}
               />
             </Stack>
           </Container>
