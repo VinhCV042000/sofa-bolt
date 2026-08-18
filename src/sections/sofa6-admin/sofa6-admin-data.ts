@@ -1291,3 +1291,30 @@ export const SOFA6_ADMIN_ACTIVITIES = [
   { time: '07:30', text: 'Chiến dịch “Sale tháng 8” đạt 41% tỷ lệ mở', tag: 'Marketing' },
   { time: '06:55', text: 'SKU SF-LCOR-12-XAM hết hàng tại Kho HCM', tag: 'Kho hàng' },
 ];
+
+// ----------------------------------------------------------------------
+// Dữ liệu biểu đồ (demo)
+// ----------------------------------------------------------------------
+
+export const SOFA6_ADMIN_CHART_MONTHS = [
+  'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
+];
+
+export const SOFA6_ADMIN_REVENUE_SERIES = [
+  { name: 'Doanh thu (tỷ)', data: [3.2, 3.8, 4.1, 4.6, 5.0, 5.4, 6.1, 6.8, 6.2, 6.9, 7.4, 8.1] },
+  { name: 'Mục tiêu (tỷ)', data: [3.5, 3.9, 4.3, 4.7, 5.2, 5.6, 6.0, 6.5, 6.8, 7.2, 7.6, 8.0] },
+];
+
+export const SOFA6_ADMIN_ORDER_SERIES = [
+  { name: 'Đơn hàng', data: [210, 245, 268, 289, 310, 330, 402, 486, 448, 470, 512, 560] },
+];
+
+export const SOFA6_ADMIN_CHANNEL_CHART = {
+  labels: ['Website', 'Showroom', 'Đại lý B2B', 'Sàn TMĐT', 'Mạng xã hội'],
+  series: [38, 27, 18, 11, 6],
+};
+
+export const SOFA6_ADMIN_TOP_PRODUCTS = {
+  labels: ['Sofa Terra 3S', 'Sofa Sage L', 'Armchair Clay', 'Sofa Bed Sand', 'Daybed Forest'],
+  series: [186, 154, 132, 98, 76],
+};
