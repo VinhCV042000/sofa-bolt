@@ -1,1 +1,0 @@
-- [Minimal Kit verification](minimal-kit-verification.md) — local checks need Yarn engine bypass and extra Node heap in this imported template.
