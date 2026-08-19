@@ -794,6 +794,7 @@ const Sofa17Page = lazy(() => import('src/pages/sofa17'));
 const Sofa18Page = lazy(() => import('src/pages/sofa18'));
 const Sofa19Page = lazy(() => import('src/pages/sofa19'));
 const Sofa20Page = lazy(() => import('src/pages/sofa20'));
+const Sofa19PagesPage = lazy(() => import('src/pages/sofa19-pages'));
 
 export function Router() {
   return useRoutes([
@@ -1012,6 +1013,16 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa19NavData }}>
             <Sofa19Page />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa19/*',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa19NavData }}>
+            <Sofa19PagesPage />
           </MainLayout>
         </Suspense>
       ),

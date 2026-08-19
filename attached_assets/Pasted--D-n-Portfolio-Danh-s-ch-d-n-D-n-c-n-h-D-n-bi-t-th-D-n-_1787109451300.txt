@@ -1,0 +1,83 @@
+├── Dự án
+
+│ ├── Portfolio (Danh sách dự án: Dự án căn hộ,Dự án biệt thự,Dự án khách sạn,Dự án resort,Dự án văn phòng,Dự án showroom)
+
+│ ├── Chi tiết dự án (Album ảnh,Video,Mô tả dự án,Sản phẩm sử dụng,Đánh giá khách hàng)
+
+├── Showroom (Danh sách showroom, Bản đồ showroom, Chi tiết showroom, Lịch mở cửa, Hình ảnh showroom, Đặt lịch tham quan, Đặt lịch tư vấn)
+
+├── Dịch vụ
+
+│ ├── Thiết kế nội thất
+
+│ ├── ├── Thiết kế sofa theo yêu cầu
+
+│ ├── ├── Thiết kế 3D
+
+│ ├── ├── Tư vấn bố trí nội thất
+
+│ ├── Dịch vụ sản xuất
+
+│ ├── ├── Gia công sofa
+
+│ ├── ├── Sofa OEM
+
+│ ├── ├── Sofa ODM
+
+│ ├── ├── Đặt hàng theo dự án
+
+├── Blog
+
+│ ├── Chuyên mục (Tin công ty,Tin khuyến mãi,Kinh nghiệm chọn sofa,Xu hướng nội thất,Kiến thức vật liệu,Phong thủy nội thất,Hướng dẫn vệ sinh sofa,Hướng dẫn bảo quản,Thiết kế phòng khách)
+
+│ ├── Chi tiết bài viết (Bài viết,Tác giả,Bình luận,Chia sẻ mạng xã hội)
+
+├── Khuyến mãi
+
+│ ├── ├── Bảo hành
+
+│ ├── ├── Bảo trì
+
+│ ├── ├── Sửa chữa
+
+│ ├── ├── Vệ sinh sofa
+
+│ ├── ├── Đổi trả hàng
+
+├── Tuyển dụng (Danh sách tuyển dụng, Chi tiết vị trí, Nộp CV, Hồ sơ ứng viên, Theo dõi tuyển dụng)
+
+├── Liên hệ
+
+├── Tài khoản khách hàng(Đăng ký,Đăng nhập,Quên mật khẩu,Hồ sơ cá nhân,Địa chỉ giao hang,Đơn hàng của tôi,Yêu thích,Lịch sử giao dịch,Phiếu bảo hành)
+
+├── Đại lý B2B (Giới thiệu hợp tác, Đại lý phân phối, Nhà phân phối, Đăng ký đại lý, Báo giá dự án, Yêu cầu sản xuất OEM, Đối tác thi công, Chính sách đại lý)
+
+├── Giỏ hàng (Thanh toán,Thanh toán thành công,Theo dõi đơn hàng,Tài khoản khách hàng,Hồ sơ cá nhân,Địa chỉ giao hàng,Đơn hàng của tôi,Yêu thích,Lịch sử giao dịch,Phiếu bảo hành)
+
+├── Mua hàng (Danh sách sản phẩm,Tìm kiếm sản phẩm,So sánh sản phẩm,Wishlist,Giỏ hàng,Thanh toán,Thanh toán thành công,Theo dõi đơn hàng)
+
+└── Hỗ trợ
+
+│ ├── FAQ
+
+│ ├── Trung tâm trợ giúp
+
+│ ├── Chat trực tuyến
+
+│ ├── Gửi ticket hỗ trợ
+
+│ ├── Hướng dẫn mua hàng
+
+│ ├── Hướng dẫn thanh toán
+
+│ ├── Chính sách giao hàng
+
+│ ├── Chính sách bảo hành
+
+│ └── Chính sách đổi trả
+
+└── Khu vực thành viên
+
+│ └── Khách hàng (Dashboard,Hồ sơ,Đơn hàng,Phiếu bảo hành,Điểm tích lũy,Voucher,Khiếu nại)
+
+│ └── Đại lý (Dashboard đại lý,Chính sách giá,Báo giá,Đơn hàng đại lý,Công nợ,Tài liệu bán hàng)

@@ -2,7 +2,19 @@ import { paths } from 'src/routes/paths';
 
 import { Iconify } from 'src/components/iconify';
 
+import { sofa18PagesNavData } from './config-nav-sofa18-pages';
+
 // ----------------------------------------------------------------------
+
+const sofa19PagesNavData = sofa18PagesNavData.map((item) => {
+  const mapPaths = (entry: any): any => ({
+    ...entry,
+    path: typeof entry.path === 'string' ? entry.path.replaceAll('/sofa18', '/sofa19') : entry.path,
+    ...(entry.children ? { children: entry.children.map(mapPaths) } : {}),
+  });
+
+  return mapPaths(item);
+});
 
 export const sofa19NavData = [
   { title: 'Trang chủ', path: '/sofa19', icon: <Iconify width={22} icon="solar:home-2-bold-duotone" /> },
@@ -36,4 +48,5 @@ export const sofa19NavData = [
     path: paths.contact,
     icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
   },
+  ...sofa19PagesNavData.filter((item) => !['/sofa19', '/sofa19/about', '/sofa19/products'].includes(item.path)),
 ];
