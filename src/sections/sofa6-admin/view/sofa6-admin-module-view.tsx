@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -58,6 +58,8 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 
 export function Sofa6AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
+  const { pathname } = useLocation();
+  const adminRoot = pathname.startsWith('/sofa7') ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
 
   const found = useMemo(() => findSofa6AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
 
@@ -88,7 +90,7 @@ export function Sofa6AdminModuleView() {
 
   if (!found || !group || !module) {
     const first = SOFA6_ADMIN_GROUPS[0];
-    return <Navigate to={`${SOFA6_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
+    return <Navigate to={`${adminRoot}/${first.slug}/${first.modules[0].slug}`} replace />;
   }
 
   const filtered = rows

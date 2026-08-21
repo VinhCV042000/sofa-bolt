@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -47,6 +48,9 @@ export function Sofa6AdminLayout({
   subtitle,
   breadcrumb = [],
 }: Props) {
+  const { pathname } = useLocation();
+  const adminRoot = pathname.startsWith('/sofa7') ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
+  const brandName = pathname.startsWith('/sofa7') ? 'Sofa7 Atelier' : 'Sofa6 Atelier';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
@@ -79,7 +83,7 @@ export function Sofa6AdminLayout({
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
-            Sofa6 Atelier
+             {brandName}
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }}>
             Trung tâm quản trị
@@ -90,7 +94,7 @@ export function Sofa6AdminLayout({
       <Box sx={{ flex: 1, overflowY: 'auto', px: 1.5, py: 2 }}>
         <ButtonBase
           component={RouterLink}
-          href={SOFA6_ADMIN_ROOT}
+            href={adminRoot}
           sx={{
             width: 1,
             gap: 1.5,
@@ -157,7 +161,7 @@ export function Sofa6AdminLayout({
                       <ButtonBase
                         key={module.slug}
                         component={RouterLink}
-                        href={`${SOFA6_ADMIN_ROOT}/${group.slug}/${module.slug}`}
+                         href={`${adminRoot}/${group.slug}/${module.slug}`}
                         sx={{
                           gap: 1.25,
                           px: 1.5,

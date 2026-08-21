@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -28,6 +29,9 @@ import {
 const { ACCENT, SURFACE } = SOFA6_ADMIN_THEME;
 
 export function Sofa6AdminDashboardView() {
+  const { pathname } = useLocation();
+  const adminRoot = pathname.startsWith('/sofa7') ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
+
   return (
     <>
       <Helmet>
@@ -74,7 +78,7 @@ export function Sofa6AdminDashboardView() {
                   <Grid key={group.slug} xs={12} sm={6}>
                     <ButtonBase
                       component={RouterLink}
-                      href={`${SOFA6_ADMIN_ROOT}/${group.slug}/${group.modules[0].slug}`}
+                      href={`${adminRoot}/${group.slug}/${group.modules[0].slug}`}
                       sx={{
                         width: 1,
                         p: 2,
