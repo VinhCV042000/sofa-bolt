@@ -227,6 +227,8 @@ const Sofa8AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
 const Sofa8AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
 const Sofa9AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
 const Sofa9AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
+const Sofa10AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
+const Sofa10AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
 const Sofa4AdminDashboardPage = lazy(() => import('src/pages/sofa4-admin'));
 const Sofa4AdminModulePage = lazy(() => import('src/pages/sofa4-admin/module'));
 
@@ -2896,6 +2898,31 @@ export function Router() {
       element: (
         <Suspense fallback={<SplashScreen />}>
           <Sofa9AdminModulePage />
+        </Suspense>
+      ),
+    },
+    // SOFA10 ADMIN — dùng chung hệ quản trị nghiệp vụ chuẩn hóa
+    {
+      path: '/sofa10/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa10AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa10AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa10/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa10AdminModulePage />
         </Suspense>
       ),
     },
