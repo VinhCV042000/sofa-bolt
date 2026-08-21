@@ -30,12 +30,20 @@ const { ACCENT, SURFACE } = SOFA6_ADMIN_THEME;
 
 export function Sofa6AdminDashboardView() {
   const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa8')
-    ? '/sofa8/admin'
+  const adminRoot = pathname.startsWith('/sofa9')
+    ? '/sofa9/admin'
+    : pathname.startsWith('/sofa8')
+      ? '/sofa8/admin'
     : pathname.startsWith('/sofa7')
       ? '/sofa7/admin'
       : SOFA6_ADMIN_ROOT;
-  const brandName = pathname.startsWith('/sofa8') ? 'Sofa8' : pathname.startsWith('/sofa7') ? 'Sofa7' : 'Sofa6';
+  const brandName = pathname.startsWith('/sofa9')
+    ? 'Sofa9'
+    : pathname.startsWith('/sofa8')
+      ? 'Sofa8'
+      : pathname.startsWith('/sofa7')
+        ? 'Sofa7'
+        : 'Sofa6';
 
   return (
     <>

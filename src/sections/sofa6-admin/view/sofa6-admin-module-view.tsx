@@ -59,8 +59,10 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 export function Sofa6AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
   const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa8')
-    ? '/sofa8/admin'
+  const adminRoot = pathname.startsWith('/sofa9')
+    ? '/sofa9/admin'
+    : pathname.startsWith('/sofa8')
+      ? '/sofa8/admin'
     : pathname.startsWith('/sofa7')
       ? '/sofa7/admin'
       : SOFA6_ADMIN_ROOT;
@@ -180,7 +182,15 @@ export function Sofa6AdminModuleView() {
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | ${group.name} - Quản trị ${pathname.startsWith('/sofa8') ? 'Sofa8' : pathname.startsWith('/sofa7') ? 'Sofa7' : 'Sofa6'}`}</title>
+        <title>{`${module.name} | ${group.name} - Quản trị ${
+          pathname.startsWith('/sofa9')
+            ? 'Sofa9'
+            : pathname.startsWith('/sofa8')
+              ? 'Sofa8'
+              : pathname.startsWith('/sofa7')
+                ? 'Sofa7'
+                : 'Sofa6'
+        }`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
