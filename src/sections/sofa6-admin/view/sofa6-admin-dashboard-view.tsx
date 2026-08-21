@@ -30,12 +30,17 @@ const { ACCENT, SURFACE } = SOFA6_ADMIN_THEME;
 
 export function Sofa6AdminDashboardView() {
   const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa7') ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
+  const adminRoot = pathname.startsWith('/sofa8')
+    ? '/sofa8/admin'
+    : pathname.startsWith('/sofa7')
+      ? '/sofa7/admin'
+      : SOFA6_ADMIN_ROOT;
+  const brandName = pathname.startsWith('/sofa8') ? 'Sofa8' : pathname.startsWith('/sofa7') ? 'Sofa7' : 'Sofa6';
 
   return (
     <>
       <Helmet>
-        <title>Trung tâm quản trị | Sofa6</title>
+        <title>{`Trung tâm quản trị | ${brandName}`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 

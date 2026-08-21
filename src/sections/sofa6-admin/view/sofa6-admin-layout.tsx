@@ -49,8 +49,10 @@ export function Sofa6AdminLayout({
   breadcrumb = [],
 }: Props) {
   const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa7') ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
-  const brandName = pathname.startsWith('/sofa7') ? 'Sofa7 Atelier' : 'Sofa6 Atelier';
+  const isSofa8 = pathname.startsWith('/sofa8');
+  const isSofa7 = pathname.startsWith('/sofa7');
+  const adminRoot = isSofa8 ? '/sofa8/admin' : isSofa7 ? '/sofa7/admin' : SOFA6_ADMIN_ROOT;
+  const brandName = isSofa8 ? 'Sofa8 Atelier' : isSofa7 ? 'Sofa7 Atelier' : 'Sofa6 Atelier';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
@@ -207,7 +209,11 @@ export function Sofa6AdminLayout({
           </Typography>
         </Box>
         <Tooltip title="Về trang bán hàng">
-          <IconButton component={RouterLink} href="/sofa6" sx={{ color: alpha(TEXT, 0.7) }}>
+          <IconButton
+            component={RouterLink}
+            href={isSofa8 ? '/sofa8' : isSofa7 ? '/sofa7' : '/sofa6'}
+            sx={{ color: alpha(TEXT, 0.7) }}
+          >
             <Iconify icon="solar:logout-3-bold-duotone" width={20} />
           </IconButton>
         </Tooltip>
