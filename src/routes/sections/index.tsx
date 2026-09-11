@@ -221,6 +221,9 @@ const Sofa3SupportPage = lazy(() => import('src/pages/sofa3-pages/support'));
 
 const Sofa6AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
 const Sofa6AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
+const Sofa12AdminDashboardPage = lazy(() => import('src/pages/sofa12-admin'));
+const Sofa12AdminModulePage = lazy(() => import('src/pages/sofa12-admin/module'));
+const Sofa12AdminToolsPage = lazy(() => import('src/pages/sofa12-admin/tools'));
 const Sofa7AdminDashboardPage = lazy(() => import('src/pages/sofa7-admin'));
 const Sofa7AdminModulePage = lazy(() => import('src/pages/sofa7-admin/module'));
 const Sofa7AdminToolsPage = lazy(() => import('src/pages/sofa7-admin/tools'));
@@ -2838,6 +2841,39 @@ export function Router() {
       element: (
         <Suspense fallback={<SplashScreen />}>
           <Sofa6AdminModulePage />
+        </Suspense>
+      ),
+    },
+    // SOFA12 ADMIN — bộ quản trị Terra Arch
+    {
+      path: '/sofa12/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa12AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa12AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa12AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa12/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa12AdminModulePage />
         </Suspense>
       ),
     },
