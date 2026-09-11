@@ -16,7 +16,7 @@ import {
 
 // ----------------------------------------------------------------------
 
-const PALETTE = ['#B4552D', '#6E7B4F', '#D98E32', '#E5D2B8', '#2B1B12'];
+const PALETTE = ['#E07A4F', '#5B7553', '#A6634A', '#8BA888', '#3D2817'];
 
 export function Sofa12AdminCharts() {
   const revenueOptions = useChart({

@@ -26,10 +26,10 @@ import { SOFA12_ADMIN_TOOLS } from '../sofa12-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#2B1B12';
-const SURFACE = '#54382A';
-const ACCENT = '#B4552D';
-const TEXT = '#FFFFFF';
+const BG = '#3D2817';
+const SURFACE = '#5D4037';
+const ACCENT = '#E07A4F';
+const TEXT = '#F5EFE6';
 
 type Props = {
   children: React.ReactNode;
@@ -49,9 +49,10 @@ export function Sofa12AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA12_ADMIN_ROOT;
-  const brandName = 'Sofa12 Studio';
-  const displayName = brandName;
-  const siteLink = '/sofa12';
+  const brandName = 'Sofa12 Atelier';
+  const isSofa5 = typeof window !== 'undefined' && window.location.pathname.startsWith('/sofa5');
+  const displayName = isSofa5 ? 'Sofa5 Royale' : brandName;
+  const siteLink = isSofa5 ? '/sofa5' : '/sofa12';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
@@ -252,7 +253,7 @@ export function Sofa12AdminLayout({
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FBF6EE' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F4F7FB' }}>
       {isDesktop ? (
         <Box
           component="aside"
@@ -275,7 +276,7 @@ export function Sofa12AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#7A3318', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#A6634A', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -297,7 +298,7 @@ export function Sofa12AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#2B1B12', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#A6634A', fontWeight: 600 }}
               />
             </Stack>
           </Container>

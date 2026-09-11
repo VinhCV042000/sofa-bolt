@@ -41,8 +41,8 @@ export function Sofa12AdminDashboardView() {
     ? '/sofa9/admin'
     : pathname.startsWith('/sofa8')
       ? '/sofa8/admin'
-    : pathname.startsWith('/sofa12')
-      ? '/sofa12/admin'
+    : pathname.startsWith('/sofa7')
+      ? '/sofa7/admin'
       : pathname.startsWith('/sofa5')
         ? '/sofa5/admin'
         : SOFA12_ADMIN_ROOT;
@@ -52,8 +52,8 @@ export function Sofa12AdminDashboardView() {
     ? 'Sofa9'
     : pathname.startsWith('/sofa8')
       ? 'Sofa8'
-      : pathname.startsWith('/sofa12')
-        ? 'Sofa12'
+      : pathname.startsWith('/sofa7')
+        ? 'Sofa7'
         : pathname.startsWith('/sofa5')
           ? 'Sofa5'
           : 'Sofa12';
@@ -125,7 +125,7 @@ export function Sofa12AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#7A3318', 0.2)}`,
+                        border: `1px solid ${alpha('#A6634A', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -139,7 +139,7 @@ export function Sofa12AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#7A3318',
+                          color: '#A6634A',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
