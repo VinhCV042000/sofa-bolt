@@ -22,9 +22,9 @@ import { SOFA12_ADMIN_TOOLS, SOFA12_ADMIN_FUNNEL } from '../sofa12-admin-tools';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#E07A4F';
-const SAGE = '#5B7553';
-const SURFACE = '#3D2817';
+const ACCENT = '#B4552D';
+const SAGE = '#6E7B4F';
+const SURFACE = '#2B1B12';
 
 const currency = (value: number) => `${value.toFixed(1)} tỷ ₫`;
 
