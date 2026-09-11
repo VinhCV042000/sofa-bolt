@@ -43,31 +43,16 @@ export function Sofa12AdminRevenueChart() {
   const completion = Math.round((total / totalTarget) * 100);
 
   const options = useChart({
-    colors: [ACCENT, SAGE, alpha(SURFACE, 0.6)],
-    stroke: { width: [0, 3, 2], dashArray: [0, 0, 6] },
+    colors: [ACCENT, SAGE],
+    stroke: { width: [0, 3], dashArray: [0, 6] },
     xaxis: { categories: SOFA12_ADMIN_CHART_MONTHS },
     plotOptions: { bar: { columnWidth: '42%', borderRadius: 4 } },
     legend: { show: true, position: 'top', horizontalAlign: 'right' },
-    yaxis: [
-      {
-        seriesName: 'Doanh thu',
-        min: 0,
-        max: Math.ceil(Math.max(...actual, ...target) + 1),
-        labels: { formatter: (value: number) => `${value.toFixed(0)} tỷ` },
-      },
-      {
-        seriesName: 'Doanh thu',
-        show: false,
-        min: 0,
-        max: Math.ceil(Math.max(...actual, ...target) + 1),
-      },
-      {
-        opposite: true,
-        seriesName: 'Luỹ kế',
-        min: 0,
-        labels: { formatter: (value: number) => `${value.toFixed(0)} tỷ` },
-      },
-    ],
+    yaxis: {
+      min: 0,
+      max: Math.ceil(Math.max(...actual, ...target) + 1),
+      labels: { formatter: (value: number) => `${value.toFixed(0)} tỷ` },
+    },
     tooltip: { y: { formatter: (value: number) => currency(value) } },
   });
 
@@ -75,7 +60,7 @@ export function Sofa12AdminRevenueChart() {
     <Card>
       <CardHeader
         title="Doanh thu chi tiết"
-        subheader={`Thực tế · mục tiêu · luỹ kế 12 tháng — đạt ${completion}% kế hoạch năm`}
+        subheader={`Thực tế · mục tiêu 12 tháng — đạt ${completion}% kế hoạch năm`}
       />
       <Chart
         type="line"
@@ -84,7 +69,6 @@ export function Sofa12AdminRevenueChart() {
         series={[
           { name: 'Doanh thu', type: 'column', data: actual },
           { name: 'Mục tiêu', type: 'line', data: target },
-          { name: 'Luỹ kế', type: 'line', data: cumulative },
         ]}
         sx={{ px: 2, pb: 2 }}
       />
