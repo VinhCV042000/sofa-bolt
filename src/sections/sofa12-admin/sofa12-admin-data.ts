@@ -1,26 +1,26 @@
-// SOFA7 ADMIN — cấu hình khu vực quản trị (dữ liệu demo)
+// SOFA12 ADMIN — cấu hình khu vực quản trị (dữ liệu demo)
 // ----------------------------------------------------------------------
 
-export const SOFA7_ADMIN_ROOT = '/sofa7/admin';
+export const SOFA12_ADMIN_ROOT = '/sofa12/admin';
 
-export type Sofa7AdminColumn = { key: string; label: string; type?: 'text' | 'status' | 'money' | 'number' };
+export type Sofa12AdminColumn = { key: string; label: string; type?: 'text' | 'status' | 'money' | 'number' };
 
-export type Sofa7AdminModule = {
+export type Sofa12AdminModule = {
   slug: string;
   name: string;
   description: string;
   icon: string;
   stats: { label: string; value: string; trend?: string }[];
-  columns: Sofa7AdminColumn[];
+  columns: Sofa12AdminColumn[];
   rows: Record<string, string | number>[];
   actions?: string[];
 };
 
-export type Sofa7AdminGroup = {
+export type Sofa12AdminGroup = {
   slug: string;
   name: string;
   icon: string;
-  modules: Sofa7AdminModule[];
+  modules: Sofa12AdminModule[];
 };
 
 const money = (v: number) => v;
@@ -30,15 +30,15 @@ function mod(
   name: string,
   description: string,
   icon: string,
-  stats: Sofa7AdminModule['stats'],
-  columns: Sofa7AdminColumn[],
+  stats: Sofa12AdminModule['stats'],
+  columns: Sofa12AdminColumn[],
   rows: Record<string, string | number>[],
   actions?: string[]
-): Sofa7AdminModule {
+): Sofa12AdminModule {
   return { slug, name, description, icon, stats, columns, rows, actions };
 }
 
-const STATUS_COL: Sofa7AdminColumn = { key: 'status', label: 'Trạng thái', type: 'status' };
+const STATUS_COL: Sofa12AdminColumn = { key: 'status', label: 'Trạng thái', type: 'status' };
 
 // ----------------------------------------------------------------------
 // CMS
@@ -73,17 +73,17 @@ const cmsPage = (slug: string, name: string, path: string) =>
     ['Thêm khối', 'Xem trước', 'Xuất bản']
   );
 
-const CMS_GROUP: Sofa7AdminGroup = {
+const CMS_GROUP: Sofa12AdminGroup = {
   slug: 'cms',
   name: 'CMS',
   icon: 'solar:documents-bold-duotone',
   modules: [
-    cmsPage('home', 'Trang chủ', '/sofa7'),
-    cmsPage('about', 'Trang giới thiệu', '/sofa7/about'),
-    cmsPage('contact', 'Trang liên hệ', '/sofa7/contact'),
-    cmsPage('policy', 'Trang chính sách', '/sofa7/policy'),
-    cmsPage('terms', 'Trang điều khoản', '/sofa7/policy/terms'),
-    cmsPage('faq', 'Trang FAQ', '/sofa7/faq'),
+    cmsPage('home', 'Trang chủ', '/sofa12'),
+    cmsPage('about', 'Trang giới thiệu', '/sofa12/about'),
+    cmsPage('contact', 'Trang liên hệ', '/sofa12/contact'),
+    cmsPage('policy', 'Trang chính sách', '/sofa12/policy'),
+    cmsPage('terms', 'Trang điều khoản', '/sofa12/policy/terms'),
+    cmsPage('faq', 'Trang FAQ', '/sofa12/faq'),
     mod(
       'blog',
       'Trang blog',
@@ -202,10 +202,10 @@ const CMS_GROUP: Sofa7AdminGroup = {
         STATUS_COL,
       ],
       [
-        { page: '/sofa7', title: 'SOFA7 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
-        { page: '/sofa7/about', title: 'Về chúng tôi | SOFA7', length: 42, status: 'Tốt' },
-        { page: '/sofa7/faq', title: '', length: 0, status: 'Thiếu meta' },
-        { page: '/sofa7/policy', title: 'Chính sách mua hàng SOFA7', length: 48, status: 'Tốt' },
+        { page: '/sofa12', title: 'SOFA12 – Sofa thủ công cao cấp', length: 54, status: 'Tốt' },
+        { page: '/sofa12/about', title: 'Về chúng tôi | SOFA12', length: 42, status: 'Tốt' },
+        { page: '/sofa12/faq', title: '', length: 0, status: 'Thiếu meta' },
+        { page: '/sofa12/policy', title: 'Chính sách mua hàng SOFA12', length: 48, status: 'Tốt' },
       ],
       ['Quét lại']
     ),
@@ -227,9 +227,9 @@ const CMS_GROUP: Sofa7AdminGroup = {
         { key: 'updated', label: 'Cập nhật' },
       ],
       [
-        { title: 'Hướng dẫn đo kích thước', slug: '/sofa7/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
-        { title: 'Cam kết chất liệu', slug: '/sofa7/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
-        { title: 'Tuyển đại lý 2026', slug: '/sofa7/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
+        { title: 'Hướng dẫn đo kích thước', slug: '/sofa12/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
+        { title: 'Cam kết chất liệu', slug: '/sofa12/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
+        { title: 'Tuyển đại lý 2026', slug: '/sofa12/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
       ],
       ['Tạo trang']
     ),
@@ -240,7 +240,7 @@ const CMS_GROUP: Sofa7AdminGroup = {
 // SẢN PHẨM
 // ----------------------------------------------------------------------
 
-const PRODUCT_GROUP: Sofa7AdminGroup = {
+const PRODUCT_GROUP: Sofa12AdminGroup = {
   slug: 'catalog',
   name: 'Sản phẩm',
   icon: 'solar:box-bold-duotone',
@@ -409,7 +409,7 @@ const PRODUCT_GROUP: Sofa7AdminGroup = {
 // KHO HÀNG (nhóm riêng)
 // ----------------------------------------------------------------------
 
-const WAREHOUSE_GROUP: Sofa7AdminGroup = {
+const WAREHOUSE_GROUP: Sofa12AdminGroup = {
   slug: 'warehouse',
   name: 'Kho hàng',
   icon: 'solar:warehouse-bold-duotone',
@@ -498,7 +498,7 @@ const WAREHOUSE_GROUP: Sofa7AdminGroup = {
 // ĐƠN HÀNG
 // ----------------------------------------------------------------------
 
-const ORDER_GROUP: Sofa7AdminGroup = {
+const ORDER_GROUP: Sofa12AdminGroup = {
   slug: 'orders',
   name: 'Đơn hàng',
   icon: 'solar:cart-large-2-bold-duotone',
@@ -637,7 +637,7 @@ const ORDER_GROUP: Sofa7AdminGroup = {
 // CRM
 // ----------------------------------------------------------------------
 
-const CRM_GROUP: Sofa7AdminGroup = {
+const CRM_GROUP: Sofa12AdminGroup = {
   slug: 'crm',
   name: 'CRM',
   icon: 'solar:users-group-rounded-bold-duotone',
@@ -750,7 +750,7 @@ const CRM_GROUP: Sofa7AdminGroup = {
 // MARKETING
 // ----------------------------------------------------------------------
 
-const MARKETING_GROUP: Sofa7AdminGroup = {
+const MARKETING_GROUP: Sofa12AdminGroup = {
   slug: 'marketing',
   name: 'Marketing',
   icon: 'solar:megaphone-bold-duotone',
@@ -790,7 +790,7 @@ const MARKETING_GROUP: Sofa7AdminGroup = {
         { label: 'Tin đã gửi', value: '48.2K' },
         { label: 'Tỷ lệ nhận', value: '98.4%' },
         { label: 'Chi phí tháng', value: '32 tr' },
-        { label: 'Brandname', value: 'SOFA7' },
+        { label: 'Brandname', value: 'SOFA12' },
       ],
       [
         { key: 'campaign', label: 'Chiến dịch' },
@@ -889,7 +889,7 @@ const MARKETING_GROUP: Sofa7AdminGroup = {
 // ANALYTICS
 // ----------------------------------------------------------------------
 
-const ANALYTICS_GROUP: Sofa7AdminGroup = {
+const ANALYTICS_GROUP: Sofa12AdminGroup = {
   slug: 'analytics',
   name: 'Analytics',
   icon: 'solar:chart-2-bold-duotone',
@@ -1044,7 +1044,7 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA7`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
+      { url: sample, title: `${name} – SOFA12`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
       { url: `${sample}/linen`, title: 'Sofa vải linen cao cấp', keyword: 'sofa vải linen', position: 7, status: 'Tốt' },
       { url: `${sample}/da-bo`, title: '', keyword: 'sofa da bò', position: 18, status: 'Thiếu meta' },
       { url: `${sample}/goc-l`, title: 'Sofa góc L hiện đại', keyword: 'sofa góc l', position: 11, status: 'Cần cải thiện' },
@@ -1052,18 +1052,18 @@ const seoPage = (slug: string, name: string, sample: string) =>
     ['Quét SEO', 'Xuất báo cáo']
   );
 
-const SEO_GROUP: Sofa7AdminGroup = {
+const SEO_GROUP: Sofa12AdminGroup = {
   slug: 'seo',
   name: 'SEO',
   icon: 'solar:graph-new-bold-duotone',
   modules: [
-    seoPage('category', 'Trang danh mục', '/sofa7/products/category'),
-    seoPage('product', 'Trang sản phẩm', '/sofa7/products'),
-    seoPage('collection', 'Trang bộ sưu tập', '/sofa7/collections'),
-    seoPage('project', 'Trang dự án', '/sofa7/projects'),
-    seoPage('showroom', 'Trang showroom', '/sofa7/showrooms'),
-    seoPage('blog', 'Trang blog', '/sofa7/blog'),
-    seoPage('brand', 'Trang thương hiệu', '/sofa7/about'),
+    seoPage('category', 'Trang danh mục', '/sofa12/products/category'),
+    seoPage('product', 'Trang sản phẩm', '/sofa12/products'),
+    seoPage('collection', 'Trang bộ sưu tập', '/sofa12/collections'),
+    seoPage('project', 'Trang dự án', '/sofa12/projects'),
+    seoPage('showroom', 'Trang showroom', '/sofa12/showrooms'),
+    seoPage('blog', 'Trang blog', '/sofa12/blog'),
+    seoPage('brand', 'Trang thương hiệu', '/sofa12/about'),
     mod(
       'sitemap',
       'Sitemap',
@@ -1108,8 +1108,8 @@ const SEO_GROUP: Sofa7AdminGroup = {
       ],
       [
         { agent: '*', rule: 'Allow', path: '/', status: 'Hoạt động' },
-        { agent: '*', rule: 'Disallow', path: '/sofa7/admin', status: 'Hoạt động' },
-        { agent: '*', rule: 'Disallow', path: '/sofa7/cart', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa12/admin', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa12/cart', status: 'Hoạt động' },
         { agent: 'Googlebot', rule: 'Allow', path: '/', status: 'Hoạt động' },
       ],
       ['Sửa robots.txt']
@@ -1147,7 +1147,7 @@ const SEO_GROUP: Sofa7AdminGroup = {
 // PHÂN QUYỀN
 // ----------------------------------------------------------------------
 
-const ACCESS_GROUP: Sofa7AdminGroup = {
+const ACCESS_GROUP: Sofa12AdminGroup = {
   slug: 'access',
   name: 'Phân quyền',
   icon: 'solar:lock-keyhole-bold-duotone',
@@ -1171,10 +1171,10 @@ const ACCESS_GROUP: Sofa7AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Ngọc Anh', email: 'ngocanh@sofa7.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
-        { name: 'Minh Quân', email: 'quan@sofa7.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
-        { name: 'Thu Hà', email: 'ha@sofa7.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
-        { name: 'Gia Bảo', email: 'bao@sofa7.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
+        { name: 'Ngọc Anh', email: 'ngocanh@sofa12.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
+        { name: 'Minh Quân', email: 'quan@sofa12.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
+        { name: 'Thu Hà', email: 'ha@sofa12.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
+        { name: 'Gia Bảo', email: 'bao@sofa12.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
       ],
       ['Mời người dùng']
     ),
@@ -1258,7 +1258,7 @@ const ACCESS_GROUP: Sofa7AdminGroup = {
   ],
 };
 
-export const SOFA7_ADMIN_GROUPS: Sofa7AdminGroup[] = [
+export const SOFA12_ADMIN_GROUPS: Sofa12AdminGroup[] = [
   CMS_GROUP,
   PRODUCT_GROUP,
   WAREHOUSE_GROUP,
@@ -1270,21 +1270,21 @@ export const SOFA7_ADMIN_GROUPS: Sofa7AdminGroup[] = [
   ACCESS_GROUP,
 ];
 
-export function findSofa7AdminModule(groupSlug?: string, moduleSlug?: string) {
-  const group = SOFA7_ADMIN_GROUPS.find((g) => g.slug === groupSlug);
+export function findSofa12AdminModule(groupSlug?: string, moduleSlug?: string) {
+  const group = SOFA12_ADMIN_GROUPS.find((g) => g.slug === groupSlug);
   if (!group) return null;
   const found = group.modules.find((m) => m.slug === moduleSlug) ?? group.modules[0];
   return { group, module: found };
 }
 
-export const SOFA7_ADMIN_KPIS = [
+export const SOFA12_ADMIN_KPIS = [
   { label: 'Doanh thu tháng', value: '6.8 tỷ', trend: '+11%', color: 'primary' as const },
   { label: 'Đơn hàng', value: '486', trend: '+14%', color: 'info' as const },
   { label: 'Khách hàng mới', value: '486', trend: '+9%', color: 'success' as const },
   { label: 'Tỷ lệ chuyển đổi', value: '2.04%', trend: '+0.3%', color: 'warning' as const },
 ];
 
-export const SOFA7_ADMIN_ACTIVITIES = [
+export const SOFA12_ADMIN_ACTIVITIES = [
   { time: '09:12', text: 'Ngọc Anh xuất bản lại Trang chủ', tag: 'CMS' },
   { time: '08:41', text: 'Duyệt hoàn tiền HT-2608-04 (18.9tr)', tag: 'Đơn hàng' },
   { time: '08:02', text: '23 đơn hàng mới chờ xác nhận', tag: 'Đơn hàng' },
@@ -1296,25 +1296,25 @@ export const SOFA7_ADMIN_ACTIVITIES = [
 // Dữ liệu biểu đồ (demo)
 // ----------------------------------------------------------------------
 
-export const SOFA7_ADMIN_CHART_MONTHS = [
+export const SOFA12_ADMIN_CHART_MONTHS = [
   'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
 ];
 
-export const SOFA7_ADMIN_REVENUE_SERIES = [
+export const SOFA12_ADMIN_REVENUE_SERIES = [
   { name: 'Doanh thu (tỷ)', data: [3.2, 3.8, 4.1, 4.6, 5.0, 5.4, 6.1, 6.8, 6.2, 6.9, 7.4, 8.1] },
   { name: 'Mục tiêu (tỷ)', data: [3.5, 3.9, 4.3, 4.7, 5.2, 5.6, 6.0, 6.5, 6.8, 7.2, 7.6, 8.0] },
 ];
 
-export const SOFA7_ADMIN_ORDER_SERIES = [
+export const SOFA12_ADMIN_ORDER_SERIES = [
   { name: 'Đơn hàng', data: [210, 245, 268, 289, 310, 330, 402, 486, 448, 470, 512, 560] },
 ];
 
-export const SOFA7_ADMIN_CHANNEL_CHART = {
+export const SOFA12_ADMIN_CHANNEL_CHART = {
   labels: ['Website', 'Showroom', 'Đại lý B2B', 'Sàn TMĐT', 'Mạng xã hội'],
   series: [38, 27, 18, 11, 6],
 };
 
-export const SOFA7_ADMIN_TOP_PRODUCTS = {
+export const SOFA12_ADMIN_TOP_PRODUCTS = {
   labels: ['Sofa Terra 3S', 'Sofa Sage L', 'Armchair Clay', 'Sofa Bed Sand', 'Daybed Forest'],
   series: [186, 154, 132, 98, 76],
 };

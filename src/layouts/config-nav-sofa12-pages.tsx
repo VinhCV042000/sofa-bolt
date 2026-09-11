@@ -152,4 +152,16 @@ export const sofa12PagesNavData = [
   { title: 'Giỏ hàng', path: '/sofa12/cart', icon: <Iconify width={22} icon="solar:cart-bold-duotone" /> },
   { title: 'Thanh toán', path: '/sofa12/payment', icon: <Iconify width={22} icon="solar:wallet-bold-duotone" /> },
   { title: 'Hỗ trợ', path: '/sofa12/support', icon: <Iconify width={22} icon="solar:question-circle-bold-duotone" /> },
+  {
+    title: 'Quản trị',
+    path: '/sofa12/admin',
+    icon: <Iconify width={22} icon="solar:widget-5-bold-duotone" />,
+    children: [
+      { title: 'Tổng quan', path: '/sofa12/admin' },
+      { title: 'Báo cáo tổng hợp', path: '/sofa12/admin/tools/reports' },
+      { title: 'Cài đặt hệ thống', path: '/sofa12/admin/tools/settings' },
+      { title: 'Thông báo & Nhật ký', path: '/sofa12/admin/tools/notifications' },
+      { title: 'Hồ sơ quản trị', path: '/sofa12/admin/tools/profile' },
+    ],
+  },
 ];
