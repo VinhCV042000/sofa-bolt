@@ -3,7 +3,11 @@
 
 export const SOFA12_ADMIN_ROOT = '/sofa12/admin';
 
-export type Sofa12AdminColumn = { key: string; label: string; type?: 'text' | 'status' | 'money' | 'number' };
+export type Sofa12AdminColumn = {
+  key: string;
+  label: string;
+  type?: 'text' | 'status' | 'money' | 'number';
+};
 
 export type Sofa12AdminModule = {
   slug: string;
@@ -64,11 +68,41 @@ const cmsPage = (slug: string, name: string, path: string) =>
       { key: 'author', label: 'Người sửa' },
     ],
     [
-      { block: 'Hero banner', type: 'Banner', status: 'Đã xuất bản', updated: '12/08/2026', author: 'Ngọc Anh' },
-      { block: 'Giới thiệu ngắn', type: 'Rich text', status: 'Đã xuất bản', updated: '10/08/2026', author: 'Minh Quân' },
-      { block: 'Bộ sưu tập nổi bật', type: 'Danh sách SP', status: 'Bản nháp', updated: '09/08/2026', author: 'Thu Hà' },
-      { block: 'Đánh giá khách hàng', type: 'Slider', status: 'Đã xuất bản', updated: '02/08/2026', author: 'Ngọc Anh' },
-      { block: 'CTA cuối trang', type: 'Banner', status: 'Tạm ẩn', updated: '28/07/2026', author: 'Minh Quân' },
+      {
+        block: 'Hero banner',
+        type: 'Banner',
+        status: 'Đã xuất bản',
+        updated: '12/08/2026',
+        author: 'Ngọc Anh',
+      },
+      {
+        block: 'Giới thiệu ngắn',
+        type: 'Rich text',
+        status: 'Đã xuất bản',
+        updated: '10/08/2026',
+        author: 'Minh Quân',
+      },
+      {
+        block: 'Bộ sưu tập nổi bật',
+        type: 'Danh sách SP',
+        status: 'Bản nháp',
+        updated: '09/08/2026',
+        author: 'Thu Hà',
+      },
+      {
+        block: 'Đánh giá khách hàng',
+        type: 'Slider',
+        status: 'Đã xuất bản',
+        updated: '02/08/2026',
+        author: 'Ngọc Anh',
+      },
+      {
+        block: 'CTA cuối trang',
+        type: 'Banner',
+        status: 'Tạm ẩn',
+        updated: '28/07/2026',
+        author: 'Minh Quân',
+      },
     ],
     ['Thêm khối', 'Xem trước', 'Xuất bản']
   );
@@ -103,10 +137,34 @@ const CMS_GROUP: Sofa12AdminGroup = {
         { key: 'updated', label: 'Ngày đăng' },
       ],
       [
-        { title: '7 cách chọn sofa cho phòng khách nhỏ', category: 'Tư vấn', status: 'Đã xuất bản', views: 12480, updated: '11/08/2026' },
-        { title: 'Bảo quản sofa da bò đúng cách', category: 'Bảo dưỡng', status: 'Đã xuất bản', views: 8321, updated: '05/08/2026' },
-        { title: 'Xu hướng nội thất 2026', category: 'Xu hướng', status: 'Chờ duyệt', views: 0, updated: '13/08/2026' },
-        { title: 'So sánh vải linen và nỉ', category: 'Chất liệu', status: 'Bản nháp', views: 0, updated: '12/08/2026' },
+        {
+          title: '7 cách chọn sofa cho phòng khách nhỏ',
+          category: 'Tư vấn',
+          status: 'Đã xuất bản',
+          views: 12480,
+          updated: '11/08/2026',
+        },
+        {
+          title: 'Bảo quản sofa da bò đúng cách',
+          category: 'Bảo dưỡng',
+          status: 'Đã xuất bản',
+          views: 8321,
+          updated: '05/08/2026',
+        },
+        {
+          title: 'Xu hướng nội thất 2026',
+          category: 'Xu hướng',
+          status: 'Chờ duyệt',
+          views: 0,
+          updated: '13/08/2026',
+        },
+        {
+          title: 'So sánh vải linen và nỉ',
+          category: 'Chất liệu',
+          status: 'Bản nháp',
+          views: 0,
+          updated: '12/08/2026',
+        },
       ],
       ['Viết bài', 'Duyệt bài']
     ),
@@ -153,10 +211,30 @@ const CMS_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Sale tháng 8 – 30%', position: 'Top bar', schedule: '01/08 – 31/08', status: 'Đang chạy' },
-        { name: 'Miễn phí giao lắp HN/HCM', position: 'Trang chủ', schedule: 'Không giới hạn', status: 'Đang chạy' },
-        { name: 'Bộ sưu tập Linen', position: 'Danh mục', schedule: '05/08 – 20/08', status: 'Đang chạy' },
-        { name: 'Trả góp 0%', position: 'Chi tiết SP', schedule: '01/07 – 31/07', status: 'Hết hạn' },
+        {
+          name: 'Sale tháng 8 – 30%',
+          position: 'Top bar',
+          schedule: '01/08 – 31/08',
+          status: 'Đang chạy',
+        },
+        {
+          name: 'Miễn phí giao lắp HN/HCM',
+          position: 'Trang chủ',
+          schedule: 'Không giới hạn',
+          status: 'Đang chạy',
+        },
+        {
+          name: 'Bộ sưu tập Linen',
+          position: 'Danh mục',
+          schedule: '05/08 – 20/08',
+          status: 'Đang chạy',
+        },
+        {
+          name: 'Trả góp 0%',
+          position: 'Chi tiết SP',
+          schedule: '01/07 – 31/07',
+          status: 'Hết hạn',
+        },
       ],
       ['Tạo banner']
     ),
@@ -227,9 +305,24 @@ const CMS_GROUP: Sofa12AdminGroup = {
         { key: 'updated', label: 'Cập nhật' },
       ],
       [
-        { title: 'Hướng dẫn đo kích thước', slug: '/sofa12/huong-dan-do', status: 'Đã xuất bản', updated: '08/08/2026' },
-        { title: 'Cam kết chất liệu', slug: '/sofa12/cam-ket', status: 'Đã xuất bản', updated: '01/08/2026' },
-        { title: 'Tuyển đại lý 2026', slug: '/sofa12/tuyen-dai-ly', status: 'Bản nháp', updated: '13/08/2026' },
+        {
+          title: 'Hướng dẫn đo kích thước',
+          slug: '/sofa12/huong-dan-do',
+          status: 'Đã xuất bản',
+          updated: '08/08/2026',
+        },
+        {
+          title: 'Cam kết chất liệu',
+          slug: '/sofa12/cam-ket',
+          status: 'Đã xuất bản',
+          updated: '01/08/2026',
+        },
+        {
+          title: 'Tuyển đại lý 2026',
+          slug: '/sofa12/tuyen-dai-ly',
+          status: 'Bản nháp',
+          updated: '13/08/2026',
+        },
       ],
       ['Tạo trang']
     ),
@@ -290,11 +383,41 @@ const PRODUCT_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'SF-ROMA-01', name: 'Sofa Roma da bò nâu', category: 'Sofa da', price: money(28500000), status: 'Đang bán' },
-        { sku: 'SF-LINE-04', name: 'Sofa Linen Milano', category: 'Sofa vải', price: money(18900000), status: 'Đang bán' },
-        { sku: 'SF-LCOR-12', name: 'Sofa góc L Aurora', category: 'Sofa góc L', price: money(32400000), status: 'Hết hàng' },
-        { sku: 'SF-BED-07', name: 'Sofa giường Nordic', category: 'Sofa giường', price: money(15200000), status: 'Đang bán' },
-        { sku: 'SF-REC-03', name: 'Sofa recliner Comfy', category: 'Sofa recliner', price: money(41800000), status: 'Ngừng bán' },
+        {
+          sku: 'SF-ROMA-01',
+          name: 'Sofa Roma da bò nâu',
+          category: 'Sofa da',
+          price: money(28500000),
+          status: 'Đang bán',
+        },
+        {
+          sku: 'SF-LINE-04',
+          name: 'Sofa Linen Milano',
+          category: 'Sofa vải',
+          price: money(18900000),
+          status: 'Đang bán',
+        },
+        {
+          sku: 'SF-LCOR-12',
+          name: 'Sofa góc L Aurora',
+          category: 'Sofa góc L',
+          price: money(32400000),
+          status: 'Hết hàng',
+        },
+        {
+          sku: 'SF-BED-07',
+          name: 'Sofa giường Nordic',
+          category: 'Sofa giường',
+          price: money(15200000),
+          status: 'Đang bán',
+        },
+        {
+          sku: 'SF-REC-03',
+          name: 'Sofa recliner Comfy',
+          category: 'Sofa recliner',
+          price: money(41800000),
+          status: 'Ngừng bán',
+        },
       ],
       ['Thêm sản phẩm', 'Nhập Excel']
     ),
@@ -343,10 +466,34 @@ const PRODUCT_GROUP: Sofa12AdminGroup = {
         { key: 'price', label: 'Giá', type: 'money' },
       ],
       [
-        { sku: 'SF-ROMA-01-NAU', product: 'Sofa Roma', option: 'Da bò / Nâu / 2m4', stock: 12, price: money(28500000) },
-        { sku: 'SF-ROMA-01-DEN', product: 'Sofa Roma', option: 'Da bò / Đen / 2m4', stock: 5, price: money(28900000) },
-        { sku: 'SF-LINE-04-BEI', product: 'Sofa Linen Milano', option: 'Linen / Be / 2m2', stock: 24, price: money(18900000) },
-        { sku: 'SF-LCOR-12-XAM', product: 'Sofa góc L Aurora', option: 'Nỉ / Xám / 3m0', stock: 0, price: money(32400000) },
+        {
+          sku: 'SF-ROMA-01-NAU',
+          product: 'Sofa Roma',
+          option: 'Da bò / Nâu / 2m4',
+          stock: 12,
+          price: money(28500000),
+        },
+        {
+          sku: 'SF-ROMA-01-DEN',
+          product: 'Sofa Roma',
+          option: 'Da bò / Đen / 2m4',
+          stock: 5,
+          price: money(28900000),
+        },
+        {
+          sku: 'SF-LINE-04-BEI',
+          product: 'Sofa Linen Milano',
+          option: 'Linen / Be / 2m2',
+          stock: 24,
+          price: money(18900000),
+        },
+        {
+          sku: 'SF-LCOR-12-XAM',
+          product: 'Sofa góc L Aurora',
+          option: 'Nỉ / Xám / 3m0',
+          stock: 0,
+          price: money(32400000),
+        },
       ],
       ['Tạo biến thể']
     ),
@@ -369,10 +516,22 @@ const PRODUCT_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'SF-ROMA-01-NAU', warehouse: 'Kho Hà Nội', stock: 12, reserved: 3, status: 'Đủ hàng' },
+        {
+          sku: 'SF-ROMA-01-NAU',
+          warehouse: 'Kho Hà Nội',
+          stock: 12,
+          reserved: 3,
+          status: 'Đủ hàng',
+        },
         { sku: 'SF-LINE-04-BEI', warehouse: 'Kho HCM', stock: 24, reserved: 6, status: 'Đủ hàng' },
         { sku: 'SF-LCOR-12-XAM', warehouse: 'Kho HCM', stock: 0, reserved: 0, status: 'Hết hàng' },
-        { sku: 'SF-BED-07-XANH', warehouse: 'Kho Đà Nẵng', stock: 4, reserved: 2, status: 'Sắp hết' },
+        {
+          sku: 'SF-BED-07-XANH',
+          warehouse: 'Kho Đà Nẵng',
+          stock: 4,
+          reserved: 2,
+          status: 'Sắp hết',
+        },
       ],
       ['Nhập kho', 'Kiểm kê']
     ),
@@ -395,10 +554,34 @@ const PRODUCT_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'SF-ROMA-01', list: money(36000000), sale: money(28500000), dealer: money(25200000), status: 'Đang giảm' },
-        { sku: 'SF-LINE-04', list: money(21500000), sale: money(18900000), dealer: money(16600000), status: 'Đang giảm' },
-        { sku: 'SF-BED-07', list: money(15200000), sale: money(15200000), dealer: money(13400000), status: 'Giá gốc' },
-        { sku: 'SF-REC-03', list: money(41800000), sale: money(41800000), dealer: money(37100000), status: 'Giá gốc' },
+        {
+          sku: 'SF-ROMA-01',
+          list: money(36000000),
+          sale: money(28500000),
+          dealer: money(25200000),
+          status: 'Đang giảm',
+        },
+        {
+          sku: 'SF-LINE-04',
+          list: money(21500000),
+          sale: money(18900000),
+          dealer: money(16600000),
+          status: 'Đang giảm',
+        },
+        {
+          sku: 'SF-BED-07',
+          list: money(15200000),
+          sale: money(15200000),
+          dealer: money(13400000),
+          status: 'Giá gốc',
+        },
+        {
+          sku: 'SF-REC-03',
+          list: money(41800000),
+          sale: money(41800000),
+          dealer: money(37100000),
+          status: 'Giá gốc',
+        },
       ],
       ['Tạo bảng giá']
     ),
@@ -433,10 +616,22 @@ const WAREHOUSE_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { warehouse: 'Kho trung tâm Hà Nội', city: 'Hà Nội', stock: 1280, fill: '78%', status: 'Hoạt động' },
+        {
+          warehouse: 'Kho trung tâm Hà Nội',
+          city: 'Hà Nội',
+          stock: 1280,
+          fill: '78%',
+          status: 'Hoạt động',
+        },
         { warehouse: 'Kho Bình Dương', city: 'HCM', stock: 1104, fill: '81%', status: 'Hoạt động' },
         { warehouse: 'Kho Đà Nẵng', city: 'Đà Nẵng', stock: 512, fill: '54%', status: 'Hoạt động' },
-        { warehouse: 'Kho ký gửi đại lý', city: 'Toàn quốc', stock: 586, fill: '63%', status: 'Hoạt động' },
+        {
+          warehouse: 'Kho ký gửi đại lý',
+          city: 'Toàn quốc',
+          stock: 586,
+          fill: '63%',
+          status: 'Hoạt động',
+        },
       ],
       ['Thêm kho']
     ),
@@ -459,10 +654,34 @@ const WAREHOUSE_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'PN-2608-014', type: 'Nhập', warehouse: 'Kho Hà Nội', value: money(482000000), status: 'Hoàn tất' },
-        { code: 'PX-2608-092', type: 'Xuất', warehouse: 'Kho HCM', value: money(128500000), status: 'Hoàn tất' },
-        { code: 'PN-2608-015', type: 'Nhập', warehouse: 'Kho Đà Nẵng', value: money(96000000), status: 'Chờ duyệt' },
-        { code: 'PX-2608-093', type: 'Xuất', warehouse: 'Kho Hà Nội', value: money(28500000), status: 'Đang xử lý' },
+        {
+          code: 'PN-2608-014',
+          type: 'Nhập',
+          warehouse: 'Kho Hà Nội',
+          value: money(482000000),
+          status: 'Hoàn tất',
+        },
+        {
+          code: 'PX-2608-092',
+          type: 'Xuất',
+          warehouse: 'Kho HCM',
+          value: money(128500000),
+          status: 'Hoàn tất',
+        },
+        {
+          code: 'PN-2608-015',
+          type: 'Nhập',
+          warehouse: 'Kho Đà Nẵng',
+          value: money(96000000),
+          status: 'Chờ duyệt',
+        },
+        {
+          code: 'PX-2608-093',
+          type: 'Xuất',
+          warehouse: 'Kho Hà Nội',
+          value: money(28500000),
+          status: 'Đang xử lý',
+        },
       ],
       ['Tạo phiếu nhập', 'Tạo phiếu xuất']
     ),
@@ -485,8 +704,20 @@ const WAREHOUSE_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'CK-0812', from: 'Kho HCM', to: 'Kho Đà Nẵng', items: 18, status: 'Đang vận chuyển' },
-        { code: 'CK-0811', from: 'Kho Hà Nội', to: 'Showroom Cầu Giấy', items: 6, status: 'Hoàn tất' },
+        {
+          code: 'CK-0812',
+          from: 'Kho HCM',
+          to: 'Kho Đà Nẵng',
+          items: 18,
+          status: 'Đang vận chuyển',
+        },
+        {
+          code: 'CK-0811',
+          from: 'Kho Hà Nội',
+          to: 'Showroom Cầu Giấy',
+          items: 6,
+          status: 'Hoàn tất',
+        },
         { code: 'KK-0803', from: 'Kho Bình Dương', to: '—', items: 420, status: 'Lệch 3 món' },
       ],
       ['Tạo lệnh chuyển', 'Mở kiểm kê']
@@ -522,10 +753,34 @@ const ORDER_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'SF-26081201', customer: 'Nguyễn Thu Hà', channel: 'Website', total: money(28500000), status: 'Đang giao' },
-        { code: 'SF-26081198', customer: 'Trần Minh Quân', channel: 'Showroom HN', total: money(41800000), status: 'Hoàn tất' },
-        { code: 'SF-26081195', customer: 'CT TNHH An Phát', channel: 'Đại lý', total: money(186000000), status: 'Chờ xác nhận' },
-        { code: 'SF-26081190', customer: 'Lê Hoàng Nam', channel: 'Website', total: money(18900000), status: 'Đã huỷ' },
+        {
+          code: 'SF-26081201',
+          customer: 'Nguyễn Thu Hà',
+          channel: 'Website',
+          total: money(28500000),
+          status: 'Đang giao',
+        },
+        {
+          code: 'SF-26081198',
+          customer: 'Trần Minh Quân',
+          channel: 'Showroom HN',
+          total: money(41800000),
+          status: 'Hoàn tất',
+        },
+        {
+          code: 'SF-26081195',
+          customer: 'CT TNHH An Phát',
+          channel: 'Đại lý',
+          total: money(186000000),
+          status: 'Chờ xác nhận',
+        },
+        {
+          code: 'SF-26081190',
+          customer: 'Lê Hoàng Nam',
+          channel: 'Website',
+          total: money(18900000),
+          status: 'Đã huỷ',
+        },
       ],
       ['Tạo đơn', 'Xuất Excel']
     ),
@@ -548,10 +803,34 @@ const ORDER_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { txn: 'TXN-88213', order: 'SF-26081201', method: 'VNPay', amount: money(28500000), status: 'Thành công' },
-        { txn: 'TXN-88210', order: 'SF-26081198', method: 'Chuyển khoản', amount: money(41800000), status: 'Thành công' },
-        { txn: 'TXN-88208', order: 'SF-26081195', method: 'Công nợ đại lý', amount: money(186000000), status: 'Chờ đối soát' },
-        { txn: 'TXN-88201', order: 'SF-26081190', method: 'Thẻ quốc tế', amount: money(18900000), status: 'Thất bại' },
+        {
+          txn: 'TXN-88213',
+          order: 'SF-26081201',
+          method: 'VNPay',
+          amount: money(28500000),
+          status: 'Thành công',
+        },
+        {
+          txn: 'TXN-88210',
+          order: 'SF-26081198',
+          method: 'Chuyển khoản',
+          amount: money(41800000),
+          status: 'Thành công',
+        },
+        {
+          txn: 'TXN-88208',
+          order: 'SF-26081195',
+          method: 'Công nợ đại lý',
+          amount: money(186000000),
+          status: 'Chờ đối soát',
+        },
+        {
+          txn: 'TXN-88201',
+          order: 'SF-26081190',
+          method: 'Thẻ quốc tế',
+          amount: money(18900000),
+          status: 'Thất bại',
+        },
       ],
       ['Đối soát']
     ),
@@ -574,9 +853,27 @@ const ORDER_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'VD-40112', order: 'SF-26081201', carrier: 'Đội xe nội bộ', eta: '16/08/2026', status: 'Đang giao' },
-        { code: 'VD-40109', order: 'SF-26081198', carrier: 'Đội xe nội bộ', eta: '12/08/2026', status: 'Đã giao' },
-        { code: 'VD-40105', order: 'SF-26081195', carrier: 'Nhất Tín Logistics', eta: '20/08/2026', status: 'Chờ lấy hàng' },
+        {
+          code: 'VD-40112',
+          order: 'SF-26081201',
+          carrier: 'Đội xe nội bộ',
+          eta: '16/08/2026',
+          status: 'Đang giao',
+        },
+        {
+          code: 'VD-40109',
+          order: 'SF-26081198',
+          carrier: 'Đội xe nội bộ',
+          eta: '12/08/2026',
+          status: 'Đã giao',
+        },
+        {
+          code: 'VD-40105',
+          order: 'SF-26081195',
+          carrier: 'Nhất Tín Logistics',
+          eta: '20/08/2026',
+          status: 'Chờ lấy hàng',
+        },
       ],
       ['Tạo vận đơn']
     ),
@@ -599,9 +896,27 @@ const ORDER_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'HT-2608-04', order: 'SF-26081190', reason: 'Khách huỷ đơn', amount: money(18900000), status: 'Đã hoàn' },
-        { code: 'HT-2608-05', order: 'SF-26081152', reason: 'Sai màu vải', amount: money(6500000), status: 'Đang xử lý' },
-        { code: 'HT-2608-06', order: 'SF-26081140', reason: 'Giao trễ hẹn', amount: money(1200000), status: 'Chờ duyệt' },
+        {
+          code: 'HT-2608-04',
+          order: 'SF-26081190',
+          reason: 'Khách huỷ đơn',
+          amount: money(18900000),
+          status: 'Đã hoàn',
+        },
+        {
+          code: 'HT-2608-05',
+          order: 'SF-26081152',
+          reason: 'Sai màu vải',
+          amount: money(6500000),
+          status: 'Đang xử lý',
+        },
+        {
+          code: 'HT-2608-06',
+          order: 'SF-26081140',
+          reason: 'Giao trễ hẹn',
+          amount: money(1200000),
+          status: 'Chờ duyệt',
+        },
       ],
       ['Duyệt hoàn tiền']
     ),
@@ -624,9 +939,27 @@ const ORDER_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'DT-2608-02', product: 'Sofa Linen Milano', type: 'Đổi màu', reason: 'Không hợp nội thất', status: 'Đang thu hồi' },
-        { code: 'DT-2608-03', product: 'Sofa Roma', type: 'Trả hàng', reason: 'Lỗi đường may', status: 'Đã tái nhập' },
-        { code: 'DT-2608-04', product: 'Sofa giường Nordic', type: 'Đổi size', reason: 'Không vừa phòng', status: 'Chờ duyệt' },
+        {
+          code: 'DT-2608-02',
+          product: 'Sofa Linen Milano',
+          type: 'Đổi màu',
+          reason: 'Không hợp nội thất',
+          status: 'Đang thu hồi',
+        },
+        {
+          code: 'DT-2608-03',
+          product: 'Sofa Roma',
+          type: 'Trả hàng',
+          reason: 'Lỗi đường may',
+          status: 'Đã tái nhập',
+        },
+        {
+          code: 'DT-2608-04',
+          product: 'Sofa giường Nordic',
+          type: 'Đổi size',
+          reason: 'Không vừa phòng',
+          status: 'Chờ duyệt',
+        },
       ],
       ['Tạo yêu cầu']
     ),
@@ -661,10 +994,34 @@ const CRM_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Nguyễn Thu Hà', phone: '0912 xxx 231', tier: 'Vàng', spent: money(84500000), status: 'Hoạt động' },
-        { name: 'Trần Minh Quân', phone: '0987 xxx 118', tier: 'Bạc', spent: money(41800000), status: 'Hoạt động' },
-        { name: 'CT TNHH An Phát', phone: '0243 xxx 900', tier: 'Đại lý', spent: money(1860000000), status: 'Hoạt động' },
-        { name: 'Lê Hoàng Nam', phone: '0905 xxx 447', tier: 'Thường', spent: money(18900000), status: 'Ngưng tương tác' },
+        {
+          name: 'Nguyễn Thu Hà',
+          phone: '0912 xxx 231',
+          tier: 'Vàng',
+          spent: money(84500000),
+          status: 'Hoạt động',
+        },
+        {
+          name: 'Trần Minh Quân',
+          phone: '0987 xxx 118',
+          tier: 'Bạc',
+          spent: money(41800000),
+          status: 'Hoạt động',
+        },
+        {
+          name: 'CT TNHH An Phát',
+          phone: '0243 xxx 900',
+          tier: 'Đại lý',
+          spent: money(1860000000),
+          status: 'Hoạt động',
+        },
+        {
+          name: 'Lê Hoàng Nam',
+          phone: '0905 xxx 447',
+          tier: 'Thường',
+          spent: money(18900000),
+          status: 'Ngưng tương tác',
+        },
       ],
       ['Thêm khách hàng', 'Nhập danh bạ']
     ),
@@ -687,10 +1044,34 @@ const CRM_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Phạm Bảo Ngọc', source: 'Facebook Ads', interest: 'Sofa góc L', owner: 'Ngọc Anh', status: 'Lead nóng' },
-        { name: 'Đỗ Văn Kiên', source: 'Google Ads', interest: 'Sofa da bò', owner: 'Minh Quân', status: 'Đã liên hệ' },
-        { name: 'Vũ Thanh Trúc', source: 'Showroom HCM', interest: 'Sofa giường', owner: 'Thu Hà', status: 'Đang tư vấn' },
-        { name: 'Hoàng Gia Bảo', source: 'Zalo OA', interest: 'Bộ sưu tập Linen', owner: 'Chưa gán', status: 'Mới' },
+        {
+          name: 'Phạm Bảo Ngọc',
+          source: 'Facebook Ads',
+          interest: 'Sofa góc L',
+          owner: 'Ngọc Anh',
+          status: 'Lead nóng',
+        },
+        {
+          name: 'Đỗ Văn Kiên',
+          source: 'Google Ads',
+          interest: 'Sofa da bò',
+          owner: 'Minh Quân',
+          status: 'Đã liên hệ',
+        },
+        {
+          name: 'Vũ Thanh Trúc',
+          source: 'Showroom HCM',
+          interest: 'Sofa giường',
+          owner: 'Thu Hà',
+          status: 'Đang tư vấn',
+        },
+        {
+          name: 'Hoàng Gia Bảo',
+          source: 'Zalo OA',
+          interest: 'Bộ sưu tập Linen',
+          owner: 'Chưa gán',
+          status: 'Mới',
+        },
       ],
       ['Thêm lead', 'Phân bổ']
     ),
@@ -713,9 +1094,27 @@ const CRM_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { customer: 'Nguyễn Thu Hà', order: 'SF-26081201', date: '12/08/2026', total: money(28500000), status: 'Đang giao' },
-        { customer: 'Nguyễn Thu Hà', order: 'SF-25110432', date: '04/11/2025', total: money(56000000), status: 'Hoàn tất' },
-        { customer: 'Trần Minh Quân', order: 'SF-26081198', date: '11/08/2026', total: money(41800000), status: 'Hoàn tất' },
+        {
+          customer: 'Nguyễn Thu Hà',
+          order: 'SF-26081201',
+          date: '12/08/2026',
+          total: money(28500000),
+          status: 'Đang giao',
+        },
+        {
+          customer: 'Nguyễn Thu Hà',
+          order: 'SF-25110432',
+          date: '04/11/2025',
+          total: money(56000000),
+          status: 'Hoàn tất',
+        },
+        {
+          customer: 'Trần Minh Quân',
+          order: 'SF-26081198',
+          date: '11/08/2026',
+          total: money(41800000),
+          status: 'Hoàn tất',
+        },
       ]
     ),
     mod(
@@ -737,9 +1136,27 @@ const CRM_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { ticket: 'TK-9021', customer: 'Lê Hoàng Nam', topic: 'Hoàn tiền đơn huỷ', agent: 'Thu Hà', status: 'Đang xử lý' },
-        { ticket: 'TK-9018', customer: 'Nguyễn Thu Hà', topic: 'Đặt lịch giao lắp', agent: 'Ngọc Anh', status: 'Đã đóng' },
-        { ticket: 'TK-9015', customer: 'CT TNHH An Phát', topic: 'Bảo hành khung gỗ', agent: 'Minh Quân', status: 'Chờ khách phản hồi' },
+        {
+          ticket: 'TK-9021',
+          customer: 'Lê Hoàng Nam',
+          topic: 'Hoàn tiền đơn huỷ',
+          agent: 'Thu Hà',
+          status: 'Đang xử lý',
+        },
+        {
+          ticket: 'TK-9018',
+          customer: 'Nguyễn Thu Hà',
+          topic: 'Đặt lịch giao lắp',
+          agent: 'Ngọc Anh',
+          status: 'Đã đóng',
+        },
+        {
+          ticket: 'TK-9015',
+          customer: 'CT TNHH An Phát',
+          topic: 'Bảo hành khung gỗ',
+          agent: 'Minh Quân',
+          status: 'Chờ khách phản hồi',
+        },
       ],
       ['Tạo ticket']
     ),
@@ -774,10 +1191,34 @@ const MARKETING_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { campaign: 'Sale tháng 8 – 30%', segment: 'Toàn bộ khách', sent: 12480, open: '41%', status: 'Đã gửi' },
-        { campaign: 'Bộ sưu tập Linen mới', segment: 'Quan tâm sofa vải', sent: 3240, open: '46%', status: 'Đã gửi' },
-        { campaign: 'Nhắc giỏ hàng bỏ quên', segment: 'Tự động', sent: 862, open: '52%', status: 'Đang chạy' },
-        { campaign: 'Chúc mừng sinh nhật', segment: 'Tự động', sent: 214, open: '58%', status: 'Đang chạy' },
+        {
+          campaign: 'Sale tháng 8 – 30%',
+          segment: 'Toàn bộ khách',
+          sent: 12480,
+          open: '41%',
+          status: 'Đã gửi',
+        },
+        {
+          campaign: 'Bộ sưu tập Linen mới',
+          segment: 'Quan tâm sofa vải',
+          sent: 3240,
+          open: '46%',
+          status: 'Đã gửi',
+        },
+        {
+          campaign: 'Nhắc giỏ hàng bỏ quên',
+          segment: 'Tự động',
+          sent: 862,
+          open: '52%',
+          status: 'Đang chạy',
+        },
+        {
+          campaign: 'Chúc mừng sinh nhật',
+          segment: 'Tự động',
+          sent: 214,
+          open: '58%',
+          status: 'Đang chạy',
+        },
       ],
       ['Tạo chiến dịch']
     ),
@@ -800,9 +1241,27 @@ const MARKETING_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { campaign: 'Flash sale cuối tuần', segment: 'Khách HN + HCM', sent: 18400, cost: money(12880000), status: 'Đã gửi' },
-        { campaign: 'Nhắc lịch giao lắp', segment: 'Tự động', sent: 486, cost: money(340000), status: 'Đang chạy' },
-        { campaign: 'Ưu đãi khách VIP', segment: 'Hạng Vàng', sent: 312, cost: money(218000), status: 'Lên lịch' },
+        {
+          campaign: 'Flash sale cuối tuần',
+          segment: 'Khách HN + HCM',
+          sent: 18400,
+          cost: money(12880000),
+          status: 'Đã gửi',
+        },
+        {
+          campaign: 'Nhắc lịch giao lắp',
+          segment: 'Tự động',
+          sent: 486,
+          cost: money(340000),
+          status: 'Đang chạy',
+        },
+        {
+          campaign: 'Ưu đãi khách VIP',
+          segment: 'Hạng Vàng',
+          sent: 312,
+          cost: money(218000),
+          status: 'Lên lịch',
+        },
       ],
       ['Tạo chiến dịch SMS']
     ),
@@ -825,9 +1284,27 @@ const MARKETING_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { title: 'Giảm 30% sofa da', trigger: 'Thủ công', reach: 24800, ctr: '5.1%', status: 'Đã gửi' },
-        { title: 'Sản phẩm bạn xem đã giảm giá', trigger: 'Hành vi', reach: 3620, ctr: '9.4%', status: 'Đang chạy' },
-        { title: 'Showroom mới Đà Nẵng', trigger: 'Vị trí', reach: 1240, ctr: '3.2%', status: 'Lên lịch' },
+        {
+          title: 'Giảm 30% sofa da',
+          trigger: 'Thủ công',
+          reach: 24800,
+          ctr: '5.1%',
+          status: 'Đã gửi',
+        },
+        {
+          title: 'Sản phẩm bạn xem đã giảm giá',
+          trigger: 'Hành vi',
+          reach: 3620,
+          ctr: '9.4%',
+          status: 'Đang chạy',
+        },
+        {
+          title: 'Showroom mới Đà Nẵng',
+          trigger: 'Vị trí',
+          reach: 1240,
+          ctr: '3.2%',
+          status: 'Lên lịch',
+        },
       ],
       ['Tạo thông báo']
     ),
@@ -850,10 +1327,34 @@ const MARKETING_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'SOFA30', value: 'Giảm 30%', condition: 'Đơn từ 20 triệu', used: 842, status: 'Đang chạy' },
-        { code: 'FREESHIP', value: 'Miễn phí giao lắp', condition: 'Nội thành HN/HCM', used: 1120, status: 'Đang chạy' },
-        { code: 'VIP5', value: 'Giảm 5 triệu', condition: 'Khách hạng Vàng', used: 96, status: 'Đang chạy' },
-        { code: 'JULY20', value: 'Giảm 20%', condition: 'Đơn từ 10 triệu', used: 126, status: 'Hết hạn' },
+        {
+          code: 'SOFA30',
+          value: 'Giảm 30%',
+          condition: 'Đơn từ 20 triệu',
+          used: 842,
+          status: 'Đang chạy',
+        },
+        {
+          code: 'FREESHIP',
+          value: 'Miễn phí giao lắp',
+          condition: 'Nội thành HN/HCM',
+          used: 1120,
+          status: 'Đang chạy',
+        },
+        {
+          code: 'VIP5',
+          value: 'Giảm 5 triệu',
+          condition: 'Khách hạng Vàng',
+          used: 96,
+          status: 'Đang chạy',
+        },
+        {
+          code: 'JULY20',
+          value: 'Giảm 20%',
+          condition: 'Đơn từ 10 triệu',
+          used: 126,
+          status: 'Hết hạn',
+        },
       ],
       ['Tạo coupon']
     ),
@@ -876,9 +1377,27 @@ const MARKETING_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { partner: 'Nội Thất Review', channel: 'YouTube', orders: 86, commission: money(96400000), status: 'Đang hợp tác' },
-        { partner: 'Homey Blog', channel: 'Blog', orders: 42, commission: money(38200000), status: 'Đang hợp tác' },
-        { partner: 'Décor Tips', channel: 'TikTok', orders: 31, commission: money(24800000), status: 'Chờ đối soát' },
+        {
+          partner: 'Nội Thất Review',
+          channel: 'YouTube',
+          orders: 86,
+          commission: money(96400000),
+          status: 'Đang hợp tác',
+        },
+        {
+          partner: 'Homey Blog',
+          channel: 'Blog',
+          orders: 42,
+          commission: money(38200000),
+          status: 'Đang hợp tác',
+        },
+        {
+          partner: 'Décor Tips',
+          channel: 'TikTok',
+          orders: 31,
+          commission: money(24800000),
+          status: 'Chờ đối soát',
+        },
       ],
       ['Mời cộng tác viên']
     ),
@@ -913,9 +1432,27 @@ const ANALYTICS_GROUP: Sofa12AdminGroup = {
         { key: 'growth', label: 'Tăng trưởng' },
       ],
       [
-        { channel: 'Website', orders: 214, revenue: money(2840000000), share: '42%', growth: '+16%' },
-        { channel: 'Showroom', orders: 168, revenue: money(2410000000), share: '35%', growth: '+6%' },
-        { channel: 'Đại lý B2B', orders: 64, revenue: money(1320000000), share: '19%', growth: '+12%' },
+        {
+          channel: 'Website',
+          orders: 214,
+          revenue: money(2840000000),
+          share: '42%',
+          growth: '+16%',
+        },
+        {
+          channel: 'Showroom',
+          orders: 168,
+          revenue: money(2410000000),
+          share: '35%',
+          growth: '+6%',
+        },
+        {
+          channel: 'Đại lý B2B',
+          orders: 64,
+          revenue: money(1320000000),
+          share: '19%',
+          growth: '+12%',
+        },
         { channel: 'Sàn TMĐT', orders: 40, revenue: money(230000000), share: '4%', growth: '-3%' },
       ]
     ),
@@ -1044,10 +1581,34 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA12`, keyword: 'sofa cao cấp', position: 4, status: 'Tốt' },
-      { url: `${sample}/linen`, title: 'Sofa vải linen cao cấp', keyword: 'sofa vải linen', position: 7, status: 'Tốt' },
-      { url: `${sample}/da-bo`, title: '', keyword: 'sofa da bò', position: 18, status: 'Thiếu meta' },
-      { url: `${sample}/goc-l`, title: 'Sofa góc L hiện đại', keyword: 'sofa góc l', position: 11, status: 'Cần cải thiện' },
+      {
+        url: sample,
+        title: `${name} – SOFA12`,
+        keyword: 'sofa cao cấp',
+        position: 4,
+        status: 'Tốt',
+      },
+      {
+        url: `${sample}/linen`,
+        title: 'Sofa vải linen cao cấp',
+        keyword: 'sofa vải linen',
+        position: 7,
+        status: 'Tốt',
+      },
+      {
+        url: `${sample}/da-bo`,
+        title: '',
+        keyword: 'sofa da bò',
+        position: 18,
+        status: 'Thiếu meta',
+      },
+      {
+        url: `${sample}/goc-l`,
+        title: 'Sofa góc L hiện đại',
+        keyword: 'sofa góc l',
+        position: 11,
+        status: 'Cần cải thiện',
+      },
     ],
     ['Quét SEO', 'Xuất báo cáo']
   );
@@ -1171,10 +1732,34 @@ const ACCESS_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Ngọc Anh', email: 'ngocanh@sofa12.vn', role: 'Quản trị hệ thống', last: '15/08/2026 09:12', status: 'Hoạt động' },
-        { name: 'Minh Quân', email: 'quan@sofa12.vn', role: 'Quản lý bán hàng', last: '14/08/2026 17:40', status: 'Hoạt động' },
-        { name: 'Thu Hà', email: 'ha@sofa12.vn', role: 'CSKH', last: '15/08/2026 08:02', status: 'Hoạt động' },
-        { name: 'Gia Bảo', email: 'bao@sofa12.vn', role: 'Biên tập nội dung', last: '02/07/2026 10:20', status: 'Bị khoá' },
+        {
+          name: 'Ngọc Anh',
+          email: 'ngocanh@sofa12.vn',
+          role: 'Quản trị hệ thống',
+          last: '15/08/2026 09:12',
+          status: 'Hoạt động',
+        },
+        {
+          name: 'Minh Quân',
+          email: 'quan@sofa12.vn',
+          role: 'Quản lý bán hàng',
+          last: '14/08/2026 17:40',
+          status: 'Hoạt động',
+        },
+        {
+          name: 'Thu Hà',
+          email: 'ha@sofa12.vn',
+          role: 'CSKH',
+          last: '15/08/2026 08:02',
+          status: 'Hoạt động',
+        },
+        {
+          name: 'Gia Bảo',
+          email: 'bao@sofa12.vn',
+          role: 'Biên tập nội dung',
+          last: '02/07/2026 10:20',
+          status: 'Bị khoá',
+        },
       ],
       ['Mời người dùng']
     ),
@@ -1222,9 +1807,24 @@ const ACCESS_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { module: 'Đơn hàng', action: 'Huỷ đơn', roles: 'Quản trị, Quản lý bán hàng', status: 'Cần phê duyệt' },
-        { module: 'Hoàn tiền', action: 'Duyệt hoàn tiền', roles: 'Quản trị, Kế toán', status: 'Nhạy cảm' },
-        { module: 'CMS', action: 'Xuất bản trang', roles: 'Quản trị, Biên tập', status: 'Bình thường' },
+        {
+          module: 'Đơn hàng',
+          action: 'Huỷ đơn',
+          roles: 'Quản trị, Quản lý bán hàng',
+          status: 'Cần phê duyệt',
+        },
+        {
+          module: 'Hoàn tiền',
+          action: 'Duyệt hoàn tiền',
+          roles: 'Quản trị, Kế toán',
+          status: 'Nhạy cảm',
+        },
+        {
+          module: 'CMS',
+          action: 'Xuất bản trang',
+          roles: 'Quản trị, Biên tập',
+          status: 'Bình thường',
+        },
         { module: 'Phân quyền', action: 'Gán vai trò', roles: 'Quản trị', status: 'Nhạy cảm' },
       ],
       ['Sửa ma trận quyền']
@@ -1248,10 +1848,34 @@ const ACCESS_GROUP: Sofa12AdminGroup = {
         STATUS_COL,
       ],
       [
-        { time: '15/08 09:12', user: 'Ngọc Anh', action: 'Xuất bản trang chủ', ip: '113.20.x.14', status: 'Thành công' },
-        { time: '15/08 08:41', user: 'Thu Hà', action: 'Duyệt hoàn tiền HT-2608-04', ip: '113.20.x.22', status: 'Thành công' },
-        { time: '15/08 07:58', user: 'unknown', action: 'Đăng nhập thất bại', ip: '45.61.x.203', status: 'Từ chối' },
-        { time: '14/08 22:10', user: 'Minh Quân', action: 'Sửa bảng giá đại lý', ip: '113.20.x.31', status: 'Thành công' },
+        {
+          time: '15/08 09:12',
+          user: 'Ngọc Anh',
+          action: 'Xuất bản trang chủ',
+          ip: '113.20.x.14',
+          status: 'Thành công',
+        },
+        {
+          time: '15/08 08:41',
+          user: 'Thu Hà',
+          action: 'Duyệt hoàn tiền HT-2608-04',
+          ip: '113.20.x.22',
+          status: 'Thành công',
+        },
+        {
+          time: '15/08 07:58',
+          user: 'unknown',
+          action: 'Đăng nhập thất bại',
+          ip: '45.61.x.203',
+          status: 'Từ chối',
+        },
+        {
+          time: '14/08 22:10',
+          user: 'Minh Quân',
+          action: 'Sửa bảng giá đại lý',
+          ip: '113.20.x.31',
+          status: 'Thành công',
+        },
       ],
       ['Xuất nhật ký']
     ),
@@ -1297,7 +1921,18 @@ export const SOFA12_ADMIN_ACTIVITIES = [
 // ----------------------------------------------------------------------
 
 export const SOFA12_ADMIN_CHART_MONTHS = [
-  'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
+  'T1',
+  'T2',
+  'T3',
+  'T4',
+  'T5',
+  'T6',
+  'T7',
+  'T8',
+  'T9',
+  'T10',
+  'T11',
+  'T12',
 ];
 
 export const SOFA12_ADMIN_REVENUE_SERIES = [

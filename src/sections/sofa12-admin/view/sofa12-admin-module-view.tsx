@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -33,7 +33,11 @@ import { Iconify } from 'src/components/iconify';
 
 import { type AdminRow, useSofa12AdminRows } from '../sofa12-admin-store';
 import { Sofa12AdminLayout, SOFA12_ADMIN_THEME } from './sofa12-admin-layout';
-import { SOFA12_ADMIN_ROOT, SOFA12_ADMIN_GROUPS, findSofa12AdminModule } from '../sofa12-admin-data';
+import {
+  SOFA12_ADMIN_ROOT,
+  SOFA12_ADMIN_GROUPS,
+  findSofa12AdminModule,
+} from '../sofa12-admin-data';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +45,9 @@ const { ACCENT, SURFACE } = SOFA12_ADMIN_THEME;
 
 const statusColor = (value: string) => {
   const v = value.toLowerCase();
-  if (/(xuất bản|hoàn tất|thành công|hoạt động|đã duyệt|còn hàng|đang chạy|đã giao|đã hoàn)/.test(v))
+  if (
+    /(xuất bản|hoàn tất|thành công|hoạt động|đã duyệt|còn hàng|đang chạy|đã giao|đã hoàn)/.test(v)
+  )
     return 'success';
   if (/(chờ|đang xử lý|nháp|xem xét|mới)/.test(v)) return 'warning';
   if (/(từ chối|hủy|huỷ|lỗi|hết hàng|tạm ẩn|quá hạn|bị khoá)/.test(v)) return 'error';
@@ -58,20 +64,12 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 
 export function Sofa12AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
-  const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa10')
-    ? '/sofa10/admin'
-    : pathname.startsWith('/sofa9')
-    ? '/sofa9/admin'
-    : pathname.startsWith('/sofa8')
-      ? '/sofa8/admin'
-    : pathname.startsWith('/sofa7')
-      ? '/sofa7/admin'
-      : pathname.startsWith('/sofa5')
-        ? '/sofa5/admin'
-        : SOFA12_ADMIN_ROOT;
+  const adminRoot = SOFA12_ADMIN_ROOT;
 
-  const found = useMemo(() => findSofa12AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
+  const found = useMemo(
+    () => findSofa12AdminModule(groupSlug, moduleSlug),
+    [groupSlug, moduleSlug]
+  );
 
   const group = found?.group;
   const module = found?.module;
@@ -165,8 +163,7 @@ export function Sofa12AdminModuleView() {
 
   const allOnPage = paged.length > 0 && paged.every(({ index }) => selected.includes(index));
 
-  const toggleSelectAll = () =>
-    setSelected(allOnPage ? [] : paged.map(({ index }) => index));
+  const toggleSelectAll = () => setSelected(allOnPage ? [] : paged.map(({ index }) => index));
 
   const exportCsv = () => {
     const header = module.columns.map((c) => c.label).join(',');
@@ -186,19 +183,7 @@ export function Sofa12AdminModuleView() {
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | ${group.name} - Quản trị ${
-          pathname.startsWith('/sofa10')
-            ? 'Sofa10'
-            : pathname.startsWith('/sofa9')
-            ? 'Sofa9'
-            : pathname.startsWith('/sofa8')
-              ? 'Sofa8'
-              : pathname.startsWith('/sofa7')
-                ? 'Sofa7'
-                : pathname.startsWith('/sofa5')
-                  ? 'Sofa5'
-                  : 'Sofa12'
-        }`}</title>
+        <title>{`${module.name} | ${group.name} - Quản trị Sofa Terra`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -376,7 +361,11 @@ export function Sofa12AdminModuleView() {
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={module.columns.length + 2} align="center" sx={{ py: 6 }}>
+                        <TableCell
+                          colSpan={module.columns.length + 2}
+                          align="center"
+                          sx={{ py: 6 }}
+                        >
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Không tìm thấy dữ liệu phù hợp.
                           </Typography>
@@ -410,7 +399,12 @@ export function Sofa12AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#7A3318' }}
+                  sx={{
+                    mr: 2,
+                    mb: { xs: 2, sm: 0 },
+                    bgcolor: alpha(ACCENT, 0.14),
+                    color: '#7A3318',
+                  }}
                 />
               </Stack>
             </Card>

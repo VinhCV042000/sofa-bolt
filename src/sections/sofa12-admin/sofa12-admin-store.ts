@@ -4,7 +4,6 @@ import { SOFA12_ADMIN_GROUPS } from './sofa12-admin-data';
 
 // ----------------------------------------------------------------------
 // Kho dữ liệu CRUD tại chỗ (in-memory) cho khu quản trị sofa12.
-// Dữ liệu khởi tạo từ SOFA12_ADMIN_GROUPS và giữ nguyên khi chuyển trang.
 // ----------------------------------------------------------------------
 
 export type AdminRow = Record<string, string | number>;

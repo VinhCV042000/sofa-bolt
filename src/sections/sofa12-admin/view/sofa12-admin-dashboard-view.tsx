@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,12 +15,12 @@ import { RouterLink } from 'src/routes/components';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa12AdminCharts } from './sofa12-admin-charts';
+import { Sofa12AdminLayout, SOFA12_ADMIN_THEME } from './sofa12-admin-layout';
 import {
   Sofa12AdminFunnel,
   Sofa12AdminQuickLinks,
   Sofa12AdminRevenueChart,
 } from './sofa12-admin-insights';
-import { Sofa12AdminLayout, SOFA12_ADMIN_THEME } from './sofa12-admin-layout';
 import {
   SOFA12_ADMIN_KPIS,
   SOFA12_ADMIN_ROOT,
@@ -34,29 +33,8 @@ import {
 const { ACCENT, SURFACE } = SOFA12_ADMIN_THEME;
 
 export function Sofa12AdminDashboardView() {
-  const { pathname } = useLocation();
-  const adminRoot = pathname.startsWith('/sofa10')
-    ? '/sofa10/admin'
-    : pathname.startsWith('/sofa9')
-    ? '/sofa9/admin'
-    : pathname.startsWith('/sofa8')
-      ? '/sofa8/admin'
-    : pathname.startsWith('/sofa7')
-      ? '/sofa7/admin'
-      : pathname.startsWith('/sofa5')
-        ? '/sofa5/admin'
-        : SOFA12_ADMIN_ROOT;
-  const brandName = pathname.startsWith('/sofa10')
-    ? 'Sofa10'
-    : pathname.startsWith('/sofa9')
-    ? 'Sofa9'
-    : pathname.startsWith('/sofa8')
-      ? 'Sofa8'
-      : pathname.startsWith('/sofa7')
-        ? 'Sofa7'
-        : pathname.startsWith('/sofa5')
-          ? 'Sofa5'
-          : 'Sofa12';
+  const adminRoot = SOFA12_ADMIN_ROOT;
+  const brandName = 'Sofa Terra';
 
   return (
     <>
@@ -193,7 +171,11 @@ export function Sofa12AdminDashboardView() {
                 <LinearProgress
                   value={68}
                   variant="determinate"
-                  sx={{ height: 8, borderRadius: 1, [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT } }}
+                  sx={{
+                    height: 8,
+                    borderRadius: 1,
+                    [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT },
+                  }}
                 />
               </Box>
             </Card>
