@@ -224,8 +224,9 @@ const Sofa6AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
 const Sofa7AdminDashboardPage = lazy(() => import('src/pages/sofa7-admin'));
 const Sofa7AdminModulePage = lazy(() => import('src/pages/sofa7-admin/module'));
 const Sofa7AdminToolsPage = lazy(() => import('src/pages/sofa7-admin/tools'));
-const Sofa8AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
-const Sofa8AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
+const Sofa8AdminDashboardPage = lazy(() => import('src/pages/sofa8-admin'));
+const Sofa8AdminModulePage = lazy(() => import('src/pages/sofa8-admin/module'));
+const Sofa8AdminToolsPage = lazy(() => import('src/pages/sofa8-admin/tools'));
 const Sofa9AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
 const Sofa9AdminModulePage = lazy(() => import('src/pages/sofa6-admin/module'));
 const Sofa10AdminDashboardPage = lazy(() => import('src/pages/sofa6-admin'));
@@ -2879,6 +2880,14 @@ export function Router() {
       element: (
         <Suspense fallback={<SplashScreen />}>
           <Sofa8AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa8/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa8AdminToolsPage />
         </Suspense>
       ),
     },
