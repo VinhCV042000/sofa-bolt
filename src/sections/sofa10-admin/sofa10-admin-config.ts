@@ -537,3 +537,53 @@ export const findSofa10AdminSection = (groupSlug?: string, sectionSlug?: string)
   if (!group) return undefined;
   return group.sections.find((x) => x.slug === sectionSlug);
 };
+
+// ----------------------------------------------------------------------
+// Dữ liệu biểu đồ (demo)
+// ----------------------------------------------------------------------
+
+export const SOFA10_ADMIN_CHART_MONTHS = [
+  'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
+];
+
+export const SOFA10_ADMIN_REVENUE_SERIES = [
+  { name: 'Doanh thu (tỷ)', data: [3.0, 3.4, 3.8, 4.2, 4.6, 5.0, 5.6, 6.2, 4.8, 5.4, 6.0, 6.8] },
+  { name: 'Mục tiêu (tỷ)', data: [3.2, 3.6, 4.0, 4.4, 4.8, 5.2, 5.8, 6.4, 5.2, 5.8, 6.4, 7.0] },
+];
+
+export const SOFA10_ADMIN_ORDER_SERIES = [
+  { name: 'Đơn hàng', data: [210, 238, 262, 288, 312, 338, 372, 410, 328, 360, 396, 440] },
+];
+
+export const SOFA10_ADMIN_CHANNEL_CHART = {
+  labels: ['Website', 'Showroom', 'Đại lý B2B', 'Hotline', 'Mạng xã hội'],
+  series: [42, 28, 18, 8, 4],
+};
+
+export const SOFA10_ADMIN_TOP_PRODUCTS = {
+  labels: ['Sofa Tsuchi Low', 'Sofa Tatami Modern', 'Sofa Sumi Zaisu', 'Sofa Kami Minimal', 'Sofa Ki Woody'],
+  series: [56, 48, 42, 38, 24],
+};
+
+export const SOFA10_ADMIN_FUNNEL = [
+  { label: 'Truy cập website', value: 148200, icon: 'solar:global-bold-duotone', desc: 'Tổng phiên trong 30 ngày' },
+  { label: 'Xem sản phẩm', value: 76400, icon: 'solar:eye-bold-duotone', desc: 'Trang chi tiết sản phẩm' },
+  { label: 'Thêm vào giỏ', value: 11280, icon: 'solar:cart-large-2-bold-duotone', desc: 'Hành động thêm giỏ hàng' },
+  { label: 'Thanh toán', value: 6820, icon: 'solar:card-transfer-bold-duotone', desc: 'Bắt đầu thanh toán' },
+  { label: 'Đặt hàng', value: 4210, icon: 'solar:bag-check-bold-duotone', desc: 'Hoàn tất đơn hàng' },
+];
+
+export const SOFA10_ADMIN_KPIS = [
+  { label: 'Doanh thu tháng', value: '4,8 tỷ', note: '+16,4% so với tháng trước', color: 'primary' as const },
+  { label: 'Đơn hàng', value: '328', note: '22 đang chờ xử lý', color: 'info' as const },
+  { label: 'Khách hàng mới', value: '328', note: '+14% tháng này', color: 'success' as const },
+  { label: 'Tỷ lệ chuyển đổi', value: '2,7%', note: '+0,3% so với tháng trước', color: 'warning' as const },
+];
+
+export const SOFA10_ADMIN_ACTIVITIES = [
+  { time: '09:42', text: 'Nguyễn Ngọc Anh cập nhật giá Sofa Sumi Zaisu', tag: 'Sản phẩm' },
+  { time: '09:18', text: 'Phạm Đức Long duyệt phiếu nhập PN-2609-04', tag: 'Kho hàng' },
+  { time: '08:56', text: 'Lê Thu Trang xuất bản bài viết "Wabi-sabi 2026"', tag: 'CMS' },
+  { time: '08:30', text: 'Vũ Mai Chi tạo coupon SOFA10 giảm 10%', tag: 'Marketing' },
+  { time: '08:02', text: 'Đăng nhập thất bại từ IP 45.128.x.x', tag: 'Phân quyền' },
+];

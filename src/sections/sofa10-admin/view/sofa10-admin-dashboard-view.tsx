@@ -1,181 +1,156 @@
+import { Helmet } from 'react-helmet-async';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import ButtonBase from '@mui/material/ButtonBase';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
+import { Sofa10AdminCharts } from './sofa10-admin-charts';
+import { Sofa10AdminFunnel, Sofa10AdminRevenueChart } from './sofa10-admin-insights';
 import {
   Sofa10AdminLayout,
   Sofa10AdminHeading,
   Sofa10AdminKpis,
 } from '../sofa10-admin-layout';
-import { SOFA10_ADMIN_GROUPS } from '../sofa10-admin-config';
+import {
+  SOFA10_ADMIN_GROUPS,
+  SOFA10_ADMIN_KPIS,
+  SOFA10_ADMIN_ACTIVITIES,
+} from '../sofa10-admin-config';
 
-// ----------------------------------------------------------------------
+const ACCENT = '#7C8A6B';
 
 export function Sofa10AdminDashboardView() {
   return (
-    <Sofa10AdminLayout>
-      <Sofa10AdminHeading
-        title="Tổng quan Sofa10"
-        description="Bảng điều khiển quản trị — Wabi-Sabi Japanese Sofa"
-        breadcrumb={[{ name: 'Admin' }, { name: 'Tổng quan' }]}
-      />
+    <>
+      <Helmet>
+        <title>Trung tâm quản trị | Sofa10</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
 
-      <Sofa10AdminKpis
-        items={[
-          { label: 'Doanh thu tháng', value: '4,8 tỷ', note: '+16,4% so với tháng trước' },
-          { label: 'Đơn hàng', value: '328', note: '22 đang chờ xử lý' },
-          { label: 'Sản phẩm', value: '142', note: '128 đang bán' },
-          { label: 'Khách hàng', value: '3.486', note: '142 VIP' },
-        ]}
-      />
+      <Sofa10AdminLayout>
+        <Sofa10AdminHeading
+          title="Tổng quan hệ thống"
+          description="Bảng điều khiển quản trị Sofa10 — Wabi-Sabi Japanese Sofa"
+          breadcrumb={[{ name: 'Admin' }, { name: 'Tổng quan' }]}
+        />
 
-      <Box
-        sx={{
-          mb: 3,
-          gap: 2,
-          display: 'grid',
-          gridTemplateColumns: { xs: 'repeat(1fr)', md: 'repeat(3, 1fr)' },
-        }}
-      >
-        <Card sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Box
-              sx={{
-                width: 48,
-                height: 48,
-                display: 'flex',
-                borderRadius: 1.5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                bgcolor: 'primary.lighter',
-              }}
-            >
-              <Iconify icon="solar:cart-large-2-bold-duotone" width={28} sx={{ color: 'primary.main' }} />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                Đơn đang giao
+        <Sofa10AdminKpis items={SOFA10_ADMIN_KPIS.map((k) => ({ label: k.label, value: k.value, note: k.note }))} />
+
+        <Grid container spacing={3} sx={{ mt: 0 }}>
+          <Grid xs={12} md={8}>
+            <Sofa10AdminRevenueChart />
+          </Grid>
+          <Grid xs={12} md={4}>
+            <Sofa10AdminFunnel />
+          </Grid>
+          <Grid xs={12}>
+            <Sofa10AdminCharts />
+          </Grid>
+
+          <Grid xs={12} md={8}>
+            <Card sx={{ p: 3 }}>
+              <Typography variant="h6" sx={{ mb: 2.5 }}>
+                Nhóm chức năng quản trị
               </Typography>
-              <Typography variant="h5">28</Typography>
-            </Box>
-          </Stack>
-        </Card>
-        <Card sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Box
-              sx={{
-                width: 48,
-                height: 48,
-                display: 'flex',
-                borderRadius: 1.5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                bgcolor: 'success.lighter',
-              }}
-            >
-              <Iconify icon="solar:box-bold-duotone" width={28} sx={{ color: 'success.main' }} />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                Sắp hết hàng
-              </Typography>
-              <Typography variant="h5">18 SKU</Typography>
-            </Box>
-          </Stack>
-        </Card>
-        <Card sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Box
-              sx={{
-                width: 48,
-                height: 48,
-                display: 'flex',
-                borderRadius: 1.5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                bgcolor: 'warning.lighter',
-              }}
-            >
-              <Iconify icon="solar:users-group-rounded-bold-duotone" width={28} sx={{ color: 'warning.main' }} />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                Leads đang chăm sóc
-              </Typography>
-              <Typography variant="h5">186</Typography>
-            </Box>
-          </Stack>
-        </Card>
-      </Box>
+              <Grid container spacing={2}>
+                {SOFA10_ADMIN_GROUPS.map((group) => (
+                  <Grid key={group.slug} xs={12} sm={6}>
+                    <ButtonBase
+                      component={RouterLink}
+                      href={`/sofa10/admin/${group.slug}/${group.sections[0].slug}`}
+                      sx={{
+                        width: 1,
+                        p: 2,
+                        gap: 2,
+                        borderRadius: 2,
+                        textAlign: 'left',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        transition: 'all .2s',
+                        '&:hover': { borderColor: ACCENT, bgcolor: (theme) => `${theme.palette.primary.lighter}` },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 42,
+                          height: 42,
+                          flexShrink: 0,
+                          borderRadius: 1.5,
+                          display: 'grid',
+                          placeItems: 'center',
+                          bgcolor: 'primary.lighter',
+                          color: 'primary.main',
+                        }}
+                      >
+                        <Iconify icon={group.icon} width={24} />
+                      </Box>
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography variant="subtitle1">{group.name}</Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                          {group.sections.map((m) => m.name).join(' · ')}
+                        </Typography>
+                      </Box>
+                    </ButtonBase>
+                  </Grid>
+                ))}
+              </Grid>
+            </Card>
+          </Grid>
 
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Truy cập nhanh
-      </Typography>
+          <Grid xs={12} md={4}>
+            <Card sx={{ p: 3, height: 1 }}>
+              <Typography variant="h6" sx={{ mb: 2.5 }}>
+                Hoạt động gần đây
+              </Typography>
+              <Stack spacing={2.5}>
+                {SOFA10_ADMIN_ACTIVITIES.map((item) => (
+                  <Stack key={item.text} direction="row" spacing={1.5}>
+                    <Box
+                      sx={{
+                        mt: 0.75,
+                        width: 8,
+                        height: 8,
+                        flexShrink: 0,
+                        borderRadius: '50%',
+                        bgcolor: ACCENT,
+                      }}
+                    />
+                    <Box>
+                      <Typography variant="body2">{item.text}</Typography>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                        {item.time} · {item.tag}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                ))}
+              </Stack>
 
-      <Box
-        sx={{
-          gap: 2,
-          display: 'grid',
-          gridTemplateColumns: { xs: 'repeat(1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-        }}
-      >
-        {SOFA10_ADMIN_GROUPS.map((group) => (
-          <Card key={group.slug} sx={{ p: 3, '&:hover': { boxShadow: (theme) => theme.customShadows.z12 } }}>
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-              <Box
-                sx={{
-                  width: 44,
-                  height: 44,
-                  display: 'flex',
-                  borderRadius: 1.5,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bgcolor: 'primary.lighter',
-                }}
-              >
-                <Iconify icon={group.icon} width={26} sx={{ color: 'primary.main' }} />
+              <Box sx={{ mt: 4 }}>
+                <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
+                  <Typography variant="body2">Mục tiêu doanh thu tháng</Typography>
+                  <Typography variant="subtitle2">72%</Typography>
+                </Stack>
+                <LinearProgress
+                  value={72}
+                  variant="determinate"
+                  sx={{ height: 8, borderRadius: 1, [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT } }}
+                />
               </Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 'fontWeightBold' }}>
-                {group.name}
-              </Typography>
-            </Stack>
-            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2, lineHeight: 1.6 }}>
-              {group.desc}
-            </Typography>
-            <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
-              {group.sections.slice(0, 4).map((section) => (
-                <Button
-                  key={section.slug}
-                  component={RouterLink}
-                  href={`/sofa10/admin/${group.slug}/${section.slug}`}
-                  size="small"
-                  variant="soft"
-                  sx={{ borderRadius: 1, fontSize: 12, mb: 0.5 }}
-                >
-                  {section.name}
-                </Button>
-              ))}
-              {group.sections.length > 4 && (
-                <Button
-                  component={RouterLink}
-                  href={`/sofa10/admin/${group.slug}`}
-                  size="small"
-                  variant="text"
-                  sx={{ borderRadius: 1, fontSize: 12, mb: 0.5 }}
-                >
-                  +{group.sections.length - 4}
-                </Button>
-              )}
-            </Stack>
-          </Card>
-        ))}
-      </Box>
-    </Sofa10AdminLayout>
+            </Card>
+          </Grid>
+        </Grid>
+      </Sofa10AdminLayout>
+    </>
   );
 }

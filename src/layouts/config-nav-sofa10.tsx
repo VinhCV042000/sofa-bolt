@@ -50,5 +50,17 @@ export const sofa10NavData = [
     title: 'Quản trị',
     path: '/sofa10/admin',
     icon: <Iconify width={22} icon="solar:widget-5-bold-duotone" />,
+    children: [
+      { title: 'Tổng quan', path: '/sofa10/admin' },
+      { title: 'CMS', path: '/sofa10/admin/cms/home' },
+      { title: 'Sản phẩm', path: '/sofa10/admin/products/products' },
+      { title: 'Kho hàng', path: '/sofa10/admin/warehouse/overview' },
+      { title: 'Đơn hàng', path: '/sofa10/admin/orders/orders' },
+      { title: 'CRM', path: '/sofa10/admin/crm/customers' },
+      { title: 'Marketing', path: '/sofa10/admin/marketing/email' },
+      { title: 'Analytics', path: '/sofa10/admin/analytics/revenue' },
+      { title: 'SEO', path: '/sofa10/admin/seo/category' },
+      { title: 'Phân quyền', path: '/sofa10/admin/permissions/users' },
+    ],
   },
 ];
