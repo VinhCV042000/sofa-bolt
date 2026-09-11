@@ -1293,3 +1293,30 @@ export const SOFA8_ADMIN_ACTIVITIES = [
   { time: '07:18', text: 'Chiến dịch "Mùa biển" đạt 40% tỷ lệ mở', tag: 'Marketing' },
   { time: '06:42', text: 'SKU SF8-SV-05-DEEP hết hàng tại Kho Coastal HCM', tag: 'Kho hàng' },
 ];
+
+// ----------------------------------------------------------------------
+// Dữ liệu biểu đồ (demo)
+// ----------------------------------------------------------------------
+
+export const SOFA8_ADMIN_CHART_MONTHS = [
+  'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
+];
+
+export const SOFA8_ADMIN_REVENUE_SERIES = [
+  { name: 'Doanh thu (tỷ)', data: [2.6, 3.0, 3.4, 3.8, 4.2, 4.6, 5.2, 5.8, 5.4, 6.0, 6.5, 7.1] },
+  { name: 'Mục tiêu (tỷ)', data: [2.8, 3.2, 3.6, 4.0, 4.4, 4.8, 5.3, 5.7, 6.0, 6.3, 6.7, 7.0] },
+];
+
+export const SOFA8_ADMIN_ORDER_SERIES = [
+  { name: 'Đơn hàng', data: [168, 190, 205, 218, 240, 262, 318, 372, 350, 384, 420, 462] },
+];
+
+export const SOFA8_ADMIN_CHANNEL_CHART = {
+  labels: ['Website', 'Showroom', 'Đại lý B2B', 'Sàn TMĐT', 'Mạng xã hội'],
+  series: [35, 29, 17, 12, 7],
+};
+
+export const SOFA8_ADMIN_TOP_PRODUCTS = {
+  labels: ['Sofa Coastal 3S', 'Sofa Marina L', 'Armchair Sand', 'Sofa Bed Wave', 'Daybed Lagoon'],
+  series: [172, 148, 121, 94, 70],
+};
