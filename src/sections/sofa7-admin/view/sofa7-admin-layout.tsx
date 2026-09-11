@@ -26,10 +26,10 @@ import { SOFA7_ADMIN_TOOLS } from '../sofa7-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#3D2817';
-const SURFACE = '#5D4037';
-const ACCENT = '#E07A4F';
-const TEXT = '#F5EFE6';
+const BG = '#1A1A1A';
+const SURFACE = '#2A2A2A';
+const ACCENT = '#FFD600';
+const TEXT = '#FFFFFF';
 
 type Props = {
   children: React.ReactNode;
@@ -49,10 +49,9 @@ export function Sofa7AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA7_ADMIN_ROOT;
-  const brandName = 'Sofa7 Atelier';
-  const isSofa5 = typeof window !== 'undefined' && window.location.pathname.startsWith('/sofa5');
-  const displayName = isSofa5 ? 'Sofa5 Royale' : brandName;
-  const siteLink = isSofa5 ? '/sofa5' : '/sofa7';
+  const brandName = 'Sofa7 Studio';
+  const displayName = brandName;
+  const siteLink = '/sofa7';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
@@ -298,7 +297,7 @@ export function Sofa7AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#A6634A', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#1A1A1A', fontWeight: 600 }}
               />
             </Stack>
           </Container>
