@@ -26,9 +26,9 @@ import { SOFA8_ADMIN_TOOLS } from '../sofa8-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#1A1A1A';
-const SURFACE = '#2A2A2A';
-const ACCENT = '#FFD600';
+const BG = '#0B2E3F';
+const SURFACE = '#123B4F';
+const ACCENT = '#E5B876';
 const TEXT = '#FFFFFF';
 
 type Props = {
@@ -49,7 +49,7 @@ export function Sofa8AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA8_ADMIN_ROOT;
-  const brandName = 'Sofa8 Studio';
+  const brandName = 'Sofa8 Coastal';
   const displayName = brandName;
   const siteLink = '/sofa8';
   const isDesktop = useMediaQuery('(min-width:1200px)');
@@ -275,7 +275,7 @@ export function Sofa8AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#8A7300', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#0B5B78', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -297,7 +297,7 @@ export function Sofa8AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Dữ liệu demo"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#1A1A1A', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#0B2E3F', fontWeight: 600 }}
               />
             </Stack>
           </Container>
