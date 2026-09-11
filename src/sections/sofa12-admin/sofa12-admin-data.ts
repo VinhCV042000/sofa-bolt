@@ -1218,30 +1218,9 @@ export const SOFA12_ADMIN_ACTIVITIES = [
 ];
 
 // ----------------------------------------------------------------------
-// Chart data
-
-export const SOFA12_ADMIN_CHART_MONTHS = ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
-export const SOFA12_ADMIN_REVENUE_SERIES = [2200,2650,2900,3100,3200,3400,3640,4080,4820,0,0,0];
-export const SOFA12_ADMIN_REVENUE_TARGET = [3000,3000,3200,3200,3500,3500,3800,4200,4500,4800,5000,5200];
-export const SOFA12_ADMIN_ORDER_SERIES   = [142,168,185,198,189,201,215,241,284,0,0,0];
-export const SOFA12_ADMIN_CHANNEL_CHART  = [
-  { label: 'Google Organic', value: 37 },
-  { label: 'Facebook Ads',   value: 24 },
-  { label: 'Instagram',      value: 18 },
-  { label: 'Direct',         value: 12 },
-  { label: 'TikTok',         value: 9  },
-];
-export const SOFA12_ADMIN_TOP_PRODUCTS = [
-  { label: 'Cát Cong',      value: 312 },
-  { label: 'Brick Leather',   value: 268 },
-  { label: 'Ochre Ấm',     value: 224 },
-  { label: 'Olive Grove',   value: 198 },
-  { label: 'Green Velvet',    value: 156 },
-];
-
-// ----------------------------------------------------------------------
 // Dữ liệu biểu đồ (demo)
 // ----------------------------------------------------------------------
+
 
 export const SOFA12_ADMIN_CHART_MONTHS = [
   'T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12',
