@@ -275,7 +275,7 @@ export function Sofa7AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#A6634A', 0.16)}`,
+            borderBottom: `1px solid ${alpha('#8A7300', 0.16)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
