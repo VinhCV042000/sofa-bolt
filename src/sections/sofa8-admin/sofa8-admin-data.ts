@@ -83,6 +83,7 @@ const CMS_GROUP: Sofa8AdminGroup = {
     cmsPage('about', 'Trang giới thiệu', '/sofa8/about'),
     cmsPage('contact', 'Trang liên hệ', '/sofa8/contact'),
     cmsPage('policy', 'Trang chính sách', '/sofa8/policy'),
+    cmsPage('terms', 'Trang điều khoản', '/sofa8/terms'),
     cmsPage('faq', 'Trang FAQ', '/sofa8/faq'),
     mod(
       'blog',
