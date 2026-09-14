@@ -38,8 +38,8 @@ import { SOFA16_ADMIN_ROOT } from '../sofa16-admin-data';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#E07A4F';
-const SURFACE = '#3D2817';
+const ACCENT = '#C66B3D';
+const SURFACE = '#2E5A7B';
 
 type SettingsValues = Record<string, string>;
 type ToggleValues = Record<string, boolean>;

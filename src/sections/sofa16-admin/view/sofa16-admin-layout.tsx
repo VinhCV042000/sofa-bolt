@@ -26,10 +26,10 @@ import { SOFA16_ADMIN_TOOLS } from '../sofa16-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#3D2817';
-const SURFACE = '#5D4037';
-const ACCENT = '#E07A4F';
-const TEXT = '#F5EFE6';
+const BG = '#2E5A7B';
+const SURFACE = '#4A7B9D';
+const ACCENT = '#C66B3D';
+const TEXT = '#FBF5E9';
 
 type Props = {
   children: React.ReactNode;
@@ -49,10 +49,8 @@ export function Sofa16AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA16_ADMIN_ROOT;
-  const brandName = 'Sofa16 Atelier';
-  const isSofa5 = typeof window !== 'undefined' && window.location.pathname.startsWith('/sofa5');
-  const displayName = isSofa5 ? 'Sofa5 Royale' : brandName;
-  const siteLink = isSofa5 ? '/sofa5' : '/sofa16';
+  const displayName = 'Casa Sorrento';
+  const siteLink = '/sofa16';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
