@@ -818,6 +818,9 @@ const Sofa16Page = lazy(() => import('src/pages/sofa16'));
 const Sofa16AdminDashboardPage = lazy(() => import('src/pages/sofa16-admin'));
 const Sofa16AdminModulePage = lazy(() => import('src/pages/sofa16-admin/module'));
 const Sofa16AdminToolsPage = lazy(() => import('src/pages/sofa16-admin/tools'));
+const Sofa17AdminDashboardPage = lazy(() => import('src/pages/sofa17-admin'));
+const Sofa17AdminModulePage = lazy(() => import('src/pages/sofa17-admin/module'));
+const Sofa17AdminToolsPage = lazy(() => import('src/pages/sofa17-admin/tools'));
 const Sofa17Page = lazy(() => import('src/pages/sofa17'));
 const Sofa18Page = lazy(() => import('src/pages/sofa18'));
 const Sofa19Page = lazy(() => import('src/pages/sofa19'));
@@ -2850,6 +2853,40 @@ export function Router() {
       element: (
         <Suspense fallback={<SplashScreen />}>
           <Sofa16AdminModulePage />
+        </Suspense>
+      ),
+    },
+
+    // SOFA17 ADMIN — Dar Zellige
+    {
+      path: '/sofa17/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminModulePage />
         </Suspense>
       ),
     },
