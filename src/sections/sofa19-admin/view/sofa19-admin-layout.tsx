@@ -26,11 +26,11 @@ import { SOFA19_ADMIN_TOOLS } from '../sofa19-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#262220';
-const SURFACE = '#3A3530';
-const ACCENT = '#B8A088';
-const ACCENT_DEEP = '#9A8470';
-const TEXT = '#F5F0E8';
+const BG = '#14261E';
+const SURFACE = '#1E3329';
+const ACCENT = '#E5A94B';
+const ACCENT_DEEP = '#C9813A';
+const TEXT = '#F2F0E4';
 
 type Props = {
   children: React.ReactNode;
@@ -50,7 +50,7 @@ export function Sofa19AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA19_ADMIN_ROOT;
-  const brandName = 'Sofa19 Wabi-Sabi';
+  const brandName = 'Sofa19 Tropical';
   const siteLink = '/sofa19';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
