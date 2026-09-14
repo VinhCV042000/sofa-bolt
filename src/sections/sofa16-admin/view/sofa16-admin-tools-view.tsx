@@ -349,7 +349,7 @@ export function Sofa16AdminToolsView() {
   return (
     <>
       <Helmet>
-        <title>{`${tool.name} | Quản trị Sofa16`}</title>
+        <title>{`${tool.name} | Quản trị Casa Sorrento`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <Sofa16AdminLayout
