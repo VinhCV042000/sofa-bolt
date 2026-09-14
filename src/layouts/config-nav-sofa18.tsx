@@ -42,4 +42,28 @@ export const sofa18NavData = [
     icon: <Iconify width={22} icon="solar:star-bold-duotone" />,
   },
   ...sofa18PagesNavData.filter((item) => !['/sofa18', '/sofa18/about', '/sofa18/products'].includes(item.path)),
+  {
+    title: 'Quản trị',
+    path: '/sofa18/admin',
+    icon: <Iconify width={22} icon="solar:shield-user-bold-duotone" />,
+    children: [
+      {
+        subheader: 'Trung tâm quản trị',
+        items: [
+          { title: 'Tổng quan', path: '/sofa18/admin' },
+          { title: 'CMS', path: '/sofa18/admin/cms' },
+          { title: 'Sản phẩm', path: '/sofa18/admin/catalog' },
+          { title: 'Kho hàng', path: '/sofa18/admin/warehouse' },
+          { title: 'Đơn hàng', path: '/sofa18/admin/orders' },
+          { title: 'CRM', path: '/sofa18/admin/crm' },
+          { title: 'Marketing', path: '/sofa18/admin/marketing' },
+          { title: 'Analytics', path: '/sofa18/admin/analytics' },
+          { title: 'SEO', path: '/sofa18/admin/seo' },
+          { title: 'Phân quyền', path: '/sofa18/admin/access' },
+          { title: 'Báo cáo tổng hợp', path: '/sofa18/admin/tools/reports' },
+          { title: 'Cài đặt hệ thống', path: '/sofa18/admin/tools/settings' },
+        ],
+      },
+    ],
+  },
 ];
