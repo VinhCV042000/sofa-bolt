@@ -349,7 +349,7 @@ export function Sofa17AdminToolsView() {
   return (
     <>
       <Helmet>
-        <title>{`${tool.name} | Quản trị Casa Sorrento`}</title>
+        <title>{`${tool.name} | Quản trị Dar Zellige`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <Sofa17AdminLayout

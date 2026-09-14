@@ -49,7 +49,7 @@ export function Sofa17AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA17_ADMIN_ROOT;
-  const displayName = 'Casa Sorrento';
+  const displayName = 'Dar Zellige';
   const siteLink = '/sofa17';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);

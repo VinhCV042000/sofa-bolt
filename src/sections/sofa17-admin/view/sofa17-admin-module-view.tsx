@@ -197,7 +197,7 @@ export function Sofa17AdminModuleView() {
                 ? 'Sofa7'
                 : pathname.startsWith('/sofa5')
                   ? 'Sofa5'
-                  : 'Casa Sorrento'
+                  : 'Dar Zellige'
         }`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
