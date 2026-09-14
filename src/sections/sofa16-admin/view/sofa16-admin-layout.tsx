@@ -83,7 +83,7 @@ export function Sofa16AdminLayout({
         </Box>
         <Box>
           <Typography variant="subtitle1" sx={{ lineHeight: 1.2 }}>
-             {brandName}
+             {displayName}
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }}>
             Trung tâm quản trị
