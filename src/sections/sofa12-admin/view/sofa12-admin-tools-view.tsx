@@ -39,7 +39,7 @@ import { SOFA12_ADMIN_ROOT } from '../sofa12-admin-data';
 // ----------------------------------------------------------------------
 
 const ACCENT = '#B4552D';
-const SURFACE = '#2B1B12';
+const SURFACE = '#54382A';
 
 type SettingsValues = Record<string, string>;
 type ToggleValues = Record<string, boolean>;
