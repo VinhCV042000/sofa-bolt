@@ -2853,6 +2853,40 @@ export function Router() {
         </Suspense>
       ),
     },
+
+    // SOFA17 ADMIN — Dar Zellige
+    {
+      path: '/sofa17/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa17/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa17AdminModulePage />
+        </Suspense>
+      ),
+    },
     // SOFA6 ADMIN
     {
       path: '/sofa6/admin',
