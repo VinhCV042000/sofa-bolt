@@ -46,4 +46,9 @@ export const sofa13NavData = [
     path: paths.contact,
     icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
   },
+  {
+    title: 'Admin',
+    path: '/sofa13/admin',
+    icon: <Iconify width={22} icon="solar:shield-check-bold-duotone" />,
+  },
 ];
