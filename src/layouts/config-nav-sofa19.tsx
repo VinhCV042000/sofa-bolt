@@ -48,7 +48,11 @@ export const sofa19NavData = [
     path: paths.contact,
     icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
   },
-  ...sofa19PagesNavData.filter((item) => !['/sofa19', '/sofa19/about', '/sofa19/products'].includes(item.path)),
+  ...sofa19PagesNavData.filter(
+    (item) =>
+      !['/sofa19', '/sofa19/about', '/sofa19/products'].includes(item.path) &&
+      item.title !== 'Liên hệ'
+  ),
   {
     title: 'Quản trị',
     path: '/sofa19/admin',
