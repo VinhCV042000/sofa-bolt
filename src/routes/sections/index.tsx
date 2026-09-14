@@ -3025,6 +3025,39 @@ export function Router() {
         </Suspense>
       ),
     },
+    // SOFA18 ADMIN
+    {
+      path: '/sofa18/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa18AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa18AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa18AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa18/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa18AdminModulePage />
+        </Suspense>
+      ),
+    },
     // SOFA9 ADMIN — dùng chung hệ quản trị nghiệp vụ chuẩn hóa
     {
       path: '/sofa9/admin',
