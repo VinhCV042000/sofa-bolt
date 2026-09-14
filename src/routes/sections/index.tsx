@@ -815,6 +815,9 @@ const Sofa13Page = lazy(() => import('src/pages/sofa13'));
 const Sofa14Page = lazy(() => import('src/pages/sofa14'));
 const Sofa15Page = lazy(() => import('src/pages/sofa15'));
 const Sofa16Page = lazy(() => import('src/pages/sofa16'));
+const Sofa16AdminDashboardPage = lazy(() => import('src/pages/sofa16-admin'));
+const Sofa16AdminModulePage = lazy(() => import('src/pages/sofa16-admin/module'));
+const Sofa16AdminToolsPage = lazy(() => import('src/pages/sofa16-admin/tools'));
 const Sofa17Page = lazy(() => import('src/pages/sofa17'));
 const Sofa18Page = lazy(() => import('src/pages/sofa18'));
 const Sofa19Page = lazy(() => import('src/pages/sofa19'));
@@ -2817,6 +2820,39 @@ export function Router() {
       ),
     },
 
+    // SOFA16 ADMIN — Casa Sorrento
+    {
+      path: '/sofa16/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa16AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa16AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa16AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa16/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa16AdminModulePage />
+        </Suspense>
+      ),
+    },
     // SOFA6 ADMIN
     {
       path: '/sofa6/admin',
