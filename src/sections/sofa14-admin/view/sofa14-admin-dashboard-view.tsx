@@ -34,7 +34,7 @@ const { ACCENT, SURFACE } = SOFA14_ADMIN_THEME;
 
 export function Sofa14AdminDashboardView() {
   const adminRoot = SOFA14_ADMIN_ROOT;
-  const brandName = 'Sofa Noir';
+  const brandName = 'Clay Pop';
 
   return (
     <>
@@ -103,7 +103,7 @@ export function Sofa14AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#C9A84C', 0.2)}`,
+                        border: `1px solid ${alpha('#7FE3C4', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -117,7 +117,7 @@ export function Sofa14AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#8C6E24',
+                          color: '#2B2440',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />

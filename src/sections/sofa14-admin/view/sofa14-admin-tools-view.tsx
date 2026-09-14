@@ -37,8 +37,8 @@ import { SOFA14_ADMIN_ROOT } from '../sofa14-admin-data';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#C9A84C';
-const SURFACE = '#222228';
+const ACCENT = '#7FE3C4';
+const SURFACE = '#3B3357';
 
 type SettingsValues = Record<string, string>;
 type ToggleValues = Record<string, boolean>;
@@ -348,7 +348,7 @@ export function Sofa14AdminToolsView() {
   return (
     <>
       <Helmet>
-        <title>{`${tool.name} | Sofa Noir Admin`}</title>
+        <title>{`${tool.name} | Clay Pop Admin`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <Sofa14AdminLayout

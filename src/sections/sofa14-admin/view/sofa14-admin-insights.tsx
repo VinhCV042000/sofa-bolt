@@ -22,9 +22,9 @@ import { SOFA14_ADMIN_TOOLS, SOFA14_ADMIN_FUNNEL } from '../sofa14-admin-tools';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#C9A84C';
-const EMERALD = '#0E5C46';
-const SURFACE = '#222228';
+const ACCENT = '#7FE3C4';
+const EMERALD = '#FF9C8A';
+const SURFACE = '#3B3357';
 
 const currency = (value: number) => `${value.toFixed(1)} tỷ ₫`;
 
@@ -162,7 +162,7 @@ export function Sofa14AdminFunnel() {
                     display: 'flex',
                     alignItems: 'center',
                     px: 1.5,
-                    color: '#0B0B0D',
+                    color: '#2B2440',
                     fontSize: 12,
                     fontWeight: 700,
                     background: `linear-gradient(90deg, ${ACCENT}, ${EMERALD})`,

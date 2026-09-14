@@ -64,7 +64,7 @@ const cmsPage = (slug: string, name: string, path: string) =>
       { key: 'author', label: 'Author' },
     ],
     [
-      { block: 'Hero — Noir Gold', type: 'Banner', status: 'Published', updated: '12/09/2026', author: 'Eleanor' },
+      { block: 'Hero — Cloud Mint', type: 'Banner', status: 'Published', updated: '12/09/2026', author: 'Eleanor' },
       { block: 'Heritage story', type: 'Rich text', status: 'Published', updated: '10/09/2026', author: 'Marcus' },
       { block: 'Featured collections', type: 'Product list', status: 'Draft', updated: '09/09/2026', author: 'Sofia' },
       { block: 'Client testimonials', type: 'Slider', status: 'Published', updated: '02/09/2026', author: 'Eleanor' },
@@ -153,9 +153,9 @@ const CMS_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Noir Gold Collection Launch', position: 'Top bar', schedule: '01/09 – 30/09', status: 'Active' },
+        { name: 'Cloud Mint Collection Launch', position: 'Top bar', schedule: '01/09 – 30/09', status: 'Active' },
         { name: 'Complimentary delivery', position: 'Homepage', schedule: 'Always', status: 'Active' },
-        { name: 'Emerald Luxe new arrivals', position: 'Category', schedule: '05/09 – 20/09', status: 'Active' },
+        { name: 'Sky Puff new arrivals', position: 'Category', schedule: '05/09 – 20/09', status: 'Active' },
         { name: '0% Installment', position: 'Product page', schedule: '01/08 – 31/08', status: 'Expired' },
       ],
       ['Create banner']
@@ -179,7 +179,7 @@ const CMS_GROUP: Sofa14AdminGroup = {
       ],
       [
         { name: 'Hero noir gold', slides: 5, page: 'Homepage', status: 'Published' },
-        { name: 'Emerald Luxe collection', slides: 6, page: 'Collections', status: 'Published' },
+        { name: 'Sky Puff collection', slides: 6, page: 'Collections', status: 'Published' },
         { name: 'Showroom 360°', slides: 3, page: 'Showroom', status: 'Draft' },
       ],
       ['Create slider']
@@ -202,10 +202,10 @@ const CMS_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { page: '/sofa14', title: 'SOFA NOIR — Art Deco Sofa Atelier', length: 52, status: 'Good' },
-        { page: '/sofa14/about', title: 'About Us | SOFA NOIR', length: 38, status: 'Good' },
+        { page: '/sofa14', title: 'CLAY POP — Art Deco Sofa Atelier', length: 52, status: 'Good' },
+        { page: '/sofa14/about', title: 'About Us | CLAY POP', length: 38, status: 'Good' },
         { page: '/sofa14/faq', title: '', length: 0, status: 'Missing meta' },
-        { page: '/sofa14/policy', title: 'Purchase Policy | SOFA NOIR', length: 46, status: 'Good' },
+        { page: '/sofa14/policy', title: 'Purchase Policy | CLAY POP', length: 46, status: 'Good' },
       ],
       ['Re-scan']
     ),
@@ -263,8 +263,8 @@ const PRODUCT_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Noir Gold', parent: 'Collections', products: 48, status: 'Visible' },
-        { name: 'Emerald Luxe', parent: 'Collections', products: 36, status: 'Visible' },
+        { name: 'Cloud Mint', parent: 'Collections', products: 48, status: 'Visible' },
+        { name: 'Sky Puff', parent: 'Collections', products: 36, status: 'Visible' },
         { name: 'Sunburst', parent: 'Collections', products: 28, status: 'Visible' },
         { name: 'Armchair', parent: 'Single pieces', products: 22, status: 'Visible' },
         { name: 'Daybed', parent: 'Multi-function', products: 8, status: 'Hidden' },
@@ -290,12 +290,12 @@ const PRODUCT_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'NG-ROYAL-3S', name: 'Noir Gold Royal 3-seater', category: 'Noir Gold', price: money(46900000), status: 'Active' },
-        { sku: 'NG-VELVET-2S', name: 'Velvet Noir 2-seater', category: 'Noir Gold', price: money(32900000), status: 'Active' },
-        { sku: 'EL-EMERALD', name: 'Emerald Luxe Lounge', category: 'Emerald Luxe', price: money(38500000), status: 'Active' },
-        { sku: 'NG-SUNBURST-L', name: 'Sunburst Modular L', category: 'Sunburst', price: money(61900000), status: 'Out of stock' },
-        { sku: 'NG-CLASSIC', name: 'Noir Classic Loveseat', category: 'Noir Gold', price: money(27900000), status: 'Active' },
-        { sku: 'EL-ARM', name: 'Emerald Armchair', category: 'Emerald Luxe', price: money(21500000), status: 'Discontinued' },
+        { sku: 'CM-ROYAL-3S', name: 'Cloud Mint Royal 3-seater', category: 'Cloud Mint', price: money(46900000), status: 'Active' },
+        { sku: 'CM-VELVET-2S', name: 'Coral Bounce 2-seater', category: 'Cloud Mint', price: money(32900000), status: 'Active' },
+        { sku: 'SP-EMERALD', name: 'Sky Puff Lounge', category: 'Sky Puff', price: money(38500000), status: 'Active' },
+        { sku: 'CM-SUNBURST-L', name: 'Sunburst Modular L', category: 'Sunburst', price: money(61900000), status: 'Out of stock' },
+        { sku: 'CM-CLASSIC', name: 'Butter Cloud Loveseat', category: 'Cloud Mint', price: money(27900000), status: 'Active' },
+        { sku: 'SP-ARM', name: 'Emerald Armchair', category: 'Sky Puff', price: money(21500000), status: 'Discontinued' },
       ],
       ['Add product', 'Import Excel']
     ),
@@ -344,10 +344,10 @@ const PRODUCT_GROUP: Sofa14AdminGroup = {
         { key: 'price', label: 'Price', type: 'money' },
       ],
       [
-        { sku: 'NG-ROYAL-3S-BK', product: 'Noir Gold Royal 3-seater', option: 'Velvet / Black / 2m4', stock: 16, price: money(46900000) },
-        { sku: 'NG-ROYAL-3S-GD', product: 'Noir Gold Royal 3-seater', option: 'Velvet / Gold / 2m4', stock: 8, price: money(47900000) },
-        { sku: 'NG-VELVET-2S-BK', product: 'Velvet Noir 2-seater', option: 'Velvet / Black / 2m2', stock: 22, price: money(32900000) },
-        { sku: 'NG-SUNBURST-L-EM', product: 'Sunburst Modular L', option: 'Velvet / Emerald / 3m0', stock: 0, price: money(61900000) },
+        { sku: 'CM-ROYAL-3S-BK', product: 'Cloud Mint Royal 3-seater', option: 'Velvet / Black / 2m4', stock: 16, price: money(46900000) },
+        { sku: 'CM-ROYAL-3S-GD', product: 'Cloud Mint Royal 3-seater', option: 'Velvet / Gold / 2m4', stock: 8, price: money(47900000) },
+        { sku: 'CM-VELVET-2S-BK', product: 'Coral Bounce 2-seater', option: 'Velvet / Black / 2m2', stock: 22, price: money(32900000) },
+        { sku: 'CM-SUNBURST-L-EM', product: 'Sunburst Modular L', option: 'Velvet / Emerald / 3m0', stock: 0, price: money(61900000) },
       ],
       ['Create variant']
     ),
@@ -370,10 +370,10 @@ const PRODUCT_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'NG-ROYAL-3S-BK', warehouse: 'Kho TP.HCM', stock: 16, reserved: 5, status: 'In stock' },
-        { sku: 'NG-VELVET-2S-BK', warehouse: 'Kho Hà Nội', stock: 22, reserved: 6, status: 'In stock' },
-        { sku: 'NG-SUNBURST-L-EM', warehouse: 'Kho TP.HCM', stock: 0, reserved: 0, status: 'Out of stock' },
-        { sku: 'EL-EMERALD-GR', warehouse: 'Kho Đà Nẵng', stock: 4, reserved: 2, status: 'Low stock' },
+        { sku: 'CM-ROYAL-3S-BK', warehouse: 'Kho TP.HCM', stock: 16, reserved: 5, status: 'In stock' },
+        { sku: 'CM-VELVET-2S-BK', warehouse: 'Kho Hà Nội', stock: 22, reserved: 6, status: 'In stock' },
+        { sku: 'CM-SUNBURST-L-EM', warehouse: 'Kho TP.HCM', stock: 0, reserved: 0, status: 'Out of stock' },
+        { sku: 'SP-EMERALD-GR', warehouse: 'Kho Đà Nẵng', stock: 4, reserved: 2, status: 'Low stock' },
       ],
       ['Stock in', 'Stocktake']
     ),
@@ -396,10 +396,10 @@ const PRODUCT_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { sku: 'NG-ROYAL-3S', list: money(54900000), sale: money(46900000), dealer: money(41200000), status: 'On sale' },
-        { sku: 'NG-SUNBURST-L', list: money(68000000), sale: money(61900000), dealer: money(54500000), status: 'On sale' },
-        { sku: 'NG-CLASSIC', list: money(27900000), sale: money(27900000), dealer: money(24600000), status: 'List price' },
-        { sku: 'EL-ARM', list: money(21500000), sale: money(21500000), dealer: money(19000000), status: 'List price' },
+        { sku: 'CM-ROYAL-3S', list: money(54900000), sale: money(46900000), dealer: money(41200000), status: 'On sale' },
+        { sku: 'CM-SUNBURST-L', list: money(68000000), sale: money(61900000), dealer: money(54500000), status: 'On sale' },
+        { sku: 'CM-CLASSIC', list: money(27900000), sale: money(27900000), dealer: money(24600000), status: 'List price' },
+        { sku: 'SP-ARM', list: money(21500000), sale: money(21500000), dealer: money(19000000), status: 'List price' },
       ],
       ['Create price list']
     ),
@@ -523,10 +523,10 @@ const ORDER_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'NG-26091001', customer: 'Eleanor Vance', channel: 'Website', total: money(46900000), status: 'Shipping' },
-        { code: 'NG-26090998', customer: 'Marcus Chen', channel: 'Showroom HCM', total: money(61900000), status: 'Completed' },
-        { code: 'NG-26090995', customer: 'Luxe Interiors Ltd', channel: 'Dealer', total: money(168000000), status: 'Pending' },
-        { code: 'NG-26090990', customer: 'Sofia Park', channel: 'Website', total: money(32900000), status: 'Cancelled' },
+        { code: 'CM-26091001', customer: 'Eleanor Vance', channel: 'Website', total: money(46900000), status: 'Shipping' },
+        { code: 'CM-26090998', customer: 'Marcus Chen', channel: 'Showroom HCM', total: money(61900000), status: 'Completed' },
+        { code: 'CM-26090995', customer: 'Luxe Interiors Ltd', channel: 'Dealer', total: money(168000000), status: 'Pending' },
+        { code: 'CM-26090990', customer: 'Sofia Park', channel: 'Website', total: money(32900000), status: 'Cancelled' },
       ],
       ['Create order', 'Export Excel']
     ),
@@ -549,10 +549,10 @@ const ORDER_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { txn: 'TXN-66213', order: 'NG-26091001', method: 'VNPay', amount: money(46900000), status: 'Success' },
-        { txn: 'TXN-66210', order: 'NG-26090998', method: 'Bank transfer', amount: money(61900000), status: 'Success' },
-        { txn: 'TXN-66208', order: 'NG-26090995', method: 'Dealer credit', amount: money(168000000), status: 'Pending recon' },
-        { txn: 'TXN-66201', order: 'NG-26090990', method: 'Intl card', amount: money(32900000), status: 'Failed' },
+        { txn: 'TXN-66213', order: 'CM-26091001', method: 'VNPay', amount: money(46900000), status: 'Success' },
+        { txn: 'TXN-66210', order: 'CM-26090998', method: 'Bank transfer', amount: money(61900000), status: 'Success' },
+        { txn: 'TXN-66208', order: 'CM-26090995', method: 'Dealer credit', amount: money(168000000), status: 'Pending recon' },
+        { txn: 'TXN-66201', order: 'CM-26090990', method: 'Intl card', amount: money(32900000), status: 'Failed' },
       ],
       ['Reconcile']
     ),
@@ -575,9 +575,9 @@ const ORDER_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'SHP-40112', order: 'NG-26091001', carrier: 'In-house team', eta: '14/09/2026', status: 'Shipping' },
-        { code: 'SHP-40109', order: 'NG-26090998', carrier: 'In-house team', eta: '10/09/2026', status: 'Delivered' },
-        { code: 'SHP-40105', order: 'NG-26090995', carrier: 'Nhất Tín Logistics', eta: '18/09/2026', status: 'Awaiting pickup' },
+        { code: 'SHP-40112', order: 'CM-26091001', carrier: 'In-house team', eta: '14/09/2026', status: 'Shipping' },
+        { code: 'SHP-40109', order: 'CM-26090998', carrier: 'In-house team', eta: '10/09/2026', status: 'Delivered' },
+        { code: 'SHP-40105', order: 'CM-26090995', carrier: 'Nhất Tín Logistics', eta: '18/09/2026', status: 'Awaiting pickup' },
       ],
       ['Create shipment']
     ),
@@ -600,9 +600,9 @@ const ORDER_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'RF-2609-04', order: 'NG-26090990', reason: 'Customer cancel', amount: money(32900000), status: 'Refunded' },
-        { code: 'RF-2609-05', order: 'NG-26090952', reason: 'Wrong color', amount: money(5800000), status: 'Processing' },
-        { code: 'RF-2609-06', order: 'NG-26090940', reason: 'Late delivery', amount: money(1100000), status: 'Pending' },
+        { code: 'RF-2609-04', order: 'CM-26090990', reason: 'Customer cancel', amount: money(32900000), status: 'Refunded' },
+        { code: 'RF-2609-05', order: 'CM-26090952', reason: 'Wrong color', amount: money(5800000), status: 'Processing' },
+        { code: 'RF-2609-06', order: 'CM-26090940', reason: 'Late delivery', amount: money(1100000), status: 'Pending' },
       ],
       ['Approve refund']
     ),
@@ -625,9 +625,9 @@ const ORDER_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'RT-2609-01', product: 'Velvet Noir 2-seater', type: 'Exchange', reason: 'Color mismatch', status: 'Collecting' },
-        { code: 'RT-2609-02', product: 'Noir Gold Royal 3-seater', type: 'Return', reason: 'Stitching defect', status: 'Re-stocked' },
-        { code: 'RT-2609-03', product: 'Emerald Luxe Lounge', type: 'Exchange', reason: 'Size too large', status: 'Pending' },
+        { code: 'RT-2609-01', product: 'Coral Bounce 2-seater', type: 'Exchange', reason: 'Color mismatch', status: 'Collecting' },
+        { code: 'RT-2609-02', product: 'Cloud Mint Royal 3-seater', type: 'Return', reason: 'Stitching defect', status: 'Re-stocked' },
+        { code: 'RT-2609-03', product: 'Sky Puff Lounge', type: 'Exchange', reason: 'Size too large', status: 'Pending' },
       ],
       ['Create request']
     ),
@@ -688,10 +688,10 @@ const CRM_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Daniel Wu', source: 'Instagram Ads', interest: 'Noir Gold Royal', owner: 'Eleanor', status: 'Hot lead' },
+        { name: 'Daniel Wu', source: 'Instagram Ads', interest: 'Cloud Mint Royal', owner: 'Eleanor', status: 'Hot lead' },
         { name: 'Ava Mitchell', source: 'Google Ads', interest: 'Sunburst Modular', owner: 'Marcus', status: 'Contacted' },
-        { name: 'Liam Foster', source: 'Showroom HCM', interest: 'Emerald Luxe', owner: 'Sofia', status: 'Consulting' },
-        { name: 'Olivia Tan', source: 'Zalo OA', interest: 'Velvet Noir', owner: 'Unassigned', status: 'New' },
+        { name: 'Liam Foster', source: 'Showroom HCM', interest: 'Sky Puff', owner: 'Sofia', status: 'Consulting' },
+        { name: 'Olivia Tan', source: 'Zalo OA', interest: 'Coral Bounce', owner: 'Unassigned', status: 'New' },
       ],
       ['Add lead', 'Assign']
     ),
@@ -714,9 +714,9 @@ const CRM_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { customer: 'Eleanor Vance', order: 'NG-26091001', date: '11/09/2026', total: money(46900000), status: 'Shipping' },
-        { customer: 'Eleanor Vance', order: 'NG-25031432', date: '14/03/2025', total: money(62000000), status: 'Completed' },
-        { customer: 'Marcus Chen', order: 'NG-26090998', date: '10/09/2026', total: money(61900000), status: 'Completed' },
+        { customer: 'Eleanor Vance', order: 'CM-26091001', date: '11/09/2026', total: money(46900000), status: 'Shipping' },
+        { customer: 'Eleanor Vance', order: 'CM-25031432', date: '14/03/2025', total: money(62000000), status: 'Completed' },
+        { customer: 'Marcus Chen', order: 'CM-26090998', date: '10/09/2026', total: money(61900000), status: 'Completed' },
       ]
     ),
     mod(
@@ -775,8 +775,8 @@ const MARKETING_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { campaign: 'Noir Gold Launch — 20%', segment: 'All customers', sent: 10820, open: '45%', status: 'Sent' },
-        { campaign: 'Emerald Luxe new arrivals', segment: 'Velvet interest', sent: 2860, open: '49%', status: 'Sent' },
+        { campaign: 'Cloud Mint Launch — 20%', segment: 'All customers', sent: 10820, open: '45%', status: 'Sent' },
+        { campaign: 'Sky Puff new arrivals', segment: 'Velvet interest', sent: 2860, open: '49%', status: 'Sent' },
         { campaign: 'Abandoned cart reminder', segment: 'Automated', sent: 720, open: '56%', status: 'Active' },
         { campaign: 'Birthday greeting', segment: 'Automated', sent: 186, open: '62%', status: 'Active' },
       ],
@@ -826,7 +826,7 @@ const MARKETING_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { title: '20% off Noir Gold collection', trigger: 'Manual', reach: 19800, ctr: '5.6%', status: 'Sent' },
+        { title: '20% off Cloud Mint collection', trigger: 'Manual', reach: 19800, ctr: '5.6%', status: 'Sent' },
         { title: 'Your viewed item is on sale', trigger: 'Behavior', reach: 3120, ctr: '10.2%', status: 'Active' },
         { title: 'New Da Nang showroom', trigger: 'Location', reach: 1080, ctr: '3.6%', status: 'Scheduled' },
       ],
@@ -938,10 +938,10 @@ const ANALYTICS_GROUP: Sofa14AdminGroup = {
         { key: 'stock', label: 'Stock', type: 'number' },
       ],
       [
-        { product: 'Noir Gold Royal 3-seater', sold: 82, revenue: money(3845800000), stock: 16 },
-        { product: 'Velvet Noir 2-seater', sold: 64, revenue: money(2105600000), stock: 22 },
+        { product: 'Cloud Mint Royal 3-seater', sold: 82, revenue: money(3845800000), stock: 16 },
+        { product: 'Coral Bounce 2-seater', sold: 64, revenue: money(2105600000), stock: 22 },
         { product: 'Sunburst Modular L', sold: 48, revenue: money(2971200000), stock: 0 },
-        { product: 'Emerald Luxe Lounge', sold: 42, revenue: money(1617000000), stock: 4 },
+        { product: 'Sky Puff Lounge', sold: 42, revenue: money(1617000000), stock: 4 },
       ]
     ),
     mod(
@@ -1045,7 +1045,7 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA NOIR`, keyword: 'art deco sofa', position: 3, status: 'Good' },
+      { url: sample, title: `${name} – CLAY POP`, keyword: 'art deco sofa', position: 3, status: 'Good' },
       { url: `${sample}/velvet`, title: 'Velvet Art Deco sofa premium', keyword: 'velvet sofa', position: 5, status: 'Good' },
       { url: `${sample}/gold`, title: '', keyword: 'gold leaf sofa', position: 12, status: 'Missing meta' },
       { url: `${sample}/modular`, title: 'Sunburst Modular sofa', keyword: 'modular sofa noir', position: 8, status: 'Needs improvement' },
@@ -1172,10 +1172,10 @@ const ACCESS_GROUP: Sofa14AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Eleanor', email: 'eleanor@sofanoir.vn', role: 'System Admin', last: '12/09/2026 09:14', status: 'Active' },
-        { name: 'Marcus', email: 'marcus@sofanoir.vn', role: 'Sales Manager', last: '11/09/2026 17:30', status: 'Active' },
-        { name: 'Sofia', email: 'sofia@sofanoir.vn', role: 'Customer Care', last: '12/09/2026 08:04', status: 'Active' },
-        { name: 'Julian', email: 'julian@sofanoir.vn', role: 'Content Editor', last: '02/08/2026 10:18', status: 'Locked' },
+        { name: 'Eleanor', email: 'eleanor@claypop.vn', role: 'System Admin', last: '12/09/2026 09:14', status: 'Active' },
+        { name: 'Marcus', email: 'marcus@claypop.vn', role: 'Sales Manager', last: '11/09/2026 17:30', status: 'Active' },
+        { name: 'Sofia', email: 'sofia@claypop.vn', role: 'Customer Care', last: '12/09/2026 08:04', status: 'Active' },
+        { name: 'Julian', email: 'julian@claypop.vn', role: 'Content Editor', last: '02/08/2026 10:18', status: 'Locked' },
       ],
       ['Invite user']
     ),
@@ -1289,8 +1289,8 @@ export const SOFA14_ADMIN_ACTIVITIES = [
   { time: '09:14', text: 'Eleanor published the homepage', tag: 'CMS' },
   { time: '08:41', text: 'Approved refund RF-2609-04 (32.9tr)', tag: 'Orders' },
   { time: '08:02', text: '21 new orders pending confirmation', tag: 'Orders' },
-  { time: '07:30', text: 'Campaign "Noir Gold Launch" achieved 45% open rate', tag: 'Marketing' },
-  { time: '06:55', text: 'SKU NG-SUNBURST-L-EM out of stock at Central HCM', tag: 'Warehouse' },
+  { time: '07:30', text: 'Campaign "Cloud Mint Launch" achieved 45% open rate', tag: 'Marketing' },
+  { time: '06:55', text: 'SKU CM-SUNBURST-L-EM out of stock at Central HCM', tag: 'Warehouse' },
 ];
 
 // ----------------------------------------------------------------------
@@ -1316,6 +1316,6 @@ export const SOFA14_ADMIN_CHANNEL_CHART = {
 };
 
 export const SOFA14_ADMIN_TOP_PRODUCTS = {
-  labels: ['Noir Gold Royal 3S', 'Velvet Noir 2S', 'Sunburst Modular L', 'Emerald Luxe', 'Noir Classic'],
+  labels: ['Cloud Mint Royal 3S', 'Coral Bounce 2S', 'Sunburst Modular L', 'Sky Puff', 'Butter Cloud'],
   series: [82, 64, 48, 42, 32],
 };

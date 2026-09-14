@@ -26,10 +26,10 @@ import { SOFA14_ADMIN_TOOLS } from '../sofa14-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#0B0B0D';
-const SURFACE = '#222228';
-const ACCENT = '#C9A84C';
-const TEXT = '#F4EFE2';
+const BG = '#2B2440';
+const SURFACE = '#3B3357';
+const ACCENT = '#7FE3C4';
+const TEXT = '#FFF9F1';
 
 type Props = {
   children: React.ReactNode;
@@ -49,7 +49,7 @@ export function Sofa14AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA14_ADMIN_ROOT;
-  const brandName = 'Sofa Noir';
+  const brandName = 'Clay Pop';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(
@@ -250,7 +250,7 @@ export function Sofa14AdminLayout({
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F5F5F7' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#FFF9F1' }}>
       {isDesktop ? (
         <Box
           component="aside"
@@ -273,7 +273,7 @@ export function Sofa14AdminLayout({
             zIndex: 10,
             bgcolor: alpha('#FFFFFF', 0.85),
             backdropFilter: 'blur(8px)',
-            borderBottom: `1px solid ${alpha('#C9A84C', 0.2)}`,
+            borderBottom: `1px solid ${alpha('#7FE3C4', 0.2)}`,
           }}
         >
           <Container maxWidth={false} sx={{ maxWidth: 1440 }}>
@@ -295,7 +295,7 @@ export function Sofa14AdminLayout({
                 size="small"
                 icon={<Iconify icon="solar:shield-check-bold-duotone" width={16} />}
                 label="Demo data"
-                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#8C6E24', fontWeight: 600 }}
+                sx={{ bgcolor: alpha(ACCENT, 0.16), color: '#2B2440', fontWeight: 600 }}
               />
             </Stack>
           </Container>

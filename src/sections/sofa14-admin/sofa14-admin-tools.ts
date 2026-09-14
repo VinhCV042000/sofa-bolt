@@ -83,9 +83,9 @@ export const SOFA14_ADMIN_FUNNEL: Sofa14FunnelStep[] = [
 // ----------------------------------------------------------------------
 
 export const SOFA14_SETTINGS_FIELDS = [
-  { key: 'brand', label: 'Brand name', value: 'SOFA NOIR', helper: 'Displayed across the site' },
+  { key: 'brand', label: 'Brand name', value: 'CLAY POP', helper: 'Displayed across the site' },
   { key: 'hotline', label: 'Hotline', value: '1900 8686' },
-  { key: 'email', label: 'Support email', value: 'support@sofanoir.vn' },
+  { key: 'email', label: 'Support email', value: 'support@claypop.vn' },
   { key: 'address', label: 'Headquarters', value: '18 Lê Lợi, Q1, TP.HCM' },
   { key: 'currency', label: 'Currency', value: 'VND' },
   { key: 'tax', label: 'VAT (%)', value: '8' },
@@ -104,10 +104,10 @@ export const SOFA14_SETTINGS_TOGGLES = [
 
 export const SOFA14_NOTIFICATIONS = [
   { time: '09:42', type: 'Orders', level: 'info', text: '10 new orders pending confirmation from Website' },
-  { time: '09:05', type: 'Warehouse', level: 'warning', text: 'SKU NG-SUNBURST-L-EM at 0 units in Central HCM' },
-  { time: '08:30', type: 'Security', level: 'error', text: '3 failed login attempts on eleanor@sofanoir.vn' },
-  { time: '08:02', type: 'Marketing', level: 'success', text: 'Campaign "Noir Gold Launch" achieved 45% open rate' },
-  { time: '07:20', type: 'CMS', level: 'info', text: 'Page "Emerald Luxe Collection" published' },
+  { time: '09:05', type: 'Warehouse', level: 'warning', text: 'SKU CM-SUNBURST-L-EM at 0 units in Central HCM' },
+  { time: '08:30', type: 'Security', level: 'error', text: '3 failed login attempts on eleanor@claypop.vn' },
+  { time: '08:02', type: 'Marketing', level: 'success', text: 'Campaign "Cloud Mint Launch" achieved 45% open rate' },
+  { time: '07:20', type: 'CMS', level: 'info', text: 'Page "Sky Puff Collection" published' },
   { time: '06:58', type: 'SEO', level: 'warning', text: 'Sitemap detected 4 URLs returning 404' },
   { time: '06:10', type: 'CRM', level: 'success', text: '42 new customer registrations' },
 ];
@@ -115,7 +115,7 @@ export const SOFA14_NOTIFICATIONS = [
 export const SOFA14_PROFILE = {
   name: 'Eleanor',
   role: 'Senior Administrator',
-  email: 'eleanor@sofanoir.vn',
+  email: 'eleanor@claypop.vn',
   phone: '0912 345 412',
   team: 'Digital Operations',
   joined: '01/2023',
