@@ -56,7 +56,7 @@ export function Sofa16AdminDashboardView() {
         ? 'Sofa7'
         : pathname.startsWith('/sofa5')
           ? 'Sofa5'
-          : 'Sofa16';
+          : 'Casa Sorrento';
 
   return (
     <>
