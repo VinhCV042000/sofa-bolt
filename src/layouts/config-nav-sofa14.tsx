@@ -22,4 +22,9 @@ export const sofa14NavData = [
   { title: 'Playground', path: '/sofa14#playground', icon: <Iconify width={22} icon="solar:pallete-2-bold-duotone" /> },
   { title: 'Gallery', path: '/sofa14#gallery', icon: <Iconify width={22} icon="solar:gallery-bold-duotone" /> },
   { title: 'Contact', path: paths.contact, icon: <Iconify width={22} icon="solar:phone-bold-duotone" /> },
+  {
+    title: 'Quản trị',
+    path: '/sofa14/admin',
+    icon: <Iconify width={22} icon="solar:shield-check-bold-duotone" />,
+  },
 ];
