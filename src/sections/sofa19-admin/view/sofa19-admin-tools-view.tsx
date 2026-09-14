@@ -276,7 +276,7 @@ export function Sofa19AdminToolsView() {
         <Card sx={{ p: 3, height: 1 }}>
           <Stack alignItems="center" spacing={1.5} sx={{ textAlign: 'center' }}>
             <Box sx={{ width: 84, height: 84, borderRadius: '50%', display: 'grid', placeItems: 'center', bgcolor: 'warning.lighter', color: ACCENT }}>
-              <Typography variant="h3">AT</Typography>
+              <Typography variant="h3">CM</Typography>
             </Box>
             <Typography variant="h6">{SOFA19_PROFILE.name}</Typography>
             <Chip label={SOFA19_PROFILE.role} color="warning" variant="soft" />

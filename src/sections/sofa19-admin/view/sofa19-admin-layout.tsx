@@ -229,10 +229,10 @@ export function Sofa19AdminLayout({
 
       <Divider sx={{ borderColor: alpha(ACCENT, 0.16) }} />
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ p: 2 }}>
-        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>AT</Avatar>
+        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>CM</Avatar>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>
-            Akira Tanaka
+            Carla Mendes
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }} noWrap>
             Quản trị viên
