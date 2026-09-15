@@ -36,4 +36,28 @@ export const sofa20NavData = [
     path: paths.contact,
     icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
   },
+  {
+    title: 'Quản trị',
+    path: '/sofa20/admin',
+    icon: <Iconify width={22} icon="solar:shield-user-bold-duotone" />,
+    children: [
+      {
+        subheader: 'Trung tâm quản trị',
+        items: [
+          { title: 'Tổng quan', path: '/sofa20/admin' },
+          { title: 'CMS', path: '/sofa20/admin/cms' },
+          { title: 'Sản phẩm', path: '/sofa20/admin/catalog' },
+          { title: 'Kho hàng', path: '/sofa20/admin/warehouse' },
+          { title: 'Đơn hàng', path: '/sofa20/admin/orders' },
+          { title: 'CRM', path: '/sofa20/admin/crm' },
+          { title: 'Marketing', path: '/sofa20/admin/marketing' },
+          { title: 'Analytics', path: '/sofa20/admin/analytics' },
+          { title: 'SEO', path: '/sofa20/admin/seo' },
+          { title: 'Phân quyền', path: '/sofa20/admin/access' },
+          { title: 'Báo cáo tổng hợp', path: '/sofa20/admin/tools/reports' },
+          { title: 'Cài đặt hệ thống', path: '/sofa20/admin/tools/settings' },
+        ],
+      },
+    ],
+  },
 ];
