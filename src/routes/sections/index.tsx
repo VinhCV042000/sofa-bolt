@@ -3278,6 +3278,40 @@ export function Router() {
       ),
     },
 
+    // SOFA2 ADMIN
+    {
+      path: '/sofa2/admin',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminDashboardPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/admin/tools/:tool',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminToolsPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/admin/:group/:module',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminModulePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/admin/:group',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2AdminModulePage />
+        </Suspense>
+      ),
+    },
+
     // SOFA14 ADMIN
     {
       path: '/sofa14/admin',
