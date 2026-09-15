@@ -113,7 +113,7 @@ export const SOFA20_NOTIFICATIONS = [
 ];
 
 export const SOFA20_PROFILE = {
-  name: 'Carla Mendes',
+  name: 'Elias Thornbury',
   role: 'Quản trị viên cấp cao',
   email: 'carla@sofa20.br',
   phone: '011 9876 5432',

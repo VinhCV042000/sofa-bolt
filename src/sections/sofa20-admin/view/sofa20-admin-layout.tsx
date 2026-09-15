@@ -26,11 +26,11 @@ import { SOFA20_ADMIN_TOOLS } from '../sofa20-admin-tools';
 
 const NAV_WIDTH = 280;
 
-const BG = '#14261E';
-const SURFACE = '#1E3329';
-const ACCENT = '#E5A94B';
-const ACCENT_DEEP = '#C9813A';
-const TEXT = '#F2F0E4';
+const BG = '#1A1512';
+const SURFACE = '#241D18';
+const ACCENT = '#C98B4B';
+const ACCENT_DEEP = '#8C5A2B';
+const TEXT = '#EFE6DA';
 
 type Props = {
   children: React.ReactNode;
@@ -50,7 +50,7 @@ export function Sofa20AdminLayout({
   breadcrumb = [],
 }: Props) {
   const adminRoot = SOFA20_ADMIN_ROOT;
-  const brandName = 'Sofa20 Tropical';
+  const brandName = 'Ironworks & Co';
   const siteLink = '/sofa20';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -229,10 +229,10 @@ export function Sofa20AdminLayout({
 
       <Divider sx={{ borderColor: alpha(ACCENT, 0.16) }} />
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ p: 2 }}>
-        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>CM</Avatar>
+        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.24), color: ACCENT, width: 36, height: 36 }}>ET</Avatar>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>
-            Carla Mendes
+            Elias Thornbury
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.6) }} noWrap>
             Quản trị viên
