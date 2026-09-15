@@ -1,139 +1,41 @@
+// ----------------------------------------------------------------------
+// SOFA2 ADMIN — Tự sinh sitemap.xml, robots.txt và schema JSON-LD
+// Dữ liệu lấy trực tiếp từ nội dung website sofa2 (sản phẩm, danh mục,
+// bộ sưu tập, dự án, showroom, blog) nên luôn khớp với các trang thực tế.
+// ----------------------------------------------------------------------
+
 import {
-  SOFA2_PRODUCTS,
-  SOFA2_PROJECTS,
   SOFA2_BLOG_POSTS,
+  SOFA2_PROJECTS,
+  SOFA2_PRODUCTS,
+  SOFA2_SHOWROOMS,
   SOFA2_COLLECTIONS,
   SOFA2_COMPANY_INFO,
-  SOFA2_PROJECT_TYPES,
   SOFA2_PRODUCT_CATEGORIES,
 } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
-// Bộ sinh sitemap / robots.txt / JSON-LD schema cho website sofa2.
-// Dữ liệu lấy trực tiếp từ danh sách sản phẩm, danh mục, dự án, blog.
-// ----------------------------------------------------------------------
 
-export type SeoScope = 'static' | 'category' | 'product' | 'collection' | 'project' | 'blog';
+export const SOFA2_SITE_ORIGIN = 'https://luxesofa.vn';
 
-export type SeoUrl = {
+export type Sofa2SeoScope =
+  | 'product'
+  | 'category'
+  | 'collection'
+  | 'project'
+  | 'showroom'
+  | 'blog'
+  | 'brand'
+  | 'all';
+
+export type Sofa2SeoEntry = {
   loc: string;
-  scope: SeoScope;
+  title: string;
   changefreq: 'daily' | 'weekly' | 'monthly';
   priority: string;
-  title: string;
 };
 
-export const SEO_SCOPE_LABELS: Record<SeoScope, string> = {
-  static: 'Trang tĩnh',
-  category: 'Danh mục sản phẩm',
-  product: 'Trang sản phẩm',
-  collection: 'Bộ sưu tập',
-  project: 'Dự án',
-  blog: 'Bài viết blog',
-};
-
-const STATIC_PATHS: { path: string; title: string }[] = [
-  { path: '/sofa2', title: 'Trang chủ' },
-  { path: '/sofa2/about', title: 'Giới thiệu' },
-  { path: '/sofa2/products', title: 'Tất cả sản phẩm' },
-  { path: '/sofa2/collections', title: 'Bộ sưu tập' },
-  { path: '/sofa2/projects', title: 'Dự án' },
-  { path: '/sofa2/showrooms', title: 'Showroom' },
-  { path: '/sofa2/services', title: 'Dịch vụ' },
-  { path: '/sofa2/blog', title: 'Blog' },
-  { path: '/sofa2/promotions', title: 'Khuyến mãi' },
-  { path: '/sofa2/careers', title: 'Tuyển dụng' },
-  { path: '/sofa2/contact', title: 'Liên hệ' },
-  { path: '/sofa2/b2b', title: 'Đại lý B2B' },
-  { path: '/sofa2/support', title: 'Hỗ trợ' },
-];
-
-/** Danh sách URL công khai, gom theo nhóm nội dung. */
-export function buildSofa2SeoUrls(): SeoUrl[] {
-  const urls: SeoUrl[] = [];
-
-  STATIC_PATHS.forEach((item) =>
-    urls.push({
-      loc: item.path,
-      scope: 'static',
-      changefreq: 'monthly',
-      priority: item.path === '/sofa2' ? '1.0' : '0.6',
-      title: item.title,
-    })
-  );
-
-  const categoryGroups = [
-    SOFA2_PRODUCT_CATEGORIES.types,
-    SOFA2_PRODUCT_CATEGORIES.styles,
-    SOFA2_PRODUCT_CATEGORIES.spaces,
-    SOFA2_PRODUCT_CATEGORIES.sizes,
-    SOFA2_PRODUCT_CATEGORIES.prices,
-  ].flat();
-
-  categoryGroups.forEach((cat) =>
-    urls.push({
-      loc: `/sofa2/products/category/${cat.slug}`,
-      scope: 'category',
-      changefreq: 'weekly',
-      priority: '0.8',
-      title: cat.label,
-    })
-  );
-
-  SOFA2_PRODUCTS.forEach((p) =>
-    urls.push({
-      loc: `/sofa2/products/${p.id}`,
-      scope: 'product',
-      changefreq: 'weekly',
-      priority: '0.9',
-      title: p.name,
-    })
-  );
-
-  SOFA2_COLLECTIONS.forEach((c) =>
-    urls.push({
-      loc: `/sofa2/collections/${c.slug}`,
-      scope: 'collection',
-      changefreq: 'weekly',
-      priority: '0.7',
-      title: c.name,
-    })
-  );
-
-  SOFA2_PROJECT_TYPES.forEach((t) =>
-    urls.push({
-      loc: `/sofa2/projects?type=${t.slug}`,
-      scope: 'project',
-      changefreq: 'monthly',
-      priority: '0.6',
-      title: t.label,
-    })
-  );
-
-  SOFA2_PROJECTS.forEach((p) =>
-    urls.push({
-      loc: `/sofa2/projects/${p.id}`,
-      scope: 'project',
-      changefreq: 'monthly',
-      priority: '0.7',
-      title: p.name,
-    })
-  );
-
-  SOFA2_BLOG_POSTS.forEach((b) =>
-    urls.push({
-      loc: `/sofa2/blog/${b.id}`,
-      scope: 'blog',
-      changefreq: 'monthly',
-      priority: '0.6',
-      title: b.title,
-    })
-  );
-
-  return urls;
-}
-
-const trimBase = (base: string) => base.replace(/\/+$/, '');
+const abs = (path: string) => `${SOFA2_SITE_ORIGIN}${path}`;
 
 const escapeXml = (value: string) =>
   value
@@ -142,168 +44,327 @@ const escapeXml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-/** Sinh sitemap.xml (không gắn lastmod vì không có mốc chỉnh sửa thật của từng trang). */
-export function buildSofa2Sitemap(base: string, urls: SeoUrl[]): string {
-  const root = trimBase(base);
-  const body = urls
+// ----------------------------------------------------------------------
+// URL theo từng nhóm trang
+// ----------------------------------------------------------------------
+
+const productEntries = (): Sofa2SeoEntry[] =>
+  SOFA2_PRODUCTS.map((item) => ({
+    loc: `/sofa2/products/${item.slug}`,
+    title: item.name,
+    changefreq: 'weekly' as const,
+    priority: '0.9',
+  }));
+
+const categoryEntries = (): Sofa2SeoEntry[] => {
+  const groups: { key: keyof typeof SOFA2_PRODUCT_CATEGORIES; label: string }[] = [
+    { key: 'types', label: 'Kiểu dáng' },
+    { key: 'styles', label: 'Phong cách' },
+    { key: 'spaces', label: 'Không gian' },
+    { key: 'sizes', label: 'Kích thước' },
+    { key: 'prices', label: 'Mức giá' },
+  ];
+
+  return groups.flatMap(({ key, label }) =>
+    SOFA2_PRODUCT_CATEGORIES[key].map((cat) => ({
+      loc: `/sofa2/products/category/${cat.slug}`,
+      title: `${cat.label} – ${label}`,
+      changefreq: 'weekly' as const,
+      priority: '0.8',
+    }))
+  );
+};
+
+const collectionEntries = (): Sofa2SeoEntry[] =>
+  SOFA2_COLLECTIONS.map((item) => ({
+    loc: `/sofa2/collections/${item.slug}`,
+    title: item.name,
+    changefreq: 'weekly' as const,
+    priority: '0.7',
+  }));
+
+const projectEntries = (): Sofa2SeoEntry[] =>
+  SOFA2_PROJECTS.map((item) => ({
+    loc: `/sofa2/projects/${item.id}`,
+    title: item.name,
+    changefreq: 'monthly' as const,
+    priority: '0.7',
+  }));
+
+const showroomEntries = (): Sofa2SeoEntry[] =>
+  SOFA2_SHOWROOMS.map((item: any) => ({
+    loc: `/sofa2/showrooms/${item.slug ?? item.id}`,
+    title: item.name ?? item.city ?? 'Showroom',
+    changefreq: 'monthly' as const,
+    priority: '0.6',
+  }));
+
+const blogEntries = (): Sofa2SeoEntry[] =>
+  SOFA2_BLOG_POSTS.map((item) => ({
+    loc: `/sofa2/blog/${item.slug}`,
+    title: item.title,
+    changefreq: 'monthly' as const,
+    priority: '0.6',
+  }));
+
+const brandEntries = (): Sofa2SeoEntry[] => [
+  { loc: '/sofa2', title: 'Trang chủ', changefreq: 'daily', priority: '1.0' },
+  { loc: '/sofa2/about', title: 'Giới thiệu', changefreq: 'monthly', priority: '0.7' },
+  { loc: '/sofa2/services', title: 'Dịch vụ', changefreq: 'monthly', priority: '0.6' },
+  { loc: '/sofa2/promotions', title: 'Khuyến mãi', changefreq: 'weekly', priority: '0.6' },
+  { loc: '/sofa2/contact', title: 'Liên hệ', changefreq: 'monthly', priority: '0.5' },
+];
+
+export function getSofa2SeoEntries(scope: Sofa2SeoScope): Sofa2SeoEntry[] {
+  switch (scope) {
+    case 'product':
+      return productEntries();
+    case 'category':
+      return categoryEntries();
+    case 'collection':
+      return collectionEntries();
+    case 'project':
+      return projectEntries();
+    case 'showroom':
+      return showroomEntries();
+    case 'blog':
+      return blogEntries();
+    case 'brand':
+      return brandEntries();
+    default:
+      return [
+        ...brandEntries(),
+        ...categoryEntries(),
+        ...productEntries(),
+        ...collectionEntries(),
+        ...projectEntries(),
+        ...showroomEntries(),
+        ...blogEntries(),
+      ];
+  }
+}
+
+// ----------------------------------------------------------------------
+// Sitemap
+// ----------------------------------------------------------------------
+
+export function buildSofa2Sitemap(scope: Sofa2SeoScope): string {
+  const entries = getSofa2SeoEntries(scope);
+
+  const urls = entries
     .map(
-      (u) =>
-        `  <url>\n    <loc>${escapeXml(root + u.loc)}</loc>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
+      (entry) =>
+        [
+          '  <url>',
+          `    <loc>${escapeXml(abs(entry.loc))}</loc>`,
+          `    <changefreq>${entry.changefreq}</changefreq>`,
+          `    <priority>${entry.priority}</priority>`,
+          '  </url>',
+        ].join('\n')
     )
     .join('\n');
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    urls,
+    '</urlset>',
+  ].join('\n');
 }
 
-/** Sinh robots.txt: mở cho bot, chặn khu quản trị và các trang giao dịch riêng tư. */
-export function buildSofa2Robots(base: string, withSitemap: boolean): string {
-  const root = trimBase(base);
-  const lines = [
+export function buildSofa2SitemapIndex(): string {
+  const files = [
+    'sitemap-pages.xml',
+    'sitemap-categories.xml',
+    'sitemap-products.xml',
+    'sitemap-collections.xml',
+    'sitemap-projects.xml',
+    'sitemap-showrooms.xml',
+    'sitemap-blog.xml',
+  ];
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...files.map((file) => `  <sitemap>\n    <loc>${abs(`/${file}`)}</loc>\n  </sitemap>`),
+    '</sitemapindex>',
+  ].join('\n');
+}
+
+// ----------------------------------------------------------------------
+// Robots
+// ----------------------------------------------------------------------
+
+export function buildSofa2Robots(): string {
+  return [
     'User-agent: *',
     'Allow: /',
     'Disallow: /sofa2/admin',
+    'Disallow: /sofa2/account',
     'Disallow: /sofa2/cart',
     'Disallow: /sofa2/checkout',
     'Disallow: /sofa2/payment',
-    'Disallow: /sofa2/account',
-    'Disallow: /sofa2/orders/tracking',
+    'Disallow: /*?sort=',
+    'Disallow: /*?filter=',
     '',
     'User-agent: Googlebot',
     'Allow: /',
-    'Disallow: /sofa2/admin',
     '',
     'User-agent: Bingbot',
     'Allow: /',
-    'Disallow: /sofa2/admin',
-  ];
-
-  if (withSitemap && root) {
-    lines.push('', `Sitemap: ${root}/sitemap.xml`);
-  }
-
-  return `${lines.join('\n')}\n`;
+    '',
+    `Sitemap: ${abs('/sitemap.xml')}`,
+  ].join('\n');
 }
 
-const money = (value: number) => value.toString();
+// ----------------------------------------------------------------------
+// Schema JSON-LD
+// ----------------------------------------------------------------------
 
-/** Sinh JSON-LD cho từng nhóm trang: Organization, ItemList danh mục, Product, Project, Article. */
-export function buildSofa2Schema(base: string, scopes: SeoScope[]): string {
-  const root = trimBase(base);
-  const graph: Record<string, unknown>[] = [];
+const organizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'FurnitureStore',
+  name: SOFA2_COMPANY_INFO.name,
+  slogan: SOFA2_COMPANY_INFO.tagline,
+  url: abs('/sofa2'),
+  telephone: SOFA2_COMPANY_INFO.phone,
+  email: SOFA2_COMPANY_INFO.email,
+  foundingDate: SOFA2_COMPANY_INFO.founded,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SOFA2_COMPANY_INFO.address,
+    addressCountry: 'VN',
+  },
+});
 
-  graph.push({
-    '@type': 'Organization',
-    '@id': `${root}/sofa2#organization`,
-    name: SOFA2_COMPANY_INFO.name,
-    url: `${root}/sofa2`,
-    telephone: SOFA2_COMPANY_INFO.phone,
-    email: SOFA2_COMPANY_INFO.email,
-    foundingDate: SOFA2_COMPANY_INFO.founded,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: SOFA2_COMPANY_INFO.address,
-      addressCountry: 'VN',
-    },
-  });
+const productSchema = (item: (typeof SOFA2_PRODUCTS)[number]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: item.name,
+  sku: item.id,
+  description: item.description,
+  material: item.material,
+  color: item.colors,
+  url: abs(`/sofa2/products/${item.slug}`),
+  brand: { '@type': 'Brand', name: SOFA2_COMPANY_INFO.name },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: item.rating,
+    reviewCount: item.reviews,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: item.price,
+    priceCurrency: 'VND',
+    availability: 'https://schema.org/InStock',
+    url: abs(`/sofa2/products/${item.slug}`),
+  },
+});
 
-  if (scopes.includes('category')) {
-    graph.push({
-      '@type': 'ItemList',
-      '@id': `${root}/sofa2/products#categories`,
-      name: 'Danh mục sofa',
-      itemListElement: SOFA2_PRODUCT_CATEGORIES.types.map((cat, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        name: cat.label,
-        url: `${root}/sofa2/products/category/${cat.slug}`,
-      })),
-    });
+const categorySchema = (cat: { slug: string; label: string }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: cat.label,
+  url: abs(`/sofa2/products/category/${cat.slug}`),
+  isPartOf: { '@type': 'WebSite', name: SOFA2_COMPANY_INFO.name, url: abs('/sofa2') },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: abs('/sofa2') },
+      { '@type': 'ListItem', position: 2, name: 'Sản phẩm', item: abs('/sofa2/products') },
+      { '@type': 'ListItem', position: 3, name: cat.label },
+    ],
+  },
+});
+
+const projectSchema = (item: (typeof SOFA2_PROJECTS)[number]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: item.name,
+  description: item.description,
+  url: abs(`/sofa2/projects/${item.id}`),
+  dateCreated: item.year,
+  locationCreated: { '@type': 'Place', name: item.location },
+  creator: { '@type': 'Organization', name: SOFA2_COMPANY_INFO.name },
+});
+
+const collectionSchema = (item: (typeof SOFA2_COLLECTIONS)[number]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: item.name,
+  description: item.description,
+  url: abs(`/sofa2/collections/${item.slug}`),
+});
+
+const articleSchema = (item: (typeof SOFA2_BLOG_POSTS)[number]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.excerpt,
+  author: { '@type': 'Person', name: item.author },
+  publisher: { '@type': 'Organization', name: SOFA2_COMPANY_INFO.name },
+  url: abs(`/sofa2/blog/${item.slug}`),
+});
+
+const showroomSchema = (item: any) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FurnitureStore',
+  name: item.name ?? 'Showroom LUXE Sofa',
+  url: abs(`/sofa2/showrooms/${item.slug ?? item.id}`),
+  telephone: item.phone ?? SOFA2_COMPANY_INFO.phone,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: item.address ?? SOFA2_COMPANY_INFO.address,
+    addressLocality: item.city ?? '',
+    addressCountry: 'VN',
+  },
+});
+
+export function buildSofa2Schema(scope: Sofa2SeoScope): string {
+  let blocks: object[] = [];
+
+  switch (scope) {
+    case 'product':
+      blocks = SOFA2_PRODUCTS.map(productSchema);
+      break;
+    case 'category':
+      blocks = SOFA2_PRODUCT_CATEGORIES.types.map(categorySchema);
+      break;
+    case 'collection':
+      blocks = SOFA2_COLLECTIONS.map(collectionSchema);
+      break;
+    case 'project':
+      blocks = SOFA2_PROJECTS.map(projectSchema);
+      break;
+    case 'showroom':
+      blocks = (SOFA2_SHOWROOMS as any[]).map(showroomSchema);
+      break;
+    case 'blog':
+      blocks = SOFA2_BLOG_POSTS.map(articleSchema);
+      break;
+    default:
+      blocks = [
+        organizationSchema(),
+        ...SOFA2_PRODUCT_CATEGORIES.types.map(categorySchema),
+        ...SOFA2_PRODUCTS.map(productSchema),
+        ...SOFA2_PROJECTS.map(projectSchema),
+      ];
   }
 
-  if (scopes.includes('product')) {
-    SOFA2_PRODUCTS.forEach((p) => {
-      graph.push({
-        '@type': 'Product',
-        '@id': `${root}/sofa2/products/${p.id}#product`,
-        name: p.name,
-        description: p.description,
-        image: p.image,
-        sku: `LUXE-${p.id}`,
-        material: p.material,
-        color: p.colors,
-        brand: { '@type': 'Brand', name: SOFA2_COMPANY_INFO.name },
-        offers: {
-          '@type': 'Offer',
-          url: `${root}/sofa2/products/${p.id}`,
-          price: money(p.price),
-          priceCurrency: 'VND',
-          availability: 'https://schema.org/InStock',
-        },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: p.rating,
-          reviewCount: p.reviews,
-        },
-        breadcrumb: {
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: `${root}/sofa2` },
-            {
-              '@type': 'ListItem',
-              position: 2,
-              name: 'Sản phẩm',
-              item: `${root}/sofa2/products`,
-            },
-            { '@type': 'ListItem', position: 3, name: p.name },
-          ],
-        },
-      });
-    });
-  }
-
-  if (scopes.includes('project')) {
-    SOFA2_PROJECTS.forEach((p) => {
-      graph.push({
-        '@type': 'CreativeWork',
-        '@id': `${root}/sofa2/projects/${p.id}#project`,
-        name: p.name,
-        description: p.description,
-        image: p.image,
-        dateCreated: p.year,
-        genre: p.typeLabel,
-        contentLocation: { '@type': 'Place', name: p.location },
-        creator: { '@type': 'Organization', name: SOFA2_COMPANY_INFO.name },
-      });
-    });
-  }
-
-  if (scopes.includes('blog')) {
-    SOFA2_BLOG_POSTS.forEach((b) => {
-      graph.push({
-        '@type': 'Article',
-        '@id': `${root}/sofa2/blog/${b.id}#article`,
-        headline: b.title,
-        description: b.excerpt,
-        image: b.image,
-        author: { '@type': 'Person', name: b.author },
-        publisher: { '@type': 'Organization', name: SOFA2_COMPANY_INFO.name },
-      });
-    });
-  }
-
-  if (scopes.includes('collection')) {
-    graph.push({
-      '@type': 'ItemList',
-      '@id': `${root}/sofa2/collections#list`,
-      name: 'Bộ sưu tập sofa',
-      itemListElement: SOFA2_COLLECTIONS.map((c, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        name: c.name,
-        url: `${root}/sofa2/collections/${c.slug}`,
-      })),
-    });
-  }
-
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2);
+  return JSON.stringify(blocks.length === 1 ? blocks[0] : blocks, null, 2);
 }
+
+// ----------------------------------------------------------------------
+
+export const SOFA2_SEO_SCOPE_BY_MODULE: Record<string, Sofa2SeoScope> = {
+  category: 'category',
+  product: 'product',
+  collection: 'collection',
+  project: 'project',
+  showroom: 'showroom',
+  blog: 'blog',
+  brand: 'brand',
+  sitemap: 'all',
+  robots: 'all',
+  schema: 'all',
+};
