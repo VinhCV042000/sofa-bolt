@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
 import CardHeader from '@mui/material/CardHeader';
 import ButtonBase from '@mui/material/ButtonBase';
-import Grid from '@mui/material/UnstableGrid2';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
