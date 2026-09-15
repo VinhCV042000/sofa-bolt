@@ -83,7 +83,7 @@ export const SOFA20_ADMIN_FUNNEL: Sofa20FunnelStep[] = [
 // ----------------------------------------------------------------------
 
 export const SOFA20_SETTINGS_FIELDS = [
-  { key: 'brand', label: 'Tên thương hiệu', value: 'SOFA20 TROPICAL', helper: 'Hiển thị trên toàn site' },
+  { key: 'brand', label: 'Tên thương hiệu', value: 'SOFA20 IRONWORKS', helper: 'Hiển thị trên toàn site' },
   { key: 'hotline', label: 'Hotline', value: '0800 1919' },
   { key: 'email', label: 'Email hỗ trợ', value: 'atendimento@sofa20.br' },
   { key: 'address', label: 'Trụ sở', value: 'Av. Paulista 1000, São Paulo, SP' },

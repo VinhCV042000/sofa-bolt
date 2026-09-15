@@ -1,4 +1,4 @@
-// SOFA20 ADMIN — Brazilian Tropical Modern theme (jungle green, coral, golden)
+// SOFA20 ADMIN — Brazilian Industrial Forge theme (jungle green, coral, golden)
 // ----------------------------------------------------------------------
 
 export const SOFA20_ADMIN_ROOT = '/sofa20/admin';
@@ -64,10 +64,10 @@ const cmsPage = (slug: string, name: string, path: string) =>
       { key: 'author', label: 'Người sửa' },
     ],
     [
-      { block: 'Hero tropical modern', type: 'Banner', status: 'Đã xuất bản', updated: '14/09/2026', author: 'Carla Mendes' },
-      { block: 'Câu chuyện rừng nhiệt đới', type: 'Rich text', status: 'Đã xuất bản', updated: '10/09/2026', author: 'Rafael Costa' },
+      { block: 'Hero industrial forge', type: 'Banner', status: 'Đã xuất bản', updated: '14/09/2026', author: 'Elias Thornbury' },
+      { block: 'Câu chuyện xưởng đúc thép', type: 'Rich text', status: 'Đã xuất bản', updated: '10/09/2026', author: 'Rafael Costa' },
       { block: 'Bộ sưu tập Atlantic', type: 'Danh sách SP', status: 'Bản nháp', updated: '09/09/2026', author: 'Juliana Silva' },
-      { block: 'Đánh giá khách hàng', type: 'Slider', status: 'Đã xuất bản', updated: '02/09/2026', author: 'Carla Mendes' },
+      { block: 'Đánh giá khách hàng', type: 'Slider', status: 'Đã xuất bản', updated: '02/09/2026', author: 'Elias Thornbury' },
       { block: 'CTA cuối trang', type: 'Banner', status: 'Tạm ẩn', updated: '28/08/2026', author: 'Rafael Costa' },
     ],
     ['Thêm khối', 'Xem trước', 'Xuất bản']
@@ -103,7 +103,7 @@ const CMS_GROUP: Sofa20AdminGroup = {
         { key: 'updated', label: 'Ngày đăng' },
       ],
       [
-        { title: 'Tropical Modern: nội thất rừng nhiệt đới', category: 'Triết lý', status: 'Đã xuất bản', views: 24620, updated: '13/09/2026' },
+        { title: 'Industrial Forge: nội thất xưởng đúc thép', category: 'Triết lý', status: 'Đã xuất bản', views: 24620, updated: '13/09/2026' },
         { title: 'Chọn sofa gỗ teak Brasil', category: 'Tư vấn', status: 'Đã xuất bản', views: 12840, updated: '05/09/2026' },
         { title: 'Xu hướng nội thất nhiệt đới 2026', category: 'Xu hướng', status: 'Chờ duyệt', views: 0, updated: '14/09/2026' },
         { title: 'Bảo quản vải linen vùng nhiệt đới', category: 'Bảo dưỡng', status: 'Bản nháp', views: 0, updated: '12/09/2026' },
@@ -202,7 +202,7 @@ const CMS_GROUP: Sofa20AdminGroup = {
         STATUS_COL,
       ],
       [
-        { page: '/sofa20', title: 'SOFA20 – Tropical Modern nội thất Brasil', length: 54, status: 'Tốt' },
+        { page: '/sofa20', title: 'SOFA20 – Industrial Forge nội thất Brasil', length: 54, status: 'Tốt' },
         { page: '/sofa20/about', title: 'Về chúng tôi | SOFA20', length: 42, status: 'Tốt' },
         { page: '/sofa20/faq', title: '', length: 0, status: 'Thiếu meta' },
         { page: '/sofa20/policy', title: 'Chính sách mua hàng SOFA20', length: 48, status: 'Tốt' },
@@ -266,7 +266,7 @@ const PRODUCT_GROUP: Sofa20AdminGroup = {
         { name: 'Sofa teak thấp', parent: 'Sofa phòng khách', products: 72, status: 'Hiển thị' },
         { name: 'Sofa nhiệt đới', parent: 'Sofa phong cách Brasil', products: 48, status: 'Hiển thị' },
         { name: 'Sofa giường thấp', parent: 'Sofa đa năng', products: 38, status: 'Hiển thị' },
-        { name: 'Armchair tropical', parent: 'Ghế thư giãn', products: 26, status: 'Hiển thị' },
+        { name: 'Armchair công nghiệp', parent: 'Ghế thư giãn', products: 26, status: 'Hiển thị' },
         { name: 'Sofa ngoài trời', parent: 'Sofa outdoor', products: '8', status: 'Ẩn' },
       ],
       ['Thêm danh mục']
@@ -293,7 +293,7 @@ const PRODUCT_GROUP: Sofa20AdminGroup = {
         { sku: 'SF-ATL-01', name: 'Sofa Atlantic teak thấp', category: 'Sofa teak thấp', price: money(28500000), status: 'Đang bán' },
         { sku: 'SF-COR-04', name: 'Sofa Coral linen nhiệt đới', category: 'Sofa vải', price: money(21800000), status: 'Đang bán' },
         { sku: 'SF-JUN-12', name: 'Sofa Jungle xanh ngọc', category: 'Sofa nhiệt đới', price: money(34200000), status: 'Hết hàng' },
-        { sku: 'SF-BED-09', name: 'Sofa giường Tropical', category: 'Sofa giường thấp', price: money(18400000), status: 'Đang bán' },
+        { sku: 'SF-BED-09', name: 'Sofa giường Ironworks', category: 'Sofa giường thấp', price: money(18400000), status: 'Đang bán' },
         { sku: 'SF-GOL-03', name: 'Armchair Golden nỉ', category: 'Ghế thư giãn', price: money(41200000), status: 'Ngừng bán' },
       ],
       ['Thêm sản phẩm', 'Nhập Excel']
@@ -626,7 +626,7 @@ const ORDER_GROUP: Sofa20AdminGroup = {
       [
         { code: 'DT-2609-03', product: 'Sofa Coral linen', type: 'Đổi màu', reason: 'Không hợp nội thất', status: 'Đang thu hồi' },
         { code: 'DT-2609-04', product: 'Sofa Atlantic teak', type: 'Trả hàng', reason: 'Lỗi đường may', status: 'Đã tái nhập' },
-        { code: 'DT-2609-05', product: 'Sofa giường Tropical', type: 'Đổi size', reason: 'Không vừa phòng', status: 'Chờ duyệt' },
+        { code: 'DT-2609-05', product: 'Sofa giường Ironworks', type: 'Đổi size', reason: 'Không vừa phòng', status: 'Chờ duyệt' },
       ],
       ['Tạo yêu cầu']
     ),
@@ -687,7 +687,7 @@ const CRM_GROUP: Sofa20AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Camila Rodrigues', source: 'Instagram Ads', interest: 'Sofa teak thấp', owner: 'Carla', status: 'Lead nóng' },
+        { name: 'Camila Rodrigues', source: 'Instagram Ads', interest: 'Sofa teak thấp', owner: 'Elias', status: 'Lead nóng' },
         { name: 'Pedro Alves', source: 'Google Ads', interest: 'Sofa nhiệt đới', owner: 'Rafael', status: 'Đã liên hệ' },
         { name: 'Beatriz Lima', source: 'Showroom Rio', interest: 'Sofa giường', owner: 'Juliana', status: 'Đang tư vấn' },
         { name: 'Lucas Martins', source: 'WhatsApp', interest: 'Bộ sưu tập Atlantic', owner: 'Chưa gán', status: 'Mới' },
@@ -738,7 +738,7 @@ const CRM_GROUP: Sofa20AdminGroup = {
       ],
       [
         { ticket: 'TK-9234', customer: 'Diego Ferreira', topic: 'Hoàn tiền đơn huỷ', agent: 'Juliana', status: 'Đang xử lý' },
-        { ticket: 'TK-9231', customer: 'Bruno Oliveira', topic: 'Đặt lịch giao lắp', agent: 'Carla', status: 'Đã đóng' },
+        { ticket: 'TK-9231', customer: 'Bruno Oliveira', topic: 'Đặt lịch giao lắp', agent: 'Elias', status: 'Đã đóng' },
         { ticket: 'TK-9228', customer: 'Móveis Brasil Ltda', topic: 'Bảo hành khung teak', agent: 'Rafael', status: 'Chờ khách phản hồi' },
       ],
       ['Tạo ticket']
@@ -850,7 +850,7 @@ const MARKETING_GROUP: Sofa20AdminGroup = {
         STATUS_COL,
       ],
       [
-        { code: 'TROPICAL30', value: 'Giảm 30%', condition: 'Đơn từ 25 triệu', used: 1080, status: 'Đang chạy' },
+        { code: 'IRONWORKS30', value: 'Giảm 30%', condition: 'Đơn từ 25 triệu', used: 1080, status: 'Đang chạy' },
         { code: 'FREESHIP', value: 'Miễn phí giao lắp', condition: 'Nội thành SP/Rio', used: 1420, status: 'Đang chạy' },
         { code: 'VIP6', value: 'Giảm 6 triệu', condition: 'Khách hạng Vàng', used: 128, status: 'Đang chạy' },
         { code: 'AUG25', value: 'Giảm 25%', condition: 'Đơn từ 12 triệu', used: 184, status: 'Hết hạn' },
@@ -877,7 +877,7 @@ const MARKETING_GROUP: Sofa20AdminGroup = {
       ],
       [
         { partner: 'Décor Brasil Review', channel: 'YouTube', orders: 112, commission: money(128000000), status: 'Đang hợp tác' },
-        { partner: 'Tropical Living Blog', channel: 'Blog', orders: 56, commission: money(52400000), status: 'Đang hợp tác' },
+        { partner: 'Ironworks Living Blog', channel: 'Blog', orders: 56, commission: money(52400000), status: 'Đang hợp tác' },
         { partner: 'Décor Tips BR', channel: 'TikTok', orders: 38, commission: money(31800000), status: 'Chờ đối soát' },
       ],
       ['Mời cộng tác viên']
@@ -940,7 +940,7 @@ const ANALYTICS_GROUP: Sofa20AdminGroup = {
         { product: 'Sofa Atlantic teak thấp', sold: 112, revenue: money(3192000000), stock: 16 },
         { product: 'Sofa Coral linen', sold: 96, revenue: money(2092800000), stock: 32 },
         { product: 'Sofa Jungle xanh ngọc', sold: 64, revenue: money(2188800000), stock: 0 },
-        { product: 'Sofa giường Tropical', sold: 58, revenue: money(1067200000), stock: 6 },
+        { product: 'Sofa giường Ironworks', sold: 58, revenue: money(1067200000), stock: 6 },
       ]
     ),
     mod(
@@ -1044,7 +1044,7 @@ const seoPage = (slug: string, name: string, sample: string) =>
       STATUS_COL,
     ],
     [
-      { url: sample, title: `${name} – SOFA20`, keyword: 'sofa tropical', position: 2, status: 'Tốt' },
+      { url: sample, title: `${name} – SOFA20`, keyword: 'sofa công nghiệp', position: 2, status: 'Tốt' },
       { url: `${sample}/atlantic`, title: 'Sofa teak thấp kiểu Brasil', keyword: 'sofa teak', position: 5, status: 'Tốt' },
       { url: `${sample}/jungle`, title: '', keyword: 'sofa nhiệt đới', position: 12, status: 'Thiếu meta' },
       { url: `${sample}/coral`, title: 'Sofa linen nhiệt đới cao cấp', keyword: 'sofa linen', position: 8, status: 'Cần cải thiện' },
@@ -1171,7 +1171,7 @@ const ACCESS_GROUP: Sofa20AdminGroup = {
         STATUS_COL,
       ],
       [
-        { name: 'Carla Mendes', email: 'carla@sofa20.br', role: 'Quản trị hệ thống', last: '15/09/2026 09:18', status: 'Hoạt động' },
+        { name: 'Elias Thornbury', email: 'carla@sofa20.br', role: 'Quản trị hệ thống', last: '15/09/2026 09:18', status: 'Hoạt động' },
         { name: 'Rafael Costa', email: 'rafael@sofa20.br', role: 'Quản lý bán hàng', last: '14/09/2026 17:48', status: 'Hoạt động' },
         { name: 'Juliana Silva', email: 'juliana@sofa20.br', role: 'CSKH', last: '15/09/2026 08:08', status: 'Hoạt động' },
         { name: 'Pedro Alves', email: 'pedro@sofa20.br', role: 'Biên tập nội dung', last: '02/08/2026 10:24', status: 'Bị khoá' },
@@ -1248,7 +1248,7 @@ const ACCESS_GROUP: Sofa20AdminGroup = {
         STATUS_COL,
       ],
       [
-        { time: '15/09 09:18', user: 'Carla Mendes', action: 'Xuất bản trang chủ tropical', ip: '189.45.x.18', status: 'Thành công' },
+        { time: '15/09 09:18', user: 'Elias Thornbury', action: 'Xuất bản trang chủ công nghiệp', ip: '189.45.x.18', status: 'Thành công' },
         { time: '15/09 08:46', user: 'Juliana Silva', action: 'Duyệt hoàn tiền HT-2609-05', ip: '189.45.x.26', status: 'Thành công' },
         { time: '15/09 08:02', user: 'unknown', action: 'Đăng nhập thất bại', ip: '58.61.x.218', status: 'Từ chối' },
         { time: '14/09 22:14', user: 'Rafael Costa', action: 'Sửa bảng giá đại lý', ip: '189.45.x.34', status: 'Thành công' },
@@ -1285,7 +1285,7 @@ export const SOFA20_ADMIN_KPIS = [
 ];
 
 export const SOFA20_ADMIN_ACTIVITIES = [
-  { time: '09:18', text: 'Carla xuất bản lại Trang chủ tropical modern', tag: 'CMS' },
+  { time: '09:18', text: 'Carla xuất bản lại Trang chủ industrial forge', tag: 'CMS' },
   { time: '08:46', text: 'Duyệt hoàn tiền HT-2609-05 (21.8tr)', tag: 'Đơn hàng' },
   { time: '08:08', text: '34 đơn hàng mới chờ xác nhận', tag: 'Đơn hàng' },
   { time: '07:30', text: 'Chiến dịch "Mùa nhiệt đới" đạt 46% tỷ lệ mở', tag: 'Marketing' },
@@ -1315,6 +1315,6 @@ export const SOFA20_ADMIN_CHANNEL_CHART = {
 };
 
 export const SOFA20_ADMIN_TOP_PRODUCTS = {
-  labels: ['Sofa Atlantic 3S', 'Sofa Coral L', 'Armchair Golden', 'Sofa Bed Tropical', 'Daybed Jungle'],
+  labels: ['Sofa Atlantic 3S', 'Sofa Coral L', 'Armchair Golden', 'Sofa Bed Ironworks', 'Daybed Jungle'],
   series: [224, 192, 168, 128, 96],
 };
