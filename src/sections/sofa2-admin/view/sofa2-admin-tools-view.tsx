@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Unstable_Grid2';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
@@ -37,8 +38,8 @@ import { SOFA2_ADMIN_ROOT } from '../sofa2-admin-data';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#7FE3C4';
-const SURFACE = '#3B3357';
+const ACCENT = '#E07A4F';
+const SURFACE = '#3D2817';
 
 type SettingsValues = Record<string, string>;
 type ToggleValues = Record<string, boolean>;
@@ -56,7 +57,7 @@ export function Sofa2AdminToolsView() {
   const { tool: toolSlug } = useParams();
   const tool = findSofa2AdminTool(toolSlug ?? 'reports');
   const [toast, setToast] = useState('');
-  const [period, setPeriod] = useState('12 months');
+  const [period, setPeriod] = useState('12 tháng');
   const [notificationSearch, setNotificationSearch] = useState('');
   const [notificationLevel, setNotificationLevel] = useState('all');
   const [settings, setSettings] = useState<SettingsValues>(() =>
@@ -82,28 +83,28 @@ export function Sofa2AdminToolsView() {
     return <Navigate to={`${SOFA2_ADMIN_ROOT}/tools/reports`} replace />;
   }
 
-  const saveSettings = () => setToast('System settings saved.');
-  const changePassword = () => setToast('Password reset link sent to admin email.');
-  const endSession = () => setToast('Requested logout of other sessions.');
+  const saveSettings = () => setToast('Đã lưu cài đặt hệ thống.');
+  const changePassword = () => setToast('Liên kết đổi mật khẩu đã được gửi đến email quản trị.');
+  const endSession = () => setToast('Đã yêu cầu đăng xuất các phiên khác.');
 
   const renderReports = () => (
     <Stack spacing={3}>
       <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={2}>
         <Box>
-          <Typography variant="h6">Report center</Typography>
+          <Typography variant="h6">Trung tâm báo cáo</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Track business health and make faster decisions.
+            Theo dõi sức khoẻ kinh doanh và đưa ra quyết định nhanh hơn.
           </Typography>
         </Box>
         <TextField
           select
           size="small"
-          label="Period"
+          label="Khoảng thời gian"
           value={period}
           onChange={(event) => setPeriod(event.target.value)}
           sx={{ minWidth: 150 }}
         >
-          {['7 days', '30 days', '12 months'].map((option) => (
+          {['7 ngày', '30 ngày', '12 tháng'].map((option) => (
             <MenuItem key={option} value={option}>
               {option}
             </MenuItem>
@@ -112,10 +113,10 @@ export function Sofa2AdminToolsView() {
       </Stack>
       <Grid container spacing={2}>
         {[
-          { label: 'Net revenue', value: '7,2 tỷ ₫', trend: '+12%', icon: 'solar:wallet-money-bold-duotone' },
-          { label: 'Avg order value', value: '16,8 million ₫', trend: '+4%', icon: 'solar:bill-list-bold-duotone' },
-          { label: 'Repeat customers', value: '64%', trend: '+5%', icon: 'solar:users-group-two-rounded-bold-duotone' },
-          { label: 'Conversion rate', value: '2,48%', trend: '+0,5%', icon: 'solar:graph-up-bold-duotone' },
+          { label: 'Doanh thu thuần', value: '6,8 tỷ ₫', trend: '+11%', icon: 'solar:wallet-money-bold-duotone' },
+          { label: 'Giá trị đơn trung bình', value: '14,2 triệu ₫', trend: '+6%', icon: 'solar:bill-list-bold-duotone' },
+          { label: 'Khách quay lại', value: '62%', trend: '+4%', icon: 'solar:users-group-two-rounded-bold-duotone' },
+          { label: 'Tỷ lệ chuyển đổi', value: '2,04%', trend: '+0,3%', icon: 'solar:graph-up-bold-duotone' },
         ].map((item) => (
           <Grid key={item.label} xs={12} sm={6} md={3}>
             <Card sx={{ p: 2.5, height: 1 }}>
@@ -128,7 +129,7 @@ export function Sofa2AdminToolsView() {
                     {item.value}
                   </Typography>
                   <Typography variant="caption" sx={{ color: 'success.main', fontWeight: 700 }}>
-                    {item.trend} vs previous
+                    {item.trend} so với kỳ trước
                   </Typography>
                 </Box>
                 <Box sx={{ color: ACCENT }}>
@@ -155,8 +156,8 @@ export function Sofa2AdminToolsView() {
     <Stack spacing={3}>
       <Card>
         <CardHeader
-          title="Operations info"
-          subheader="Used across the website, invoices and customer service."
+          title="Thông tin vận hành"
+          subheader="Các thông tin được dùng trong website, hoá đơn và chăm sóc khách hàng."
         />
         <Divider />
         <Grid container spacing={2.5} sx={{ p: 3 }}>
@@ -176,7 +177,7 @@ export function Sofa2AdminToolsView() {
         </Grid>
       </Card>
       <Card>
-        <CardHeader title="System features" subheader="Toggle customer-facing functionality." />
+        <CardHeader title="Tính năng hệ thống" subheader="Bật hoặc tắt các chức năng đang phục vụ khách hàng." />
         <Divider />
         <Grid container spacing={1} sx={{ p: 2.5 }}>
           {SOFA2_SETTINGS_TOGGLES.map((item) => (
@@ -205,7 +206,7 @@ export function Sofa2AdminToolsView() {
         </Grid>
         <Stack direction="row" justifyContent="flex-end" sx={{ p: 2.5, pt: 0 }}>
           <Button variant="contained" onClick={saveSettings} startIcon={<Iconify icon="solar:diskette-bold-duotone" />}>
-            Save settings
+            Lưu cài đặt
           </Button>
         </Stack>
       </Card>
@@ -214,14 +215,14 @@ export function Sofa2AdminToolsView() {
 
   const renderNotifications = () => (
     <Card>
-      <CardHeader title="Notifications & Log" subheader="Events that need your attention." />
+      <CardHeader title="Thông báo & Nhật ký" subheader="Các sự kiện cần chú ý trong hệ thống." />
       <Divider />
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ p: 2.5 }}>
         <TextField
           size="small"
           value={notificationSearch}
           onChange={(event) => setNotificationSearch(event.target.value)}
-          placeholder="Search notifications..."
+          placeholder="Tìm thông báo..."
           sx={{ flex: 1 }}
           InputProps={{
             startAdornment: (
@@ -232,9 +233,9 @@ export function Sofa2AdminToolsView() {
           }}
         />
         <Tabs value={notificationLevel} onChange={(_, value) => setNotificationLevel(value)} variant="scrollable">
-          <Tab value="all" label="All" />
-          <Tab value="warning" label="Warnings" />
-          <Tab value="error" label="Security" />
+          <Tab value="all" label="Tất cả" />
+          <Tab value="warning" label="Cảnh báo" />
+          <Tab value="error" label="Bảo mật" />
         </Tabs>
       </Stack>
       <Stack divider={<Divider />}>
@@ -249,7 +250,7 @@ export function Sofa2AdminToolsView() {
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <Stack direction="row" alignItems="center" spacing={1} flexWrap="wrap" useFlexGap>
                 <Typography variant="subtitle2">{item.type}</Typography>
-                <Chip size="small" label={item.level === 'error' ? 'High priority' : item.level === 'warning' ? 'Attention' : 'Logged'} color={toneColor(item.level) as any} variant="soft" />
+                <Chip size="small" label={item.level === 'error' ? 'Ưu tiên cao' : item.level === 'warning' ? 'Cần chú ý' : 'Đã ghi nhận'} color={toneColor(item.level) as any} variant="soft" />
               </Stack>
               <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
                 {item.text}
@@ -262,7 +263,7 @@ export function Sofa2AdminToolsView() {
         ))}
         {!notifications.length && (
           <Typography sx={{ p: 5, textAlign: 'center', color: 'text.secondary' }}>
-            No matching notifications.
+            Không có thông báo phù hợp.
           </Typography>
         )}
       </Stack>
@@ -275,7 +276,7 @@ export function Sofa2AdminToolsView() {
         <Card sx={{ p: 3, height: 1 }}>
           <Stack alignItems="center" spacing={1.5} sx={{ textAlign: 'center' }}>
             <Box sx={{ width: 84, height: 84, borderRadius: '50%', display: 'grid', placeItems: 'center', bgcolor: 'warning.lighter', color: ACCENT }}>
-              <Typography variant="h3">EV</Typography>
+              <Typography variant="h3">NA</Typography>
             </Box>
             <Typography variant="h6">{SOFA2_PROFILE.name}</Typography>
             <Chip label={SOFA2_PROFILE.role} color="warning" variant="soft" />
@@ -284,9 +285,9 @@ export function Sofa2AdminToolsView() {
           <Divider sx={{ my: 3 }} />
           <Stack spacing={1.5}>
             {[
-              ['Phone', SOFA2_PROFILE.phone],
-              ['Team', SOFA2_PROFILE.team],
-              ['Joined', SOFA2_PROFILE.joined],
+              ['Số điện thoại', SOFA2_PROFILE.phone],
+              ['Bộ phận', SOFA2_PROFILE.team],
+              ['Tham gia từ', SOFA2_PROFILE.joined],
             ].map(([label, value]) => (
               <Stack key={label} direction="row" justifyContent="space-between" spacing={2}>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>{label}</Typography>
@@ -296,10 +297,10 @@ export function Sofa2AdminToolsView() {
           </Stack>
           <Stack spacing={1.5} sx={{ mt: 3 }}>
             <Button variant="outlined" onClick={changePassword} startIcon={<Iconify icon="solar:lock-keyhole-minimalistic-bold-duotone" />}>
-              Change password
+              Đổi mật khẩu
             </Button>
             <Button color="error" variant="outlined" onClick={endSession} startIcon={<Iconify icon="solar:logout-3-bold-duotone" />}>
-              Logout other sessions
+              Đăng xuất phiên khác
             </Button>
           </Stack>
         </Card>
@@ -307,7 +308,7 @@ export function Sofa2AdminToolsView() {
       <Grid xs={12} md={7}>
         <Stack spacing={3}>
           <Card>
-            <CardHeader title="Access permissions" subheader="Business areas this account can manage." />
+            <CardHeader title="Quyền truy cập" subheader="Các nhóm nghiệp vụ tài khoản này có thể quản lý." />
             <Divider />
             <Stack direction="row" flexWrap="wrap" useFlexGap gap={1} sx={{ p: 3 }}>
               {SOFA2_PROFILE.permissions.map((permission) => (
@@ -316,7 +317,7 @@ export function Sofa2AdminToolsView() {
             </Stack>
           </Card>
           <Card>
-            <CardHeader title="Login sessions" subheader="Devices that have accessed this admin account." />
+            <CardHeader title="Phiên đăng nhập" subheader="Thiết bị đã truy cập tài khoản quản trị." />
             <Divider />
             <Stack divider={<Divider />}>
               {SOFA2_PROFILE.sessions.map((session) => (
@@ -326,7 +327,7 @@ export function Sofa2AdminToolsView() {
                     <Typography variant="subtitle2">{session.device}</Typography>
                     <Typography variant="caption" sx={{ color: 'text.secondary' }}>{session.place}</Typography>
                   </Box>
-                  <Typography variant="caption" sx={{ color: session.time === 'Active now' ? 'success.main' : 'text.secondary' }}>{session.time}</Typography>
+                  <Typography variant="caption" sx={{ color: session.time === 'Đang hoạt động' ? 'success.main' : 'text.secondary' }}>{session.time}</Typography>
                 </Stack>
               ))}
             </Stack>
@@ -348,13 +349,13 @@ export function Sofa2AdminToolsView() {
   return (
     <>
       <Helmet>
-        <title>{`${tool.name} | Clay Pop Admin`}</title>
+        <title>{`${tool.name} | Quản trị Sofa2`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <Sofa2AdminLayout
         title={tool.name}
         subtitle={tool.description}
-        breadcrumb={['Utilities', tool.name]}
+        breadcrumb={['Tiện ích', tool.name]}
       >
         <Stack spacing={3}>
           <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', pb: 0.5 }}>
