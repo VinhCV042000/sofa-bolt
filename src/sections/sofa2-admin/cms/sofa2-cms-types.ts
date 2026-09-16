@@ -2,7 +2,7 @@
 // Kiểu dữ liệu CMS cho sofa2
 // ----------------------------------------------------------------------
 
-export const CMS_STATUSES = ['Đã xuất bản', 'Bản nháp', 'Tạm ẩn'] as const;
+export const CMS_STATUSES = ['Đã xuất bản', 'Bản nháp', 'Chờ duyệt', 'Tạm ẩn'] as const;
 
 export type CmsStatus = (typeof CMS_STATUSES)[number];
 
