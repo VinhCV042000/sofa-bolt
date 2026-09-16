@@ -30,7 +30,7 @@ import {
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, ACCENT_DEEP, SURFACE } = SOFA2_ADMIN_THEME;
 
 export function Sofa2AdminDashboardView() {
   const adminRoot = SOFA2_ADMIN_ROOT;
@@ -39,13 +39,13 @@ export function Sofa2AdminDashboardView() {
   return (
     <>
       <Helmet>
-        <title>{`Admin Center | ${brandName}`}</title>
+        <title>{`Trung tâm quản trị | ${brandName}`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <Sofa2AdminLayout
-        title="System overview"
-        subtitle="Unified dashboard for all operations: content, products, warehouse, orders, CRM, marketing, analytics, SEO and access control."
+        title="Tổng quan hệ thống"
+        subtitle="Bảng điều khiển tổng hợp toàn bộ nghiệp vụ: nội dung, sản phẩm, kho, đơn hàng, CRM, marketing, phân tích, SEO và phân quyền."
       >
         <Grid container spacing={3}>
           {SOFA2_ADMIN_KPIS.map((kpi) => (
@@ -87,7 +87,7 @@ export function Sofa2AdminDashboardView() {
           <Grid xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Typography variant="h6" sx={{ mb: 2.5 }}>
-                Admin module groups
+                Nhóm chức năng quản trị
               </Typography>
               <Grid container spacing={2}>
                 {SOFA2_ADMIN_GROUPS.map((group) => (
@@ -103,7 +103,7 @@ export function Sofa2AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha('#607D8B', 0.2)}`,
+                        border: `1px solid ${alpha(ACCENT_DEEP, 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -117,7 +117,7 @@ export function Sofa2AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: '#2B2440',
+                          color: ACCENT_DEEP,
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
@@ -138,7 +138,7 @@ export function Sofa2AdminDashboardView() {
           <Grid xs={12} md={4}>
             <Card sx={{ p: 3, height: 1 }}>
               <Typography variant="h6" sx={{ mb: 2.5 }}>
-                Recent activity
+                Hoạt động gần đây
               </Typography>
               <Stack spacing={2.5}>
                 {SOFA2_ADMIN_ACTIVITIES.map((item) => (
@@ -165,11 +165,11 @@ export function Sofa2AdminDashboardView() {
 
               <Box sx={{ mt: 4 }}>
                 <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-                  <Typography variant="body2">Monthly revenue target</Typography>
-                  <Typography variant="subtitle2">76%</Typography>
+                  <Typography variant="body2">Mục tiêu doanh thu tháng</Typography>
+                  <Typography variant="subtitle2">72%</Typography>
                 </Stack>
                 <LinearProgress
-                  value={76}
+                  value={72}
                   variant="determinate"
                   sx={{ height: 8, borderRadius: 1, [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT } }}
                 />

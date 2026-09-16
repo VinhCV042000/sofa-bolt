@@ -37,14 +37,14 @@ import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../s
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, ACCENT_DEEP, SURFACE } = SOFA2_ADMIN_THEME;
 
 const statusColor = (value: string) => {
   const v = value.toLowerCase();
-  if (/(published|completed|success|active|approved|in stock|delivered|refunded|re-stocked|visible)/.test(v))
+  if (/(xuất bản|hoàn tất|thành công|hoạt động|đã duyệt|còn hàng|đang chạy|đã giao|đã hoàn)/.test(v))
     return 'success';
-  if (/(pending|processing|draft|review|new|low stock|collecting|scheduled|in transit|awaiting)/.test(v)) return 'warning';
-  if (/(denied|cancel|cancelled|error|out of stock|hidden|expired|failed|locked|discontinued)/.test(v)) return 'error';
+  if (/(chờ|đang xử lý|nháp|xem xét|mới)/.test(v)) return 'warning';
+  if (/(từ chối|hủy|huỷ|lỗi|hết hàng|tạm ẩn|quá hạn|bị khoá)/.test(v)) return 'error';
   return 'default';
 };
 
@@ -58,7 +58,6 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 
 export function Sofa2AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
-  const adminRoot = SOFA2_ADMIN_ROOT;
 
   const found = useMemo(() => findSofa2AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
 
@@ -89,7 +88,7 @@ export function Sofa2AdminModuleView() {
 
   if (!found || !group || !module) {
     const first = SOFA2_ADMIN_GROUPS[0];
-    return <Navigate to={`${adminRoot}/${first.slug}/${first.modules[0].slug}`} replace />;
+    return <Navigate to={`${SOFA2_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
   }
 
   const filtered = rows
@@ -124,10 +123,10 @@ export function Sofa2AdminModuleView() {
 
     if (form.mode === 'create') {
       createRow(clean);
-      setToast('New record added.');
+      setToast('Đã thêm bản ghi mới.');
     } else {
       updateRow(form.index, clean);
-      setToast('Record updated.');
+      setToast('Đã cập nhật bản ghi.');
     }
     setForm((prev) => ({ ...prev, open: false }));
   };
@@ -136,14 +135,14 @@ export function Sofa2AdminModuleView() {
     if (confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
-      setToast('Record deleted.');
+      setToast('Đã xoá bản ghi.');
     }
     setConfirm({ open: false, index: null });
   };
 
   const doBulkDelete = () => {
     deleteRows(selected);
-    setToast(`${selected.length} records deleted.`);
+    setToast(`Đã xoá ${selected.length} bản ghi.`);
     setSelected([]);
   };
 
@@ -169,13 +168,13 @@ export function Sofa2AdminModuleView() {
     a.download = `${group.slug}-${module.slug}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    setToast('CSV exported.');
+    setToast('Đã xuất dữ liệu CSV.');
   };
 
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | ${group.name} - Clay Pop Admin`}</title>
+        <title>{`${module.name} | ${group.name} - Quản trị Sofa2`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -222,7 +221,7 @@ export function Sofa2AdminModuleView() {
                     setSearch(e.target.value);
                     setPage(0);
                   }}
-                  placeholder={`Search ${module.name.toLowerCase()}...`}
+                  placeholder={`Tìm trong ${module.name.toLowerCase()}...`}
                   sx={{ flex: 1, maxWidth: { md: 360 } }}
                   InputProps={{
                     startAdornment: (
@@ -242,7 +241,7 @@ export function Sofa2AdminModuleView() {
                       onClick={doBulkDelete}
                       startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
                     >
-                      Delete ({selected.length})
+                      Xoá ({selected.length})
                     </Button>
                   )}
                   <Button
@@ -252,11 +251,11 @@ export function Sofa2AdminModuleView() {
                     onClick={() => {
                       resetRows(module.rows);
                       setSelected([]);
-                      setToast('Data restored to defaults.');
+                      setToast('Đã khôi phục dữ liệu gốc.');
                     }}
                     startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
                   >
-                    Restore
+                    Khôi phục
                   </Button>
                   <Button
                     size="small"
@@ -265,7 +264,7 @@ export function Sofa2AdminModuleView() {
                     onClick={exportCsv}
                     startIcon={<Iconify icon="solar:export-bold-duotone" />}
                   >
-                    Export CSV
+                    Xuất CSV
                   </Button>
                   <Button
                     size="small"
@@ -275,12 +274,12 @@ export function Sofa2AdminModuleView() {
                     sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
                     startIcon={<Iconify icon="mingcute:add-line" />}
                   >
-                    {module.actions?.[0] ?? 'Add new'}
+                    {module.actions?.[0] ?? 'Thêm mới'}
                   </Button>
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha('#7FE3C4', 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha(ACCENT_DEEP, 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -290,7 +289,7 @@ export function Sofa2AdminModuleView() {
                       {module.columns.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                      <TableCell align="right">Actions</TableCell>
+                      <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -328,17 +327,17 @@ export function Sofa2AdminModuleView() {
                         })}
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            <Tooltip title="View">
+                            <Tooltip title="Xem">
                               <IconButton size="small" onClick={() => setDetail(row)}>
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Edit">
+                            <Tooltip title="Sửa">
                               <IconButton size="small" onClick={() => openEdit(index)}>
                                 <Iconify icon="solar:pen-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Delete">
+                            <Tooltip title="Xoá">
                               <IconButton
                                 size="small"
                                 color="error"
@@ -355,7 +354,7 @@ export function Sofa2AdminModuleView() {
                       <TableRow>
                         <TableCell colSpan={module.columns.length + 2} align="center" sx={{ py: 6 }}>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            No matching records found.
+                            Không tìm thấy dữ liệu phù hợp.
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -382,12 +381,12 @@ export function Sofa2AdminModuleView() {
                     setRowsPerPage(parseInt(e.target.value, 10));
                     setPage(0);
                   }}
-                  labelRowsPerPage="Rows:"
+                  labelRowsPerPage="Số dòng:"
                 />
                 <Chip
                   size="small"
-                  label={`Group: ${group.name}`}
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#2B2440' }}
+                  label={`Nhóm: ${group.name}`}
+                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: ACCENT_DEEP }}
                 />
               </Stack>
             </Card>
@@ -395,7 +394,7 @@ export function Sofa2AdminModuleView() {
         </Grid>
       </Sofa2AdminLayout>
 
-      {/* Add / edit form */}
+      {/* Form thêm / sửa */}
       <Dialog
         fullWidth
         maxWidth="sm"
@@ -403,7 +402,7 @@ export function Sofa2AdminModuleView() {
         onClose={() => setForm((prev) => ({ ...prev, open: false }))}
       >
         <DialogTitle>
-          {form.mode === 'create' ? `Add new — ${module.name}` : `Edit — ${module.name}`}
+          {form.mode === 'create' ? `Thêm mới — ${module.name}` : `Chỉnh sửa — ${module.name}`}
         </DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2.5} sx={{ pt: 1 }}>
@@ -426,7 +425,7 @@ export function Sofa2AdminModuleView() {
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={() => setForm((prev) => ({ ...prev, open: false }))}>
-            Cancel
+            Huỷ
           </Button>
           <Button
             variant="contained"
@@ -434,14 +433,14 @@ export function Sofa2AdminModuleView() {
             onClick={submitForm}
             sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
           >
-            {form.mode === 'create' ? 'Add new' : 'Save changes'}
+            {form.mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Detail view */}
+      {/* Xem chi tiết */}
       <Dialog fullWidth maxWidth="sm" open={!!detail} onClose={() => setDetail(null)}>
-        <DialogTitle>{`Detail — ${module.name}`}</DialogTitle>
+        <DialogTitle>{`Chi tiết — ${module.name}`}</DialogTitle>
         <DialogContent dividers>
           <Stack spacing={1.5}>
             {module.columns.map((col) => (
@@ -458,26 +457,26 @@ export function Sofa2AdminModuleView() {
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={() => setDetail(null)}>
-            Close
+            Đóng
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Delete confirmation */}
+      {/* Xác nhận xoá */}
       <Dialog open={confirm.open} onClose={() => setConfirm({ open: false, index: null })}>
-        <DialogTitle>Delete record?</DialogTitle>
+        <DialogTitle>Xoá bản ghi?</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            This record will be removed from {module.name.toLowerCase()}. You can click "Restore" to
-            reload the default data.
+            Bản ghi sẽ bị xoá khỏi danh sách {module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục"
+            để nạp lại dữ liệu gốc.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={() => setConfirm({ open: false, index: null })}>
-            Cancel
+            Huỷ
           </Button>
           <Button variant="contained" color="error" onClick={doDelete}>
-            Delete
+            Xoá
           </Button>
         </DialogActions>
       </Dialog>
