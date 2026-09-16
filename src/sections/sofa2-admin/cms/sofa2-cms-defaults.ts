@@ -245,7 +245,7 @@ export const SOFA2_CMS_DEFAULTS: Sofa2CmsState = {
       cover: '',
       excerpt: 'Màu đất, vật liệu tái chế và module linh hoạt lên ngôi.',
       content: 'Năm 2026 đánh dấu sự trở lại của vật liệu tự nhiên và thiết kế module.',
-      status: 'Chờ duyệt' as never,
+      status: 'Chờ duyệt',
       updated: '14/09/2026',
       author: 'Đức Anh',
     },
