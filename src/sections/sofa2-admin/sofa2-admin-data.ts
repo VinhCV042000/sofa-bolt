@@ -1359,6 +1359,240 @@ const ACCESS_GROUP: Sofa2AdminGroup = {
   ],
 };
 
+// ----------------------------------------------------------------------
+// ĐẠI LÝ B2B
+// ----------------------------------------------------------------------
+
+const B2B_GROUP: Sofa2AdminGroup = {
+  slug: 'b2b',
+  name: 'Đại lý B2B',
+  icon: 'solar:hand-shake-bold-duotone',
+  modules: [
+    mod(
+      'cooperation',
+      'Giới thiệu hợp tác',
+      'Nội dung trang giới thiệu chương trình hợp tác đại lý, quyền lợi và điều kiện.',
+      'solar:hand-stars-bold-duotone',
+      [
+        { label: 'Lượt xem tháng', value: '3.2K', trend: '+18%' },
+        { label: 'Đăng ký nhận tư vấn', value: '48', trend: '+12' },
+        { label: 'Tỷ lệ chuyển đổi', value: '4.1%', trend: '+0.6%' },
+        { label: 'Cập nhật cuối', value: '28/09' },
+      ],
+      [
+        { key: 'block', label: 'Khối nội dung' },
+        { key: 'type', label: 'Loại' },
+        STATUS_COL,
+        { key: 'updated', label: 'Cập nhật' },
+        { key: 'author', label: 'Người sửa' },
+      ],
+      [
+        { block: 'Hero — Hợp tác cùng LUXE', type: 'Banner', status: 'Đã xuất bản', updated: '28/09/2026', author: 'Minh Anh' },
+        { block: 'Quyền lợi đại lý', type: 'Rich text', status: 'Đã xuất bản', updated: '20/09/2026', author: 'Thu Hà' },
+        { block: 'Điều kiện hợp tác', type: 'Rich text', status: 'Đã xuất bản', updated: '18/09/2026', author: 'Đức Anh' },
+        { block: 'Quy trình đăng ký', type: 'Danh sách bước', status: 'Bản nháp', updated: '15/09/2026', author: 'Minh Anh' },
+        { block: 'CTA — Đăng ký ngay', type: 'Banner', status: 'Đã xuất bản', updated: '12/09/2026', author: 'Thu Hà' },
+      ],
+      ['Thêm khối', 'Xem trước', 'Xuất bản']
+    ),
+    mod(
+      'distributors',
+      'Đại lý phân phối',
+      'Danh sách đại lý phân phối cấp 1, cấp 2 — vùng phụ trách và doanh số.',
+      'solar:graph-up-bold-duotone',
+      [
+        { label: 'Đại lý hoạt động', value: '46' },
+        { label: 'Tỉnh/thành phủ sóng', value: '38' },
+        { label: 'Doanh số tháng', value: '1.8 tỷ', trend: '+9%' },
+        { label: 'Đại lý mới', value: '4', trend: '+4' },
+      ],
+      [
+        { key: 'name', label: 'Tên đại lý' },
+        { key: 'level', label: 'Cấp' },
+        { key: 'region', label: 'Vùng' },
+        { key: 'revenue', label: 'Doanh số tháng', type: 'money' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Nội thất Việt', level: 'Cấp 1', region: 'Miền Bắc', revenue: money(420000000), status: 'Hoạt động' },
+        { name: 'Decor Home HCM', level: 'Cấp 1', region: 'Miền Nam', revenue: money(380000000), status: 'Hoạt động' },
+        { name: 'Living Space ĐN', level: 'Cấp 2', region: 'Miền Trung', revenue: money(124000000), status: 'Hoạt động' },
+        { name: 'Home Mart Hà Nội', level: 'Cấp 2', region: 'Miền Bắc', revenue: money(96000000), status: 'Tạm ngưng' },
+        { name: 'Sofa Plus Cần Thơ', level: 'Cấp 2', region: 'Tây Nam Bộ', revenue: money(72000000), status: 'Hoạt động' },
+      ],
+      ['Thêm đại lý', 'Phân vùng']
+    ),
+    mod(
+      'wholesalers',
+      'Nhà phân phối',
+      'Đối tác nhà phân phối khu vực, chính sách chiết khấu và hợp đồng.',
+      'solar:box-bold-duotone',
+      [
+        { label: 'Nhà phân phối', value: '12' },
+        { label: 'Hợp đồng đang chạy', value: '9' },
+        { label: 'Giá trị hợp đồng', value: '4.2 tỷ', trend: '+14%' },
+        { label: 'Sắp hết hạn', value: '2' },
+      ],
+      [
+        { key: 'name', label: 'Nhà phân phối' },
+        { key: 'region', label: 'Khu vực' },
+        { key: 'discount', label: 'Chiết khấu' },
+        { key: 'contract', label: 'Hợp đồng' },
+        { key: 'expires', label: 'Hết hạn' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Furniture Distribution JSC', region: 'Toàn quốc', discount: '32%', contract: 'HD-NPP-2026-01', expires: '31/12/2026', status: 'Đang chạy' },
+        { name: 'Home Supply North', region: 'Miền Bắc', discount: '28%', contract: 'HD-NPP-2026-02', expires: '30/06/2027', status: 'Đang chạy' },
+        { name: 'Decor Distribute South', region: 'Miền Nam', discount: '30%', contract: 'HD-NPP-2026-03', expires: '15/11/2026', status: 'Sắp hết hạn' },
+        { name: 'Mid Furniture Co.', region: 'Miền Trung', discount: '25%', contract: 'HD-NPP-2025-08', expires: '30/09/2026', status: 'Sắp hết hạn' },
+        { name: 'Vina Home Supply', region: 'Toàn quốc', discount: '22%', contract: 'HD-NPP-2026-04', expires: '31/12/2026', status: 'Đang chạy' },
+      ],
+      ['Thêm NPP', 'Gia hạn HĐ']
+    ),
+    mod(
+      'registration',
+      'Đăng ký đại lý',
+      'Hồ sơ đăng ký đại lý mới — duyệt/từ chối, tiến trình xét duyệt.',
+      'solar:clipboard-add-bold-duotone',
+      [
+        { label: 'Đăng ký chờ duyệt', value: '8' },
+        { label: 'Đã duyệt tháng', value: '4', trend: '+4' },
+        { label: 'Từ chối', value: '2' },
+        { label: 'TB xử lý', value: '2.1 ngày' },
+      ],
+      [
+        { key: 'code', label: 'Mã hồ sơ' },
+        { key: 'company', label: 'Công ty' },
+        { key: 'contact', label: 'Người liên hệ' },
+        { key: 'phone', label: 'Điện thoại' },
+        { key: 'region', label: 'Khu vực' },
+        { key: 'submitted', label: 'Ngày nộp' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'DK-2610-08', company: 'Blue Interior Co.', contact: 'Nguyễn Hoàng', phone: '091 222 333', region: 'TP.HCM', submitted: '06/10/2026', status: 'Chờ duyệt' },
+        { code: 'DK-2610-07', company: 'Green Living Mart', contact: 'Trần Thanh', phone: '098 444 555', region: 'Hà Nội', submitted: '05/10/2026', status: 'Chờ duyệt' },
+        { code: 'DK-2610-06', company: 'Cozy Home Đà Nẵng', contact: 'Lê Thị Lan', phone: '090 666 777', region: 'Đà Nẵng', submitted: '03/10/2026', status: 'Đã duyệt' },
+        { code: 'DK-2610-05', company: 'Prime Furniture', contact: 'Phạm Nam', phone: '097 888 999', region: 'Cần Thơ', submitted: '01/10/2026', status: 'Từ chối' },
+        { code: 'DK-2610-04', company: 'Elegant Decor', contact: 'Vũ My', phone: '093 111 222', region: 'Bình Dương', submitted: '28/09/2026', status: 'Đã duyệt' },
+      ],
+      ['Duyệt hồ sơ', 'Gửi hợp đồng']
+    ),
+    mod(
+      'project-quotes',
+      'Báo giá dự án',
+      'Báo giá cho dự án nội thất B2B — căn hộ, khách sạn, văn phòng, resort.',
+      'solar:document-text-bold-duotone',
+      [
+        { label: 'Báo giá tháng', value: '18', trend: '+6' },
+        { label: 'Đã chuyển đổi', value: '7' },
+        { label: 'Giá trị TB/dự án', value: '84 tr' },
+        { label: 'Tỷ lệ chốt', value: '38.9%', trend: '+4.2%' },
+      ],
+      [
+        { key: 'code', label: 'Mã báo giá' },
+        { key: 'project', label: 'Dự án' },
+        { key: 'client', label: 'Khách hàng' },
+        { key: 'items', label: 'Số SP', type: 'number' },
+        { key: 'value', label: 'Giá trị', type: 'money' },
+        { key: 'created', label: 'Ngày báo giá' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'BQ-2610-12', project: 'Khách sạn Marriott HN', client: 'Marriott Group', items: 24, value: money(412000000), created: '06/10/2026', status: 'Chờ phản hồi' },
+        { code: 'BQ-2610-11', project: 'Văn phòng Vingroup', client: 'Vingroup JSC', items: 18, value: money(286000000), created: '04/10/2026', status: 'Đã chốt' },
+        { code: 'BQ-2610-10', project: 'Resort InterContinental', client: 'IHG Group', items: 32, value: money(548000000), created: '02/10/2026', status: 'Đã gửi' },
+        { code: 'BQ-2610-09', project: 'Căn hộ Vinhomes GR', client: 'Vinhomes', items: 120, value: money(840000000), created: '28/09/2026', status: 'Đã chốt' },
+        { code: 'BQ-2610-08', project: 'Showroom BMW', client: 'BMW Vietnam', items: 8, value: money(96000000), created: '25/09/2026', status: 'Từ chối' },
+      ],
+      ['Tạo báo giá', 'Xuất PDF']
+    ),
+    mod(
+      'oem',
+      'Yêu cầu sản xuất OEM',
+      'Yêu cầu sản xuất OEM/ODM cho đối tác thương hiệu — thiết kế, vật liệu, tiến độ.',
+      'solar:settings-bold-duotone',
+      [
+        { label: 'Yêu cầu đang chạy', value: '6' },
+        { label: 'Hoàn tất tháng', value: '3', trend: '+3' },
+        { label: 'Sản lượng TB', value: '120 SP' },
+        { label: 'Đúng tiến độ', value: '92%' },
+      ],
+      [
+        { key: 'code', label: 'Mã OEM' },
+        { key: 'partner', label: 'Đối tác' },
+        { key: 'product', label: 'Sản phẩm' },
+        { key: 'quantity', label: 'Số lượng', type: 'number' },
+        { key: 'deadline', label: 'Hạn giao' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'OEM-2610-05', partner: 'Nordic Home SE', product: 'Sofa Stockholm 3S', quantity: 80, deadline: '20/11/2026', status: 'Đang sản xuất' },
+        { code: 'OEM-2610-04', partner: 'Tokyo Living JP', product: 'Sofa Kyoto Đơn', quantity: 120, deadline: '15/11/2026', status: 'Đang sản xuất' },
+        { code: 'OEM-2610-03', partner: 'Decor World US', product: 'Sofa Manhattan Góc', quantity: 40, deadline: '30/10/2026', status: 'Hoàn tất' },
+        { code: 'OEM-2610-02', partner: 'Home Europe FR', product: 'Sofa Paris Văng', quantity: 200, deadline: '10/12/2026', status: 'Chờ duyệt' },
+        { code: 'OEM-2610-01', partner: 'Blue Interior KR', product: 'Sofa Seoul Modular', quantity: 60, deadline: '05/11/2026', status: 'Đang sản xuất' },
+      ],
+      ['Tạo yêu cầu', 'Theo dõi tiến độ']
+    ),
+    mod(
+      'contractors',
+      'Đối tác thi công',
+      'Đối tác thi công nội thất, lắp đặt dự án — đánh giá và hợp đồng.',
+      'solar:hammer-bold-duotone',
+      [
+        { label: 'Đối tác thi công', value: '14' },
+        { label: 'Đang triển khai', value: '6' },
+        { label: 'Đánh giá TB', value: '4.6/5' },
+        { label: 'Dự án hoàn thành', value: '52' },
+      ],
+      [
+        { key: 'name', label: 'Đối tác' },
+        { key: 'specialty', label: 'Chuyên môn' },
+        { key: 'projects', label: 'Dự án đang chạy', type: 'number' },
+        { key: 'rating', label: 'Đánh giá' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Thi công Nội thất Hoàng Gia', specialty: 'Căn hộ & Biệt thự', projects: 3, rating: '4.8/5', status: 'Đang hợp tác' },
+        { name: 'BuildPro Construction', specialty: 'Khách sạn & Resort', projects: 2, rating: '4.6/5', status: 'Đang hợp tác' },
+        { name: 'Vina Interior Team', specialty: 'Văn phòng & Showroom', projects: 1, rating: '4.4/5', status: 'Đang hợp tác' },
+        { name: 'Decor Install Pro', specialty: 'Toàn quốc — lắp đặt', projects: 0, rating: '4.2/5', status: 'Tạm ngưng' },
+        { name: 'Master Craft Team', specialty: 'Dự án cao cấp', projects: 2, rating: '4.9/5', status: 'Đang hợp tác' },
+      ],
+      ['Thêm đối tác', 'Gán dự án']
+    ),
+    mod(
+      'policies',
+      'Chính sách đại lý',
+      'Chính sách chiết khấu, hoa hồng, hỗ trợ marketing và hậu mãi cho đại lý.',
+      'solar:document-text-bold-duotone',
+      [
+        { label: 'Chính sách đang chạy', value: '5' },
+        { label: 'Bản nháp', value: '2' },
+        { label: 'Đại lý áp dụng', value: '46' },
+        { label: 'Cập nhật cuối', value: '20/09' },
+      ],
+      [
+        { key: 'title', label: 'Chính sách' },
+        { key: 'type', label: 'Loại' },
+        { key: 'applies', label: 'Áp dụng' },
+        { key: 'updated', label: 'Cập nhật' },
+        STATUS_COL,
+      ],
+      [
+        { title: 'Chiết khấu cấp 1 — 32%', type: 'Chiết khấu', applies: 'Đại lý cấp 1', updated: '20/09/2026', status: 'Đang chạy' },
+        { title: 'Chiết khấu cấp 2 — 25%', type: 'Chiết khấu', applies: 'Đại lý cấp 2', updated: '20/09/2026', status: 'Đang chạy' },
+        { title: 'Hoa hồng giới thiệu — 3%', type: 'Hoa hồng', applies: 'Tất cả đại lý', updated: '15/09/2026', status: 'Đang chạy' },
+        { title: 'Hỗ trợ marketing开幕', type: 'Hỗ trợ MKT', applies: 'Đại lý mới', updated: '10/09/2026', status: 'Bản nháp' },
+        { title: 'Bảo hành mở rộng — 12 năm', type: 'Hậu mãi', applies: 'Đại lý cấp 1', updated: '05/09/2026', status: 'Đang chạy' },
+      ],
+      ['Thêm chính sách', 'Xuất bản']
+    ),
+  ],
+};
+
 export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   CMS_GROUP,
   PRODUCT_GROUP,
@@ -1369,6 +1603,7 @@ export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   ANALYTICS_GROUP,
   SEO_GROUP,
   ACCESS_GROUP,
+  B2B_GROUP,
 ];
 
 export function findSofa2AdminModule(groupSlug?: string, moduleSlug?: string) {
