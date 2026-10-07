@@ -93,7 +93,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
 
   const { titleKey, statusKey, statusOptions, fields, clientPath, entity } = schema;
 
+  const publishLabel = schema.publishLabel ?? 'Xuất bản';
+  const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Bản nháp';
   const published = statusOptions[0];
+  const hideClientLink = schema.hideClientLink ?? false;
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -121,7 +124,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     fields.forEach((field) => {
       if (field.type === 'number') values[field.key] = 0;
       else if (field.type === 'switch') values[field.key] = 'Có';
-      else if (field.key === statusKey) values[field.key] = statusOptions.find((o) => /nháp/i.test(o)) ?? statusOptions[0];
+      else if (field.key === statusKey) values[field.key] = defaultDraft;
       else if (field.type === 'date') values[field.key] = sofa2Today();
       else values[field.key] = '';
     });
@@ -178,7 +181,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     const isPublished = String(row[statusKey]) === published;
     const next = isPublished ? statusOptions[1] ?? 'Bản nháp' : published;
     updateRow(index, { ...row, [statusKey]: next, ...(row.updated ? { updated: sofa2Today() } : {}) });
-    setToast(isPublished ? `Đã gỡ xuất bản ${entity}.` : `Đã xuất bản ${entity}.`);
+    setToast(isPublished ? `Đã gỡ ${publishLabel.toLowerCase()} ${entity}.` : `Đã ${publishLabel.toLowerCase()} ${entity}.`);
   };
 
   const duplicateRow = (index: number) => {
@@ -207,7 +210,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       .slice()
       .sort((a, b) => a - b)
       .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
-    setToast(`Đã xuất bản ${selected.length} ${entity}.`);
+    setToast(`Đã ${publishLabel.toLowerCase()} ${selected.length} ${entity}.`);
     setSelected([]);
   };
 
@@ -326,34 +329,36 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
             </Grid>
           ))}
 
-          <Grid xs={12}>
-            <Card sx={{ p: 2.5 }}>
-              <Stack
-                spacing={1.5}
-                direction={{ xs: 'column', md: 'row' }}
-                alignItems={{ md: 'center' }}
-              >
-                <Stack spacing={0.5}>
-                  <Typography variant="subtitle2">Trang tương ứng trên website</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {clientPath}
-                  </Typography>
-                </Stack>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="inherit"
-                  component={RouterLink}
-                  href={clientPath}
-                  target="_blank"
-                  startIcon={<Iconify icon="solar:eye-bold-duotone" />}
+          {!hideClientLink && (
+            <Grid xs={12}>
+              <Card sx={{ p: 2.5 }}>
+                <Stack
+                  spacing={1.5}
+                  direction={{ xs: 'column', md: 'row' }}
+                  alignItems={{ md: 'center' }}
                 >
-                  Xem trang khách hàng
-                </Button>
-              </Stack>
-            </Card>
-          </Grid>
+                  <Stack spacing={0.5}>
+                    <Typography variant="subtitle2">Trang tương ứng trên website</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {clientPath}
+                    </Typography>
+                  </Stack>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="inherit"
+                    component={RouterLink}
+                    href={clientPath}
+                    target="_blank"
+                    startIcon={<Iconify icon="solar:eye-bold-duotone" />}
+                  >
+                    Xem trang khách hàng
+                  </Button>
+                </Stack>
+              </Card>
+            </Grid>
+          )}
 
           {module.slug === 'seo' && (
             <Grid xs={12}>
@@ -411,7 +416,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                         onClick={bulkPublish}
                         startIcon={<Iconify icon="solar:cloud-upload-bold-duotone" />}
                       >
-                        Xuất bản ({selected.length})
+                        {publishLabel} ({selected.length})
                       </Button>
                       <Button
                         size="small"
@@ -478,7 +483,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       {module.columns.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                      <TableCell align="center">Xuất bản</TableCell>
+                      <TableCell align="center">{publishLabel}</TableCell>
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
@@ -629,7 +634,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
             color="inherit"
             variant="outlined"
             onClick={() => {
-              setValue(statusKey, statusOptions[1] ?? 'Bản nháp');
+              setValue(statusKey, defaultDraft);
               setTimeout(submitForm, 0);
             }}
           >

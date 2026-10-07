@@ -37,6 +37,12 @@ export type Sofa2CmsSchema = {
   /** Các trạng thái hợp lệ (giá trị đầu tiên = đã xuất bản) */
   statusOptions: string[];
   fields: Sofa2CmsField[];
+  /** Nhãn cho hành động "xuất bản" (mặc định: "Xuất bản") */
+  publishLabel?: string;
+  /** Trạng thái mặc định khi tạo mới (mặc định: trạng thái thứ 2 hoặc "Bản nháp") */
+  defaultStatus?: string;
+  /** Ẩn thẻ "trang tương ứng" — dùng cho module không có trang client trực tiếp */
+  hideClientLink?: boolean;
 };
 
 // ----------------------------------------------------------------------
