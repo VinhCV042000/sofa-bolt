@@ -341,12 +341,13 @@ const PRODUCT_GROUP: Sofa2AdminGroup = {
         { key: 'option', label: 'Tuỳ chọn' },
         { key: 'stock', label: 'Tồn', type: 'number' },
         { key: 'price', label: 'Giá', type: 'money' },
+        STATUS_COL,
       ],
       [
-        { sku: 'LX-OSL-01-BGE', product: 'Sofa Oslo', option: 'Linen / Beige / 3 chỗ', stock: 12, price: money(14500000) },
-        { sku: 'LX-OSL-01-BRN', product: 'Sofa Oslo', option: 'Linen / Brown / 3 chỗ', stock: 6, price: money(14800000) },
-        { sku: 'LX-BER-04-GRY', product: 'Sofa Berlin', option: 'Da / Grey / Góc', stock: 24, price: money(22000000) },
-        { sku: 'LX-TOK-03-WHT', product: 'Sofa Tokyo', option: 'Nỉ / White / Đơn', stock: 0, price: money(7500000) },
+        { sku: 'LX-OSL-01-BGE', product: 'Sofa Oslo', option: 'Linen / Beige / 3 chỗ', stock: 12, price: money(14500000), status: 'Đang bán' },
+        { sku: 'LX-OSL-01-BRN', product: 'Sofa Oslo', option: 'Linen / Brown / 3 chỗ', stock: 6, price: money(14800000), status: 'Đang bán' },
+        { sku: 'LX-BER-04-GRY', product: 'Sofa Berlin', option: 'Da / Grey / Góc', stock: 24, price: money(22000000), status: 'Đang bán' },
+        { sku: 'LX-TOK-03-WHT', product: 'Sofa Tokyo', option: 'Nỉ / White / Đơn', stock: 0, price: money(7500000), status: 'Hết hàng' },
       ],
       ['Tạo biến thể']
     ),
