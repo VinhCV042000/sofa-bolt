@@ -121,7 +121,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     fields.forEach((field) => {
       if (field.type === 'number') values[field.key] = 0;
       else if (field.type === 'switch') values[field.key] = 'Có';
-      else if (field.key === statusKey) values[field.key] = statusOptions[1] ?? statusOptions[0];
+      else if (field.key === statusKey) values[field.key] = statusOptions.find((o) => /nháp/i.test(o)) ?? statusOptions[0];
       else if (field.type === 'date') values[field.key] = sofa2Today();
       else values[field.key] = '';
     });
@@ -301,7 +301,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       <Sofa2AdminLayout
         activeGroup={group.slug}
         activeModule={module.slug}
-        breadcrumb={['CMS', module.name]}
+        breadcrumb={[group.name, module.name]}
         title={module.name}
         subtitle={module.description}
       >
