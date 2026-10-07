@@ -44,24 +44,16 @@ export const sofa2NavData = [
   {
     title: 'Quản trị',
     path: '/sofa2/admin',
-    icon: <Iconify width={22} icon="solar:shield-user-bold-duotone" />,
+    icon: <Iconify width={22} icon="solar:widget-5-bold-duotone" />,
     children: [
-      {
-        subheader: 'Quản trị',
-        items: [
-          { title: 'Tổng quan', path: '/sofa2/admin' },
-          { title: 'CMS', path: '/sofa2/admin/cms/home' },
-          { title: 'Sản phẩm', path: '/sofa2/admin/catalog' },
-          { title: 'Kho hàng', path: '/sofa2/admin/warehouse' },
-          { title: 'Đơn hàng', path: '/sofa2/admin/orders' },
-          { title: 'CRM', path: '/sofa2/admin/crm' },
-          { title: 'Marketing', path: '/sofa2/admin/marketing' },
-          { title: 'Analytics', path: '/sofa2/admin/analytics' },
-          { title: 'SEO', path: '/sofa2/admin/seo' },
-          { title: 'Phân quyền', path: '/sofa2/admin/access' },
-          { title: 'Báo cáo tổng hợp', path: '/sofa2/admin/tools/reports' },
-        ],
-      },
+      { title: 'Tổng quan', path: '/sofa2/admin' },
+      { title: 'CMS', path: '/sofa2/admin/cms/home' },
+      { title: 'Sản phẩm', path: '/sofa2/admin/catalog/products' },
+      { title: 'Danh mục', path: '/sofa2/admin/catalog/categories' },
+      { title: 'Biến thể & tồn kho', path: '/sofa2/admin/catalog/variants' },
+      { title: 'Giá bán', path: '/sofa2/admin/catalog/pricing' },
+      { title: 'Đơn hàng', path: '/sofa2/admin/orders/orders' },
+      { title: 'SEO', path: '/sofa2/admin/seo/sitemap' },
     ],
   },
 ];

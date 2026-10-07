@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -30,11 +31,32 @@ import {
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, ACCENT_DEEP, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
 
 export function Sofa2AdminDashboardView() {
-  const adminRoot = SOFA2_ADMIN_ROOT;
-  const brandName = 'Sofa2';
+  const { pathname } = useLocation();
+  const adminRoot = pathname.startsWith('/sofa10')
+    ? '/sofa10/admin'
+    : pathname.startsWith('/sofa9')
+    ? '/sofa9/admin'
+    : pathname.startsWith('/sofa8')
+      ? '/sofa8/admin'
+    : pathname.startsWith('/sofa7')
+      ? '/sofa7/admin'
+      : pathname.startsWith('/sofa5')
+        ? '/sofa5/admin'
+        : SOFA2_ADMIN_ROOT;
+  const brandName = pathname.startsWith('/sofa10')
+    ? 'Sofa10'
+    : pathname.startsWith('/sofa9')
+    ? 'Sofa9'
+    : pathname.startsWith('/sofa8')
+      ? 'Sofa8'
+      : pathname.startsWith('/sofa7')
+        ? 'Sofa7'
+        : pathname.startsWith('/sofa5')
+          ? 'Sofa5'
+          : 'Sofa2';
 
   return (
     <>
@@ -103,7 +125,7 @@ export function Sofa2AdminDashboardView() {
                         textAlign: 'left',
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
-                        border: `1px solid ${alpha(ACCENT_DEEP, 0.2)}`,
+                        border: `1px solid ${alpha('#A6634A', 0.2)}`,
                         transition: 'all .2s',
                         '&:hover': { borderColor: ACCENT, bgcolor: alpha(ACCENT, 0.06) },
                       }}
@@ -117,7 +139,7 @@ export function Sofa2AdminDashboardView() {
                           display: 'grid',
                           placeItems: 'center',
                           bgcolor: alpha(ACCENT, 0.14),
-                          color: ACCENT_DEEP,
+                          color: '#A6634A',
                         }}
                       >
                         <Iconify icon={group.icon} width={24} />
@@ -166,10 +188,10 @@ export function Sofa2AdminDashboardView() {
               <Box sx={{ mt: 4 }}>
                 <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
                   <Typography variant="body2">Mục tiêu doanh thu tháng</Typography>
-                  <Typography variant="subtitle2">72%</Typography>
+                  <Typography variant="subtitle2">68%</Typography>
                 </Stack>
                 <LinearProgress
-                  value={72}
+                  value={68}
                   variant="determinate"
                   sx={{ height: 8, borderRadius: 1, [`& .MuiLinearProgress-bar`]: { bgcolor: ACCENT } }}
                 />

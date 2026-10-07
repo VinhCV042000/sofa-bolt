@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -37,7 +37,7 @@ import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../s
 
 // ----------------------------------------------------------------------
 
-const { ACCENT, ACCENT_DEEP, SURFACE } = SOFA2_ADMIN_THEME;
+const { ACCENT, SURFACE } = SOFA2_ADMIN_THEME;
 
 const statusColor = (value: string) => {
   const v = value.toLowerCase();
@@ -58,6 +58,18 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 
 export function Sofa2AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
+  const { pathname } = useLocation();
+  const adminRoot = pathname.startsWith('/sofa10')
+    ? '/sofa10/admin'
+    : pathname.startsWith('/sofa9')
+    ? '/sofa9/admin'
+    : pathname.startsWith('/sofa8')
+      ? '/sofa8/admin'
+    : pathname.startsWith('/sofa7')
+      ? '/sofa7/admin'
+      : pathname.startsWith('/sofa5')
+        ? '/sofa5/admin'
+        : SOFA2_ADMIN_ROOT;
 
   const found = useMemo(() => findSofa2AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
 
@@ -88,7 +100,7 @@ export function Sofa2AdminModuleView() {
 
   if (!found || !group || !module) {
     const first = SOFA2_ADMIN_GROUPS[0];
-    return <Navigate to={`${SOFA2_ADMIN_ROOT}/${first.slug}/${first.modules[0].slug}`} replace />;
+    return <Navigate to={`${adminRoot}/${first.slug}/${first.modules[0].slug}`} replace />;
   }
 
   const filtered = rows
@@ -174,7 +186,19 @@ export function Sofa2AdminModuleView() {
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | ${group.name} - Quản trị Sofa2`}</title>
+        <title>{`${module.name} | ${group.name} - Quản trị ${
+          pathname.startsWith('/sofa10')
+            ? 'Sofa10'
+            : pathname.startsWith('/sofa9')
+            ? 'Sofa9'
+            : pathname.startsWith('/sofa8')
+              ? 'Sofa8'
+              : pathname.startsWith('/sofa7')
+                ? 'Sofa7'
+                : pathname.startsWith('/sofa5')
+                  ? 'Sofa5'
+                  : 'Sofa2'
+        }`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -279,7 +303,7 @@ export function Sofa2AdminModuleView() {
                 </Stack>
               </Stack>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha(ACCENT_DEEP, 0.16)}` }}>
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#A6634A', 0.16)}` }}>
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
@@ -386,7 +410,7 @@ export function Sofa2AdminModuleView() {
                 <Chip
                   size="small"
                   label={`Nhóm: ${group.name}`}
-                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: ACCENT_DEEP }}
+                  sx={{ mr: 2, mb: { xs: 2, sm: 0 }, bgcolor: alpha(ACCENT, 0.14), color: '#A6634A' }}
                 />
               </Stack>
             </Card>
@@ -467,7 +491,7 @@ export function Sofa2AdminModuleView() {
         <DialogTitle>Xoá bản ghi?</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Bản ghi sẽ bị xoá khỏi danh sách {module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục"
+            Bản ghi sẽ bị xoá khỏi danh sách {module.name.toLowerCase()}. Bạn có thể bấm “Khôi phục”
             để nạp lại dữ liệu gốc.
           </Typography>
         </DialogContent>

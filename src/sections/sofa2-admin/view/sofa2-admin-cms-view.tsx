@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -9,9 +8,9 @@ import Chip from '@mui/material/Chip';
 import Tabs from '@mui/material/Tabs';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import Switch from '@mui/material/Switch';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -29,855 +28,674 @@ import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import TableContainer from '@mui/material/TableContainer';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TablePagination from '@mui/material/TablePagination';
+
+import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
-import { SOFA2_ADMIN_ROOT, findSofa2AdminModule } from '../sofa2-admin-data';
-import {
-  useSofa2Cms,
-  CMS_BLOCK_TYPES,
-  CMS_STATUS_LABEL,
-  type CmsItem,
-  type CmsPage,
-  type CmsBlock,
-  type CmsStatus,
-} from '../sofa2-cms-store';
+import { Sofa2AdminLayout } from './sofa2-admin-layout';
+import { Sofa2AdminSeoGenerator } from './sofa2-admin-seo-generator';
+import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
+import { sofa2Today, sofa2Slugify, type Sofa2CmsField, type Sofa2CmsSchema } from '../sofa2-cms';
+
+import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
 
 // ----------------------------------------------------------------------
 
-const { ACCENT_DEEP, SURFACE } = SOFA2_ADMIN_THEME;
+const SURFACE = '#2A2A2A';
 
-export const CMS_PAGE_SLUGS = ['home', 'about', 'contact', 'policy', 'terms', 'faq'];
-
-type Field = {
-  key: string;
-  label: string;
-  type?: 'text' | 'textarea' | 'number' | 'status' | 'select';
-  options?: string[];
-  width?: number;
+const statusColor = (value: string) => {
+  const v = String(value).toLowerCase();
+  if (/(xuất bản|đang chạy|tốt)/.test(v)) return 'success';
+  if (/(nháp|chờ|cần cải thiện)/.test(v)) return 'warning';
+  if (/(ẩn|hết hạn|thiếu)/.test(v)) return 'error';
+  return 'default';
 };
 
-const STATUS_FIELD: Field = { key: 'status', label: 'Trạng thái', type: 'status', width: 6 };
-
-const COLLECTION_SCHEMA: Record<string, { title: string; addLabel: string; fields: Field[] }> = {
-  blog: {
-    title: 'Bài viết blog',
-    addLabel: 'Viết bài mới',
-    fields: [
-      { key: 'title', label: 'Tiêu đề', width: 12 },
-      { key: 'slug', label: 'Đường dẫn (slug)', width: 6 },
-      { key: 'category', label: 'Chuyên mục', type: 'select', options: ['Triết lý', 'Tư vấn', 'Xu hướng', 'Bảo dưỡng'], width: 6 },
-      { key: 'author', label: 'Tác giả', width: 6 },
-      { key: 'publishAt', label: 'Ngày đăng', width: 6 },
-      STATUS_FIELD,
-      { key: 'views', label: 'Lượt đọc', type: 'number', width: 6 },
-      { key: 'excerpt', label: 'Tóm tắt', type: 'textarea', width: 12 },
-    ],
-  },
-  menu: {
-    title: 'Mục menu',
-    addLabel: 'Thêm mục menu',
-    fields: [
-      { key: 'label', label: 'Nhãn hiển thị', width: 6 },
-      { key: 'url', label: 'Liên kết', width: 6 },
-      { key: 'position', label: 'Vị trí', type: 'select', options: ['Header', 'Footer', 'Mobile', 'Mega menu'], width: 6 },
-      { key: 'parent', label: 'Thuộc mục cha', width: 6 },
-      { key: 'order', label: 'Thứ tự', type: 'number', width: 6 },
-      STATUS_FIELD,
-    ],
-  },
-  banner: {
-    title: 'Banner',
-    addLabel: 'Tạo banner',
-    fields: [
-      { key: 'name', label: 'Tên banner', width: 12 },
-      { key: 'position', label: 'Vị trí', type: 'select', options: ['Top bar', 'Trang chủ', 'Danh mục', 'Chi tiết sản phẩm', 'Popup'], width: 6 },
-      { key: 'link', label: 'Liên kết đích', width: 6 },
-      { key: 'image', label: 'Ảnh (URL)', width: 12 },
-      { key: 'start', label: 'Bắt đầu', width: 6 },
-      { key: 'end', label: 'Kết thúc', width: 6 },
-      STATUS_FIELD,
-    ],
-  },
-  slider: {
-    title: 'Slider',
-    addLabel: 'Tạo slider',
-    fields: [
-      { key: 'name', label: 'Tên slider', width: 12 },
-      { key: 'page', label: 'Trang áp dụng', width: 6 },
-      { key: 'slides', label: 'Số slide', type: 'number', width: 3 },
-      { key: 'interval', label: 'Giây / slide', type: 'number', width: 3 },
-      STATUS_FIELD,
-    ],
-  },
-  seo: {
-    title: 'SEO theo trang',
-    addLabel: 'Thêm cấu hình SEO',
-    fields: [
-      { key: 'page', label: 'Tên trang', width: 6 },
-      { key: 'path', label: 'Đường dẫn', width: 6 },
-      { key: 'metaTitle', label: 'Meta title', width: 12 },
-      { key: 'metaDescription', label: 'Meta description', type: 'textarea', width: 12 },
-      { key: 'keywords', label: 'Từ khoá', width: 6 },
-      STATUS_FIELD,
-    ],
-  },
-  static: {
-    title: 'Trang tĩnh',
-    addLabel: 'Tạo trang tĩnh',
-    fields: [
-      { key: 'name', label: 'Tên trang', width: 6 },
-      { key: 'path', label: 'Đường dẫn', width: 6 },
-      { key: 'template', label: 'Mẫu bố cục', type: 'select', options: ['Trang văn bản', 'Trang form', 'Trang landing'], width: 6 },
-      { key: 'updated', label: 'Cập nhật', width: 6 },
-      STATUS_FIELD,
-    ],
-  },
+const GROUP_LABEL: Record<Sofa2CmsField['group'], string> = {
+  content: 'Nội dung',
+  display: 'Hiển thị & lịch',
+  seo: 'SEO & chia sẻ',
 };
 
-const STATUS_OPTIONS: CmsStatus[] = ['published', 'draft', 'hidden'];
+type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values: AdminRow };
 
-const statusChipColor = (status: string) =>
-  status === 'published' ? 'success' : status === 'draft' ? 'warning' : 'default';
+type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2CmsSchema };
 
-// ----------------------------------------------------------------------
+export function Sofa2AdminCmsView({ group, module, schema }: Props) {
+  const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa2AdminRows(
+    group.slug,
+    module.slug
+  );
 
-export function Sofa2AdminCmsView() {
-  const { group: groupSlug = 'cms', module: moduleSlug = 'home' } = useParams();
-
-  const found = useMemo(() => findSofa2AdminModule(groupSlug, moduleSlug), [groupSlug, moduleSlug]);
-
-  const cms = useSofa2Cms();
+  const [search, setSearch] = useState('');
+  const [tab, setTab] = useState('all');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [selected, setSelected] = useState<number[]>([]);
   const [toast, setToast] = useState('');
+  const [detail, setDetail] = useState<AdminRow | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [confirm, setConfirm] = useState<{ open: boolean; index: number | null }>({
+    open: false,
+    index: null,
+  });
+  const [form, setForm] = useState<FormState>({
+    open: false,
+    mode: 'create',
+    index: -1,
+    values: {},
+  });
 
-  const isPage = CMS_PAGE_SLUGS.includes(moduleSlug);
-  const groupName = found?.group.name ?? 'CMS';
-  const moduleName = found?.module.name ?? moduleSlug;
+  const { titleKey, statusKey, statusOptions, fields, clientPath, entity } = schema;
+
+  const published = statusOptions[0];
+
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: rows.length };
+    statusOptions.forEach((s) => {
+      map[s] = rows.filter((r) => String(r[statusKey]) === s).length;
+    });
+    return map;
+  }, [rows, statusKey, statusOptions]);
+
+  const filtered = rows
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => (tab === 'all' ? true : String(row[statusKey]) === tab))
+    .filter(({ row }) =>
+      search
+        ? Object.values(row).some((v) => String(v).toLowerCase().includes(search.toLowerCase()))
+        : true
+    );
+
+  const paged = filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  // ----------------------------------------------------------------------
+
+  const emptyValues = () => {
+    const values: AdminRow = {};
+    fields.forEach((field) => {
+      if (field.type === 'number') values[field.key] = 0;
+      else if (field.type === 'switch') values[field.key] = 'Có';
+      else if (field.key === statusKey) values[field.key] = statusOptions.find((o) => /nháp/i.test(o)) ?? statusOptions[0];
+      else if (field.type === 'date') values[field.key] = sofa2Today();
+      else values[field.key] = '';
+    });
+    return values;
+  };
+
+  const openCreate = () => {
+    setErrors({});
+    setForm({ open: true, mode: 'create', index: -1, values: emptyValues() });
+  };
+
+  const openEdit = (index: number) => {
+    setErrors({});
+    setForm({ open: true, mode: 'edit', index, values: { ...emptyValues(), ...rows[index] } });
+  };
+
+  const setValue = (key: string, value: string | number) =>
+    setForm((prev) => ({ ...prev, values: { ...prev.values, [key]: value } }));
+
+  const validate = () => {
+    const next: Record<string, string> = {};
+    fields.forEach((field) => {
+      const value = String(form.values[field.key] ?? '').trim();
+      if (field.required && !value) next[field.key] = 'Trường bắt buộc';
+      else if (field.maxLength && value.length > field.maxLength)
+        next[field.key] = `Tối đa ${field.maxLength} ký tự (hiện ${value.length})`;
+    });
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const submitForm = () => {
+    if (!validate()) return;
+
+    const clean: AdminRow = { ...form.values };
+    fields.forEach((field) => {
+      if (field.type === 'number') clean[field.key] = Number(clean[field.key]) || 0;
+      else clean[field.key] = String(clean[field.key] ?? '');
+    });
+    if (fields.some((x) => x.key === 'updated')) clean.updated = sofa2Today();
+
+    if (form.mode === 'create') {
+      createRow(clean);
+      setToast(`Đã thêm ${entity} mới.`);
+    } else {
+      updateRow(form.index, clean);
+      setToast(`Đã cập nhật ${entity}.`);
+    }
+    setForm((prev) => ({ ...prev, open: false }));
+  };
+
+  const togglePublish = (index: number) => {
+    const row = rows[index];
+    const isPublished = String(row[statusKey]) === published;
+    const next = isPublished ? statusOptions[1] ?? 'Bản nháp' : published;
+    updateRow(index, { ...row, [statusKey]: next, ...(row.updated ? { updated: sofa2Today() } : {}) });
+    setToast(isPublished ? `Đã gỡ xuất bản ${entity}.` : `Đã xuất bản ${entity}.`);
+  };
+
+  const duplicateRow = (index: number) => {
+    const row = rows[index];
+    const copy: AdminRow = {
+      ...row,
+      [titleKey]: `${row[titleKey]} (bản sao)`,
+      [statusKey]: statusOptions[1] ?? 'Bản nháp',
+    };
+    if (copy.slug) copy.slug = `${sofa2Slugify(String(row[titleKey]))}-copy`;
+    createRow(copy);
+    setToast(`Đã nhân bản ${entity}.`);
+  };
+
+  const doDelete = () => {
+    if (confirm.index !== null) {
+      deleteRow(confirm.index);
+      setSelected([]);
+      setToast(`Đã xoá ${entity}.`);
+    }
+    setConfirm({ open: false, index: null });
+  };
+
+  const bulkPublish = () => {
+    selected
+      .slice()
+      .sort((a, b) => a - b)
+      .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
+    setToast(`Đã xuất bản ${selected.length} ${entity}.`);
+    setSelected([]);
+  };
+
+  const toggleSelect = (index: number) =>
+    setSelected((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+
+  const allOnPage = paged.length > 0 && paged.every(({ index }) => selected.includes(index));
+
+  const exportCsv = () => {
+    const keys = fields.map((x) => x.key);
+    const header = fields.map((x) => x.label).join(',');
+    const body = filtered
+      .map(({ row }) => keys.map((k) => `"${String(row[k] ?? '')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([`\ufeff${header}\n${body}`], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cms-${module.slug}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setToast('Đã xuất dữ liệu CSV.');
+  };
+
+  // ----------------------------------------------------------------------
+
+  const renderField = (field: Sofa2CmsField) => {
+    const value = form.values[field.key] ?? '';
+    const error = errors[field.key];
+
+    if (field.type === 'switch') {
+      return (
+        <FormControlLabel
+          key={field.key}
+          control={
+            <Switch
+              checked={String(value) === 'Có'}
+              onChange={(e) => setValue(field.key, e.target.checked ? 'Có' : 'Không')}
+            />
+          }
+          label={field.label}
+        />
+      );
+    }
+
+    return (
+      <TextField
+        key={field.key}
+        fullWidth
+        select={field.type === 'select'}
+        multiline={field.type === 'textarea'}
+        minRows={field.multiline}
+        type={field.type === 'number' ? 'number' : 'text'}
+        label={field.label}
+        value={value}
+        error={!!error}
+        placeholder={field.placeholder}
+        helperText={
+          error ??
+          (field.maxLength
+            ? `${String(value).length}/${field.maxLength} ký tự${field.helper ? ` — ${field.helper}` : ''}`
+            : field.helper)
+        }
+        onChange={(e) => setValue(field.key, e.target.value)}
+        onBlur={() => {
+          if (field.key === 'slug' && !String(value).trim()) {
+            setValue('slug', `${clientPath}/${sofa2Slugify(String(form.values[titleKey] ?? ''))}`);
+          }
+        }}
+      >
+        {(field.options ?? []).map((opt) => (
+          <MenuItem key={opt} value={opt}>
+            {opt}
+          </MenuItem>
+        ))}
+      </TextField>
+    );
+  };
+
+  const groupedFields = (g: Sofa2CmsField['group']) => fields.filter((x) => x.group === g);
 
   return (
     <>
       <Helmet>
-        <title>{`${moduleName} | CMS - Quản trị Sofa2`}</title>
+        <title>{`${module.name} | CMS - Quản trị LUXE Sofa`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <Sofa2AdminLayout
-        activeGroup={groupSlug}
-        activeModule={moduleSlug}
-        breadcrumb={[groupName, moduleName]}
-        title={moduleName}
-        subtitle={
-          isPage
-            ? 'Biên tập từng khối nội dung, cấu hình SEO và xuất bản ra trang khách hàng.'
-            : 'Thêm, sửa, xoá và xuất bản dữ liệu hiển thị trên trang khách hàng.'
-        }
+        activeGroup={group.slug}
+        activeModule={module.slug}
+        breadcrumb={[group.name, module.name]}
+        title={module.name}
+        subtitle={module.description}
       >
-        {isPage ? (
-          <PageEditor slug={moduleSlug} cms={cms} onToast={setToast} />
-        ) : (
-          <CollectionEditor slug={moduleSlug} cms={cms} onToast={setToast} />
-        )}
-      </Sofa2AdminLayout>
+        <Grid container spacing={3}>
+          {module.stats.map((stat) => (
+            <Grid key={stat.label} xs={6} md={3}>
+              <Card sx={{ p: 2.5 }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {stat.label}
+                </Typography>
+                <Stack direction="row" alignItems="baseline" spacing={1}>
+                  <Typography variant="h4" sx={{ color: SURFACE }}>
+                    {stat.value}
+                  </Typography>
+                  {stat.trend && (
+                    <Typography variant="caption" sx={{ color: 'success.main', fontWeight: 700 }}>
+                      {stat.trend}
+                    </Typography>
+                  )}
+                </Stack>
+              </Card>
+            </Grid>
+          ))}
 
-      <Snackbar
-        open={!!toast}
-        message={toast}
-        autoHideDuration={2500}
-        onClose={() => setToast('')}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      />
-    </>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-type CmsApi = ReturnType<typeof useSofa2Cms>;
-
-function PageEditor({
-  slug,
-  cms,
-  onToast,
-}: {
-  slug: string;
-  cms: CmsApi;
-  onToast: (m: string) => void;
-}) {
-  const page = cms.state.pages[slug];
-  const [tab, setTab] = useState(0);
-  const [editing, setEditing] = useState<CmsBlock | null>(null);
-  const [isNew, setIsNew] = useState(false);
-
-  if (!page) return <Typography>Không tìm thấy trang.</Typography>;
-
-  const setPage = (next: Partial<CmsPage>) => cms.savePage(slug, { ...page, ...next });
-
-  const openNewBlock = () => {
-    setIsNew(true);
-    setEditing({
-      id: '',
-      type: CMS_BLOCK_TYPES[0],
-      title: '',
-      subtitle: '',
-      body: '',
-      image: '',
-      ctaLabel: '',
-      ctaHref: '',
-      status: 'draft',
-    });
-  };
-
-  const saveBlock = () => {
-    if (!editing) return;
-    if (isNew) {
-      const { id, ...rest } = editing;
-      cms.addBlock(slug, rest);
-      onToast('Đã thêm khối nội dung.');
-    } else {
-      cms.updateBlock(slug, editing.id, editing);
-      onToast('Đã cập nhật khối nội dung.');
-    }
-    setEditing(null);
-  };
-
-  return (
-    <Grid container spacing={3}>
-      <Grid xs={12}>
-        <Card sx={{ p: 2.5 }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ md: 'center' }}>
-            <Stack spacing={0.5} sx={{ flex: 1 }}>
-              <Typography variant="h6">{page.name}</Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {page.template} · {page.path} · cập nhật {page.updated} bởi {page.author}
-              </Typography>
-            </Stack>
-            <Chip
-              size="small"
-              variant="soft"
-              label={CMS_STATUS_LABEL[page.status]}
-              color={statusChipColor(page.status) as any}
-            />
-            <Button
-              size="small"
-              color="inherit"
-              variant="outlined"
-              href={page.path}
-              target="_blank"
-              startIcon={<Iconify icon="solar:eye-bold-duotone" />}
-            >
-              Xem trang khách
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              color="inherit"
-              sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
-              onClick={() => {
-                setPage({ status: page.status === 'published' ? 'draft' : 'published' });
-                onToast(page.status === 'published' ? 'Đã chuyển về bản nháp.' : 'Đã xuất bản trang.');
-              }}
-              startIcon={<Iconify icon="solar:upload-bold-duotone" />}
-            >
-              {page.status === 'published' ? 'Gỡ xuất bản' : 'Xuất bản'}
-            </Button>
-          </Stack>
-        </Card>
-      </Grid>
-
-      <Grid xs={12}>
-        <Card>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ px: 2.5 }}>
-            <Tab label={`Khối nội dung (${page.blocks.length})`} />
-            <Tab label="SEO & chia sẻ" />
-            <Tab label="Thiết lập trang" />
-          </Tabs>
-          <Divider />
-
-          {tab === 0 && (
-            <Box sx={{ p: 2.5 }}>
-              <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
+          <Grid xs={12}>
+            <Card sx={{ p: 2.5 }}>
+              <Stack
+                spacing={1.5}
+                direction={{ xs: 'column', md: 'row' }}
+                alignItems={{ md: 'center' }}
+              >
+                <Stack spacing={0.5}>
+                  <Typography variant="subtitle2">Trang tương ứng trên website</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {clientPath}
+                  </Typography>
+                </Stack>
+                <Box sx={{ flexGrow: 1 }} />
                 <Button
                   size="small"
-                  variant="contained"
+                  variant="outlined"
                   color="inherit"
-                  onClick={openNewBlock}
-                  sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
-                  startIcon={<Iconify icon="mingcute:add-line" />}
+                  component={RouterLink}
+                  href={clientPath}
+                  target="_blank"
+                  startIcon={<Iconify icon="solar:eye-bold-duotone" />}
                 >
-                  Thêm khối
+                  Xem trang khách hàng
                 </Button>
               </Stack>
+            </Card>
+          </Grid>
 
-              <TableContainer sx={{ borderTop: `1px solid ${alpha(ACCENT_DEEP, 0.16)}` }}>
-                <Table size="small">
+          {module.slug === 'seo' && (
+            <Grid xs={12}>
+              <Sofa2AdminSeoGenerator moduleSlug={module.slug} moduleName={module.name} />
+            </Grid>
+          )}
+
+          <Grid xs={12}>
+            <Card>
+              <Tabs
+                value={tab}
+                onChange={(_, next) => {
+                  setTab(next);
+                  setPage(0);
+                }}
+                sx={{ px: 2.5, boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha('#919EAB', 0.08)}` }}
+              >
+                <Tab value="all" label={`Tất cả (${counts.all})`} />
+                {statusOptions.map((s) => (
+                  <Tab key={s} value={s} label={`${s} (${counts[s] ?? 0})`} />
+                ))}
+              </Tabs>
+
+              <Stack
+                spacing={2}
+                sx={{ p: 2.5 }}
+                direction={{ xs: 'column', md: 'row' }}
+                alignItems={{ md: 'center' }}
+              >
+                <TextField
+                  size="small"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPage(0);
+                  }}
+                  placeholder={`Tìm ${entity}...`}
+                  sx={{ flex: 1, maxWidth: { md: 360 } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Iconify icon="eva:search-fill" width={18} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Box sx={{ flexGrow: 1 }} />
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {!!selected.length && (
+                    <>
+                      <Button
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        onClick={bulkPublish}
+                        startIcon={<Iconify icon="solar:cloud-upload-bold-duotone" />}
+                      >
+                        Xuất bản ({selected.length})
+                      </Button>
+                      <Button
+                        size="small"
+                        color="error"
+                        variant="outlined"
+                        onClick={() => {
+                          deleteRows(selected);
+                          setToast(`Đã xoá ${selected.length} ${entity}.`);
+                          setSelected([]);
+                        }}
+                        startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
+                      >
+                        Xoá ({selected.length})
+                      </Button>
+                    </>
+                  )}
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="inherit"
+                    onClick={() => {
+                      resetRows(module.rows);
+                      setSelected([]);
+                      setToast('Đã khôi phục dữ liệu gốc.');
+                    }}
+                    startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
+                  >
+                    Khôi phục
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="inherit"
+                    onClick={exportCsv}
+                    startIcon={<Iconify icon="solar:export-bold-duotone" />}
+                  >
+                    Xuất CSV
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="inherit"
+                    onClick={openCreate}
+                    sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
+                    startIcon={<Iconify icon="mingcute:add-line" />}
+                  >
+                    {module.actions?.[0] ?? 'Thêm mới'}
+                  </Button>
+                </Stack>
+              </Stack>
+
+              <TableContainer sx={{ borderTop: `1px solid ${alpha('#919EAB', 0.16)}` }}>
+                <Table size="medium">
                   <TableHead>
                     <TableRow>
-                      <TableCell>#</TableCell>
-                      <TableCell>Khối nội dung</TableCell>
-                      <TableCell>Loại</TableCell>
-                      <TableCell>Trạng thái</TableCell>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={allOnPage}
+                          onChange={() =>
+                            setSelected(allOnPage ? [] : paged.map(({ index }) => index))
+                          }
+                        />
+                      </TableCell>
+                      {module.columns.map((col) => (
+                        <TableCell key={col.key}>{col.label}</TableCell>
+                      ))}
+                      <TableCell align="center">Xuất bản</TableCell>
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {page.blocks.map((b, i) => (
-                      <TableRow key={b.id} hover>
-                        <TableCell>{i + 1}</TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2">{b.title || '(chưa đặt tiêu đề)'}</Typography>
-                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                            {b.body}
-                          </Typography>
+                    {paged.map(({ row, index }) => (
+                      <TableRow key={index} hover selected={selected.includes(index)}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={selected.includes(index)}
+                            onChange={() => toggleSelect(index)}
+                          />
                         </TableCell>
-                        <TableCell>{b.type}</TableCell>
-                        <TableCell>
-                          <Chip
+                        {module.columns.map((col) => {
+                          const value = row[col.key] ?? '—';
+                          return (
+                            <TableCell key={col.key}>
+                              {col.type === 'status' ? (
+                                <Chip
+                                  size="small"
+                                  variant="soft"
+                                  label={String(value)}
+                                  color={statusColor(String(value)) as any}
+                                />
+                              ) : (
+                                <Typography
+                                  variant="body2"
+                                  sx={{ fontWeight: col.key === titleKey ? 600 : 400 }}
+                                >
+                                  {typeof value === 'number' ? value.toLocaleString('vi-VN') : value}
+                                </Typography>
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                        <TableCell align="center">
+                          <Switch
                             size="small"
-                            variant="soft"
-                            label={CMS_STATUS_LABEL[b.status]}
-                            color={statusChipColor(b.status) as any}
+                            checked={String(row[statusKey]) === published}
+                            onChange={() => togglePublish(index)}
                           />
                         </TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            <Tooltip title="Lên">
-                              <IconButton size="small" onClick={() => cms.moveBlock(slug, b.id, -1)}>
-                                <Iconify icon="eva:arrow-upward-fill" width={16} />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Xuống">
-                              <IconButton size="small" onClick={() => cms.moveBlock(slug, b.id, 1)}>
-                                <Iconify icon="eva:arrow-downward-fill" width={16} />
+                            <Tooltip title="Xem chi tiết">
+                              <IconButton size="small" onClick={() => setDetail(row)}>
+                                <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Sửa">
-                              <IconButton
-                                size="small"
-                                onClick={() => {
-                                  setIsNew(false);
-                                  setEditing(b);
-                                }}
-                              >
-                                <Iconify icon="solar:pen-bold" width={16} />
+                              <IconButton size="small" onClick={() => openEdit(index)}>
+                                <Iconify icon="solar:pen-bold-duotone" width={18} />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Nhân bản">
+                              <IconButton size="small" onClick={() => duplicateRow(index)}>
+                                <Iconify icon="solar:copy-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Xoá">
                               <IconButton
                                 size="small"
                                 color="error"
-                                onClick={() => {
-                                  cms.removeBlock(slug, b.id);
-                                  onToast('Đã xoá khối nội dung.');
-                                }}
+                                onClick={() => setConfirm({ open: true, index })}
                               >
-                                <Iconify icon="solar:trash-bin-trash-bold-duotone" width={16} />
+                                <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
                           </Stack>
                         </TableCell>
                       </TableRow>
                     ))}
+                    {!filtered.length && (
+                      <TableRow>
+                        <TableCell colSpan={module.columns.length + 3} align="center" sx={{ py: 6 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            Chưa có {entity} nào phù hợp.
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Box>
-          )}
 
-          {tab === 1 && (
-            <Grid container spacing={2} sx={{ p: 2.5 }}>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  label="Meta title"
-                  value={page.seo.title}
-                  helperText={`${page.seo.title.length}/60 ký tự`}
-                  onChange={(e) => setPage({ seo: { ...page.seo, title: e.target.value } })}
-                />
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label="Meta description"
-                  value={page.seo.description}
-                  helperText={`${page.seo.description.length}/160 ký tự`}
-                  onChange={(e) => setPage({ seo: { ...page.seo, description: e.target.value } })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Từ khoá"
-                  value={page.seo.keywords}
-                  onChange={(e) => setPage({ seo: { ...page.seo, keywords: e.target.value } })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Canonical URL"
-                  value={page.seo.canonical}
-                  onChange={(e) => setPage({ seo: { ...page.seo, canonical: e.target.value } })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Ảnh chia sẻ (OG image)"
-                  value={page.seo.ogImage}
-                  onChange={(e) => setPage({ seo: { ...page.seo, ogImage: e.target.value } })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={page.seo.noindex}
-                      onChange={(e) => setPage({ seo: { ...page.seo, noindex: e.target.checked } })}
-                    />
-                  }
-                  label="Chặn lập chỉ mục (noindex)"
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Card variant="outlined" sx={{ p: 2, bgcolor: alpha(ACCENT_DEEP, 0.06) }}>
-                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                    Xem trước trên Google
-                  </Typography>
-                  <Typography sx={{ color: '#1a0dab', fontSize: 18 }}>{page.seo.title}</Typography>
-                  <Typography variant="caption" sx={{ color: 'success.dark' }}>
-                    {page.seo.canonical}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {page.seo.description}
-                  </Typography>
-                </Card>
-              </Grid>
-            </Grid>
-          )}
+              <Divider />
 
-          {tab === 2 && (
-            <Grid container spacing={2} sx={{ p: 2.5 }}>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Tên trang"
-                  value={page.name}
-                  onChange={(e) => setPage({ name: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Đường dẫn trang khách"
-                  value={page.path}
-                  onChange={(e) => setPage({ path: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Mẫu bố cục"
-                  value={page.template}
-                  onChange={(e) => setPage({ template: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Trạng thái"
-                  value={page.status}
-                  onChange={(e) => setPage({ status: e.target.value as CmsStatus })}
-                >
-                  {STATUS_OPTIONS.map((s) => (
-                    <MenuItem key={s} value={s}>
-                      {CMS_STATUS_LABEL[s]}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Người biên tập"
-                  value={page.author}
-                  onChange={(e) => setPage({ author: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Button
-                  color="error"
-                  variant="outlined"
-                  onClick={() => {
-                    cms.resetAll();
-                    onToast('Đã khôi phục dữ liệu CMS gốc.');
-                  }}
-                  startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
-                >
-                  Khôi phục dữ liệu CMS gốc
-                </Button>
-              </Grid>
-            </Grid>
-          )}
-        </Card>
-      </Grid>
+              <TablePagination
+                component="div"
+                count={filtered.length}
+                page={page}
+                onPageChange={(_, next) => setPage(next)}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+                onRowsPerPageChange={(e) => {
+                  setRowsPerPage(parseInt(e.target.value, 10));
+                  setPage(0);
+                }}
+                labelRowsPerPage="Số dòng:"
+              />
+            </Card>
+          </Grid>
+        </Grid>
+      </Sofa2AdminLayout>
 
-      <Dialog open={!!editing} onClose={() => setEditing(null)} fullWidth maxWidth="sm">
-        <DialogTitle>{isNew ? 'Thêm khối nội dung' : 'Sửa khối nội dung'}</DialogTitle>
+      {/* Form thêm / sửa chi tiết */}
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={form.open}
+        onClose={() => setForm((prev) => ({ ...prev, open: false }))}
+      >
+        <DialogTitle>
+          {form.mode === 'create'
+            ? `Thêm ${entity} — ${module.name}`
+            : `Chỉnh sửa ${entity} — ${module.name}`}
+        </DialogTitle>
         <DialogContent dividers>
-          {editing && (
-            <Grid container spacing={2} sx={{ pt: 1 }}>
-              <Grid xs={12} md={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Loại khối"
-                  value={editing.type}
-                  onChange={(e) => setEditing({ ...editing, type: e.target.value })}
-                >
-                  {CMS_BLOCK_TYPES.map((t) => (
-                    <MenuItem key={t} value={t}>
-                      {t}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Trạng thái"
-                  value={editing.status}
-                  onChange={(e) => setEditing({ ...editing, status: e.target.value as CmsStatus })}
-                >
-                  {STATUS_OPTIONS.map((s) => (
-                    <MenuItem key={s} value={s}>
-                      {CMS_STATUS_LABEL[s]}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  label="Tiêu đề"
-                  value={editing.title}
-                  onChange={(e) => setEditing({ ...editing, title: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  label="Tiêu đề phụ"
-                  value={editing.subtitle}
-                  onChange={(e) => setEditing({ ...editing, subtitle: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label="Nội dung"
-                  value={editing.body}
-                  onChange={(e) => setEditing({ ...editing, body: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12}>
-                <TextField
-                  fullWidth
-                  label="Ảnh (URL)"
-                  value={editing.image}
-                  onChange={(e) => setEditing({ ...editing, image: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Nhãn nút"
-                  value={editing.ctaLabel}
-                  onChange={(e) => setEditing({ ...editing, ctaLabel: e.target.value })}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Liên kết nút"
-                  value={editing.ctaHref}
-                  onChange={(e) => setEditing({ ...editing, ctaHref: e.target.value })}
-                />
-              </Grid>
-            </Grid>
-          )}
+          <Stack spacing={3} sx={{ pt: 1 }}>
+            {(['content', 'display', 'seo'] as const).map((g) => {
+              const list = groupedFields(g);
+              if (!list.length) return null;
+              return (
+                <Stack key={g} spacing={2}>
+                  <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+                    {GROUP_LABEL[g]}
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {list.map((field) => (
+                      <Grid
+                        key={field.key}
+                        xs={12}
+                        md={field.type === 'textarea' || field.type === 'switch' ? 12 : 6}
+                      >
+                        {renderField(field)}
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Stack>
+              );
+            })}
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button color="inherit" onClick={() => setEditing(null)}>
+          <Button color="inherit" onClick={() => setForm((prev) => ({ ...prev, open: false }))}>
             Huỷ
           </Button>
-          <Button variant="contained" color="inherit" onClick={saveBlock} sx={{ bgcolor: SURFACE }}>
-            Lưu
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Grid>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-function CollectionEditor({
-  slug,
-  cms,
-  onToast,
-}: {
-  slug: string;
-  cms: CmsApi;
-  onToast: (m: string) => void;
-}) {
-  const schema = COLLECTION_SCHEMA[slug] ?? COLLECTION_SCHEMA.static;
-  const items = cms.state.collections[slug] ?? [];
-
-  const [search, setSearch] = useState('');
-  const [selected, setSelected] = useState<number[]>([]);
-  const [form, setForm] = useState<{ open: boolean; index: number; values: CmsItem } | null>(null);
-
-  const filtered = items
-    .map((item, index) => ({ item, index }))
-    .filter(({ item }) =>
-      search
-        ? Object.values(item).some((v) => String(v).toLowerCase().includes(search.toLowerCase()))
-        : true
-    );
-
-  const emptyValues = () => {
-    const values: CmsItem = {};
-    schema.fields.forEach((f) => {
-      values[f.key] = f.type === 'number' ? 0 : f.type === 'status' ? 'draft' : '';
-    });
-    return values;
-  };
-
-  const submit = () => {
-    if (!form) return;
-    if (form.index < 0) {
-      cms.createItem(slug, form.values);
-      onToast('Đã thêm bản ghi mới.');
-    } else {
-      cms.updateItem(slug, form.index, form.values);
-      onToast('Đã cập nhật bản ghi.');
-    }
-    setForm(null);
-  };
-
-  const listColumns = schema.fields.filter((f) => f.type !== 'textarea').slice(0, 5);
-
-  return (
-    <Card>
-      <Stack
-        spacing={2}
-        sx={{ p: 2.5 }}
-        direction={{ xs: 'column', md: 'row' }}
-        alignItems={{ md: 'center' }}
-      >
-        <TextField
-          size="small"
-          value={search}
-          placeholder={`Tìm trong ${schema.title.toLowerCase()}...`}
-          onChange={(e) => setSearch(e.target.value)}
-          sx={{ flex: 1, maxWidth: { md: 360 } }}
-        />
-        <Box sx={{ flexGrow: 1 }} />
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          {!!selected.length && (
-            <Button
-              size="small"
-              color="error"
-              variant="outlined"
-              onClick={() => {
-                cms.removeItems(slug, selected);
-                onToast(`Đã xoá ${selected.length} bản ghi.`);
-                setSelected([]);
-              }}
-              startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
-            >
-              Xoá ({selected.length})
-            </Button>
-          )}
           <Button
-            size="small"
             color="inherit"
             variant="outlined"
             onClick={() => {
-              cms.resetAll();
-              onToast('Đã khôi phục dữ liệu CMS gốc.');
+              setValue(statusKey, statusOptions[1] ?? 'Bản nháp');
+              setTimeout(submitForm, 0);
             }}
-            startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
           >
-            Khôi phục
+            Lưu nháp
           </Button>
           <Button
-            size="small"
             variant="contained"
             color="inherit"
+            onClick={submitForm}
             sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
-            onClick={() => setForm({ open: true, index: -1, values: emptyValues() })}
-            startIcon={<Iconify icon="mingcute:add-line" />}
           >
-            {schema.addLabel}
-          </Button>
-        </Stack>
-      </Stack>
-
-      <TableContainer sx={{ borderTop: `1px solid ${alpha(ACCENT_DEEP, 0.16)}` }}>
-        <Table size="medium">
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={filtered.length > 0 && selected.length === filtered.length}
-                  onChange={() =>
-                    setSelected(
-                      selected.length === filtered.length ? [] : filtered.map((f) => f.index)
-                    )
-                  }
-                />
-              </TableCell>
-              {listColumns.map((col) => (
-                <TableCell key={col.key}>{col.label}</TableCell>
-              ))}
-              <TableCell align="right">Thao tác</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filtered.map(({ item, index }) => (
-              <TableRow key={index} hover selected={selected.includes(index)}>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selected.includes(index)}
-                    onChange={() =>
-                      setSelected((prev) =>
-                        prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-                      )
-                    }
-                  />
-                </TableCell>
-                {listColumns.map((col) => (
-                  <TableCell key={col.key}>
-                    {col.type === 'status' ? (
-                      <Chip
-                        size="small"
-                        variant="soft"
-                        label={CMS_STATUS_LABEL[item[col.key] as CmsStatus] ?? String(item[col.key])}
-                        color={statusChipColor(String(item[col.key])) as any}
-                      />
-                    ) : (
-                      String(item[col.key] ?? '—')
-                    )}
-                  </TableCell>
-                ))}
-                <TableCell align="right">
-                  <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                    <Tooltip title="Sửa">
-                      <IconButton
-                        size="small"
-                        onClick={() => setForm({ open: true, index, values: { ...item } })}
-                      >
-                        <Iconify icon="solar:pen-bold" width={16} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Xoá">
-                      <IconButton
-                        size="small"
-                        color="error"
-                        onClick={() => {
-                          cms.removeItems(slug, [index]);
-                          onToast('Đã xoá bản ghi.');
-                        }}
-                      >
-                        <Iconify icon="solar:trash-bin-trash-bold-duotone" width={16} />
-                      </IconButton>
-                    </Tooltip>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-            {!filtered.length && (
-              <TableRow>
-                <TableCell colSpan={listColumns.length + 2} align="center" sx={{ py: 6 }}>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Chưa có dữ liệu.
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Dialog open={!!form} onClose={() => setForm(null)} fullWidth maxWidth="sm">
-        <DialogTitle>
-          {form && form.index < 0 ? schema.addLabel : `Sửa ${schema.title.toLowerCase()}`}
-        </DialogTitle>
-        <DialogContent dividers>
-          {form && (
-            <Grid container spacing={2} sx={{ pt: 1 }}>
-              {schema.fields.map((f) => (
-                <Grid key={f.key} xs={12} md={f.width ?? 12}>
-                  {f.type === 'status' || f.type === 'select' ? (
-                    <TextField
-                      select
-                      fullWidth
-                      label={f.label}
-                      value={String(form.values[f.key] ?? '')}
-                      onChange={(e) =>
-                        setForm({ ...form, values: { ...form.values, [f.key]: e.target.value } })
-                      }
-                    >
-                      {(f.type === 'status' ? STATUS_OPTIONS : (f.options ?? [])).map((opt) => (
-                        <MenuItem key={opt} value={opt}>
-                          {f.type === 'status' ? CMS_STATUS_LABEL[opt as CmsStatus] : opt}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  ) : (
-                    <TextField
-                      fullWidth
-                      label={f.label}
-                      type={f.type === 'number' ? 'number' : 'text'}
-                      multiline={f.type === 'textarea'}
-                      minRows={f.type === 'textarea' ? 3 : undefined}
-                      value={form.values[f.key] ?? ''}
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          values: {
-                            ...form.values,
-                            [f.key]:
-                              f.type === 'number' ? Number(e.target.value) || 0 : e.target.value,
-                          },
-                        })
-                      }
-                    />
-                  )}
-                </Grid>
-              ))}
-            </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button color="inherit" onClick={() => setForm(null)}>
-            Huỷ
-          </Button>
-          <Button variant="contained" color="inherit" onClick={submit} sx={{ bgcolor: SURFACE }}>
-            Lưu
+            {form.mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}
           </Button>
         </DialogActions>
       </Dialog>
-    </Card>
+
+      {/* Xem chi tiết */}
+      <Dialog fullWidth maxWidth="sm" open={!!detail} onClose={() => setDetail(null)}>
+        <DialogTitle>{`Chi tiết ${entity}`}</DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={1.5}>
+            {fields.map((field) => (
+              <Stack key={field.key} direction="row" justifyContent="space-between" spacing={2}>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {field.label}
+                </Typography>
+                <Typography variant="subtitle2" sx={{ textAlign: 'right' }}>
+                  {String(detail?.[field.key] ?? '—') || '—'}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setDetail(null)}>
+            Đóng
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Xác nhận xoá */}
+      <Dialog open={confirm.open} onClose={() => setConfirm({ open: false, index: null })}>
+        <DialogTitle>{`Xoá ${entity}?`}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm “Khôi phục” để nạp
+            lại dữ liệu gốc.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setConfirm({ open: false, index: null })}>
+            Huỷ
+          </Button>
+          <Button color="error" variant="contained" onClick={doDelete}>
+            Xoá
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={!!toast}
+        message={toast}
+        autoHideDuration={2600}
+        onClose={() => setToast('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+    </>
   );
 }

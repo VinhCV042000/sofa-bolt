@@ -38,8 +38,8 @@ import { SOFA2_ADMIN_ROOT } from '../sofa2-admin-data';
 
 // ----------------------------------------------------------------------
 
-const ACCENT = '#B8A088';
-const SURFACE = '#3A3530';
+const ACCENT = '#E07A4F';
+const SURFACE = '#3D2817';
 
 type SettingsValues = Record<string, string>;
 type ToggleValues = Record<string, boolean>;
@@ -113,10 +113,10 @@ export function Sofa2AdminToolsView() {
       </Stack>
       <Grid container spacing={2}>
         {[
-          { label: 'Doanh thu thuần', value: '7,6 tỷ ₫', trend: '+13%', icon: 'solar:wallet-money-bold-duotone' },
-          { label: 'Giá trị đơn trung bình', value: '15,2 triệu ₫', trend: '+4%', icon: 'solar:bill-list-bold-duotone' },
-          { label: 'Khách quay lại', value: '65%', trend: '+5%', icon: 'solar:users-group-two-rounded-bold-duotone' },
-          { label: 'Tỷ lệ chuyển đổi', value: '2,18%', trend: '+0,4%', icon: 'solar:graph-up-bold-duotone' },
+          { label: 'Doanh thu thuần', value: '6,8 tỷ ₫', trend: '+11%', icon: 'solar:wallet-money-bold-duotone' },
+          { label: 'Giá trị đơn trung bình', value: '14,2 triệu ₫', trend: '+6%', icon: 'solar:bill-list-bold-duotone' },
+          { label: 'Khách quay lại', value: '62%', trend: '+4%', icon: 'solar:users-group-two-rounded-bold-duotone' },
+          { label: 'Tỷ lệ chuyển đổi', value: '2,04%', trend: '+0,3%', icon: 'solar:graph-up-bold-duotone' },
         ].map((item) => (
           <Grid key={item.label} xs={12} sm={6} md={3}>
             <Card sx={{ p: 2.5, height: 1 }}>
@@ -276,7 +276,7 @@ export function Sofa2AdminToolsView() {
         <Card sx={{ p: 3, height: 1 }}>
           <Stack alignItems="center" spacing={1.5} sx={{ textAlign: 'center' }}>
             <Box sx={{ width: 84, height: 84, borderRadius: '50%', display: 'grid', placeItems: 'center', bgcolor: 'warning.lighter', color: ACCENT }}>
-              <Typography variant="h3">CM</Typography>
+              <Typography variant="h3">NA</Typography>
             </Box>
             <Typography variant="h6">{SOFA2_PROFILE.name}</Typography>
             <Chip label={SOFA2_PROFILE.role} color="warning" variant="soft" />
