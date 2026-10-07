@@ -41,4 +41,19 @@ export const sofa2NavData = [
     path: paths.contact,
     icon: <Iconify width={22} icon="solar:phone-bold-duotone" />,
   },
+  {
+    title: 'Quản trị',
+    path: '/sofa2/admin',
+    icon: <Iconify width={22} icon="solar:widget-5-bold-duotone" />,
+    children: [
+      { title: 'Tổng quan', path: '/sofa2/admin' },
+      { title: 'CMS', path: '/sofa2/admin/cms/home' },
+      { title: 'Sản phẩm', path: '/sofa2/admin/catalog/products' },
+      { title: 'Danh mục', path: '/sofa2/admin/catalog/categories' },
+      { title: 'Biến thể & tồn kho', path: '/sofa2/admin/catalog/variants' },
+      { title: 'Giá bán', path: '/sofa2/admin/catalog/pricing' },
+      { title: 'Đơn hàng', path: '/sofa2/admin/orders/orders' },
+      { title: 'SEO', path: '/sofa2/admin/seo/sitemap' },
+    ],
+  },
 ];
