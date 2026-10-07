@@ -5,3 +5,4 @@ export * from './sofa2-admin-module-view';
 export * from './sofa2-admin-tools-view';
 export * from './sofa2-admin-dashboard-view';
 export * from './sofa2-admin-cms-view';
+export * from './sofa2-admin-catalog-view';
