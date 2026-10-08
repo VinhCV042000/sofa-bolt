@@ -72,13 +72,13 @@ export function Sofa2SeoHead() {
   const active = path.startsWith('/sofa2') && !path.startsWith('/sofa2/admin');
 
   // Đăng ký theo dõi để áp dụng ngay khi admin sửa
-  const r0 = useSofa2AdminRows('seo', 'category');
-  const r1 = useSofa2AdminRows('seo', 'product');
-  const r2 = useSofa2AdminRows('seo', 'collection');
-  const r3 = useSofa2AdminRows('seo', 'project');
-  const r4 = useSofa2AdminRows('seo', 'showroom');
-  const r5 = useSofa2AdminRows('seo', 'blog');
-  const r6 = useSofa2AdminRows('seo', 'brand');
+  const { rows: r0 } = useSofa2AdminRows('seo', 'category');
+  const { rows: r1 } = useSofa2AdminRows('seo', 'product');
+  const { rows: r2 } = useSofa2AdminRows('seo', 'collection');
+  const { rows: r3 } = useSofa2AdminRows('seo', 'project');
+  const { rows: r4 } = useSofa2AdminRows('seo', 'showroom');
+  const { rows: r5 } = useSofa2AdminRows('seo', 'blog');
+  const { rows: r6 } = useSofa2AdminRows('seo', 'brand');
 
   useEffect(() => {
     if (!active) {
