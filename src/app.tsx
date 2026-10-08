@@ -3,6 +3,7 @@ import 'src/global.css';
 // ----------------------------------------------------------------------
 
 import { Router } from 'src/routes/sections';
+import { Sofa2SeoHead } from 'src/sections/sofa2-admin/sofa2-seo-head';
 
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
@@ -47,6 +48,7 @@ export default function App() {
                   <Snackbar />
                   <ProgressBar />
                   <SettingsDrawer />
+                  <Sofa2SeoHead />
                   <Router />
                 </CheckoutProvider>
               </MotionLazy>
