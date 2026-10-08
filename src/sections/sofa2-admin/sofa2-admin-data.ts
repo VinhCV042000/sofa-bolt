@@ -1593,6 +1593,182 @@ const B2B_GROUP: Sofa2AdminGroup = {
   ],
 };
 
+
+// ----------------------------------------------------------------------
+// ĐẠI LÝ (cổng đại lý — tương thích trang client /sofa2/b2b)
+// ----------------------------------------------------------------------
+
+const DEALER_GROUP: Sofa2AdminGroup = {
+  slug: 'dealer',
+  name: 'Đại lý',
+  icon: 'solar:users-group-two-rounded-bold-duotone',
+  modules: [
+    mod(
+      'dashboard',
+      'Dashboard đại lý',
+      'Hiệu suất từng đại lý: chỉ tiêu, doanh số đạt, xếp hạng và cảnh báo công nợ.',
+      'solar:chart-square-bold-duotone',
+      [
+        { label: 'Đại lý hoạt động', value: '48', trend: '+4' },
+        { label: 'Doanh số tháng', value: '2,46 tỷ', trend: '+12%' },
+        { label: 'Đạt chỉ tiêu', value: '31/48' },
+        { label: 'Công nợ quá hạn', value: '186 tr' },
+      ],
+      [
+        { key: 'dealer', label: 'Đại lý' },
+        { key: 'level', label: 'Cấp' },
+        { key: 'region', label: 'Vùng' },
+        { key: 'target', label: 'Chỉ tiêu tháng', type: 'money' },
+        { key: 'achieved', label: 'Đã đạt', type: 'money' },
+        STATUS_COL,
+      ],
+      [
+        { dealer: 'Nội thất Việt', level: 'Kim cương', region: 'Miền Bắc', target: money(400000000), achieved: money(420000000), status: 'Vượt chỉ tiêu' },
+        { dealer: 'Decor Home HCM', level: 'Kim cương', region: 'Miền Nam', target: money(400000000), achieved: money(380000000), status: 'Đúng tiến độ' },
+        { dealer: 'Living Space ĐN', level: 'Vàng', region: 'Miền Trung', target: money(150000000), achieved: money(124000000), status: 'Đúng tiến độ' },
+        { dealer: 'Home Mart Hà Nội', level: 'Bạc', region: 'Miền Bắc', target: money(120000000), achieved: money(52000000), status: 'Chậm tiến độ' },
+        { dealer: 'Sofa Plus Cần Thơ', level: 'Bạc', region: 'Tây Nam Bộ', target: money(80000000), achieved: money(72000000), status: 'Đúng tiến độ' },
+      ],
+      ['Thêm đại lý', 'Giao chỉ tiêu']
+    ),
+    mod(
+      'price-policy',
+      'Chính sách giá',
+      'Chiết khấu theo cấp đại lý, ngưỡng doanh số, thưởng và thời gian áp dụng — hiển thị tại /sofa2/b2b/policy.',
+      'solar:tag-price-bold-duotone',
+      [
+        { label: 'Chính sách hiệu lực', value: '6' },
+        { label: 'Chiết khấu TB', value: '27%' },
+        { label: 'Cấp đại lý', value: '4' },
+        { label: 'Sắp hết hạn', value: '1' },
+      ],
+      [
+        { key: 'name', label: 'Chính sách' },
+        { key: 'level', label: 'Cấp áp dụng' },
+        { key: 'discount', label: 'Chiết khấu (%)', type: 'number' },
+        { key: 'minRevenue', label: 'Doanh số tối thiểu', type: 'money' },
+        { key: 'endDate', label: 'Hết hạn' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Chiết khấu Kim cương 2026', level: 'Kim cương', discount: 35, minRevenue: money(300000000), endDate: '31/12/2026', status: 'Đang áp dụng' },
+        { name: 'Chiết khấu Vàng 2026', level: 'Vàng', discount: 30, minRevenue: money(150000000), endDate: '31/12/2026', status: 'Đang áp dụng' },
+        { name: 'Chiết khấu Bạc 2026', level: 'Bạc', discount: 25, minRevenue: money(60000000), endDate: '31/12/2026', status: 'Đang áp dụng' },
+        { name: 'Đại lý mới — 3 tháng đầu', level: 'Đồng', discount: 20, minRevenue: money(0), endDate: '31/10/2026', status: 'Đang áp dụng' },
+        { name: 'Thưởng quý IV', level: 'Tất cả', discount: 3, minRevenue: money(500000000), endDate: '31/12/2026', status: 'Bản nháp' },
+      ],
+      ['Thêm chính sách']
+    ),
+    mod(
+      'quotes',
+      'Báo giá',
+      'Yêu cầu báo giá từ đại lý (form /sofa2/b2b/quote) — lập, gửi, theo dõi phản hồi và chuyển thành đơn.',
+      'solar:document-add-bold-duotone',
+      [
+        { label: 'Yêu cầu mới', value: '9', trend: '+3' },
+        { label: 'Đã gửi', value: '24' },
+        { label: 'Tỷ lệ chốt', value: '42%' },
+        { label: 'Giá trị chờ', value: '1,2 tỷ' },
+      ],
+      [
+        { key: 'code', label: 'Mã báo giá' },
+        { key: 'dealer', label: 'Đại lý' },
+        { key: 'items', label: 'Số SP', type: 'number' },
+        { key: 'value', label: 'Giá trị', type: 'money' },
+        { key: 'validUntil', label: 'Hiệu lực đến' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'BG-DL-1008', dealer: 'Nội thất Việt', items: 14, value: money(186000000), validUntil: '22/10/2026', status: 'Chờ xử lý' },
+        { code: 'BG-DL-1007', dealer: 'Decor Home HCM', items: 8, value: money(98000000), validUntil: '20/10/2026', status: 'Đã gửi' },
+        { code: 'BG-DL-1006', dealer: 'Living Space ĐN', items: 5, value: money(54000000), validUntil: '15/10/2026', status: 'Đã chốt' },
+        { code: 'BG-DL-1005', dealer: 'Sofa Plus Cần Thơ', items: 3, value: money(31000000), validUntil: '10/10/2026', status: 'Hết hạn' },
+      ],
+      ['Tạo báo giá', 'Xuất PDF']
+    ),
+    mod(
+      'dealer-orders',
+      'Đơn hàng đại lý',
+      'Đơn nhập hàng của đại lý: giá sau chiết khấu, thanh toán, giao hàng.',
+      'solar:cart-large-4-bold-duotone',
+      [
+        { label: 'Đơn tháng này', value: '86', trend: '+9%' },
+        { label: 'Đang giao', value: '12' },
+        { label: 'Chờ xác nhận', value: '5' },
+        { label: 'Giá trị TB', value: '28,6 tr' },
+      ],
+      [
+        { key: 'code', label: 'Mã đơn' },
+        { key: 'dealer', label: 'Đại lý' },
+        { key: 'total', label: 'Tổng tiền', type: 'money' },
+        { key: 'payment', label: 'Thanh toán' },
+        { key: 'orderDate', label: 'Ngày đặt' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'DH-DL-2210', dealer: 'Nội thất Việt', total: money(124000000), payment: 'Công nợ 30 ngày', orderDate: '07/10/2026', status: 'Chờ xác nhận' },
+        { code: 'DH-DL-2209', dealer: 'Decor Home HCM', total: money(86000000), payment: 'Chuyển khoản', orderDate: '05/10/2026', status: 'Đang giao' },
+        { code: 'DH-DL-2208', dealer: 'Living Space ĐN', total: money(42000000), payment: 'Đặt cọc 30%', orderDate: '02/10/2026', status: 'Hoàn tất' },
+        { code: 'DH-DL-2207', dealer: 'Home Mart Hà Nội', total: money(18500000), payment: 'Chuyển khoản', orderDate: '30/09/2026', status: 'Đã huỷ' },
+      ],
+      ['Tạo đơn']
+    ),
+    mod(
+      'debts',
+      'Công nợ',
+      'Theo dõi công nợ từng đại lý: hạn mức, dư nợ, hạn thanh toán, nhắc nợ.',
+      'solar:wallet-money-bold-duotone',
+      [
+        { label: 'Tổng dư nợ', value: '742 tr' },
+        { label: 'Quá hạn', value: '186 tr' },
+        { label: 'Đến hạn 7 ngày', value: '214 tr' },
+        { label: 'Thu tháng này', value: '1,08 tỷ', trend: '+6%' },
+      ],
+      [
+        { key: 'dealer', label: 'Đại lý' },
+        { key: 'limit', label: 'Hạn mức', type: 'money' },
+        { key: 'balance', label: 'Dư nợ', type: 'money' },
+        { key: 'dueDate', label: 'Hạn thanh toán' },
+        STATUS_COL,
+      ],
+      [
+        { dealer: 'Nội thất Việt', limit: money(500000000), balance: money(286000000), dueDate: '20/10/2026', status: 'Trong hạn' },
+        { dealer: 'Decor Home HCM', limit: money(400000000), balance: money(214000000), dueDate: '12/10/2026', status: 'Sắp đến hạn' },
+        { dealer: 'Home Mart Hà Nội', limit: money(150000000), balance: money(126000000), dueDate: '25/09/2026', status: 'Quá hạn' },
+        { dealer: 'Sofa Plus Cần Thơ', limit: money(100000000), balance: money(60000000), dueDate: '28/09/2026', status: 'Quá hạn' },
+      ],
+      ['Ghi nhận thanh toán', 'Gửi nhắc nợ']
+    ),
+    mod(
+      'sales-docs',
+      'Tài liệu bán hàng',
+      'Catalogue, bảng giá, hình ảnh, video và hướng dẫn bán hàng cho đại lý tải về.',
+      'solar:folder-open-bold-duotone',
+      [
+        { label: 'Tài liệu', value: '42' },
+        { label: 'Lượt tải 30 ngày', value: '1.284', trend: '+18%' },
+        { label: 'Mới tháng này', value: '6' },
+        { label: 'Hạn chế cấp', value: '9' },
+      ],
+      [
+        { key: 'title', label: 'Tài liệu' },
+        { key: 'type', label: 'Loại' },
+        { key: 'access', label: 'Quyền truy cập' },
+        { key: 'downloads', label: 'Lượt tải', type: 'number' },
+        { key: 'updated', label: 'Cập nhật' },
+        STATUS_COL,
+      ],
+      [
+        { title: 'Catalogue LUXE 2026', type: 'Catalogue PDF', access: 'Tất cả đại lý', downloads: 512, updated: '01/10/2026', status: 'Đã xuất bản' },
+        { title: 'Bảng giá đại lý Q4/2026', type: 'Bảng giá', access: 'Vàng trở lên', downloads: 286, updated: '01/10/2026', status: 'Đã xuất bản' },
+        { title: 'Bộ ảnh sản phẩm Oslo', type: 'Hình ảnh', access: 'Tất cả đại lý', downloads: 194, updated: '20/09/2026', status: 'Đã xuất bản' },
+        { title: 'Kịch bản tư vấn sofa da', type: 'Hướng dẫn bán hàng', access: 'Tất cả đại lý', downloads: 88, updated: '12/09/2026', status: 'Bản nháp' },
+      ],
+      ['Tải lên tài liệu']
+    ),
+  ],
+};
+
 export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   CMS_GROUP,
   PRODUCT_GROUP,
@@ -1604,6 +1780,7 @@ export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   SEO_GROUP,
   ACCESS_GROUP,
   B2B_GROUP,
+  DEALER_GROUP,
 ];
 
 export function findSofa2AdminModule(groupSlug?: string, moduleSlug?: string) {
