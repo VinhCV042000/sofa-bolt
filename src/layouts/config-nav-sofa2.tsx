@@ -54,6 +54,7 @@ export const sofa2NavData = [
       { title: 'Giá bán', path: '/sofa2/admin/catalog/pricing' },
       { title: 'Đơn hàng', path: '/sofa2/admin/orders/orders' },
       { title: 'SEO', path: '/sofa2/admin/seo/sitemap' },
+      { title: 'Phân quyền', path: '/sofa2/admin/access/users' },
     ],
   },
 ];
