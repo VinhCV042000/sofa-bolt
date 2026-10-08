@@ -1,5 +1,5 @@
-// SOFA2 ADMIN — Lược đồ chi tiết cho module CRM
-// 4 trang (Khách hàng, Leads, Lịch sử mua hàng, Chăm sóc khách hàng)
+// SOFA2 ADMIN — Lược đồ chi tiết cho module Khách hàng (CRM)
+// 7 trang (Dashboard, Hồ sơ, Đơn hàng khách, Phiếu bảo hành, Điểm tích lũy, Voucher, Khiếu nại)
 // dùng chung Sofa2AdminCmsView — form thêm/sửa/xóa đầy đủ, tab trạng thái, bulk actions.
 // ----------------------------------------------------------------------
 
@@ -84,43 +84,34 @@ export const SOFA2_CRM_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     ],
   },
 
-  // ---- Leads -----------------------------------------------------------
-  leads: {
+  // ---- Dashboard khách hàng -------------------------------------------
+  'customer-dashboard': {
     clientPath: '/sofa2',
-    entity: 'lead',
-    titleKey: 'name',
+    entity: 'phân khúc',
+    titleKey: 'segment',
     statusKey: 'status',
-    statusOptions: LEAD_STATUSES,
-    publishLabel: 'Chốt lead',
-    defaultStatus: 'Mới',
+    statusOptions: ['Hoạt động', 'Ngưng tương tác', 'Chờ liên hệ'],
+    publishLabel: 'Kích hoạt',
+    defaultStatus: 'Hoạt động',
     hideClientLink: true,
     fields: [
-      f('name', 'Tên lead', 'text', 'content', { required: true }),
-      f('phone', 'Điện thoại', 'text', 'content', { required: true, placeholder: '09xx xxx xxx' }),
-      f('email', 'Email', 'text', 'content'),
-      f('source', 'Nguồn lead', 'select', 'content', { required: true, options: LEAD_SOURCES }),
-      f('interest', 'Sản phẩm quan tâm', 'select', 'content', { options: LEAD_INTERESTS }),
-      f('budget', 'Ngân sách dự kiến (₫)', 'number', 'content', { helper: 'Khoảng giá khách đề cập.' }),
-      f('city', 'Tỉnh/TP', 'select', 'content', { options: CITIES }),
-      f('note', 'Ghi chú tư vấn', 'textarea', 'content', { multiline: 3 }),
-      f('owner', 'Nhân viên phụ trách', 'select', 'display', { required: true, options: AGENTS }),
-      f('status', 'Trạng thái lead', 'select', 'display', {
+      f('segment', 'Phân khúc', 'text', 'content', { required: true }),
+      f('count', 'Số lượng khách', 'number', 'content', { required: true }),
+      f('ltv', 'LTV trung bình (₫)', 'number', 'display'),
+      f('repurchase', 'Tỷ lệ mua lại', 'text', 'display', { placeholder: '42%' }),
+      f('churn', 'Tỷ lệ rời bỏ', 'text', 'display', { placeholder: '5.2%' }),
+      f('note', 'Ghi chú', 'textarea', 'content', { multiline: 2 }),
+      f('status', 'Trạng thái', 'select', 'display', {
         required: true,
-        options: LEAD_STATUSES,
+        options: ['Hoạt động', 'Ngưng tương tác', 'Chờ liên hệ'],
       }),
-      f('contactedDate', 'Ngày liên hệ đầu', 'date', 'display'),
-      f('lastContact', 'Lần liên hệ cuối', 'date', 'display'),
-      f('nextAction', 'Hành động tiếp theo', 'text', 'display', { placeholder: 'Gọi lại 15/10 — gửi báo giá' }),
-      f('nextActionDate', 'Ngày hành động tiếp', 'date', 'display'),
-      f('convertedTo', 'Đã chuyển thành khách', 'switch', 'display', { helper: 'Bật khi lead chốt thành khách hàng.' }),
-      f('convertedDate', 'Ngày chốt', 'date', 'display'),
     ],
   },
 
-  // ---- Lịch sử mua hàng ------------------------------------------------
-  'purchase-history': {
+  // ---- Đơn hàng khách hàng --------------------------------------------
+  'customer-orders': {
     clientPath: '/sofa2',
-    entity: 'giao dịch',
+    entity: 'đơn hàng',
     titleKey: 'order',
     statusKey: 'status',
     statusOptions: ORDER_STATUSES,
@@ -156,10 +147,97 @@ export const SOFA2_CRM_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     ],
   },
 
-  // ---- Chăm sóc khách hàng ---------------------------------------------
-  care: {
+  // ---- Phiếu bảo hành -------------------------------------------------
+  warranties: {
     clientPath: '/sofa2',
-    entity: 'ticket chăm sóc',
+    entity: 'phiếu bảo hành',
+    titleKey: 'warranty',
+    statusKey: 'status',
+    statusOptions: ['Còn hiệu lực', 'Đang xử lý', 'Đã hoàn tất', 'Sắp hết hạn', 'Hết hiệu lực'],
+    publishLabel: 'Kích hoạt',
+    defaultStatus: 'Còn hiệu lực',
+    hideClientLink: true,
+    fields: [
+      f('warranty', 'Mã phiếu BH', 'text', 'content', { required: true, placeholder: 'BH-#####' }),
+      f('customer', 'Khách hàng', 'select', 'content', { required: true, options: CUSTOMERS }),
+      f('product', 'Sản phẩm', 'text', 'content', { required: true }),
+      f('order', 'Đơn gốc', 'text', 'content', { placeholder: 'LX-YYMMDD##' }),
+      f('issued', 'Ngày phát hành', 'date', 'content', { required: true }),
+      f('expires', 'Ngày hết hạn', 'date', 'content', { required: true }),
+      f('claim', 'Yêu cầu bảo hành', 'select', 'content', {
+        options: ['Chưa', 'Bảo hành khung', 'Thay vải đệm', 'Sửa khung xếp', 'Thay nệm', 'Khác'],
+      }),
+      f('claimDate', 'Ngày yêu cầu BH', 'date', 'display'),
+      f('claimDesc', 'Mô tả yêu cầu', 'textarea', 'display', { multiline: 3 }),
+      f('agent', 'Nhân viên xử lý', 'select', 'display', { options: AGENTS }),
+      f('note', 'Ghi chú', 'textarea', 'display', { multiline: 2 }),
+      f('status', 'Trạng thái', 'select', 'display', {
+        required: true,
+        options: ['Còn hiệu lực', 'Đang xử lý', 'Đã hoàn tất', 'Sắp hết hạn', 'Hết hiệu lực'],
+      }),
+    ],
+  },
+
+  // ---- Điểm tích lũy --------------------------------------------------
+  loyalty: {
+    clientPath: '/sofa2',
+    entity: 'tài khoản điểm',
+    titleKey: 'customer',
+    statusKey: 'status',
+    statusOptions: ['Hoạt động', 'Ngưng tương tác', 'Đã khoá'],
+    publishLabel: 'Kích hoạt',
+    defaultStatus: 'Hoạt động',
+    hideClientLink: true,
+    fields: [
+      f('customer', 'Khách hàng', 'select', 'content', { required: true, options: CUSTOMERS }),
+      f('tier', 'Hạng', 'select', 'content', { required: true, options: CUSTOMER_TIERS }),
+      f('balance', 'Điểm hiện tại', 'number', 'display', { required: true }),
+      f('earned', 'Tích lũy tháng', 'number', 'display'),
+      f('redeemed', 'Đã dùng', 'number', 'display'),
+      f('expires', 'Điểm sắp hết', 'text', 'display', { placeholder: '420 (31/12)' }),
+      f('adjustReason', 'Lý do điều chỉnh', 'text', 'display', { placeholder: 'Hoàn đơn, tặng sinh nhật...' }),
+      f('lastAdjust', 'Lần điều chỉnh cuối', 'date', 'display'),
+      f('note', 'Ghi chú', 'textarea', 'display', { multiline: 2 }),
+      f('status', 'Trạng thái', 'select', 'display', {
+        required: true,
+        options: ['Hoạt động', 'Ngưng tương tác', 'Đã khoá'],
+      }),
+    ],
+  },
+
+  // ---- Voucher khách hàng ---------------------------------------------
+  'customer-vouchers': {
+    clientPath: '/sofa2',
+    entity: 'voucher',
+    titleKey: 'code',
+    statusKey: 'status',
+    statusOptions: ['Chưa dùng', 'Đã dùng', 'Hết hạn', 'Đã huỷ'],
+    publishLabel: 'Phát hành',
+    defaultStatus: 'Chưa dùng',
+    hideClientLink: true,
+    fields: [
+      f('code', 'Mã voucher', 'text', 'content', { required: true, placeholder: 'VIP3-MAI' }),
+      f('customer', 'Khách hàng', 'select', 'content', { required: true, options: CUSTOMERS }),
+      f('tier', 'Hạng áp dụng', 'select', 'content', { options: CUSTOMER_TIERS }),
+      f('offer', 'Ưu đãi', 'text', 'content', { required: true, placeholder: 'Giảm 3 triệu' }),
+      f('condition', 'Điều kiện', 'text', 'content', { placeholder: 'Đơn từ 15 triệu' }),
+      f('expires', 'Ngày hết hạn', 'date', 'content', { required: true }),
+      f('channel', 'Kênh phát', 'select', 'content', { options: ['Email', 'SMS', 'Zalo', 'App push', 'Showroom'] }),
+      f('sentDate', 'Ngày gửi', 'date', 'display'),
+      f('usedDate', 'Ngày sử dụng', 'date', 'display'),
+      f('orderRef', 'Đơn áp dụng', 'text', 'display', { placeholder: 'LX-YYMMDD##' }),
+      f('note', 'Ghi chú', 'textarea', 'display', { multiline: 2 }),
+      f('status', 'Trạng thái', 'select', 'display', {
+        required: true,
+        options: ['Chưa dùng', 'Đã dùng', 'Hết hạn', 'Đã huỷ'],
+      }),
+    ],
+  },
+
+  // ---- Khiếu nại ------------------------------------------------------
+  complaints: {
+    clientPath: '/sofa2',
+    entity: 'khiếu nại',
     titleKey: 'ticket',
     statusKey: 'status',
     statusOptions: ['Đang xử lý', 'Chờ khách phản hồi', 'Đã đóng', 'Đã huỷ'],
@@ -167,19 +245,18 @@ export const SOFA2_CRM_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     defaultStatus: 'Đang xử lý',
     hideClientLink: true,
     fields: [
-      f('ticket', 'Mã ticket', 'text', 'content', { required: true, placeholder: 'TK-####' }),
+      f('ticket', 'Mã khiếu nại', 'text', 'content', { required: true, placeholder: 'KN-####' }),
       f('customer', 'Khách hàng', 'select', 'content', { required: true, options: CUSTOMERS }),
-      f('phone', 'Điện thoại khách', 'text', 'content'),
-      f('channel', 'Kênh tiếp nhận', 'select', 'content', { required: true, options: TICKET_CHANNELS }),
-      f('topic', 'Chủ đề', 'select', 'content', { required: true, options: TICKET_TOPICS }),
-      f('subject', 'Tiêu đề ticket', 'text', 'content', { required: true }),
+      f('category', 'Phân loại', 'select', 'content', { required: true, options: ['Hoàn tiền', 'Giao hàng', 'Bảo hành', 'Chất lượng', 'Đổi trả', 'Thanh toán', 'Khác'] }),
+      f('priority', 'Mức độ', 'select', 'content', { required: true, options: TICKET_PRIORITIES }),
+      f('topic', 'Nội dung', 'text', 'content', { required: true }),
       f('description', 'Mô tả chi tiết', 'textarea', 'content', { multiline: 5 }),
-      f('orderRef', 'Mã đơn liên quan', 'text', 'content', { placeholder: 'LX-YYMMDD## (nếu có)' }),
+      f('channel', 'Kênh tiếp nhận', 'select', 'content', { options: TICKET_CHANNELS }),
+      f('orderRef', 'Mã đơn liên quan', 'text', 'content', { placeholder: 'LX-YYMMDD##' }),
       f('productRef', 'Sản phẩm liên quan', 'text', 'content'),
-      f('priority', 'Mức độ ưu tiên', 'select', 'content', { required: true, options: TICKET_PRIORITIES }),
       f('note', 'Ghi chú nội bộ', 'textarea', 'content', { multiline: 2 }),
       f('agent', 'Nhân viên xử lý', 'select', 'display', { required: true, options: AGENTS }),
-      f('created', 'Ngày tạo ticket', 'date', 'display', { required: true }),
+      f('created', 'Ngày tạo', 'date', 'display', { required: true }),
       f('firstResponse', 'Phản hồi đầu', 'date', 'display'),
       f('resolvedDate', 'Ngày đóng', 'date', 'display'),
       f('responseTime', 'Thời gian phản hồi (phút)', 'number', 'display'),
