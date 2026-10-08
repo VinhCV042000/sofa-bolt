@@ -25,48 +25,174 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import CardHeader from '@mui/material/CardHeader';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TableContainer from '@mui/material/TableContainer';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import TablePagination from '@mui/material/TablePagination';
 
-import { RouterLink } from 'src/routes/components';
-
+import { Chart, useChart } from 'src/components/chart';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
-import { Sofa2AdminSeoGenerator } from './sofa2-admin-seo-generator';
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
-import { sofa2Today, sofa2Slugify, type Sofa2CmsField, type Sofa2CmsSchema } from '../sofa2-cms';
+import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
+import { type Sofa2AnalyticsSchema } from '../sofa2-analytics';
 
 import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
 
 // ----------------------------------------------------------------------
 
 const SURFACE = '#2A2A2A';
+const PALETTE = ['#1A1A1A', '#455A64', '#607D8B', '#90A4AE', '#CFD8DC', '#B0BEC5'];
 
 const statusColor = (value: string) => {
   const v = String(value).toLowerCase();
-  if (/(xuất bản|đang chạy|tốt)/.test(v)) return 'success';
-  if (/(nháp|chờ|cần cải thiện)/.test(v)) return 'warning';
-  if (/(ẩn|hết hạn|thiếu)/.test(v)) return 'error';
+  if (/(đang theo dõi|tốt|hoạt động)/.test(v)) return 'success';
+  if (/(cần cải thiện|chờ)/.test(v)) return 'warning';
+  if (/(tạm dừng|ngừng|ẩn|hết)/.test(v)) return 'error';
   return 'default';
 };
 
-const GROUP_LABEL: Record<Sofa2CmsField['group'], string> = {
-  content: 'Nội dung',
-  display: 'Hiển thị & lịch',
+const GROUP_LABEL: Record<string, string> = {
+  content: 'Dữ liệu chính',
+  display: 'Trạng thái',
   seo: 'SEO & chia sẻ',
+  audience: 'Phân khúc',
+  performance: 'Hiệu quả',
 };
 
 type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values: AdminRow };
 
-type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2CmsSchema };
+type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2AnalyticsSchema };
 
-export function Sofa2AdminCmsView({ group, module, schema }: Props) {
+// ----------------------------------------------------------------------
+
+/** Biểu đồ dành riêng cho từng loại analytics */
+function AnalyticsChart({ schema }: { schema: Sofa2AnalyticsSchema }) {
+  const { chartType, chartTitle, chartSubtitle, chartCategories, chartSeries, chartLabels } = schema;
+
+  const commonOptions = useChart({
+    colors: PALETTE,
+    legend: { show: chartSeries.length > 1, position: 'top' },
+    tooltip: { y: { formatter: (val: number) => val.toLocaleString('vi-VN') } },
+  });
+
+  if (chartType === 'donut') {
+    const donutOptions = useChart({
+      colors: PALETTE,
+      labels: chartLabels ?? [],
+      stroke: { width: 0 },
+      legend: { position: 'bottom', horizontalAlign: 'center' },
+      tooltip: { y: { formatter: (val: number) => `${val.toLocaleString('vi-VN')} phiên` } },
+    });
+    return (
+      <Card>
+        <CardHeader title={chartTitle} subheader={chartSubtitle} />
+        <Chart
+          type="donut"
+          series={chartSeries[0]?.data ?? []}
+          options={donutOptions}
+          height={340}
+          sx={{ px: 2, pb: 2 }}
+        />
+      </Card>
+    );
+  }
+
+  if (chartType === 'horizontal-bar') {
+    const hbarOptions = useChart({
+      colors: [PALETTE[0]],
+      xaxis: { categories: chartCategories ?? [] },
+      plotOptions: { bar: { horizontal: true, barHeight: '55%', borderRadius: 4 } },
+      legend: { show: false },
+    });
+    return (
+      <Card>
+        <CardHeader title={chartTitle} subheader={chartSubtitle} />
+        <Chart
+          type="bar"
+          series={chartSeries}
+          options={hbarOptions}
+          height={340}
+          sx={{ px: 2, pb: 2 }}
+        />
+      </Card>
+    );
+  }
+
+  if (chartType === 'funnel') {
+    const funnelOptions = useChart({
+      colors: [PALETTE[0]],
+      xaxis: { categories: chartCategories ?? [] },
+      plotOptions: { bar: { horizontal: true, barHeight: '60%', borderRadius: 4, distributed: true } },
+      legend: { show: false },
+      fill: { gradient: { shade: 'dark', type: 'horizontal' } },
+    });
+    return (
+      <Card>
+        <CardHeader title={chartTitle} subheader={chartSubtitle} />
+        <Chart
+          type="bar"
+          series={chartSeries}
+          options={funnelOptions}
+          height={340}
+          sx={{ px: 2, pb: 2 }}
+        />
+      </Card>
+    );
+  }
+
+  if (chartType === 'area') {
+    const areaOptions = useChart({
+      colors: [PALETTE[0], PALETTE[1]],
+      stroke: { width: [3, 2], dashArray: [0, 5] },
+      xaxis: { categories: chartCategories ?? [] },
+      legend: { show: true, position: 'top' },
+      fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.1 } },
+    });
+    return (
+      <Card>
+        <CardHeader title={chartTitle} subheader={chartSubtitle} />
+        <Chart
+          type="area"
+          series={chartSeries}
+          options={areaOptions}
+          height={340}
+          sx={{ px: 2, pb: 2 }}
+        />
+      </Card>
+    );
+  }
+
+  // line + bar (mặc định)
+  const lineOptions = useChart({
+    colors: PALETTE,
+    stroke: { width: chartType === 'line' ? [3, 2] : 3, dashArray: chartType === 'line' ? [0, 5] : 0 },
+    xaxis: { categories: chartCategories ?? [] },
+    plotOptions: chartType === 'bar' ? { bar: { columnWidth: '45%', borderRadius: 4 } } : undefined,
+    legend: { show: chartSeries.length > 1, position: 'top' },
+  });
+
+  return (
+    <Card>
+      <CardHeader title={chartTitle} subheader={chartSubtitle} />
+      <Chart
+        type={chartType === 'bar' ? 'bar' : 'line'}
+        series={chartSeries}
+        options={lineOptions}
+        height={340}
+        sx={{ px: 2, pb: 2 }}
+      />
+    </Card>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+export function Sofa2AdminAnalyticsView({ group, module, schema }: Props) {
   const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa2AdminRows(
     group.slug,
     module.slug
@@ -91,12 +217,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     values: {},
   });
 
-  const { titleKey, statusKey, statusOptions, fields, clientPath, entity } = schema;
-
-  const publishLabel = schema.publishLabel ?? 'Xuất bản';
-  const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Bản nháp';
+  const { titleKey, statusKey, statusOptions, fields, entity } = schema;
+  const publishLabel = schema.publishLabel ?? 'Theo dõi';
+  const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Tạm dừng';
   const published = statusOptions[0];
-  const hideClientLink = schema.hideClientLink ?? false;
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -179,9 +303,9 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const togglePublish = (index: number) => {
     const row = rows[index];
     const isPublished = String(row[statusKey]) === published;
-    const next = isPublished ? statusOptions[1] ?? 'Bản nháp' : published;
+    const next = isPublished ? statusOptions[1] ?? 'Tạm dừng' : published;
     updateRow(index, { ...row, [statusKey]: next, ...(row.updated ? { updated: sofa2Today() } : {}) });
-    setToast(isPublished ? `Đã gỡ ${publishLabel.toLowerCase()} ${entity}.` : `Đã ${publishLabel.toLowerCase()} ${entity}.`);
+    setToast(isPublished ? `Đã tắt theo dõi ${entity}.` : `Đã bật theo dõi ${entity}.`);
   };
 
   const duplicateRow = (index: number) => {
@@ -189,9 +313,8 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     const copy: AdminRow = {
       ...row,
       [titleKey]: `${row[titleKey]} (bản sao)`,
-      [statusKey]: statusOptions[1] ?? 'Bản nháp',
+      [statusKey]: statusOptions[1] ?? 'Tạm dừng',
     };
-    if (copy.slug) copy.slug = `${sofa2Slugify(String(row[titleKey]))}-copy`;
     createRow(copy);
     setToast(`Đã nhân bản ${entity}.`);
   };
@@ -210,7 +333,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       .slice()
       .sort((a, b) => a - b)
       .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
-    setToast(`Đã ${publishLabel.toLowerCase()} ${selected.length} ${entity}.`);
+    setToast(`Đã bật theo dõi ${selected.length} ${entity}.`);
     setSelected([]);
   };
 
@@ -231,7 +354,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `cms-${module.slug}.csv`;
+    a.download = `analytics-${module.slug}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     setToast('Đã xuất dữ liệu CSV.');
@@ -245,16 +368,15 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
 
     if (field.type === 'switch') {
       return (
-        <FormControlLabel
-          key={field.key}
-          control={
-            <Switch
-              checked={String(value) === 'Có'}
-              onChange={(e) => setValue(field.key, e.target.checked ? 'Có' : 'Không')}
-            />
-          }
-          label={field.label}
-        />
+        <Box key={field.key} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Switch
+            checked={String(value) === 'Có'}
+            onChange={(e) => setValue(field.key, e.target.checked ? 'Có' : 'Không')}
+          />
+          <Typography variant="body2" sx={{ ml: 1 }}>
+            {field.label}
+          </Typography>
+        </Box>
       );
     }
 
@@ -277,11 +399,6 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
             : field.helper)
         }
         onChange={(e) => setValue(field.key, e.target.value)}
-        onBlur={() => {
-          if (field.key === 'slug' && !String(value).trim()) {
-            setValue('slug', `${clientPath}/${sofa2Slugify(String(form.values[titleKey] ?? ''))}`);
-          }
-        }}
       >
         {(field.options ?? []).map((opt) => (
           <MenuItem key={opt} value={opt}>
@@ -292,12 +409,13 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     );
   };
 
-  const groupedFields = (g: Sofa2CmsField['group']) => fields.filter((x) => x.group === g);
+  const groupedFields = (g: string) => fields.filter((x) => x.group === g);
+  const formGroups = ['content', 'audience', 'performance', 'display'];
 
   return (
     <>
       <Helmet>
-        <title>{`${module.name} | CMS - Quản trị LUXE Sofa`}</title>
+        <title>{`${module.name} | Analytics - Quản trị LUXE Sofa`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -309,6 +427,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         subtitle={module.description}
       >
         <Grid container spacing={3}>
+          {/* KPI cards */}
           {module.stats.map((stat) => (
             <Grid key={stat.label} xs={6} md={3}>
               <Card sx={{ p: 2.5 }}>
@@ -329,43 +448,12 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
             </Grid>
           ))}
 
-          {!hideClientLink && (
-            <Grid xs={12}>
-              <Card sx={{ p: 2.5 }}>
-                <Stack
-                  spacing={1.5}
-                  direction={{ xs: 'column', md: 'row' }}
-                  alignItems={{ md: 'center' }}
-                >
-                  <Stack spacing={0.5}>
-                    <Typography variant="subtitle2">Trang tương ứng trên website</Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      {clientPath}
-                    </Typography>
-                  </Stack>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="inherit"
-                    component={RouterLink}
-                    href={clientPath}
-                    target="_blank"
-                    startIcon={<Iconify icon="solar:eye-bold-duotone" />}
-                  >
-                    Xem trang khách hàng
-                  </Button>
-                </Stack>
-              </Card>
-            </Grid>
-          )}
+          {/* Chart section */}
+          <Grid xs={12}>
+            <AnalyticsChart schema={schema} />
+          </Grid>
 
-          {module.slug === 'seo' && (
-            <Grid xs={12}>
-              <Sofa2AdminSeoGenerator moduleSlug={module.slug} moduleName={module.name} />
-            </Grid>
-          )}
-
+          {/* Table section */}
           <Grid xs={12}>
             <Card>
               <Tabs
@@ -506,12 +594,20 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                                   label={String(value)}
                                   color={statusColor(String(value)) as any}
                                 />
+                              ) : col.type === 'money' && typeof value === 'number' ? (
+                                <Typography variant="body2" sx={{ fontWeight: col.key === titleKey ? 600 : 400 }}>
+                                  {value.toLocaleString('vi-VN')} ₫
+                                </Typography>
+                              ) : col.type === 'number' && typeof value === 'number' ? (
+                                <Typography variant="body2" sx={{ fontWeight: col.key === titleKey ? 600 : 400 }}>
+                                  {value.toLocaleString('vi-VN')}
+                                </Typography>
                               ) : (
                                 <Typography
                                   variant="body2"
                                   sx={{ fontWeight: col.key === titleKey ? 600 : 400 }}
                                 >
-                                  {typeof value === 'number' ? value.toLocaleString('vi-VN') : value}
+                                  {value}
                                 </Typography>
                               )}
                             </TableCell>
@@ -601,13 +697,13 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         </DialogTitle>
         <DialogContent dividers>
           <Stack spacing={3} sx={{ pt: 1 }}>
-            {(['content', 'display', 'seo'] as const).map((g) => {
+            {formGroups.map((g) => {
               const list = groupedFields(g);
               if (!list.length) return null;
               return (
                 <Stack key={g} spacing={2}>
                   <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-                    {GROUP_LABEL[g]}
+                    {GROUP_LABEL[g] ?? g}
                   </Typography>
                   <Grid container spacing={2}>
                     {list.map((field) => (
@@ -679,7 +775,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         <DialogTitle>{`Xoá ${entity}?`}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm “Khôi phục” để nạp
+            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục" để nạp
             lại dữ liệu gốc.
           </Typography>
         </DialogContent>

@@ -332,7 +332,6 @@ export function Sofa2AdminModuleView() {
                               {col.type === 'status' ? (
                                 <Chip
                                   size="small"
-                                  variant="soft"
                                   label={String(value)}
                                   color={statusColor(String(value)) as any}
                                 />
