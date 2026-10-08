@@ -15,15 +15,36 @@ const key = (group: string, module: string) => `${group}/${module}`;
 
 const store: Store = {};
 
+const STORAGE_KEY = 'sofa2-admin-rows-v1';
+
 SOFA2_ADMIN_GROUPS.forEach((group) => {
   group.modules.forEach((module) => {
     store[key(group.slug, module.slug)] = module.rows.map((row) => ({ ...row }));
   });
 });
 
+// Khôi phục dữ liệu đã lưu (giữ thay đổi sau khi tải lại trang, dùng chung với trang khách)
+try {
+  const saved = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
+  if (saved) Object.assign(store, JSON.parse(saved) as Store);
+} catch {
+  /* bỏ qua */
+}
+
 const listeners = new Set<() => void>();
 
-const emit = () => listeners.forEach((l) => l());
+const emit = () => {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  } catch {
+    /* bỏ qua */
+  }
+  listeners.forEach((l) => l());
+};
+
+/** Đọc nhanh dữ liệu một module (không cần hook) */
+export const getSofa2AdminRows = (groupSlug: string, moduleSlug: string) =>
+  store[key(groupSlug, moduleSlug)] ?? [];
 
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
