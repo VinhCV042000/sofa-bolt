@@ -10,6 +10,8 @@ export * from './sofa2-admin-analytics-view';
 
 export * from './sofa2-admin-seo-view';
 
+export * from './sofa2-admin-cart-view';
+
 export * from './sofa2-admin-tools-view';
 
 export * from './sofa2-admin-dashboard-view';

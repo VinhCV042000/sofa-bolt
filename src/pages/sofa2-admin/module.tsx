@@ -12,9 +12,11 @@ import { getSofa2CrmSchema } from 'src/sections/sofa2-admin/sofa2-crm';
 import { getSofa2AccessSchema } from 'src/sections/sofa2-admin/sofa2-access';
 import { getSofa2AnalyticsSchema } from 'src/sections/sofa2-admin/sofa2-analytics';
 import { getSofa2SeoSchema } from 'src/sections/sofa2-admin/sofa2-seo';
+import { getSofa2CartSchema } from 'src/sections/sofa2-admin/sofa2-cart';
 import { Sofa2AdminCmsView } from 'src/sections/sofa2-admin/view/sofa2-admin-cms-view';
 import { Sofa2AdminAnalyticsView } from 'src/sections/sofa2-admin/view/sofa2-admin-analytics-view';
 import { Sofa2AdminSeoView } from 'src/sections/sofa2-admin/view/sofa2-admin-seo-view';
+import { Sofa2AdminCartView } from 'src/sections/sofa2-admin/view/sofa2-admin-cart-view';
 import { Sofa2AdminModuleView } from 'src/sections/sofa2-admin/view';
 
 // ----------------------------------------------------------------------
@@ -68,6 +70,19 @@ export default function Page() {
           group={found.group}
           module={found.module}
           schema={seoSchema}
+        />
+      );
+    }
+
+    const cartSchema =
+      found.group.slug === 'shopping' ? getSofa2CartSchema(found.module.slug) : undefined;
+    if (cartSchema) {
+      return (
+        <Sofa2AdminCartView
+          key={`${found.group.slug}/${found.module.slug}`}
+          group={found.group}
+          module={found.module}
+          schema={cartSchema}
         />
       );
     }

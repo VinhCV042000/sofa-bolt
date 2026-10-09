@@ -4218,6 +4218,156 @@ const SHOPPING_GROUP: Sofa2AdminGroup = {
       ],
       ['Cập nhật hành trình']
     ),
+    mod(
+      'account',
+      'Tài khoản khách hàng',
+      'Quản lý tài khoản khách hàng, cấp bậc thành viên, điểm tích lũy.',
+      'solar:user-id-bold-duotone',
+      [
+        { label: 'Tài khoản', value: '8.642' },
+        { label: 'Hoạt động 30 ngày', value: '3.218' },
+        { label: 'Thành viên VIP', value: '486' },
+      ],
+      [
+        { key: 'name', label: 'Khách hàng' },
+        { key: 'email', label: 'Email' },
+        { key: 'tier', label: 'Cấp bậc' },
+        { key: 'points', label: 'Điểm', type: 'number' },
+        { key: 'orders', label: 'Đơn hàng', type: 'number' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { name: 'Hoàng Nam', email: 'hoangnam@gmail.com', tier: 'Bạch Kim', points: 12800, orders: 18, status: 'Hoạt động' },
+        { name: 'Thu Trang', email: 'thutrang@gmail.com', tier: 'Vàng', points: 8600, orders: 12, status: 'Hoạt động' },
+        { name: 'Mai Chi', email: 'maichi@gmail.com', tier: 'Bạc', points: 3200, orders: 6, status: 'Hoạt động' },
+        { name: 'Trung Kiên', email: 'trungkien@gmail.com', tier: 'Đồng', points: 800, orders: 2, status: 'Tạm khoá' },
+      ],
+      ['Thêm khách', 'Xuất danh sách']
+    ),
+    mod(
+      'profile',
+      'Hồ sơ cá nhân',
+      'Thông tin cá nhân khách hàng: tên, SĐT, ngày sinh, giới tính, ảnh đại diện.',
+      'solar:card-id-bold-duotone',
+      [
+        { label: 'Hồ sơ đầy đủ', value: '92%' },
+        { label: 'Cần cập nhật', value: '684' },
+        { label: 'Xác thực SĐT', value: '7.958' },
+      ],
+      [
+        { key: 'name', label: 'Họ tên' },
+        { key: 'phone', label: 'SĐT' },
+        { key: 'birthday', label: 'Ngày sinh' },
+        { key: 'gender', label: 'Giới tính' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { name: 'Hoàng Nam', phone: '0903 112 233', birthday: '15/03/1990', gender: 'Nam', status: 'Đã xác thực' },
+        { name: 'Thu Trang', phone: '0912 445 566', birthday: '22/07/1995', gender: 'Nữ', status: 'Đã xác thực' },
+        { name: 'Mai Chi', phone: '0988 776 655', birthday: '08/12/1992', gender: 'Nữ', status: 'Chưa xác thực' },
+      ],
+      ['Cập nhật hồ sơ']
+    ),
+    mod(
+      'addresses',
+      'Địa chỉ giao hàng',
+      'Sổ địa chỉ khách hàng: địa chỉ mặc định, địa chỉ phụ, đánh dấu giao lắp.',
+      'solar:map-point-bold-duotone',
+      [
+        { label: 'Địa chỉ', value: '12.480' },
+        { label: 'Mặc định', value: '8.642' },
+        { label: 'Vùng xa', value: '684' },
+      ],
+      [
+        { key: 'customer', label: 'Khách' },
+        { key: 'recipient', label: 'Người nhận' },
+        { key: 'phone', label: 'SĐT' },
+        { key: 'district', label: 'Khu vực' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { customer: 'Hoàng Nam', recipient: 'Hoàng Nam', phone: '0903 112 233', district: 'Q1, TP.HCM', status: 'Mặc định' },
+        { customer: 'Hoàng Nam', recipient: 'Lan Anh', phone: '0903 112 233', district: 'Thủ Đức, TP.HCM', status: 'Phụ' },
+        { customer: 'Thu Trang', recipient: 'Thu Trang', phone: '0912 445 566', district: 'Cầu Giấy, Hà Nội', status: 'Mặc định' },
+      ],
+      ['Thêm địa chỉ']
+    ),
+    mod(
+      'my-orders',
+      'Đơn hàng của tôi',
+      'Lịch sử đơn hàng theo khách: trạng thái, tổng tiền, chi tiết sản phẩm.',
+      'solar:bag-bold-duotone',
+      [
+        { label: 'Đơn hàng', value: '8.642' },
+        { label: 'Đang xử lý', value: '128' },
+        { label: 'Hoàn tất', value: '7.890' },
+      ],
+      [
+        { key: 'order', label: 'Mã đơn' },
+        { key: 'customer', label: 'Khách' },
+        { key: 'date', label: 'Ngày đặt' },
+        { key: 'total', label: 'Tổng tiền', type: 'money' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { order: 'LX-26091502', customer: 'Hoàng Nam', date: '15/09/2026', total: 25900000, status: 'Đang sản xuất' },
+        { order: 'LX-26091011', customer: 'Thu Trang', date: '10/09/2026', total: 38500000, status: 'Đang giao' },
+        { order: 'LX-26090403', customer: 'Mai Chi', date: '04/09/2026', total: 18900000, status: 'Đã giao' },
+        { order: 'LX-26090201', customer: 'Trung Kiên', date: '02/09/2026', total: 42000000, status: 'Đã huỷ' },
+      ],
+      ['Xuất danh sách']
+    ),
+    mod(
+      'transactions',
+      'Lịch sử giao dịch',
+      'Lịch sử thanh toán: cổng, số tiền, trạng thái, mã tham chiếu.',
+      'solar:card-send-bold-duotone',
+      [
+        { label: 'Giao dịch', value: '8.642' },
+        { label: 'Thành công', value: '98.2%' },
+        { label: 'Hoàn tiền', value: '46' },
+      ],
+      [
+        { key: 'txnId', label: 'Mã GD' },
+        { key: 'order', label: 'Mã đơn' },
+        { key: 'method', label: 'Phương thức' },
+        { key: 'amount', label: 'Số tiền', type: 'money' },
+        { key: 'date', label: 'Ngày' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { txnId: 'TXN-26091501', order: 'LX-26091502', method: 'VNPay QR', amount: 25900000, date: '15/09/2026', status: 'Thành công' },
+        { txnId: 'TXN-26091002', order: 'LX-26091011', method: 'Chuyển khoản', amount: 11550000, date: '10/09/2026', status: 'Thành công' },
+        { txnId: 'TXN-26090403', order: 'LX-26090403', method: 'COD', amount: 18900000, date: '08/09/2026', status: 'Thành công' },
+        { txnId: 'TXN-26090201', order: 'LX-26090201', method: 'VNPay QR', amount: 42000000, date: '02/09/2026', status: 'Thất bại' },
+        { txnId: 'TXN-26090101', order: 'LX-26090101', method: 'Trả góp', amount: 32000000, date: '01/09/2026', status: 'Hoàn tiền' },
+      ],
+      ['Xuất sao kê']
+    ),
+    mod(
+      'warranty',
+      'Phiếu bảo hành',
+      'Phiếu bảo hành theo sản phẩm, thời hạn, yêu cầu bảo hành khách tra cứu.',
+      'solar:shield-check-bold-duotone',
+      [
+        { label: 'Phiếu BH', value: '8.420' },
+        { label: 'Còn hiệu lực', value: '6.180' },
+        { label: 'Sắp hết hạn', value: '42' },
+      ],
+      [
+        { key: 'warranty', label: 'Mã phiếu' },
+        { key: 'customer', label: 'Khách' },
+        { key: 'product', label: 'Sản phẩm' },
+        { key: 'expires', label: 'Hết hạn' },
+        { key: 'status', label: 'Trạng thái', type: 'status' },
+      ],
+      [
+        { warranty: 'BH-24001', customer: 'Hoàng Nam', product: 'Sofa Oslo 3 Chỗ', expires: '04/11/2030', status: 'Còn hiệu lực' },
+        { warranty: 'BH-23102', customer: 'Nội thất Việt', product: 'Sofa Munich 2C (x8)', expires: '15/06/2030', status: 'Đang xử lý' },
+        { warranty: 'BH-22020', customer: 'Đặng Quốc Bảo', product: 'Sofa Berlin Góc', expires: '03/08/2029', status: 'Sắp hết hạn' },
+      ],
+      ['Tạo phiếu BH', 'Gia hạn BH']
+    ),
   ],
 };
 
