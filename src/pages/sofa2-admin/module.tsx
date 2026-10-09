@@ -9,6 +9,7 @@ import { getSofa2ShopSchema } from 'src/sections/sofa2-admin/sofa2-shop';
 import { getSofa2B2bSchema } from 'src/sections/sofa2-admin/sofa2-b2b';
 import { getSofa2ShoppingSchema } from 'src/sections/sofa2-admin/sofa2-shopping';
 import { getSofa2CrmSchema } from 'src/sections/sofa2-admin/sofa2-crm';
+import { getSofa2HrSchema } from 'src/sections/sofa2-admin/sofa2-hr';
 import { getSofa2AccessSchema } from 'src/sections/sofa2-admin/sofa2-access';
 import { getSofa2AnalyticsSchema } from 'src/sections/sofa2-admin/sofa2-analytics';
 import { getSofa2SeoSchema } from 'src/sections/sofa2-admin/sofa2-seo';
@@ -35,6 +36,7 @@ export default function Page() {
       (found.group.slug === 'b2b' && getSofa2B2bSchema(found.module.slug)) ||
       (found.group.slug === 'shopping' && getSofa2ShoppingSchema(found.module.slug)) ||
       (found.group.slug === 'crm' && getSofa2CrmSchema(found.module.slug)) ||
+      (found.group.slug === 'hr' && getSofa2HrSchema(found.module.slug)) ||
       (found.group.slug === 'access' && getSofa2AccessSchema(found.module.slug)) ||
       undefined;
     if (schema) {
