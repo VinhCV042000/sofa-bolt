@@ -16,6 +16,8 @@ import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import { SOFA2_TRACKING_STEPS } from 'src/sections/sofa2-admin/sofa2-shop';
 import { formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
@@ -31,6 +33,21 @@ const STEPS = [
 
 export default function Page() {
   const [searched, setSearched] = useState(false);
+  const [code, setCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [error, setError] = useState('');
+  const { rows } = useSofa2AdminRows('shop', 'tracking');
+  const norm = (v: unknown) => String(v ?? '').replace(/[#\s.]/g, '').toUpperCase();
+  const order = rows.find((r) => norm(r.code) === norm(code) && norm(r.phone) === norm(phone));
+  const stepIndex = Math.max(0, SOFA2_TRACKING_STEPS.indexOf(String(order?.step ?? '')));
+  const items = String(order?.items ?? '').split(';').map((x) => x.trim()).filter(Boolean).map((x) => {
+    const mm = x.match(/^(.*?)\s*x\s*(\d+)$/i);
+    return { name: mm ? mm[1] : x, qty: mm ? Number(mm[2]) : 1 };
+  });
+  const search = () => {
+    if (!order) { setError('Không tìm thấy đơn hàng. Kiểm tra lại mã đơn và số điện thoại.'); return; }
+    setError(''); setSearched(true);
+  };
 
   return (
     <>
@@ -44,10 +61,10 @@ export default function Page() {
               <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={3} sx={{ p: { xs: 3, md: 5 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}>
                 <Typography variant="h5">Tra cứu đơn hàng</Typography>
                 <Grid container spacing={2}>
-                  <Grid xs={12} sm={6}><TextField fullWidth label="Mã đơn hàng" placeholder="VD: #LX20250218001" /></Grid>
-                  <Grid xs={12} sm={6}><TextField fullWidth label="Số điện thoại" /></Grid>
+                  <Grid xs={12} sm={6}><TextField fullWidth label="Mã đơn hàng" placeholder="VD: #LX20250218001" value={code} onChange={(e) => setCode(e.target.value)} /></Grid>
+                  <Grid xs={12} sm={6}><TextField fullWidth label="Số điện thoại" placeholder="VD: 0901234567" value={phone} onChange={(e) => setPhone(e.target.value)} error={!!error} helperText={error} /></Grid>
                 </Grid>
-                <Button variant="contained" size="large" startIcon={<Iconify icon="solar:minimalistic-magnifer-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={() => setSearched(true)}>
+                <Button variant="contained" size="large" startIcon={<Iconify icon="solar:minimalistic-magnifer-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={search}>
                   Tìm đơn hàng
                 </Button>
               </Stack>
@@ -57,12 +74,12 @@ export default function Page() {
           <Stack spacing={5}>
             {/* Status timeline */}
             <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={2} sx={{ mb: 2 }}>
-              <Typography variant="h5">Trạng thái đơn hàng #LX20250218001</Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Dự kiến giao: 20/02/2025</Typography>
+              <Typography variant="h5">Trạng thái đơn hàng #{order?.code}</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Dự kiến giao: {order?.eta} · {order?.carrier} · {order?.status}</Typography>
             </Stack>
             <Grid container spacing={2} component={m.div} variants={varFade({ distance: 24 }).inUp}>
               {STEPS.map((s, index) => {
-                const active = index <= 2;
+                const active = index <= stepIndex;
                 return (
                   <Grid key={s.label} xs={12} sm={6} md={3}>
                     <Stack spacing={2} sx={{ p: 3, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, opacity: active ? 1 : 0.5, border: active ? (t) => `1px solid ${varAlpha(t.vars.palette.primary.mainChannel, 0.24)}` : 'none' }}>
@@ -85,25 +102,22 @@ export default function Page() {
               <Grid xs={12} md={8}>
                 <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={2} sx={{ p: { xs: 3, md: 4 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}>
                   <Typography variant="h6">Chi tiết đơn hàng</Typography>
-                  {[
-                    { name: 'Sofa Oslo 3 Chỗ', qty: 1, price: 14500000 },
-                    { name: 'Sofa Berlin Góc', qty: 2, price: 22000000 },
-                  ].map((it) => (
+                  {items.map((it) => (
                     <Stack key={it.name} direction="row" justifyContent="space-between" sx={{ py: 1 }}>
                       <Typography variant="body2">{it.name} (SL: {it.qty})</Typography>
-                      <Typography variant="subtitle2">{formatSofa2Price(it.price * it.qty)}</Typography>
+                      <Typography variant="subtitle2">x{it.qty}</Typography>
                     </Stack>
                   ))}
                   <Divider />
-                  <Stack direction="row" justifyContent="space-between"><Typography variant="subtitle2">Tổng cộng</Typography><Typography variant="h6" sx={{ color: 'primary.main' }}>{formatSofa2Price(14500000 + 22000000 * 2 + 300000)}</Typography></Stack>
+                  <Stack direction="row" justifyContent="space-between"><Typography variant="subtitle2">Tổng cộng</Typography><Typography variant="h6" sx={{ color: 'primary.main' }}>{formatSofa2Price(Number(order?.total ?? 0))}</Typography></Stack>
                 </Stack>
               </Grid>
               <Grid xs={12} md={4}>
                 <Stack component={m.div} variants={varFade({ distance: 24 }).inLeft} spacing={2} sx={{ p: { xs: 3, md: 4 }, borderRadius: 2, bgcolor: (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04) }}>
                   <Typography variant="h6">Địa chỉ giao hàng</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>Nguyễn Minh Anh</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>0901 234 567</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>123 Nguyễn Trãi, Thanh Xuân, Hà Nội</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>{order?.customer}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>{order?.phone}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>{order?.address}</Typography>
                 </Stack>
               </Grid>
             </Grid>
