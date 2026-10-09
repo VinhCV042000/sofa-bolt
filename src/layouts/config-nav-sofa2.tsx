@@ -52,6 +52,7 @@ export const sofa2NavData = [
       { title: 'Danh mục', path: '/sofa2/admin/catalog/categories' },
       { title: 'Biến thể & tồn kho', path: '/sofa2/admin/catalog/variants' },
       { title: 'Giá bán', path: '/sofa2/admin/catalog/pricing' },
+      { title: 'Mua hàng', path: '/sofa2/admin/shopping/listing' },
       { title: 'Đơn hàng', path: '/sofa2/admin/orders/orders' },
       { title: 'Đại lý', path: '/sofa2/admin/dealer/dashboard' },
       { title: 'SEO', path: '/sofa2/admin/seo/sitemap' },
