@@ -1,3 +1,4 @@
+import { SOFA2_SHOP_GROUP } from './sofa2-shop';
 // SOFA2 ADMIN — Bold, dark, modern editorial style
 // ----------------------------------------------------------------------
 
@@ -1918,6 +1919,7 @@ export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   ACCESS_GROUP,
   B2B_GROUP,
   DEALER_GROUP,
+  SOFA2_SHOP_GROUP,
 ];
 
 export function findSofa2AdminModule(groupSlug?: string, moduleSlug?: string) {
