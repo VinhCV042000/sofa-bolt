@@ -182,6 +182,15 @@ const Sofa2CheckoutSuccessPage = lazy(() => import('src/pages/sofa2-pages/checko
 const Sofa2OrderTrackingPage = lazy(() => import('src/pages/sofa2-pages/order-tracking'));
 const Sofa2PaymentPage = lazy(() => import('src/pages/sofa2-pages/payment'));
 const Sofa2SupportPage = lazy(() => import('src/pages/sofa2-pages/support'));
+const Sofa2LoginPage = lazy(() => import('src/pages/sofa2-pages/login'));
+const Sofa2RegisterPage = lazy(() => import('src/pages/sofa2-pages/register'));
+const Sofa2ForgotPasswordPage = lazy(() => import('src/pages/sofa2-pages/forgot-password'));
+const Sofa2WishlistPage = lazy(() => import('src/pages/sofa2-pages/wishlist'));
+const Sofa2MyOrdersPage = lazy(() => import('src/pages/sofa2-pages/my-orders'));
+const Sofa2TransactionsPage = lazy(() => import('src/pages/sofa2-pages/transactions'));
+const Sofa2WarrantyPage = lazy(() => import('src/pages/sofa2-pages/warranty'));
+const Sofa2AddressesPage = lazy(() => import('src/pages/sofa2-pages/addresses'));
+const Sofa2ProfilePage = lazy(() => import('src/pages/sofa2-pages/profile'));
 
 // SOFA3 PAGES
 const Sofa3AboutPage = lazy(() => import('src/pages/sofa3-pages/about'));
@@ -2461,6 +2470,96 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa2PagesNavData }}>
             <Sofa2SupportPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/login',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2LoginPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/register',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2RegisterPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/forgot-password',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ForgotPasswordPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/wishlist',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2WishlistPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/my-orders',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2MyOrdersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/transactions',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2TransactionsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/warranty',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2WarrantyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/addresses',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2AddressesPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/profile',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ProfilePage />
           </MainLayout>
         </Suspense>
       ),
