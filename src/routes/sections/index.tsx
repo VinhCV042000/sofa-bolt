@@ -173,6 +173,9 @@ const Sofa2B2BRegisterPage = lazy(() => import('src/pages/sofa2-pages/b2b-regist
 const Sofa2B2BQuotePage = lazy(() => import('src/pages/sofa2-pages/b2b-quote'));
 const Sofa2B2BOEMPage = lazy(() => import('src/pages/sofa2-pages/b2b-oem'));
 const Sofa2B2BPolicyPage = lazy(() => import('src/pages/sofa2-pages/b2b-policy'));
+const Sofa2B2BDistributorsPage = lazy(() => import('src/pages/sofa2-pages/b2b-distributors'));
+const Sofa2B2BWholesalersPage = lazy(() => import('src/pages/sofa2-pages/b2b-wholesalers'));
+const Sofa2B2BContractorsPage = lazy(() => import('src/pages/sofa2-pages/b2b-contractors'));
 const Sofa2CartPage = lazy(() => import('src/pages/sofa2-pages/cart'));
 const Sofa2CheckoutPage = lazy(() => import('src/pages/sofa2-pages/checkout'));
 const Sofa2CheckoutSuccessPage = lazy(() => import('src/pages/sofa2-pages/checkout-success'));
@@ -2368,6 +2371,36 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa2PagesNavData }}>
             <Sofa2B2BPolicyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/distributors',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BDistributorsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/wholesalers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BWholesalersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/b2b/contractors',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2B2BContractorsPage />
           </MainLayout>
         </Suspense>
       ),
