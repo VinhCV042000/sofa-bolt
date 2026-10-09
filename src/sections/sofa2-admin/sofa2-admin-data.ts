@@ -1906,6 +1906,205 @@ const DEALER_GROUP: Sofa2AdminGroup = {
   ],
 };
 
+
+// ----------------------------------------------------------------------
+// KHÁCH HÀNG (tương thích tài khoản khách /sofa2/account)
+// ----------------------------------------------------------------------
+
+const CUSTOMER_GROUP: Sofa2AdminGroup = {
+  slug: 'customer',
+  name: 'Khách hàng',
+  icon: 'solar:user-heart-bold-duotone',
+  modules: [
+    mod(
+      'dashboard',
+      'Dashboard khách hàng',
+      'Tổng quan khách hàng tài khoản /sofa2/account: hạng thành viên, chi tiêu, đơn gần nhất.',
+      'solar:chart-square-bold-duotone',
+      [
+        { label: 'Tài khoản', value: '8.420', trend: '+6%' },
+        { label: 'Hoạt động 30 ngày', value: '2.164' },
+        { label: 'Chi tiêu TB', value: '18,4 tr' },
+        { label: 'Thành viên VIP', value: '312', trend: '+12' },
+      ],
+      [
+        { key: 'name', label: 'Khách hàng' },
+        { key: 'tier', label: 'Hạng' },
+        { key: 'orders', label: 'Số đơn', type: 'number' },
+        { key: 'spent', label: 'Tổng chi tiêu', type: 'money' },
+        { key: 'lastOrder', label: 'Đơn gần nhất' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Hoàng Thị Mai', tier: 'Vàng', orders: 6, spent: money(68400000), lastOrder: '05/10/2026', status: 'Hoạt động' },
+        { name: 'Lê Đức Anh', tier: 'Bạc', orders: 2, spent: money(22000000), lastOrder: '28/09/2026', status: 'Hoạt động' },
+        { name: 'Phạm Quỳnh Như', tier: 'Kim cương', orders: 11, spent: money(184000000), lastOrder: '07/10/2026', status: 'Hoạt động' },
+        { name: 'Trần Việt Cường', tier: 'Thường', orders: 1, spent: money(11900000), lastOrder: '12/05/2026', status: 'Ngưng tương tác' },
+      ],
+      ['Thêm khách hàng']
+    ),
+    mod(
+      'profiles',
+      'Hồ sơ',
+      'Thông tin cá nhân, địa chỉ giao hàng, sở thích và cài đặt nhận tin của khách hàng.',
+      'solar:user-id-bold-duotone',
+      [
+        { label: 'Hồ sơ', value: '8.420' },
+        { label: 'Đã xác minh', value: '7.902' },
+        { label: 'Đủ địa chỉ', value: '6.880' },
+        { label: 'Nhận tin', value: '5.214' },
+      ],
+      [
+        { key: 'name', label: 'Họ tên' },
+        { key: 'phone', label: 'Điện thoại' },
+        { key: 'email', label: 'Email' },
+        { key: 'city', label: 'Tỉnh/Thành' },
+        STATUS_COL,
+      ],
+      [
+        { name: 'Hoàng Thị Mai', phone: '0901 234 567', email: 'mai.hoang@gmail.com', city: 'TP.HCM', status: 'Đã xác minh' },
+        { name: 'Lê Đức Anh', phone: '0983 456 789', email: 'ducanh.le@gmail.com', city: 'Hà Nội', status: 'Đã xác minh' },
+        { name: 'Phạm Quỳnh Như', phone: '0912 888 666', email: 'nhu.pham@outlook.com', city: 'Đà Nẵng', status: 'Đã xác minh' },
+        { name: 'Trần Việt Cường', phone: '0919 447 700', email: 'cuong.tv@yahoo.com', city: 'Cần Thơ', status: 'Chưa xác minh' },
+      ],
+      ['Thêm hồ sơ']
+    ),
+    mod(
+      'customer-orders',
+      'Đơn hàng',
+      'Lịch sử đơn của khách hiển thị trong mục "Đơn hàng của tôi".',
+      'solar:cart-large-4-bold-duotone',
+      [
+        { label: 'Đơn tháng này', value: '624', trend: '+8%' },
+        { label: 'Đang giao', value: '58' },
+        { label: 'Chờ xác nhận', value: '21' },
+        { label: 'Huỷ', value: '14' },
+      ],
+      [
+        { key: 'code', label: 'Mã đơn' },
+        { key: 'customer', label: 'Khách hàng' },
+        { key: 'total', label: 'Tổng tiền', type: 'money' },
+        { key: 'orderDate', label: 'Ngày đặt' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'LX-26100712', customer: 'Phạm Quỳnh Như', total: money(32400000), orderDate: '07/10/2026', status: 'Chờ xác nhận' },
+        { code: 'LX-26100508', customer: 'Hoàng Thị Mai', total: money(14500000), orderDate: '05/10/2026', status: 'Đang giao' },
+        { code: 'LX-26092804', customer: 'Lê Đức Anh', total: money(22000000), orderDate: '28/09/2026', status: 'Đã giao' },
+        { code: 'LX-26092102', customer: 'Trần Việt Cường', total: money(7500000), orderDate: '21/09/2026', status: 'Đã huỷ' },
+      ],
+      ['Tạo đơn']
+    ),
+    mod(
+      'warranties',
+      'Phiếu bảo hành',
+      'Phiếu bảo hành điện tử theo sản phẩm/serial, yêu cầu bảo hành và lịch kỹ thuật.',
+      'solar:shield-check-bold-duotone',
+      [
+        { label: 'Phiếu còn hạn', value: '5.812' },
+        { label: 'Yêu cầu mở', value: '37' },
+        { label: 'Xử lý TB', value: '2,4 ngày' },
+        { label: 'Hài lòng', value: '96%', trend: '+2%' },
+      ],
+      [
+        { key: 'code', label: 'Mã phiếu' },
+        { key: 'customer', label: 'Khách hàng' },
+        { key: 'product', label: 'Sản phẩm' },
+        { key: 'expires', label: 'Hết hạn' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'BH-OSL-10231', customer: 'Hoàng Thị Mai', product: 'Sofa Oslo 3 Chỗ', expires: '05/10/2031', status: 'Còn hạn' },
+        { code: 'BH-BER-08812', customer: 'Lê Đức Anh', product: 'Sofa Berlin Góc', expires: '28/09/2031', status: 'Đang xử lý' },
+        { code: 'BH-COP-04410', customer: 'Phạm Quỳnh Như', product: 'Sofa Copenhagen', expires: '12/03/2029', status: 'Còn hạn' },
+        { code: 'BH-TOK-01105', customer: 'Trần Việt Cường', product: 'Sofa Tokyo Đơn', expires: '01/02/2026', status: 'Hết hạn' },
+      ],
+      ['Tạo phiếu']
+    ),
+    mod(
+      'points',
+      'Điểm tích lũy',
+      'Số dư điểm, lịch sử cộng/trừ điểm và hạng thành viên LUXE Club.',
+      'solar:star-circle-bold-duotone',
+      [
+        { label: 'Điểm đang lưu hành', value: '4,8 tr' },
+        { label: 'Cộng tháng này', value: '312K', trend: '+9%' },
+        { label: 'Đã đổi', value: '184K' },
+        { label: 'Sắp hết hạn', value: '46K' },
+      ],
+      [
+        { key: 'customer', label: 'Khách hàng' },
+        { key: 'tier', label: 'Hạng' },
+        { key: 'balance', label: 'Số dư điểm', type: 'number' },
+        { key: 'earned', label: 'Tích luỹ năm', type: 'number' },
+        { key: 'expires', label: 'Hết hạn điểm' },
+        STATUS_COL,
+      ],
+      [
+        { customer: 'Phạm Quỳnh Như', tier: 'Kim cương', balance: 18400, earned: 24000, expires: '31/12/2026', status: 'Hoạt động' },
+        { customer: 'Hoàng Thị Mai', tier: 'Vàng', balance: 6840, earned: 9200, expires: '31/12/2026', status: 'Hoạt động' },
+        { customer: 'Lê Đức Anh', tier: 'Bạc', balance: 2200, earned: 2200, expires: '31/12/2026', status: 'Hoạt động' },
+        { customer: 'Trần Việt Cường', tier: 'Thường', balance: 0, earned: 0, expires: '—', status: 'Tạm khoá' },
+      ],
+      ['Điều chỉnh điểm']
+    ),
+    mod(
+      'vouchers',
+      'Voucher',
+      'Voucher cá nhân hoá phát cho khách: mã, giá trị, điều kiện và hạn dùng.',
+      'solar:ticket-sale-bold-duotone',
+      [
+        { label: 'Voucher phát hành', value: '2.460' },
+        { label: 'Đã dùng', value: '1.128', trend: '+14%' },
+        { label: 'Doanh thu từ voucher', value: '3,2 tỷ' },
+        { label: 'Sắp hết hạn', value: '86' },
+      ],
+      [
+        { key: 'code', label: 'Mã voucher' },
+        { key: 'customer', label: 'Khách hàng' },
+        { key: 'value', label: 'Giá trị' },
+        { key: 'minOrder', label: 'Đơn tối thiểu', type: 'money' },
+        { key: 'expires', label: 'Hết hạn' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'VIP-NHU-500', customer: 'Phạm Quỳnh Như', value: '500.000 ₫', minOrder: money(10000000), expires: '31/10/2026', status: 'Chưa dùng' },
+        { code: 'BDAY-MAI-10', customer: 'Hoàng Thị Mai', value: '10%', minOrder: money(5000000), expires: '20/10/2026', status: 'Chưa dùng' },
+        { code: 'WELCOME-ANH', customer: 'Lê Đức Anh', value: '300.000 ₫', minOrder: money(3000000), expires: '30/09/2026', status: 'Đã dùng' },
+        { code: 'COMEBACK-CUONG', customer: 'Trần Việt Cường', value: '15%', minOrder: money(8000000), expires: '15/09/2026', status: 'Hết hạn' },
+      ],
+      ['Phát voucher']
+    ),
+    mod(
+      'complaints',
+      'Khiếu nại',
+      'Khiếu nại/phản hồi từ khách: phân loại, mức ưu tiên, người xử lý và hạn SLA.',
+      'solar:chat-round-dots-bold-duotone',
+      [
+        { label: 'Đang mở', value: '18' },
+        { label: 'Quá SLA', value: '3' },
+        { label: 'Giải quyết TB', value: '1,6 ngày' },
+        { label: 'Hài lòng sau xử lý', value: '92%', trend: '+3%' },
+      ],
+      [
+        { key: 'code', label: 'Mã khiếu nại' },
+        { key: 'customer', label: 'Khách hàng' },
+        { key: 'topic', label: 'Vấn đề' },
+        { key: 'priority', label: 'Ưu tiên' },
+        { key: 'owner', label: 'Phụ trách' },
+        STATUS_COL,
+      ],
+      [
+        { code: 'KN-261007', customer: 'Lê Đức Anh', topic: 'Giao hàng trễ', priority: 'Cao', owner: 'Thu Hà', status: 'Mới' },
+        { code: 'KN-261005', customer: 'Hoàng Thị Mai', topic: 'Lệch màu vải', priority: 'Trung bình', owner: 'Minh Anh', status: 'Đang xử lý' },
+        { code: 'KN-260930', customer: 'Phạm Quỳnh Như', topic: 'Lắp đặt chưa đạt', priority: 'Cao', owner: 'Đức Anh', status: 'Đã giải quyết' },
+        { code: 'KN-260921', customer: 'Trần Việt Cường', topic: 'Hoàn tiền voucher', priority: 'Thấp', owner: 'Thu Hà', status: 'Đã đóng' },
+      ],
+      ['Tạo khiếu nại']
+    ),
+  ],
+};
+
 export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   CMS_GROUP,
   PRODUCT_GROUP,
@@ -1918,6 +2117,7 @@ export const SOFA2_ADMIN_GROUPS: Sofa2AdminGroup[] = [
   ACCESS_GROUP,
   B2B_GROUP,
   DEALER_GROUP,
+  CUSTOMER_GROUP,
 ];
 
 export function findSofa2AdminModule(groupSlug?: string, moduleSlug?: string) {
