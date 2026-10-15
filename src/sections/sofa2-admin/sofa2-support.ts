@@ -101,7 +101,7 @@ export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     entity: 'phiên chat',
     titleKey: 'code',
     statusKey: 'status',
-    statusOptions: ['Đang chờ', 'Đang chat', 'Đã kết thúc', 'Bỏ lỡ'],
+    statusOptions: ['Đã kết thúc', 'Đang chờ', 'Đang chat', 'Bỏ lỡ'],
     publishLabel: 'Kết thúc phiên',
     defaultStatus: 'Đang chờ',
     fields: [
@@ -128,7 +128,7 @@ export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     entity: 'ticket',
     titleKey: 'code',
     statusKey: 'status',
-    statusOptions: ['Mới', 'Đang xử lý', 'Chờ khách', 'Đã giải quyết', 'Đã đóng'],
+    statusOptions: ['Đã giải quyết', 'Mới', 'Đang xử lý', 'Chờ khách', 'Đã đóng'],
     publishLabel: 'Đánh dấu đã giải quyết',
     defaultStatus: 'Mới',
     fields: [
