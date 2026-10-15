@@ -51,7 +51,7 @@ export const SOFA2_SHOPPING_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Tìm kiếm sản phẩm ----------------------------------------------
   search: {
-    clientPath: '/sofa2/products',
+    clientPath: '/sofa2/search',
     entity: 'quy tắc tìm kiếm',
     titleKey: 'keyword',
     statusKey: 'status',
@@ -76,7 +76,7 @@ export const SOFA2_SHOPPING_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- So sánh sản phẩm -----------------------------------------------
   compare: {
-    clientPath: '/sofa2/products',
+    clientPath: '/sofa2/compare',
     entity: 'tiêu chí so sánh',
     titleKey: 'attribute',
     statusKey: 'status',
@@ -99,7 +99,7 @@ export const SOFA2_SHOPPING_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Wishlist --------------------------------------------------------
   wishlist: {
-    clientPath: '/sofa2/account',
+    clientPath: '/sofa2/wishlist',
     entity: 'wishlist',
     titleKey: 'customer',
     statusKey: 'status',

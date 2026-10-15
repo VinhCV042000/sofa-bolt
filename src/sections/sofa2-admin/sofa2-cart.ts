@@ -214,7 +214,7 @@ const accountSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const profileSchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/account/profile',
+  clientPath: '/sofa2/profile',
   entity: 'hồ sơ cá nhân',
   titleKey: 'name',
   statusKey: 'status',
@@ -245,7 +245,7 @@ const profileSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const addressesSchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/account/addresses',
+  clientPath: '/sofa2/addresses',
   entity: 'địa chỉ giao hàng',
   titleKey: 'recipient',
   statusKey: 'status',
@@ -277,7 +277,7 @@ const addressesSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const myOrdersSchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/account/orders',
+  clientPath: '/sofa2/my-orders',
   entity: 'đơn hàng',
   titleKey: 'order',
   statusKey: 'status',
@@ -309,7 +309,7 @@ const myOrdersSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const transactionsSchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/account/transactions',
+  clientPath: '/sofa2/transactions',
   entity: 'giao dịch',
   titleKey: 'txnId',
   statusKey: 'status',
@@ -342,7 +342,7 @@ const transactionsSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const warrantySchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/account/warranty',
+  clientPath: '/sofa2/warranty',
   entity: 'phiếu bảo hành',
   titleKey: 'warranty',
   statusKey: 'status',
@@ -418,7 +418,7 @@ const listingSchema: Sofa2CartSchema = {
 // ----------------------------------------------------------------------
 
 const searchSchema: Sofa2CartSchema = {
-  clientPath: '/sofa2/products',
+  clientPath: '/sofa2/search',
   entity: 'quy tắc tìm kiếm',
   titleKey: 'keyword',
   statusKey: 'status',
