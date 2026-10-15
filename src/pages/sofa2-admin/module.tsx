@@ -13,6 +13,7 @@ import { getSofa2HrSchema } from 'src/sections/sofa2-admin/sofa2-hr';
 import { getSofa2AccessSchema } from 'src/sections/sofa2-admin/sofa2-access';
 import { getSofa2AnalyticsSchema } from 'src/sections/sofa2-admin/sofa2-analytics';
 import { getSofa2SeoSchema } from 'src/sections/sofa2-admin/sofa2-seo';
+import { getSofa2SupportSchema } from 'src/sections/sofa2-admin/sofa2-support';
 import { getSofa2CartSchema } from 'src/sections/sofa2-admin/sofa2-cart';
 import { Sofa2AdminCmsView } from 'src/sections/sofa2-admin/view/sofa2-admin-cms-view';
 import { Sofa2AdminAnalyticsView } from 'src/sections/sofa2-admin/view/sofa2-admin-analytics-view';
@@ -38,6 +39,7 @@ export default function Page() {
       (found.group.slug === 'crm' && getSofa2CrmSchema(found.module.slug)) ||
       (found.group.slug === 'hr' && getSofa2HrSchema(found.module.slug)) ||
       (found.group.slug === 'access' && getSofa2AccessSchema(found.module.slug)) ||
+      (found.group.slug === 'support' && getSofa2SupportSchema(found.module.slug)) ||
       undefined;
     if (schema) {
       return (
