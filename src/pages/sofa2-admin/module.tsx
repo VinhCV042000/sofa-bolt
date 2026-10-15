@@ -36,7 +36,9 @@ export default function Page() {
       (found.group.slug === 'shop' && getSofa2ShopSchema(found.module.slug)) ||
       (found.group.slug === 'support' && getSofa2SupportSchema(found.module.slug)) ||
       (found.group.slug === 'b2b' && getSofa2B2bSchema(found.module.slug)) ||
-      (found.group.slug === 'shopping' && getSofa2ShoppingSchema(found.module.slug)) ||
+      (found.group.slug === 'shopping' &&
+        !getSofa2CartSchema(found.module.slug) &&
+        getSofa2ShoppingSchema(found.module.slug)) ||
       (found.group.slug === 'crm' && getSofa2CrmSchema(found.module.slug)) ||
       (found.group.slug === 'hr' && getSofa2HrSchema(found.module.slug)) ||
       (found.group.slug === 'access' && getSofa2AccessSchema(found.module.slug)) ||
@@ -80,6 +82,7 @@ export default function Page() {
 
     const cartSchema =
       found.group.slug === 'shopping' ? getSofa2CartSchema(found.module.slug) : undefined;
+    // Cart view takes priority for shopping modules with a cart schema (charts + richer CRUD)
     if (cartSchema) {
       return (
         <Sofa2AdminCartView
