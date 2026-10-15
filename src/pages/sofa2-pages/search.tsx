@@ -5,9 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -20,18 +18,18 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
+import { useTranslate } from 'src/locales';
 import { SOFA2_PRODUCTS, formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: 'Tìm kiếm sản phẩm — LUXE Sofa' };
-
-const POPULAR_KEYWORDS = ['sofa góc', 'sofa da bò', 'sofa giường', 'ghế dài', 'sofa văng', 'sofa nhỏ'];
-const SUGGESTIONS = ['sofa góc da', 'sofa góc nhỏ', 'sofa da bò nhập khẩu', 'sofa giường đa năng', 'sofa văng cổ điển'];
-
 export default function Page() {
+  const { t } = useTranslate('sofa2');
   const [query, setQuery] = useState('');
+
+  const POPULAR_KEYWORDS = ['sofa góc', 'sofa da bò', 'sofa giường', 'ghế dài', 'sofa văng', 'sofa nhỏ'];
+  const SUGGESTIONS = ['sofa góc da', 'sofa góc nhỏ', 'sofa da bò nhập khẩu', 'sofa giường đa năng', 'sofa văng cổ điển'];
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
@@ -45,13 +43,13 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{metadata.title}</title></Helmet>
+      <Helmet><title>{t('search.metaTitle')}</title></Helmet>
 
       <Sofa2PageHero
-        title="Tìm kiếm sản phẩm"
-        subtitle="Tìm sofa phù hợp với không gian của bạn — theo tên, chất liệu, danh mục."
+        title={t('search.title')}
+        subtitle={t('search.subtitle')}
         image={SOFA2_PAGE_IMAGES.cta}
-        overline="Mua hàng"
+        overline={t('search.overline')}
       />
 
       <Sofa2Section>
@@ -65,8 +63,8 @@ export default function Page() {
           >
             <TextField
               fullWidth
-              size="large"
-              placeholder="Nhập từ khoá —VD: sofa góc, sofa da..."
+              size="medium"
+              placeholder={t('search.placeholder')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               InputProps={{
@@ -85,7 +83,7 @@ export default function Page() {
 
             {/* Popular keywords */}
             <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" sx={{ gap: 1 }}>
-              <Typography variant="caption" sx={{ color: 'text.disabled' }}>Phổ biến:</Typography>
+              <Typography variant="caption" sx={{ color: 'text.disabled' }}>{t('search.popular')}</Typography>
               {POPULAR_KEYWORDS.map((kw) => (
                 <Chip
                   key={kw}
@@ -103,7 +101,7 @@ export default function Page() {
           {/* Suggestions when no query */}
           {!query && (
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inUp}>
-              <Typography variant="h6">Gợi ý tìm kiếm</Typography>
+              <Typography variant="h6">{t('search.suggestions')}</Typography>
               <Grid container spacing={1.5}>
                 {SUGGESTIONS.map((s) => (
                   <Grid key={s} xs={12} sm={6} md={4}>
@@ -112,7 +110,7 @@ export default function Page() {
                       spacing={1.5}
                       alignItems="center"
                       onClick={() => setQuery(s)}
-                      sx={{ p: 2, borderRadius: 1.5, cursor: 'pointer', bgcolor: (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04), '&:hover': { bgcolor: (t) => varAlpha(t.vars.palette.primary.mainChannel, 0.08) } }}
+                      sx={{ p: 2, borderRadius: 1.5, cursor: 'pointer', bgcolor: (t2) => varAlpha(t2.vars.palette.grey['500Channel'], 0.04), '&:hover': { bgcolor: (t2) => varAlpha(t2.vars.palette.primary.mainChannel, 0.08) } }}
                     >
                       <Iconify icon="solar:magnifer-linear" width={18} sx={{ color: 'text.disabled' }} />
                       <Typography variant="body2">{s}</Typography>
@@ -128,8 +126,8 @@ export default function Page() {
             <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inUp}>
               <Typography variant="h6">
                 {results.length > 0
-                  ? `${results.length} kết quả cho "${query}"`
-                  : `Không tìm thấy kết quả cho "${query}"`}
+                  ? t('search.results', { count: results.length, query })
+                  : t('search.noResults', { query })}
               </Typography>
 
               {results.length > 0 ? (
@@ -141,14 +139,14 @@ export default function Page() {
                         variants={varFade({ distance: 24 }).inUp}
                         transition={{ delay: index * 0.06 }}
                         spacing={1.5}
-                        sx={{ p: 2, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}
+                        sx={{ p: 2, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card }}
                       >
                         <Box component="img" src={p.image} sx={{ width: 1, height: 160, borderRadius: 1.5, objectFit: 'cover' }} />
                         <Typography variant="subtitle2">{p.name}</Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>{p.style}</Typography>
                         <Typography variant="subtitle1" sx={{ color: 'primary.main' }}>{formatSofa2Price(p.price)}</Typography>
                         <Button size="small" variant="outlined" fullWidth component={RouterLink} href="/sofa2/cart">
-                          Xem sản phẩm
+                          {t('search.viewProduct')}
                         </Button>
                       </Stack>
                     </Grid>
@@ -157,10 +155,10 @@ export default function Page() {
               ) : (
                 <Stack spacing={2} alignItems="center" sx={{ textAlign: 'center', py: 6 }}>
                   <Iconify icon="solar:magnifer-linear" width={72} sx={{ color: 'text.disabled' }} />
-                  <Typography variant="h6">Không tìm thấy sản phẩm</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>Thử từ khoá khác hoặc khám phá danh mục sản phẩm.</Typography>
+                  <Typography variant="h6">{t('search.noResultsTitle')}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>{t('search.noResultsText')}</Typography>
                   <Button component={RouterLink} href="/sofa2/products" variant="contained" startIcon={<Iconify icon="solar:bag-bold-duotone" />}>
-                    Xem tất cả sản phẩm
+                    {t('search.viewAll')}
                   </Button>
                 </Stack>
               )}

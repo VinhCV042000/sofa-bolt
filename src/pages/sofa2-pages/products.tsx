@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
@@ -17,6 +16,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
+import { useTranslate } from 'src/locales';
 import { Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import {
   SOFA2_PRODUCTS,
@@ -26,29 +26,27 @@ import {
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: 'Sản phẩm - LUXE Sofa' };
-
-const FILTER_GROUPS = [
-  { key: 'types', label: 'Loại sofa' },
-  { key: 'styles', label: 'Phong cách' },
-  { key: 'spaces', label: 'Không gian' },
-  { key: 'sizes', label: 'Kích cỡ' },
-  { key: 'prices', label: 'Mức giá' },
-] as const;
-
 export default function Page() {
-  const theme = useTheme();
+  const { t } = useTranslate('sofa2');
+
+  const FILTER_GROUPS = [
+    { key: 'types', label: t('products.filterTypes') },
+    { key: 'styles', label: t('products.filterStyles') },
+    { key: 'spaces', label: t('products.filterSpaces') },
+    { key: 'sizes', label: t('products.filterSizes') },
+    { key: 'prices', label: t('products.filterPrices') },
+  ] as const;
 
   return (
     <>
       <Helmet>
-        <title>{metadata.title}</title>
+        <title>{t('products.metaTitle')}</title>
       </Helmet>
 
       <Sofa2PageHero
-        overline="Sản phẩm"
-        title="Bộ sưu tập sofa cao cấp"
-        subtitle="Khám phá hơn 80 mẫu sofa thiết kế độc quyền — từ Bắc Âu tối giản đến Industrial mạnh mẽ."
+        overline={t('products.overline')}
+        title={t('products.title')}
+        subtitle={t('products.subtitle')}
         image="https://images.pexels.com/photos/276624/pexels-photo-276624.jpeg?auto=compress&cs=tinysrgb&w=1920"
       />
 
@@ -57,8 +55,8 @@ export default function Page() {
           <Grid container spacing={{ xs: 4, md: 6 }}>
             {/* Sidebar */}
             <Grid xs={12} md={3}>
-              <Stack spacing={3} sx={{ position: { md: 'sticky' }, top: { md: 88 }, p: 3, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}>
-                <Typography variant="overline" sx={{ color: 'text.disabled' }}>Bộ lọc</Typography>
+              <Stack spacing={3} sx={{ position: { md: 'sticky' }, top: { md: 88 }, p: 3, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card }}>
+                <Typography variant="overline" sx={{ color: 'text.disabled' }}>{t('products.filter')}</Typography>
                 {FILTER_GROUPS.map((group) => (
                   <Stack key={group.key} spacing={1}>
                     <Typography variant="subtitle2">{group.label}</Typography>
@@ -69,7 +67,7 @@ export default function Page() {
                           component={RouterLink}
                           href={`/sofa2/products/category/${item.slug}`}
                           size="small"
-                          sx={{ justifyContent: 'flex-start', color: 'text.secondary', textTransform: 'none', fontWeight: 'fontWeightRegular', '&:hover': { color: 'primary.main', bgcolor: (t) => varAlpha(t.vars.palette.primary.mainChannel, 0.08) } }}
+                          sx={{ justifyContent: 'flex-start', color: 'text.secondary', textTransform: 'none', fontWeight: 'fontWeightRegular', '&:hover': { color: 'primary.main', bgcolor: (t2) => varAlpha(t2.vars.palette.primary.mainChannel, 0.08) } }}
                         >
                           {item.label}
                         </Button>
@@ -88,7 +86,7 @@ export default function Page() {
                     <Stack
                       component={m.div}
                       variants={varFade({ distance: 24 }).inUp}
-                      sx={{ height: 1, borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}
+                      sx={{ height: 1, borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card }}
                     >
                       <Box sx={{ position: 'relative' }}>
                         <Box component="img" src={product.image} alt={product.name} sx={{ width: 1, aspectRatio: '4/3', objectFit: 'cover' }} />
@@ -111,7 +109,7 @@ export default function Page() {
                           )}
                         </Stack>
                         <Button component={RouterLink} href={`/sofa2/products/${product.id}`} variant="outlined" size="small" startIcon={<Iconify icon="solar:eye-bold-duotone" />}>
-                          Xem chi tiết
+                          {t('products.viewDetail')}
                         </Button>
                       </Stack>
                     </Stack>

@@ -15,14 +15,15 @@ import { RouterLink } from 'src/routes/components';
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
+import { useTranslate } from 'src/locales';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { SOFA2_PRODUCTS, formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: 'Giỏ hàng — LUXE Sofa' };
-
 export default function Page() {
+  const { t } = useTranslate('sofa2');
+
   const [items, setItems] = useState(() => [
     { ...SOFA2_PRODUCTS[0], qty: 1 },
     { ...SOFA2_PRODUCTS[1], qty: 2 },
@@ -40,15 +41,15 @@ export default function Page() {
   if (items.length === 0) {
     return (
       <>
-        <Helmet><title>{metadata.title}</title></Helmet>
-        <Sofa2PageHero title="Giỏ hàng" subtitle="Kiểm tra lại sản phẩm trước khi thanh toán." image={SOFA2_PAGE_IMAGES.cta} overline="Giỏ hàng" />
+        <Helmet><title>{t('cart.metaTitle')}</title></Helmet>
+        <Sofa2PageHero title={t('cart.title')} subtitle={t('cart.subtitle')} image={SOFA2_PAGE_IMAGES.cta} overline={t('cart.overline')} />
         <Sofa2Section>
           <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', py: { xs: 6, md: 10 } }} component={m.div} variants={varFade({ distance: 24 }).inUp}>
             <Iconify icon="solar:cart-large-2-bold-duotone" width={96} sx={{ color: 'text.disabled' }} />
-            <Typography variant="h4">Giỏ hàng của bạn đang trống</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Hãy khám phá bộ sưu tập sofa LUXE và chọn sản phẩm ưng ý.</Typography>
+            <Typography variant="h4">{t('cart.emptyTitle')}</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{t('cart.emptyText')}</Typography>
             <Button component={RouterLink} href="/sofa2/products" size="large" variant="contained" startIcon={<Iconify icon="solar:bag-bold-duotone" />}>
-              Tiếp tục mua sắm
+              {t('cart.continueShopping')}
             </Button>
           </Stack>
         </Sofa2Section>
@@ -58,8 +59,8 @@ export default function Page() {
 
   return (
     <>
-      <Helmet><title>{metadata.title}</title></Helmet>
-      <Sofa2PageHero title="Giỏ hàng" subtitle="Kiểm tra lại sản phẩm trước khi thanh toán." image={SOFA2_PAGE_IMAGES.cta} overline="Giỏ hàng" />
+      <Helmet><title>{t('cart.metaTitle')}</title></Helmet>
+      <Sofa2PageHero title={t('cart.title')} subtitle={t('cart.subtitle')} image={SOFA2_PAGE_IMAGES.cta} overline={t('cart.overline')} />
 
       <Sofa2Section>
         <Grid container spacing={{ xs: 4, md: 5 }}>
@@ -72,7 +73,7 @@ export default function Page() {
                   direction={{ xs: 'column', sm: 'row' }}
                   spacing={3}
                   alignItems={{ sm: 'center' }}
-                  sx={{ p: { xs: 2, sm: 3 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}
+                  sx={{ p: { xs: 2, sm: 3 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card }}
                 >
                   <Box component="img" src={it.image} sx={{ width: 96, height: 96, borderRadius: 1.5, objectFit: 'cover' }} />
                   <Stack sx={{ flex: 1 }}>
@@ -99,19 +100,19 @@ export default function Page() {
 
           {/* Order summary */}
           <Grid xs={12} md={4}>
-            <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ p: { xs: 3, md: 4 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, position: 'sticky', top: 100 }}>
-              <Typography variant="h6">Tóm tắt đơn hàng</Typography>
+            <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inLeft} sx={{ p: { xs: 3, md: 4 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card, position: 'sticky', top: 100 }}>
+              <Typography variant="h6">{t('cart.orderSummary')}</Typography>
               <Stack spacing={1.5}>
-                <Stack direction="row" justifyContent="space-between"><Typography sx={{ color: 'text.secondary' }}>Tạm tính</Typography><Typography>{formatSofa2Price(subtotal)}</Typography></Stack>
-                <Stack direction="row" justifyContent="space-between"><Typography sx={{ color: 'text.secondary' }}>Phí vận chuyển</Typography><Typography>{formatSofa2Price(shipping)}</Typography></Stack>
+                <Stack direction="row" justifyContent="space-between"><Typography sx={{ color: 'text.secondary' }}>{t('cart.subtotal')}</Typography><Typography>{formatSofa2Price(subtotal)}</Typography></Stack>
+                <Stack direction="row" justifyContent="space-between"><Typography sx={{ color: 'text.secondary' }}>{t('cart.shipping')}</Typography><Typography>{formatSofa2Price(shipping)}</Typography></Stack>
               </Stack>
               <Divider />
-              <Stack direction="row" justifyContent="space-between"><Typography variant="h6">Tổng cộng</Typography><Typography variant="h6" sx={{ color: 'primary.main' }}>{formatSofa2Price(total)}</Typography></Stack>
+              <Stack direction="row" justifyContent="space-between"><Typography variant="h6">{t('cart.total')}</Typography><Typography variant="h6" sx={{ color: 'primary.main' }}>{formatSofa2Price(total)}</Typography></Stack>
               <Button component={RouterLink} href="/sofa2/checkout" size="large" variant="contained" fullWidth startIcon={<Iconify icon="solar:card-bold-duotone" />}>
-                Tiến hành thanh toán
+                {t('cart.checkout')}
               </Button>
               <Button component={RouterLink} href="/sofa2/products" variant="outlined" fullWidth>
-                Tiếp tục mua sắm
+                {t('cart.continueShopping')}
               </Button>
             </Stack>
           </Grid>

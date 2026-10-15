@@ -18,57 +18,57 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
+import { useTranslate } from 'src/locales';
 import { SOFA2_PRODUCTS, formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: 'So sánh sản phẩm — LUXE Sofa' };
-
-const COMPARISON_ROWS = [
-  { label: 'Giá bán', key: 'price', format: 'money' as const },
-  { label: 'Phong cách', key: 'style', format: 'text' as const },
-  { label: 'Giá cũ', key: 'oldPrice', format: 'money' as const },
-  { label: 'Đánh giá', key: 'rating', format: 'text' as const },
-  { label: 'Lượt đánh giá', key: 'reviews', format: 'text' as const },
-  { label: 'Màu sắc', key: 'colors', format: 'colors' as const },
-];
-
 const COMPARISON_PRODUCTS = SOFA2_PRODUCTS.slice(0, 3);
 
 export default function Page() {
+  const { t } = useTranslate('sofa2');
   const [selected, setSelected] = useState(COMPARISON_PRODUCTS);
 
   const removeProduct = (id: string) =>
     setSelected((prev) => prev.filter((p) => p.id !== id));
 
+  const COMPARISON_ROWS = [
+    { label: t('compare.rowPrice'), key: 'price', format: 'money' as const },
+    { label: t('compare.rowStyle'), key: 'style', format: 'text' as const },
+    { label: t('compare.rowOldPrice'), key: 'oldPrice', format: 'money' as const },
+    { label: t('compare.rowRating'), key: 'rating', format: 'text' as const },
+    { label: t('compare.rowReviews'), key: 'reviews', format: 'text' as const },
+    { label: t('compare.rowColors'), key: 'colors', format: 'colors' as const },
+  ];
+
   return (
     <>
-      <Helmet><title>{metadata.title}</title></Helmet>
+      <Helmet><title>{t('compare.metaTitle')}</title></Helmet>
 
       <Sofa2PageHero
-        title="So sánh sản phẩm"
-        subtitle="So sánh chi tiết các sản phẩm sofa LUXE để chọn được mẫu phù hợp nhất."
+        title={t('compare.title')}
+        subtitle={t('compare.subtitle')}
         image={SOFA2_PAGE_IMAGES.cta}
-        overline="Mua hàng"
+        overline={t('compare.overline')}
       />
 
       <Sofa2Section>
         {selected.length === 0 ? (
           <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', py: { xs: 6, md: 10 } }} component={m.div} variants={varFade({ distance: 24 }).inUp}>
             <Iconify icon="solar:scale-bold-duotone" width={96} sx={{ color: 'text.disabled' }} />
-            <Typography variant="h5">Chưa có sản phẩm để so sánh</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Thêm sản phẩm vào bảng so sánh từ trang danh sách.</Typography>
+            <Typography variant="h5">{t('compare.emptyTitle')}</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{t('compare.emptyText')}</Typography>
             <Button component={RouterLink} href="/sofa2/products" size="large" variant="contained" startIcon={<Iconify icon="solar:bag-bold-duotone" />}>
-              Khám phá sản phẩm
+              {t('compare.browse')}
             </Button>
           </Stack>
         ) : (
           <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inUp}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Typography variant="h5">So sánh {selected.length} sản phẩm</Typography>
+              <Typography variant="h5">{t('compare.compareCount', { count: selected.length })}</Typography>
               <Button component={RouterLink} href="/sofa2/products" variant="outlined" startIcon={<Iconify icon="solar:add-circle-bold-duotone" />}>
-                Thêm sản phẩm
+                {t('compare.addMore')}
               </Button>
             </Stack>
 
@@ -77,13 +77,13 @@ export default function Page() {
                 {/* Product headers */}
                 <Grid container spacing={2} sx={{ mb: 2 }}>
                   <Grid xs={3}>
-                    <Typography variant="overline" sx={{ color: 'text.disabled' }}>Tiêu chí</Typography>
+                    <Typography variant="overline" sx={{ color: 'text.disabled' }}>{t('compare.criteria')}</Typography>
                   </Grid>
                   {selected.map((p) => (
                     <Grid key={p.id} xs={9 / selected.length}>
                       <Stack
                         spacing={1.5}
-                        sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, position: 'relative' }}
+                        sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card, position: 'relative' }}
                       >
                         <IconButton
                           size="small"
@@ -95,7 +95,7 @@ export default function Page() {
                         <Box component="img" src={p.image} sx={{ width: 1, height: 120, borderRadius: 1.5, objectFit: 'cover' }} />
                         <Typography variant="subtitle2" sx={{ textAlign: 'center' }}>{p.name}</Typography>
                         <Button size="small" variant="contained" fullWidth component={RouterLink} href="/sofa2/cart">
-                          Thêm vào giỏ
+                          {t('compare.addToCart')}
                         </Button>
                       </Stack>
                     </Grid>
@@ -109,7 +109,7 @@ export default function Page() {
                   <Box key={row.label}>
                     <Grid container spacing={2} sx={{
                       py: 2,
-                      bgcolor: idx % 2 === 0 ? (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04) : 'transparent',
+                      bgcolor: idx % 2 === 0 ? (t2) => varAlpha(t2.vars.palette.grey['500Channel'], 0.04) : 'transparent',
                       borderRadius: 1,
                     }}>
                       <Grid xs={3}>
@@ -121,7 +121,7 @@ export default function Page() {
                             {row.format === 'money'
                               ? formatSofa2Price(p[row.key as keyof typeof p] as number)
                               : row.format === 'colors'
-                                ? `${(p[row.key as keyof typeof p] as string[]).length} màu`
+                                ? t('compare.colorsUnit', { count: (p[row.key as keyof typeof p] as string[]).length })
                                 : `${p[row.key as keyof typeof p] ?? '—'}`}
                           </Typography>
                         </Grid>

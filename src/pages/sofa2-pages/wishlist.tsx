@@ -11,44 +11,43 @@ import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
 
-import { varAlpha } from 'src/theme/styles';
-
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
+import { useTranslate } from 'src/locales';
 import { SOFA2_PRODUCTS, formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: 'Danh sách yêu thích — LUXE Sofa' };
-
 const WISHLIST = SOFA2_PRODUCTS.slice(0, 4);
 
 export default function Page() {
+  const { t } = useTranslate('sofa2');
+
   return (
     <>
-      <Helmet><title>{metadata.title}</title></Helmet>
+      <Helmet><title>{t('wishlist.metaTitle')}</title></Helmet>
 
       <Sofa2PageHero
-        title="Danh sách yêu thích"
-        subtitle="Những sản phẩm bạn đã lưu — theo dõi giá và nhận thông báo khi có hàng."
+        title={t('wishlist.title')}
+        subtitle={t('wishlist.subtitle')}
         image={SOFA2_PAGE_IMAGES.cta}
-        overline="Tài khoản"
+        overline={t('wishlist.overline')}
       />
 
       <Sofa2Section>
         <Stack spacing={2} sx={{ mb: 4 }} component={m.div} variants={varFade({ distance: 24 }).inUp}>
-          <Typography variant="h4">{WISHLIST.length} sản phẩm yêu thích</Typography>
+          <Typography variant="h4">{t('wishlist.count', { count: WISHLIST.length })}</Typography>
         </Stack>
 
         {WISHLIST.length === 0 ? (
           <Stack spacing={3} alignItems="center" sx={{ textAlign: 'center', py: { xs: 6, md: 10 } }}>
             <Iconify icon="solar:heart-bold-duotone" width={96} sx={{ color: 'text.disabled' }} />
-            <Typography variant="h5">Chưa có sản phẩm yêu thích</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Lưu sản phẩm bạn thích bằng cách nhấn tim trên trang sản phẩm.</Typography>
+            <Typography variant="h5">{t('wishlist.emptyTitle')}</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{t('wishlist.emptyText')}</Typography>
             <Button component={RouterLink} href="/sofa2/products" size="large" variant="contained" startIcon={<Iconify icon="solar:bag-bold-duotone" />}>
-              Khám phá sản phẩm
+              {t('wishlist.browse')}
             </Button>
           </Stack>
         ) : (
@@ -60,7 +59,7 @@ export default function Page() {
                   variants={varFade({ distance: 24 }).inUp}
                   transition={{ delay: index * 0.06 }}
                   spacing={2}
-                  sx={{ p: 2, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}
+                  sx={{ p: 2, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t2) => t2.customShadows.card }}
                 >
                   <Box sx={{ position: 'relative' }}>
                     <Box component="img" src={p.image} sx={{ width: 1, height: 180, borderRadius: 1.5, objectFit: 'cover' }} />
@@ -74,12 +73,12 @@ export default function Page() {
                   </Stack>
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
                     <Typography variant="subtitle1" sx={{ color: 'primary.main' }}>{formatSofa2Price(p.price)}</Typography>
-                    <Chip label="Có hàng" size="small" color="success" variant="soft" />
+                    <Chip label={t('wishlist.inStock')} size="small" color="success" variant="soft" />
                   </Stack>
                   <Divider sx={{ borderStyle: 'dashed' }} />
                   <Stack direction="row" spacing={1}>
                     <Button size="small" variant="contained" fullWidth startIcon={<Iconify icon="solar:cart-bold-duotone" />} component={RouterLink} href="/sofa2/cart">
-                      Thêm vào giỏ
+                      {t('wishlist.addToCart')}
                     </Button>
                     <Button size="small" variant="outlined" sx={{ minWidth: 'auto', px: 1 }}>
                       <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
