@@ -19,7 +19,9 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
-import { SOFA2_FAQS, SOFA2_PAGE_IMAGES, SOFA2_COMPANY_INFO } from 'src/sections/sofa2/sofa2-pages-data';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import { sofa2Visible, SOFA2_SUPPORT_ARTICLE_TABS } from 'src/sections/sofa2-admin/sofa2-support';
+import { SOFA2_PAGE_IMAGES, SOFA2_COMPANY_INFO } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +44,42 @@ const CATEGORIES = [
 
 export default function Page() {
   const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: '', contact: '', subject: '', category: '', message: '' });
+  const faqRows = useSofa2AdminRows('support', 'faq').rows;
+  const channelRows = useSofa2AdminRows('support', 'channels').rows;
+  const tickets = useSofa2AdminRows('support', 'tickets');
+  const a1 = useSofa2AdminRows('support', 'guide-buying').rows;
+  const a2 = useSofa2AdminRows('support', 'guide-payment').rows;
+  const a3 = useSofa2AdminRows('support', 'policy-shipping').rows;
+  const a4 = useSofa2AdminRows('support', 'policy-warranty').rows;
+  const a5 = useSofa2AdminRows('support', 'policy-return').rows;
+  const articleRows = [a1, a2, a3, a4, a5];
+  const [tab, setTab] = useState(0);
+  const faqs = sofa2Visible(faqRows).map((r) => ({ question: String(r.question), answer: String(r.answer) }));
+  const channels = sofa2Visible(channelRows, 'Đang bật');
+  const options = channels.length
+    ? channels.map((c) => ({ icon: String(c.icon || 'solar:chat-bold-duotone'), title: String(c.title), value: String(c.value), sub: String(c.sub ?? '') }))
+    : OPTIONS;
+  const articles = sofa2Visible(articleRows[tab] ?? []);
+  const submit = () => {
+    if (!form.subject.trim() || !form.contact.trim()) return;
+    const code = `TK-${Date.now().toString().slice(-5)}`;
+    tickets.createRow({
+      code,
+      customer: form.name || 'Khách vãng lai',
+      contact: form.contact,
+      subject: form.subject,
+      category: form.category,
+      message: form.message,
+      reply: '',
+      priority: 'Trung bình',
+      agent: 'Chưa phân công',
+      created: new Date().toLocaleDateString('vi-VN'),
+      status: 'Mới',
+    });
+    setSent(true);
+    setForm({ name: '', contact: '', subject: '', category: '', message: '' });
+  };
 
   return (
     <>
@@ -59,7 +97,7 @@ export default function Page() {
       {/* Contact options */}
       <Sofa2Section>
         <Grid container spacing={3}>
-          {OPTIONS.map((opt, index) => (
+          {options.map((opt, index) => (
             <Grid key={opt.title} xs={12} md={4}>
               <Stack
                 component={m.div}
@@ -92,7 +130,7 @@ export default function Page() {
           </Box>
         </Stack>
         <Box component={m.div} variants={varFade({ distance: 24 }).inUp} sx={{ maxWidth: 720, mx: 'auto' }}>
-          {SOFA2_FAQS.map((faq, index) => (
+          {faqs.map((faq, index) => (
             <Accordion
               key={faq.question}
               defaultExpanded={index === 0}
@@ -103,6 +141,32 @@ export default function Page() {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>{faq.answer}</Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Sofa2Section>
+
+      {/* Guides & policies */}
+      <Sofa2Section>
+        <Stack spacing={2} sx={{ mb: 4, textAlign: 'center' }}>
+          <Typography variant="h3">Hướng dẫn & chính sách</Typography>
+        </Stack>
+        <Stack direction="row" flexWrap="wrap" justifyContent="center" gap={1} sx={{ mb: 4 }}>
+          {SOFA2_SUPPORT_ARTICLE_TABS.map((t, i) => (
+            <Button key={t.slug} variant={tab === i ? 'contained' : 'outlined'} onClick={() => setTab(i)}>
+              {t.label}
+            </Button>
+          ))}
+        </Stack>
+        <Box sx={{ maxWidth: 720, mx: 'auto' }}>
+          {articles.map((a) => (
+            <Accordion key={String(a.title)} sx={{ '&:before': { display: 'none' }, '& + &': { mt: 1.5 }, borderRadius: 2, boxShadow: (t) => t.customShadows.card }}>
+              <AccordionSummary expandIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}>
+                <Typography variant="subtitle1">{a.title}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>{a.body}</Typography>
               </AccordionDetails>
             </Accordion>
           ))}
@@ -143,15 +207,17 @@ export default function Page() {
             <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={3} sx={{ p: { xs: 3, md: 5 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}>
               <Typography variant="h5">Gửi yêu cầu hỗ trợ</Typography>
               <Grid container spacing={2}>
-                <Grid xs={12}><TextField fullWidth label="Chủ đề" /></Grid>
+                <Grid xs={12} sm={6}><TextField fullWidth label="Họ tên" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></Grid>
+                <Grid xs={12} sm={6}><TextField fullWidth required label="Điện thoại / Email" value={form.contact} onChange={(e) => setForm({ ...form, contact: e.target.value })} /></Grid>
+                <Grid xs={12}><TextField fullWidth required label="Chủ đề" value={form.subject} onChange={(e) => { setSent(false); setForm({ ...form, subject: e.target.value }); }} /></Grid>
                 <Grid xs={12}>
-                  <TextField fullWidth select label="Danh mục" defaultValue="">
+                  <TextField fullWidth select label="Danh mục" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
                     {CATEGORIES.map((c) => <MenuItem key={c.label} value={c.label}>{c.label}</MenuItem>)}
                   </TextField>
                 </Grid>
-                <Grid xs={12}><TextField fullWidth label="Mô tả chi tiết" multiline rows={4} /></Grid>
+                <Grid xs={12}><TextField fullWidth label="Mô tả chi tiết" multiline rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></Grid>
               </Grid>
-              <Button variant="contained" size="large" startIcon={<Iconify icon="solar:letter-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={() => setSent(true)}>
+              <Button variant="contained" size="large" startIcon={<Iconify icon="solar:letter-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={submit}>
                 {sent ? 'Đã gửi yêu cầu' : 'Gửi yêu cầu'}
               </Button>
             </Stack>
