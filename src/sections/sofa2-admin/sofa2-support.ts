@@ -1,8 +1,11 @@
-// SOFA2 ADMIN — Module Hỗ trợ (FAQ, trợ giúp, chat, ticket, hướng dẫn, chính sách)
-// Dùng chung Sofa2AdminCmsView — form thêm/sửa/xoá, tab trạng thái, thao tác hàng loạt, CSV.
+// SOFA2 ADMIN — Module Hỗ trợ khách hàng
+// 9 trang: FAQ, Trung tâm trợ giúp, Chat trực tuyến, Ticket hỗ trợ, Hướng dẫn mua hàng,
+// Hướng dẫn thanh toán, Chính sách giao hàng, Chính sách bảo hành, Chính sách đổi trả.
+// Dùng chung Sofa2AdminCmsView (thêm/sửa/xoá/cập nhật, lọc trạng thái, thao tác hàng loạt).
+// Trang khách tương ứng: /sofa2/support và /sofa2/warranty.
 // ----------------------------------------------------------------------
 
-import type { Sofa2AdminGroup } from './sofa2-admin-data';
+import type { Sofa2AdminGroup, Sofa2AdminColumn, Sofa2AdminModule } from './sofa2-admin-data';
 import type { Sofa2CmsField, Sofa2CmsSchema, Sofa2CmsFieldType } from './sofa2-cms';
 
 const f = (
@@ -13,313 +16,274 @@ const f = (
   extra: Partial<Sofa2CmsField> = {}
 ): Sofa2CmsField => ({ key, label, type, group, ...extra });
 
-const PUB = ['Đã xuất bản', 'Bản nháp', 'Ẩn'];
-const CLIENT = '/sofa2/support';
-const FAQ_TOPICS = ['Đặt hàng', 'Thanh toán', 'Giao hàng', 'Bảo hành', 'Đổi trả', 'Sản phẩm', 'Tài khoản'];
-const AGENTS = ['Chưa phân công', 'Lan Anh', 'Minh Tuấn', 'Thu Hà', 'Quốc Bảo'];
-const PRIORITY = ['Thấp', 'Trung bình', 'Cao', 'Khẩn cấp'];
+const status = (options: string[]) =>
+  f('status', 'Trạng thái', 'select', 'display', { required: true, options });
 
-const seo = [
-  f('slug', 'Đường dẫn (slug)', 'text', 'seo', { maxLength: 120 }),
-  f('metaTitle', 'Meta title', 'text', 'seo', { maxLength: 60 }),
-  f('metaDescription', 'Meta description', 'textarea', 'seo', { multiline: 2, maxLength: 160 }),
-];
+const PUBLISH = ['Đã xuất bản', 'Bản nháp', 'Tạm ẩn'];
 
-/** Lược đồ cho các trang nội dung dạng bài (hướng dẫn / chính sách) */
-const article = (entity: string, extra: Sofa2CmsField[] = []): Sofa2CmsSchema => ({
-  clientPath: CLIENT,
+const schema = (
+  clientPath: string,
+  entity: string,
+  titleKey: string,
+  statusOptions: string[],
+  fields: Sofa2CmsField[],
+  defaultStatus?: string
+): Sofa2CmsSchema => ({
+  clientPath,
   entity,
-  titleKey: 'title',
+  titleKey,
   statusKey: 'status',
-  statusOptions: PUB,
-  publishLabel: 'Xuất bản',
-  defaultStatus: 'Bản nháp',
-  fields: [
-    f('title', 'Tiêu đề', 'text', 'content', { required: true, maxLength: 150 }),
-    f('summary', 'Tóm tắt', 'textarea', 'content', { multiline: 2, maxLength: 300 }),
-    f('body', 'Nội dung chi tiết', 'textarea', 'content', { required: true, multiline: 8, maxLength: 10000 }),
-    ...extra,
-    f('version', 'Phiên bản', 'text', 'display', { maxLength: 20, placeholder: 'v1.0' }),
-    f('effective', 'Ngày hiệu lực', 'date', 'display'),
-    f('order', 'Thứ tự hiển thị', 'number', 'display'),
-    f('showInFooter', 'Hiện link ở chân trang', 'switch', 'display'),
-    ...seo,
-    f('status', 'Trạng thái', 'select', 'display', { required: true, options: PUB }),
-  ],
+  statusOptions,
+  defaultStatus: defaultStatus ?? statusOptions[1] ?? statusOptions[0],
+  publishLabel: statusOptions[0],
+  fields: [...fields, status(statusOptions)],
 });
 
-export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
-  faq: {
-    clientPath: CLIENT,
-    entity: 'câu hỏi',
-    titleKey: 'question',
-    statusKey: 'status',
-    statusOptions: PUB,
-    publishLabel: 'Xuất bản',
-    defaultStatus: 'Bản nháp',
-    fields: [
-      f('question', 'Câu hỏi', 'text', 'content', { required: true, maxLength: 200 }),
-      f('answer', 'Câu trả lời', 'textarea', 'content', { required: true, multiline: 5, maxLength: 3000 }),
-      f('topic', 'Chủ đề', 'select', 'content', { required: true, options: FAQ_TOPICS }),
-      f('tags', 'Thẻ (cách nhau dấu phẩy)', 'text', 'content'),
-      f('order', 'Thứ tự', 'number', 'display'),
-      f('featured', 'Ghim lên đầu', 'switch', 'display'),
-      f('views', 'Lượt xem', 'number', 'display'),
-      f('helpful', 'Lượt "hữu ích"', 'number', 'display'),
-      f('status', 'Trạng thái', 'select', 'display', { required: true, options: PUB }),
-    ],
-  },
-
-  help: {
-    clientPath: CLIENT,
-    entity: 'bài trợ giúp',
-    titleKey: 'title',
-    statusKey: 'status',
-    statusOptions: PUB,
-    publishLabel: 'Xuất bản',
-    defaultStatus: 'Bản nháp',
-    fields: [
-      f('title', 'Tiêu đề bài viết', 'text', 'content', { required: true, maxLength: 150 }),
-      f('category', 'Chuyên mục', 'select', 'content', {
-        required: true,
-        options: ['Bắt đầu', 'Đơn hàng', 'Tài khoản', 'Bảo quản sofa', 'Lắp đặt', 'Chính sách'],
-      }),
-      f('summary', 'Tóm tắt', 'textarea', 'content', { multiline: 2, maxLength: 300 }),
-      f('body', 'Nội dung', 'textarea', 'content', { required: true, multiline: 8, maxLength: 10000 }),
-      f('cover', 'Ảnh minh hoạ (URL)', 'url', 'content'),
-      f('video', 'Video hướng dẫn (URL)', 'url', 'content'),
-      f('author', 'Người viết', 'text', 'display', { maxLength: 80 }),
-      f('updated', 'Cập nhật', 'date', 'display'),
-      f('views', 'Lượt xem', 'number', 'display'),
-      ...seo,
-      f('status', 'Trạng thái', 'select', 'display', { required: true, options: PUB }),
-    ],
-  },
-
-  chat: {
-    clientPath: CLIENT,
-    entity: 'phiên chat',
-    titleKey: 'code',
-    statusKey: 'status',
-    statusOptions: ['Đã kết thúc', 'Đang chờ', 'Đang chat', 'Bỏ lỡ'],
-    publishLabel: 'Kết thúc phiên',
-    defaultStatus: 'Đang chờ',
-    fields: [
-      f('code', 'Mã phiên', 'text', 'content', { required: true, maxLength: 30 }),
-      f('customer', 'Khách hàng', 'text', 'content', { maxLength: 100, placeholder: 'Khách vãng lai' }),
-      f('contact', 'Email / điện thoại', 'text', 'content', { maxLength: 120 }),
-      f('channel', 'Kênh', 'select', 'content', { options: ['Website', 'Zalo', 'Messenger', 'Mobile'] }),
-      f('topic', 'Chủ đề', 'select', 'content', { options: FAQ_TOPICS }),
-      f('transcript', 'Nội dung trao đổi', 'textarea', 'content', { multiline: 6, maxLength: 10000 }),
-      f('agent', 'Tư vấn viên', 'select', 'display', { options: AGENTS }),
-      f('started', 'Bắt đầu', 'date', 'display'),
-      f('waitSec', 'Thời gian chờ (giây)', 'number', 'display'),
-      f('rating', 'Đánh giá (1–5)', 'number', 'display'),
-      f('createTicket', 'Chuyển thành ticket', 'switch', 'display'),
-      f('status', 'Trạng thái', 'select', 'display', {
-        required: true,
-        options: ['Đang chờ', 'Đang chat', 'Đã kết thúc', 'Bỏ lỡ'],
-      }),
-    ],
-  },
-
-  ticket: {
-    clientPath: CLIENT,
-    entity: 'ticket',
-    titleKey: 'code',
-    statusKey: 'status',
-    statusOptions: ['Đã giải quyết', 'Mới', 'Đang xử lý', 'Chờ khách', 'Đã đóng'],
-    publishLabel: 'Đánh dấu đã giải quyết',
-    defaultStatus: 'Mới',
-    fields: [
-      f('code', 'Mã ticket', 'text', 'content', { required: true, maxLength: 30 }),
-      f('subject', 'Tiêu đề', 'text', 'content', { required: true, maxLength: 200 }),
-      f('customer', 'Khách hàng', 'text', 'content', { required: true, maxLength: 100 }),
-      f('email', 'Email', 'text', 'content', { maxLength: 255 }),
-      f('order', 'Mã đơn liên quan', 'text', 'content', { maxLength: 30 }),
-      f('topic', 'Loại yêu cầu', 'select', 'content', { required: true, options: FAQ_TOPICS }),
-      f('message', 'Nội dung yêu cầu', 'textarea', 'content', { required: true, multiline: 5, maxLength: 5000 }),
-      f('reply', 'Phản hồi / ghi chú xử lý', 'textarea', 'content', { multiline: 4, maxLength: 5000 }),
-      f('priority', 'Mức ưu tiên', 'select', 'display', { required: true, options: PRIORITY }),
-      f('agent', 'Người phụ trách', 'select', 'display', { options: AGENTS }),
-      f('created', 'Ngày tạo', 'date', 'display'),
-      f('due', 'Hạn xử lý (SLA)', 'date', 'display'),
-      f('notifyCustomer', 'Gửi email khi cập nhật', 'switch', 'display'),
-      f('status', 'Trạng thái', 'select', 'display', {
-        required: true,
-        options: ['Mới', 'Đang xử lý', 'Chờ khách', 'Đã giải quyết', 'Đã đóng'],
-      }),
-    ],
-  },
-
-  'guide-buy': article('hướng dẫn mua hàng', [
-    f('steps', 'Các bước (mỗi dòng một bước)', 'textarea', 'content', { multiline: 5, maxLength: 3000 }),
-  ]),
-  'guide-pay': article('hướng dẫn thanh toán', [
-    f('methods', 'Phương thức áp dụng (cách nhau dấu phẩy)', 'text', 'content', {
-      placeholder: 'COD, Chuyển khoản, VNPay, Trả góp 0%',
-    }),
-  ]),
-  shipping: article('chính sách giao hàng', [
-    f('area', 'Khu vực áp dụng', 'text', 'content', { maxLength: 200 }),
-    f('freeFrom', 'Miễn phí từ (đ)', 'number', 'content'),
-    f('leadDays', 'Thời gian giao (ngày)', 'number', 'content'),
-  ]),
-  warranty: article('chính sách bảo hành', [
-    f('years', 'Thời hạn bảo hành (năm)', 'number', 'content'),
-    f('scope', 'Phạm vi bảo hành', 'textarea', 'content', { multiline: 3, maxLength: 2000 }),
-  ]),
-  returns: article('chính sách đổi trả', [
-    f('days', 'Số ngày đổi trả', 'number', 'content'),
-    f('conditions', 'Điều kiện đổi trả', 'textarea', 'content', { multiline: 3, maxLength: 2000 }),
-  ]),
-};
-
-export function getSofa2SupportSchema(moduleSlug?: string) {
-  return moduleSlug ? SOFA2_SUPPORT_SCHEMAS[moduleSlug] : undefined;
-}
-
-// ----------------------------------------------------------------------
-// Dữ liệu nhóm (menu, thống kê, cột bảng, dữ liệu mẫu)
-// ----------------------------------------------------------------------
-
-const ST = { key: 'status', label: 'Trạng thái', type: 'status' as const };
-
-const articleMod = (
+const mod = (
   slug: string,
   name: string,
+  description: string,
   icon: string,
-  rows: Record<string, string | number>[]
-): Sofa2AdminGroup['modules'][number] => ({
-  slug,
-  name,
-  icon,
-  description: `Soạn thảo, phiên bản và xuất bản trang ${name.toLowerCase()} hiển thị cho khách.`,
-  stats: [
-    { label: 'Bài viết', value: String(rows.length) },
-    { label: 'Lượt xem 30 ngày', value: '3.2K', trend: '+8%' },
-    { label: 'Cập nhật gần nhất', value: String(rows[0]?.effective ?? '—') },
-  ],
-  columns: [
-    { key: 'title', label: 'Tiêu đề' },
-    { key: 'version', label: 'Phiên bản' },
-    { key: 'effective', label: 'Hiệu lực' },
-    ST,
-  ],
-  rows,
+  stats: Sofa2AdminModule['stats'],
+  columns: Sofa2AdminColumn[],
+  rows: Record<string, string | number>[],
+  actions?: string[]
+): Sofa2AdminModule => ({ slug, name, description, icon, stats, columns, rows, actions });
+
+const S: Sofa2AdminColumn = { key: 'status', label: 'Trạng thái', type: 'status' };
+const AGENTS = ['Minh Anh', 'Thu Hà', 'Đức Anh', 'Hoàng Long', 'Quốc Bảo', 'Chưa gán'];
+const FAQ_TOPICS = ['Sản phẩm', 'Đặt hàng', 'Thanh toán', 'Giao hàng', 'Bảo hành', 'Đổi trả', 'Tài khoản'];
+const CHANNELS = ['Website', 'Zalo', 'Messenger', 'Hotline', 'Email'];
+const PRIORITY = ['Thấp', 'Trung bình', 'Cao', 'Khẩn cấp'];
+
+// Các khối nội dung SEO dùng chung cho trang hướng dẫn / chính sách
+const seoFields = [
+  f('slug', 'Đường dẫn', 'text', 'seo', { helper: 'Tự sinh từ tiêu đề nếu để trống.' }),
+  f('metaTitle', 'Tiêu đề SEO', 'text', 'seo', { maxLength: 60 }),
+  f('metaDescription', 'Mô tả SEO', 'textarea', 'seo', { maxLength: 160, multiline: 3 }),
+];
+
+const articleFields = (sectionOptions: string[]) => [
+  f('title', 'Tiêu đề mục', 'text', 'content', { required: true, maxLength: 120 }),
+  f('section', 'Nhóm nội dung', 'select', 'content', { required: true, options: sectionOptions }),
+  f('summary', 'Tóm tắt', 'textarea', 'content', { multiline: 2, maxLength: 240 }),
+  f('content', 'Nội dung chi tiết', 'textarea', 'content', { required: true, multiline: 8 }),
+  f('icon', 'Biểu tượng', 'text', 'display', { placeholder: 'solar:delivery-bold-duotone' }),
+  f('position', 'Thứ tự hiển thị', 'number', 'display'),
+  f('effectiveDate', 'Ngày hiệu lực', 'date', 'display'),
+  f('version', 'Phiên bản', 'text', 'display', { placeholder: 'v1.0' }),
+  f('updated', 'Cập nhật', 'date', 'display'),
+  f('author', 'Người sửa', 'select', 'display', { options: AGENTS }),
+  ...seoFields,
+];
+
+const articleColumns: Sofa2AdminColumn[] = [
+  { key: 'title', label: 'Mục' },
+  { key: 'section', label: 'Nhóm' },
+  { key: 'position', label: 'Thứ tự', type: 'number' },
+  { key: 'updated', label: 'Cập nhật' },
+  S,
+];
+
+const article = (
+  title: string,
+  section: string,
+  content: string,
+  position: number,
+  status = 'Đã xuất bản'
+) => ({
+  title,
+  section,
+  summary: content.slice(0, 120),
+  content,
+  position,
+  version: 'v2.1',
+  effectiveDate: '01/09/2026',
+  updated: `${10 + position}/09/2026`,
+  author: AGENTS[position % 4],
+  status,
 });
+
+// ----------------------------------------------------------------------
 
 export const SOFA2_SUPPORT_GROUP: Sofa2AdminGroup = {
   slug: 'support',
   name: 'Hỗ trợ',
   icon: 'solar:lifebuoy-bold-duotone',
   modules: [
-    {
-      slug: 'faq',
-      name: 'FAQ',
-      icon: 'solar:question-circle-bold-duotone',
-      description: 'Câu hỏi thường gặp theo chủ đề, ghim, thứ tự và đo mức hữu ích.',
-      stats: [
-        { label: 'Câu hỏi', value: '42' },
-        { label: 'Lượt xem', value: '18.4K', trend: '+12%' },
-        { label: 'Hữu ích', value: '91%' },
-      ],
-      columns: [
-        { key: 'question', label: 'Câu hỏi' },
-        { key: 'topic', label: 'Chủ đề' },
-        { key: 'views', label: 'Lượt xem', type: 'number' },
-        ST,
-      ],
-      rows: [
-        { question: 'Bao lâu thì nhận được sofa?', answer: 'Hàng có sẵn giao 2–5 ngày; hàng đặt may 15–25 ngày.', topic: 'Giao hàng', order: 1, views: 4210, helpful: 380, status: 'Đã xuất bản' },
-        { question: 'Có được trả góp 0% không?', answer: 'Có, qua thẻ tín dụng của các ngân hàng liên kết.', topic: 'Thanh toán', order: 2, views: 2890, helpful: 240, status: 'Đã xuất bản' },
-        { question: 'Sofa được bảo hành bao lâu?', answer: 'Khung bảo hành dài hạn, đệm và vải theo chính sách.', topic: 'Bảo hành', order: 3, views: 2150, helpful: 198, status: 'Đã xuất bản' },
-        { question: 'Có thể đổi màu vải sau khi đặt?', answer: 'Được trong 24 giờ trước khi sản xuất.', topic: 'Đặt hàng', order: 4, views: 640, helpful: 51, status: 'Bản nháp' },
-      ],
-    },
-    {
-      slug: 'help',
-      name: 'Trung tâm trợ giúp',
-      icon: 'solar:lifebuoy-bold-duotone',
-      description: 'Bài hướng dẫn theo chuyên mục, video, ảnh minh hoạ và SEO.',
-      stats: [
-        { label: 'Bài viết', value: '28' },
-        { label: 'Chuyên mục', value: '6' },
-        { label: 'Lượt xem', value: '9.7K', trend: '+5%' },
-      ],
-      columns: [
-        { key: 'title', label: 'Bài viết' },
-        { key: 'category', label: 'Chuyên mục' },
-        { key: 'updated', label: 'Cập nhật' },
-        ST,
-      ],
-      rows: [
-        { title: 'Cách vệ sinh sofa da đúng cách', category: 'Bảo quản sofa', author: 'Thu Hà', updated: '2026-10-02', views: 1840, status: 'Đã xuất bản' },
-        { title: 'Theo dõi đơn hàng của bạn', category: 'Đơn hàng', author: 'Minh Tuấn', updated: '2026-09-21', views: 920, status: 'Đã xuất bản' },
-        { title: 'Chuẩn bị mặt bằng trước khi lắp đặt', category: 'Lắp đặt', author: 'Quốc Bảo', updated: '2026-10-10', views: 0, status: 'Bản nháp' },
-      ],
-    },
-    {
-      slug: 'chat',
-      name: 'Chat trực tuyến',
-      icon: 'solar:chat-round-bold-duotone',
-      description: 'Phiên chat với khách, phân công tư vấn viên, đánh giá và chuyển ticket.',
-      stats: [
-        { label: 'Phiên hôm nay', value: '37' },
-        { label: 'Chờ trung bình', value: '42s' },
-        { label: 'Hài lòng', value: '4.7/5' },
-      ],
-      columns: [
-        { key: 'code', label: 'Mã phiên' },
-        { key: 'customer', label: 'Khách' },
-        { key: 'agent', label: 'Tư vấn viên' },
-        { key: 'rating', label: 'Đánh giá', type: 'number' },
-        ST,
-      ],
-      rows: [
-        { code: 'CH-1042', customer: 'Nguyễn Hoàng', channel: 'Website', topic: 'Sản phẩm', agent: 'Lan Anh', started: '2026-10-15', waitSec: 18, rating: 5, status: 'Đã kết thúc' },
-        { code: 'CH-1043', customer: 'Khách vãng lai', channel: 'Zalo', topic: 'Giao hàng', agent: 'Minh Tuấn', started: '2026-10-15', waitSec: 35, rating: 0, status: 'Đang chat' },
-        { code: 'CH-1044', customer: 'Trần Mai', channel: 'Website', topic: 'Thanh toán', agent: 'Chưa phân công', started: '2026-10-15', waitSec: 70, rating: 0, status: 'Đang chờ' },
-      ],
-    },
-    {
-      slug: 'ticket',
-      name: 'Gửi ticket hỗ trợ',
-      icon: 'solar:ticket-bold-duotone',
-      description: 'Tiếp nhận, phân công, ưu tiên, SLA và phản hồi yêu cầu hỗ trợ.',
-      stats: [
-        { label: 'Đang mở', value: '19' },
-        { label: 'Quá hạn SLA', value: '2' },
-        { label: 'Xử lý trung bình', value: '6.5h' },
-      ],
-      columns: [
-        { key: 'code', label: 'Mã' },
-        { key: 'subject', label: 'Tiêu đề' },
-        { key: 'priority', label: 'Ưu tiên' },
-        { key: 'agent', label: 'Phụ trách' },
-        ST,
-      ],
-      rows: [
-        { code: 'TK-2201', subject: 'Sofa giao bị trầy chân', customer: 'Lê Phương', order: 'DH-88213', topic: 'Đổi trả', priority: 'Cao', agent: 'Thu Hà', created: '2026-10-13', due: '2026-10-15', status: 'Đang xử lý' },
-        { code: 'TK-2202', subject: 'Chưa nhận hoá đơn VAT', customer: 'Công ty Minh Phát', order: 'DH-88190', topic: 'Thanh toán', priority: 'Trung bình', agent: 'Quốc Bảo', created: '2026-10-14', due: '2026-10-17', status: 'Chờ khách' },
-        { code: 'TK-2203', subject: 'Hỏi lịch bảo dưỡng đệm', customer: 'Phạm Long', order: '', topic: 'Bảo hành', priority: 'Thấp', agent: 'Chưa phân công', created: '2026-10-15', due: '2026-10-20', status: 'Mới' },
-      ],
-    },
-    articleMod('guide-buy', 'Hướng dẫn mua hàng', 'solar:cart-bold-duotone', [
-      { title: 'Đặt mua sofa online trong 4 bước', version: 'v2.1', effective: '2026-09-01', order: 1, status: 'Đã xuất bản' },
-    ]),
-    articleMod('guide-pay', 'Hướng dẫn thanh toán', 'solar:wallet-bold-duotone', [
-      { title: 'Các phương thức thanh toán', version: 'v1.4', effective: '2026-08-15', order: 1, status: 'Đã xuất bản' },
-      { title: 'Trả góp 0% qua thẻ tín dụng', version: 'v1.0', effective: '2026-10-20', order: 2, status: 'Bản nháp' },
-    ]),
-    articleMod('shipping', 'Chính sách giao hàng', 'solar:delivery-bold-duotone', [
-      { title: 'Chính sách giao hàng & lắp đặt', version: 'v3.0', effective: '2026-07-01', order: 1, status: 'Đã xuất bản' },
-    ]),
-    articleMod('warranty', 'Chính sách bảo hành', 'solar:shield-check-bold-duotone', [
-      { title: 'Chính sách bảo hành sản phẩm', version: 'v2.0', effective: '2026-06-01', order: 1, status: 'Đã xuất bản' },
-    ]),
-    articleMod('returns', 'Chính sách đổi trả', 'solar:refresh-circle-bold-duotone', [
-      { title: 'Chính sách đổi trả', version: 'v1.2', effective: '2026-06-01', order: 1, status: 'Đã xuất bản' },
-    ]),
+    mod('faq', 'FAQ', 'Câu hỏi thường gặp hiển thị ở trang Hỗ trợ — nhóm chủ đề, thứ tự, đánh dấu nổi bật.', 'solar:question-circle-bold-duotone',
+      [{ label: 'Câu hỏi', value: '48' }, { label: 'Lượt xem 30 ngày', value: '12.4K', trend: '+18%' }, { label: 'Hữu ích', value: '91%' }, { label: 'Bản nháp', value: '4' }],
+      [{ key: 'question', label: 'Câu hỏi' }, { key: 'topic', label: 'Chủ đề' }, { key: 'views', label: 'Lượt xem', type: 'number' }, { key: 'position', label: 'Thứ tự', type: 'number' }, S],
+      [
+        { question: 'Sofa có được bảo hành bao lâu?', topic: 'Bảo hành', answer: 'Khung gỗ bảo hành 10 năm, đệm mút 3 năm, vải/da 1 năm.', views: 3420, helpful: 94, position: 1, featured: 'Có', status: 'Đã xuất bản' },
+        { question: 'Bao lâu thì nhận được hàng?', topic: 'Giao hàng', answer: 'Hàng có sẵn giao 2–5 ngày; hàng đặt may 15–25 ngày.', views: 2980, helpful: 90, position: 2, featured: 'Có', status: 'Đã xuất bản' },
+        { question: 'Có hỗ trợ trả góp 0% không?', topic: 'Thanh toán', answer: 'Có, trả góp 0% 6–12 tháng qua thẻ tín dụng cho đơn từ 10 triệu.', views: 1860, helpful: 88, position: 3, featured: 'Không', status: 'Đã xuất bản' },
+        { question: 'Tôi có thể đổi màu vải sau khi đặt?', topic: 'Đặt hàng', answer: 'Được đổi miễn phí trong 24h trước khi đơn vào sản xuất.', views: 940, helpful: 85, position: 4, featured: 'Không', status: 'Đã xuất bản' },
+        { question: 'Đổi trả trong bao nhiêu ngày?', topic: 'Đổi trả', answer: '30 ngày với sản phẩm còn nguyên vẹn, có hoá đơn.', views: 1420, helpful: 92, position: 5, featured: 'Có', status: 'Đã xuất bản' },
+        { question: 'Làm sao để vệ sinh sofa da?', topic: 'Sản phẩm', answer: 'Lau khăn ẩm, dùng dung dịch dưỡng da chuyên dụng 3 tháng/lần.', views: 620, helpful: 80, position: 6, featured: 'Không', status: 'Bản nháp' },
+      ], ['Thêm câu hỏi']),
+
+    mod('help-center', 'Trung tâm trợ giúp', 'Bài viết hướng dẫn theo danh mục — tài liệu sử dụng, bảo quản, lắp đặt.', 'solar:lifebuoy-bold-duotone',
+      [{ label: 'Bài viết', value: '64' }, { label: 'Danh mục', value: '8' }, { label: 'Tìm kiếm/ngày', value: '420' }, { label: 'Không có kết quả', value: '3%' }],
+      [{ key: 'title', label: 'Bài viết' }, { key: 'category', label: 'Danh mục' }, { key: 'views', label: 'Lượt xem', type: 'number' }, { key: 'updated', label: 'Cập nhật' }, S],
+      [
+        { title: 'Hướng dẫn bảo quản sofa vải', category: 'Bảo quản', excerpt: 'Hút bụi định kỳ, tránh ánh nắng trực tiếp.', content: '1. Hút bụi mỗi tuần...\n2. Xử lý vết bẩn ngay...', views: 2140, updated: '08/10/2026', author: 'Thu Hà', tags: 'vải, vệ sinh', status: 'Đã xuất bản' },
+        { title: 'Cách lắp chân sofa module', category: 'Lắp đặt', excerpt: 'Lắp chân và ghép module trong 10 phút.', content: 'Chuẩn bị tua vít...', views: 1280, updated: '02/10/2026', author: 'Đức Anh', tags: 'lắp đặt', status: 'Đã xuất bản' },
+        { title: 'Chọn kích thước sofa theo phòng', category: 'Tư vấn', excerpt: 'Sofa nên chiếm 2/3 chiều dài tường.', content: '...', views: 3460, updated: '28/09/2026', author: 'Minh Anh', tags: 'kích thước', status: 'Đã xuất bản' },
+        { title: 'Quản lý tài khoản & điểm thưởng', category: 'Tài khoản', excerpt: 'Đăng ký, đổi mật khẩu, đổi điểm.', content: '...', views: 540, updated: '20/09/2026', author: 'Hoàng Long', tags: 'tài khoản', status: 'Bản nháp' },
+      ], ['Viết bài']),
+
+    mod('live-chat', 'Chat trực tuyến', 'Hội thoại từ widget chat, Zalo, Messenger — phân công tư vấn viên, theo dõi thời gian phản hồi.', 'solar:chat-round-dots-bold-duotone',
+      [{ label: 'Hội thoại hôm nay', value: '86', trend: '+12%' }, { label: 'Phản hồi TB', value: '42 giây' }, { label: 'Đang chờ', value: '5' }, { label: 'Hài lòng', value: '4.8/5' }],
+      [{ key: 'customer', label: 'Khách' }, { key: 'channel', label: 'Kênh' }, { key: 'lastMessage', label: 'Tin nhắn cuối' }, { key: 'agent', label: 'Tư vấn viên' }, { key: 'startedAt', label: 'Bắt đầu' }, S],
+      [
+        { customer: 'Nguyễn Minh Anh', phone: '0901234567', channel: 'Website', lastMessage: 'Sofa Oslo còn màu xám không ạ?', agent: 'Thu Hà', startedAt: '15/10/2026 09:12', waitSeconds: 18, rating: 5, status: 'Đang chat' },
+        { customer: 'Khách vãng lai #2281', phone: '', channel: 'Messenger', lastMessage: 'Showroom Q.7 mở cửa mấy giờ?', agent: 'Chưa gán', startedAt: '15/10/2026 09:30', waitSeconds: 95, rating: 0, status: 'Chờ phản hồi' },
+        { customer: 'Trần Quốc Bảo', phone: '0987654321', channel: 'Zalo', lastMessage: 'Cảm ơn shop, mình đặt luôn.', agent: 'Minh Anh', startedAt: '14/10/2026 16:05', waitSeconds: 24, rating: 5, status: 'Đã kết thúc' },
+        { customer: 'Lê Thu Hà', phone: '0912345678', channel: 'Hotline', lastMessage: 'Cần kỹ thuật kiểm tra chân sofa.', agent: 'Đức Anh', startedAt: '14/10/2026 10:40', waitSeconds: 40, rating: 4, status: 'Chuyển ticket' },
+      ], ['Phân công']),
+
+    mod('tickets', 'Ticket hỗ trợ', 'Yêu cầu hỗ trợ gửi từ form trang khách — phân loại, ưu tiên, SLA, người xử lý.', 'solar:ticket-bold-duotone',
+      [{ label: 'Ticket mở', value: '23' }, { label: 'Quá hạn SLA', value: '2', trend: '-1' }, { label: 'Xử lý TB', value: '6,5 giờ' }, { label: 'Đóng tuần này', value: '41' }],
+      [{ key: 'code', label: 'Mã' }, { key: 'subject', label: 'Tiêu đề' }, { key: 'customer', label: 'Khách' }, { key: 'priority', label: 'Ưu tiên' }, { key: 'assignee', label: 'Phụ trách' }, { key: 'due', label: 'Hạn SLA' }, S],
+      [
+        { code: 'TK-2610-018', subject: 'Đệm ghế bị lún sau 3 tháng', customer: 'Lê Thu Hà', email: 'thuha@gmail.com', phone: '0912345678', category: 'Bảo hành', orderCode: 'LX26070112', priority: 'Cao', assignee: 'Đức Anh', due: '16/10/2026', content: 'Đệm bên trái lún rõ rệt.', resolution: '', status: 'Đang xử lý' },
+        { code: 'TK-2610-017', subject: 'Chưa nhận email xác nhận đơn', customer: 'Phạm Gia Huy', email: 'giahuy@gmail.com', phone: '0931234567', category: 'Đặt hàng', orderCode: 'LX26101002', priority: 'Trung bình', assignee: 'Thu Hà', due: '15/10/2026', content: 'Đặt hàng hôm qua nhưng chưa có email.', resolution: 'Đã gửi lại email.', status: 'Đã giải quyết' },
+        { code: 'TK-2610-016', subject: 'Yêu cầu đổi sang màu be', customer: 'Võ Ngọc Lan', email: 'ngoclan@gmail.com', phone: '0908111222', category: 'Đổi trả', orderCode: 'LX26092810', priority: 'Thấp', assignee: 'Chưa gán', due: '18/10/2026', content: 'Muốn đổi màu vải.', resolution: '', status: 'Mới' },
+        { code: 'TK-2610-015', subject: 'Giao hàng trễ 3 ngày', customer: 'Trần Quốc Bảo', email: 'quocbao@gmail.com', phone: '0987654321', category: 'Giao hàng', orderCode: 'LX26100695', priority: 'Khẩn cấp', assignee: 'Hoàng Long', due: '14/10/2026', content: 'Đơn hẹn 11/10 chưa giao.', resolution: '', status: 'Chờ khách' },
+      ], ['Tạo ticket']),
+
+    mod('buying-guide', 'Hướng dẫn mua hàng', 'Các bước đặt hàng online hiển thị ở trang Hỗ trợ.', 'solar:cart-check-bold-duotone',
+      [{ label: 'Bước', value: '5' }, { label: 'Lượt xem', value: '4.2K' }, { label: 'Thoát trang', value: '22%' }, { label: 'Cập nhật', value: '14/09' }],
+      articleColumns,
+      [
+        article('Bước 1 — Chọn sản phẩm', 'Các bước đặt hàng', 'Tìm theo danh mục hoặc bộ lọc, xem chi tiết kích thước, chất liệu.', 1),
+        article('Bước 2 — Chọn biến thể & thêm vào giỏ', 'Các bước đặt hàng', 'Chọn màu vải, kích thước rồi bấm "Thêm vào giỏ".', 2),
+        article('Bước 3 — Điền thông tin giao hàng', 'Các bước đặt hàng', 'Nhập họ tên, số điện thoại, địa chỉ nhận hàng.', 3),
+        article('Bước 4 — Chọn thanh toán & xác nhận', 'Các bước đặt hàng', 'Chọn phương thức thanh toán, áp mã giảm giá và đặt hàng.', 4),
+        article('Đặt hàng qua hotline / showroom', 'Kênh khác', 'Gọi 1900 6868 hoặc ghé showroom để được tư vấn trực tiếp.', 5, 'Bản nháp'),
+      ], ['Thêm bước']),
+
+    mod('payment-guide', 'Hướng dẫn thanh toán', 'Phương thức thanh toán, thông tin chuyển khoản, trả góp.', 'solar:wallet-money-bold-duotone',
+      [{ label: 'Phương thức', value: '6' }, { label: 'Lượt xem', value: '2.8K' }, { label: 'Hỏi về trả góp', value: '34%' }, { label: 'Cập nhật', value: '12/09' }],
+      articleColumns,
+      [
+        article('Thanh toán khi nhận hàng (COD)', 'Phương thức', 'Áp dụng đơn dưới 50 triệu trong khu vực nội thành.', 1),
+        article('Chuyển khoản ngân hàng', 'Phương thức', 'Vietcombank 0071 000 123 456 — CTY LUXE SOFA. Nội dung: mã đơn hàng.', 2),
+        article('Thẻ / VNPay / Ví MoMo', 'Phương thức', 'Thanh toán an toàn qua cổng VNPay, hỗ trợ thẻ nội địa và quốc tế.', 3),
+        article('Trả góp 0% qua thẻ tín dụng', 'Trả góp', 'Kỳ hạn 6–12 tháng cho đơn từ 10 triệu với 25 ngân hàng liên kết.', 4),
+        article('Xuất hoá đơn VAT', 'Hoá đơn', 'Cung cấp thông tin công ty khi đặt hàng, hoá đơn gửi qua email trong 7 ngày.', 5),
+      ], ['Thêm mục']),
+
+    mod('shipping-policy', 'Chính sách giao hàng', 'Phạm vi, phí, thời gian giao hàng và lắp đặt.', 'solar:delivery-bold-duotone',
+      [{ label: 'Mục', value: '5' }, { label: 'Tỉnh thành phục vụ', value: '63' }, { label: 'Đúng hẹn', value: '94%' }, { label: 'Phiên bản', value: 'v2.1' }],
+      articleColumns,
+      [
+        article('Phạm vi giao hàng', 'Phạm vi & phí', 'Giao toàn quốc; nội thành Hà Nội, TP.HCM, Đà Nẵng giao bằng đội xe LUXE.', 1),
+        article('Phí giao hàng', 'Phạm vi & phí', 'Miễn phí nội thành cho đơn từ 20 triệu; ngoại thành tính theo km.', 2),
+        article('Thời gian giao hàng', 'Thời gian', 'Hàng có sẵn 2–5 ngày, hàng đặt may 15–25 ngày làm việc.', 3),
+        article('Lắp đặt miễn phí', 'Lắp đặt', 'Kỹ thuật viên lắp đặt và hướng dẫn sử dụng tại nhà.', 4),
+        article('Kiểm tra khi nhận hàng', 'Nhận hàng', 'Khách kiểm tra sản phẩm trước khi ký biên bản giao nhận.', 5),
+      ], ['Thêm mục']),
+
+    mod('warranty-policy', 'Chính sách bảo hành', 'Thời hạn, điều kiện, quy trình bảo hành — đồng bộ trang Bảo hành.', 'solar:shield-check-bold-duotone',
+      [{ label: 'Mục', value: '5' }, { label: 'Khung gỗ', value: '10 năm' }, { label: 'Yêu cầu tháng', value: '38' }, { label: 'Phiên bản', value: 'v2.1' }],
+      articleColumns,
+      [
+        article('Thời hạn bảo hành', 'Thời hạn', 'Khung gỗ 10 năm, đệm mút 3 năm, vải/da và phụ kiện 1 năm.', 1),
+        article('Điều kiện bảo hành', 'Điều kiện', 'Sản phẩm còn tem, có phiếu bảo hành hoặc mã đơn hàng hợp lệ.', 2),
+        article('Trường hợp không bảo hành', 'Điều kiện', 'Hư hỏng do thiên tai, sử dụng sai cách, tự ý sửa chữa.', 3),
+        article('Quy trình bảo hành', 'Quy trình', 'Gửi yêu cầu → kỹ thuật kiểm tra trong 48h → sửa chữa/thay thế.', 4),
+        article('Bảo dưỡng định kỳ', 'Dịch vụ thêm', 'Miễn phí vệ sinh, bảo dưỡng 1 lần/năm trong 3 năm đầu.', 5, 'Bản nháp'),
+      ], ['Thêm mục']),
+
+    mod('return-policy', 'Chính sách đổi trả', 'Thời hạn, điều kiện, chi phí và quy trình đổi trả, hoàn tiền.', 'solar:refresh-circle-bold-duotone',
+      [{ label: 'Mục', value: '5' }, { label: 'Thời hạn', value: '30 ngày' }, { label: 'Tỉ lệ đổi trả', value: '1,8%' }, { label: 'Phiên bản', value: 'v2.1' }],
+      articleColumns,
+      [
+        article('Thời hạn đổi trả', 'Thời hạn', 'Đổi trả trong 30 ngày kể từ ngày nhận hàng.', 1),
+        article('Điều kiện đổi trả', 'Điều kiện', 'Sản phẩm còn nguyên vẹn, chưa qua sử dụng, đủ phụ kiện và hoá đơn.', 2),
+        article('Sản phẩm đặt may riêng', 'Điều kiện', 'Hàng may theo kích thước/vải riêng không áp dụng đổi trả, trừ lỗi sản xuất.', 3),
+        article('Chi phí đổi trả', 'Chi phí', 'Miễn phí nếu lỗi từ LUXE; khách chịu phí vận chuyển khi đổi ý.', 4),
+        article('Hoàn tiền', 'Hoàn tiền', 'Hoàn tiền trong 7 ngày làm việc qua phương thức thanh toán ban đầu.', 5),
+      ], ['Thêm mục']),
   ],
 };
+
+// ----------------------------------------------------------------------
+
+const policySchema = (clientPath: string, entity: string, sections: string[]) =>
+  schema(clientPath, entity, 'title', PUBLISH, articleFields(sections));
+
+export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
+  faq: schema('/sofa2/support', 'câu hỏi', 'question', PUBLISH, [
+    f('question', 'Câu hỏi', 'text', 'content', { required: true, maxLength: 160 }),
+    f('topic', 'Chủ đề', 'select', 'content', { required: true, options: FAQ_TOPICS }),
+    f('answer', 'Câu trả lời', 'textarea', 'content', { required: true, multiline: 6 }),
+    f('relatedLink', 'Liên kết tham khảo', 'url', 'content', { placeholder: '/sofa2/warranty' }),
+    f('position', 'Thứ tự', 'number', 'display'),
+    f('featured', 'Hiện ở mục nổi bật', 'select', 'display', { options: ['Có', 'Không'] }),
+    f('views', 'Lượt xem', 'number', 'display'),
+    f('helpful', 'Tỉ lệ hữu ích (%)', 'number', 'display'),
+    ...seoFields,
+  ]),
+
+  'help-center': schema('/sofa2/support', 'bài viết trợ giúp', 'title', PUBLISH, [
+    f('title', 'Tiêu đề bài viết', 'text', 'content', { required: true, maxLength: 120 }),
+    f('category', 'Danh mục', 'select', 'content', {
+      required: true,
+      options: ['Tư vấn', 'Bảo quản', 'Lắp đặt', 'Tài khoản', 'Đặt hàng', 'Thanh toán', 'Bảo hành', 'Khác'],
+    }),
+    f('excerpt', 'Tóm tắt', 'textarea', 'content', { multiline: 2, maxLength: 200 }),
+    f('content', 'Nội dung', 'textarea', 'content', { required: true, multiline: 10 }),
+    f('cover', 'Ảnh minh hoạ', 'url', 'content'),
+    f('video', 'Video hướng dẫn', 'url', 'content'),
+    f('tags', 'Từ khoá tìm kiếm', 'text', 'display', { helper: 'Ngăn cách bằng dấu phẩy.' }),
+    f('views', 'Lượt xem', 'number', 'display'),
+    f('updated', 'Cập nhật', 'date', 'display'),
+    f('author', 'Tác giả', 'select', 'display', { options: AGENTS }),
+    ...seoFields,
+  ]),
+
+  'live-chat': {
+    ...schema('/sofa2/support', 'hội thoại', 'customer', ['Đang chat', 'Chờ phản hồi', 'Chuyển ticket', 'Đã kết thúc'], [
+      f('customer', 'Khách hàng', 'text', 'content', { required: true }),
+      f('phone', 'Điện thoại', 'text', 'content'),
+      f('channel', 'Kênh', 'select', 'content', { required: true, options: CHANNELS }),
+      f('lastMessage', 'Tin nhắn cuối', 'textarea', 'content', { multiline: 3 }),
+      f('cannedReply', 'Mẫu trả lời nhanh', 'select', 'content', {
+        options: ['Chào mừng', 'Báo giá', 'Giờ mở cửa showroom', 'Thời gian giao hàng', 'Chuyển kỹ thuật'],
+      }),
+      f('agent', 'Tư vấn viên', 'select', 'display', { options: AGENTS }),
+      f('startedAt', 'Bắt đầu lúc', 'text', 'display'),
+      f('waitSeconds', 'Thời gian chờ (giây)', 'number', 'display'),
+      f('rating', 'Đánh giá (1–5)', 'number', 'display'),
+    ], 'Chờ phản hồi'),
+    hideClientLink: false,
+  },
+
+  tickets: schema('/sofa2/support', 'ticket', 'subject', ['Mới', 'Đang xử lý', 'Chờ khách', 'Đã giải quyết', 'Đã đóng'], [
+    f('code', 'Mã ticket', 'text', 'content', { required: true, placeholder: 'TK-2610-019' }),
+    f('subject', 'Tiêu đề', 'text', 'content', { required: true, maxLength: 140 }),
+    f('customer', 'Khách hàng', 'text', 'content', { required: true }),
+    f('email', 'Email', 'text', 'content'),
+    f('phone', 'Điện thoại', 'text', 'content'),
+    f('category', 'Loại yêu cầu', 'select', 'content', { required: true, options: FAQ_TOPICS }),
+    f('orderCode', 'Mã đơn liên quan', 'text', 'content'),
+    f('content', 'Nội dung yêu cầu', 'textarea', 'content', { required: true, multiline: 5 }),
+    f('resolution', 'Hướng xử lý / phản hồi', 'textarea', 'content', { multiline: 4 }),
+    f('priority', 'Mức ưu tiên', 'select', 'display', { required: true, options: PRIORITY }),
+    f('assignee', 'Người phụ trách', 'select', 'display', { options: AGENTS }),
+    f('due', 'Hạn SLA', 'date', 'display'),
+  ], 'Mới'),
+
+  'buying-guide': policySchema('/sofa2/support', 'bước hướng dẫn', ['Các bước đặt hàng', 'Kênh khác', 'Lưu ý']),
+  'payment-guide': policySchema('/sofa2/support', 'mục thanh toán', ['Phương thức', 'Trả góp', 'Hoá đơn', 'Lưu ý']),
+  'shipping-policy': policySchema('/sofa2/support', 'mục chính sách', ['Phạm vi & phí', 'Thời gian', 'Lắp đặt', 'Nhận hàng']),
+  'warranty-policy': policySchema('/sofa2/warranty', 'mục chính sách', ['Thời hạn', 'Điều kiện', 'Quy trình', 'Dịch vụ thêm']),
+  'return-policy': policySchema('/sofa2/support', 'mục chính sách', ['Thời hạn', 'Điều kiện', 'Chi phí', 'Hoàn tiền']),
+};
+
+export function getSofa2SupportSchema(moduleSlug?: string) {
+  return moduleSlug ? SOFA2_SUPPORT_SCHEMAS[moduleSlug] : undefined;
+}

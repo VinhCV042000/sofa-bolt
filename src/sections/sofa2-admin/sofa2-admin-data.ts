@@ -1,5 +1,5 @@
-import { SOFA2_SUPPORT_GROUP } from './sofa2-support';
 import { SOFA2_SHOP_GROUP } from './sofa2-shop';
+import { SOFA2_SUPPORT_GROUP } from './sofa2-support';
 // SOFA2 ADMIN — Bold, dark, modern editorial style
 // ----------------------------------------------------------------------
 
