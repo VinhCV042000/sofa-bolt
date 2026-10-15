@@ -376,7 +376,119 @@ const warrantySchema: Sofa2CartSchema = {
 
 // ----------------------------------------------------------------------
 
+const listingSchema: Sofa2CartSchema = {
+  clientPath: '/sofa2/products',
+  entity: 'cấu hình listing',
+  titleKey: 'name',
+  statusKey: 'status',
+  statusOptions: ['Đang áp dụng', 'Bản nháp', 'Tạm tắt'],
+  defaultStatus: 'Đang áp dụng',
+  chartType: 'bar',
+  chartTitle: 'Lượt xem trang danh sách',
+  chartSubtitle: 'Theo danh mục — 30 ngày',
+  chartCategories: ['Tất cả', 'Sofa góc', 'Sofa giường', 'Sofa văng', 'Sofa da', 'Ghế dài'],
+  chartSeries: [{ name: 'Lượt xem', data: [12400, 8600, 4200, 3800, 6400, 2200] }],
+  fields: [
+    f('name', 'Tên cấu hình', 'text', 'content', { required: true }),
+    f('path', 'Đường dẫn', 'url', 'content', { required: true, placeholder: '/sofa2/products' }),
+    f('category', 'Danh mục áp dụng', 'select', 'content', {
+      options: ['Tất cả', 'Sofa góc', 'Sofa giường', 'Sofa văng', 'Sofa da', 'Ghế dài', 'Phụ kiện'],
+    }),
+    f('sort', 'Sắp xếp mặc định', 'select', 'content', {
+      options: ['Bán chạy', 'Mới nhất', 'Giá tăng dần', 'Giá giảm dần', 'Nổi bật'],
+    }),
+    f('perPage', 'Số SP/trang', 'number', 'content', { required: true, helper: '12, 24, 36, 48...' }),
+    f('layout', 'Bố cục', 'select', 'content', {
+      options: ['Lưới 4 cột', 'Lưới 3 cột', 'Lưới 2 cột', 'Danh sách'],
+    }),
+    f('filters', 'Bộ lọc hiển thị', 'textarea', 'content', {
+      multiline: 3,
+      placeholder: 'Danh mục, giá, chất liệu, màu sắc, kích thước...',
+    }),
+    f('pinned', 'SP ghim đầu trang', 'textarea', 'content', { multiline: 2, placeholder: 'SKU1, SKU2, SKU3' }),
+    f('banner', 'Banner đầu trang', 'url', 'content', { placeholder: 'https://...' }),
+    f('showBanner', 'Hiển thị banner', 'switch', 'content'),
+    f('seoTitle', 'Tiêu đề SEO', 'text', 'technical'),
+    f('seoDesc', 'Mô tả SEO', 'textarea', 'technical', { multiline: 2 }),
+    f('status', 'Trạng thái', 'select', 'display', { required: true, options: ['Đang áp dụng', 'Bản nháp', 'Tạm tắt'] }),
+    f('updated', 'Cập nhật', 'date', 'display'),
+  ],
+};
+
+// ----------------------------------------------------------------------
+
+const searchSchema: Sofa2CartSchema = {
+  clientPath: '/sofa2/products',
+  entity: 'quy tắc tìm kiếm',
+  titleKey: 'keyword',
+  statusKey: 'status',
+  statusOptions: ['Đang áp dụng', 'Bản nháp', 'Tạm tắt'],
+  defaultStatus: 'Đang áp dụng',
+  chartType: 'horizontal-bar',
+  chartTitle: 'Từ khoá tìm kiếm phổ biến',
+  chartSubtitle: 'Top 6 — 30 ngày',
+  chartCategories: ['sofa góc', 'sofa da bò', 'ghế dài', 'sofa văng', 'sofa giường', 'sofa nhỏ'],
+  chartSeries: [{ name: 'Lượt tìm', data: [2140, 1820, 860, 720, 640, 480] }],
+  fields: [
+    f('keyword', 'Từ khoá', 'text', 'content', { required: true }),
+    f('type', 'Loại quy tắc', 'select', 'content', {
+      required: true,
+      options: ['Ghim kết quả', 'Từ đồng nghĩa', 'Chuyển hướng', 'Tự động gợi ý', 'Ẩn kết quả'],
+    }),
+    f('synonyms', 'Từ đồng nghĩa', 'textarea', 'content', {
+      multiline: 2,
+      placeholder: 'sofa văng, sofa băng, ghế dài...',
+      helper: 'Mỗi từ cách nhau bằng dấu phẩy.',
+    }),
+    f('redirect', 'Chuyển hướng đến', 'url', 'content', { placeholder: '/sofa2/products/category/sofa-da' }),
+    f('pinnedProducts', 'SP ghim cho từ khoá', 'textarea', 'content', { multiline: 2, placeholder: 'SKU1, SKU2' }),
+    f('suggestions', 'Gợi ý tự động', 'textarea', 'content', { multiline: 2, placeholder: 'sofa góc da, sofa góc nhỏ...' }),
+    f('searches', 'Lượt tìm 30 ngày', 'number', 'display'),
+    f('noResult', 'Lượt không KQ', 'number', 'display'),
+    f('ctr', 'CTR (%)', 'number', 'display'),
+    f('status', 'Trạng thái', 'select', 'display', { required: true, options: ['Đang áp dụng', 'Bản nháp', 'Tạm tắt'] }),
+    f('updated', 'Cập nhật', 'date', 'display'),
+  ],
+};
+
+// ----------------------------------------------------------------------
+
+const compareSchema: Sofa2CartSchema = {
+  clientPath: '/sofa2/compare',
+  entity: 'tiêu chí so sánh',
+  titleKey: 'attribute',
+  statusKey: 'status',
+  statusOptions: ['Hiển thị', 'Ẩn'],
+  defaultStatus: 'Hiển thị',
+  chartType: 'donut',
+  chartTitle: 'Tiêu chí so sánh được sử dụng',
+  chartSubtitle: 'Tỷ lệ nhấp theo tiêu chí',
+  chartLabels: ['Giá bán', 'Kích thước', 'Chất liệu', 'Bảo hành', 'Màu sắc'],
+  chartDonutData: [42, 28, 18, 8, 4],
+  fields: [
+    f('attribute', 'Tên tiêu chí', 'text', 'content', { required: true }),
+    f('source', 'Nguồn dữ liệu', 'select', 'content', {
+      required: true,
+      options: ['Giá bán', 'Thuộc tính SP', 'Kích thước', 'Bảo hành', 'Thương hiệu', 'Tự định nghĩa'],
+    }),
+    f('unit', 'Đơn vị', 'text', 'content', { placeholder: 'cm, năm, kg...' }),
+    f('order', 'Thứ tự hiển thị', 'number', 'content', { required: true }),
+    f('highlight', 'Nhấn mạnh', 'select', 'content', { options: ['Có', 'Không'] }),
+    f('maxItems', 'SP tối đa', 'number', 'content', { helper: 'Số SP có thể so sánh cùng lúc.' }),
+    f('format', 'Định dạng hiển thị', 'select', 'content', {
+      options: ['Văn bản', 'Số', 'Tiền tệ', 'Màu sắc', 'Đánh giá sao'],
+    }),
+    f('status', 'Trạng thái', 'select', 'display', { required: true, options: ['Hiển thị', 'Ẩn'] }),
+    f('updated', 'Cập nhật', 'date', 'display'),
+  ],
+};
+
+// ----------------------------------------------------------------------
+
 export const SOFA2_CART_SCHEMAS: Record<string, Sofa2CartSchema> = {
+  listing: listingSchema,
+  search: searchSchema,
+  compare: compareSchema,
   cart: cartSchema,
   checkout: checkoutSchema,
   success: successSchema,
