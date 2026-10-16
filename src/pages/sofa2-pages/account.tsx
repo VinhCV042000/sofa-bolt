@@ -18,6 +18,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { SOFA2_PRODUCTS, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 
@@ -25,10 +26,7 @@ import { SOFA2_PRODUCTS, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-page
 
 const metadata = { title: 'Tài khoản khách hàng' };
 
-const ORDERS = [
-  { id: '#LX001', date: '10/02/2025', item: 'Sofa Oslo 3 Chỗ', status: 'Đã giao', total: '14.500.000đ' },
-  { id: '#LX002', date: '05/01/2025', item: 'Sofa Copenhagen', status: 'Hoàn tất', total: '11.900.000đ' },
-];
+
 
 const TABS = [
   { value: 'profile', label: 'Hồ sơ', icon: 'solar:user-bold-duotone' },
@@ -40,6 +38,14 @@ const TABS = [
 
 export default function Page() {
   const [tab, setTab] = useState('profile');
+  const { rows: memberOrders } = useSofa2AdminRows('member', 'orders');
+  const ORDERS = memberOrders.map((o) => ({
+    id: String(o.id),
+    date: String(o.date),
+    item: String(o.item),
+    status: String(o.status),
+    total: `${Number(o.total).toLocaleString('vi-VN')}đ`,
+  }));
   const [authTab, setAuthTab] = useState('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

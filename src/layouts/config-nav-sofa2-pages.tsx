@@ -167,6 +167,7 @@ export const sofa2PagesNavData = [
       { title: 'Đại lý', path: '/sofa2/admin/dealer/dashboard' },
       { title: 'Giỏ hàng & Khách hàng', path: '/sofa2/admin/shop/cart' },
       { title: 'Hỗ trợ khách hàng', path: '/sofa2/admin/support/faq' },
+      { title: 'Khách hàng', path: '/sofa2/admin/member/dashboard' },
       { title: 'SEO', path: '/sofa2/admin/seo/sitemap' },
     ],
   },
