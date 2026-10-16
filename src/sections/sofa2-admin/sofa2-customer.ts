@@ -114,7 +114,7 @@ export const SOFA2_CUSTOMER_GROUP: Sofa2AdminGroup = {
 };
 
 // ----------------------------------------------------------------------
-const SEO_NOTE = f('note', 'Ghi chú nội bộ', 'textarea', 'seo', { multiline: true, maxLength: 500 });
+const SEO_NOTE = f('note', 'Ghi chú nội bộ', 'textarea', 'seo', { maxLength: 500 });
 
 export const SOFA2_CUSTOMER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
   dashboard: schema('khách hàng', 'name', ST.dashboard, [
@@ -155,7 +155,7 @@ export const SOFA2_CUSTOMER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     f('product', 'Sản phẩm', 'select', 'content', { options: PRODUCTS }),
     f('serial', 'Số serial', 'text', 'content', { required: true }),
     f('orderCode', 'Mã đơn mua', 'text', 'content'),
-    f('issue', 'Mô tả lỗi', 'textarea', 'content', { multiline: true }),
+    f('issue', 'Mô tả lỗi', 'textarea', 'content', ),
     f('purchaseDate', 'Ngày mua', 'date', 'display'),
     f('expiry', 'Hết hạn bảo hành', 'date', 'display'),
     f('technician', 'Kỹ thuật viên', 'select', 'display', { options: STAFF }),
@@ -185,8 +185,8 @@ export const SOFA2_CUSTOMER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     f('customer', 'Khách hàng', 'text', 'content', { required: true }),
     f('type', 'Loại vấn đề', 'select', 'content', { options: ['Giao hàng trễ', 'Sản phẩm lỗi', 'Sai màu/kích thước', 'Thái độ nhân viên', 'Thanh toán', 'Khác'] }),
     f('orderCode', 'Mã đơn liên quan', 'text', 'content'),
-    f('content', 'Nội dung', 'textarea', 'content', { required: true, multiline: true }),
-    f('resolution', 'Hướng xử lý', 'textarea', 'content', { multiline: true }),
+    f('content', 'Nội dung', 'textarea', 'content', { required: true }),
+    f('resolution', 'Hướng xử lý', 'textarea', 'content', ),
     f('priority', 'Ưu tiên', 'select', 'display', { options: ['Cao', 'Trung bình', 'Thấp'] }),
     f('owner', 'Người phụ trách', 'select', 'display', { options: STAFF }),
     f('deadline', 'Hạn xử lý', 'date', 'display'),
