@@ -16,7 +16,8 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
-import { SOFA2_CAREERS, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import { SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,23 @@ const BENEFITS = [
 
 export default function Page() {
   const theme = useTheme();
+  const { rows: jobs } = useSofa2AdminRows('hr', 'recruitment');
+  const openJobs = jobs.filter((job) => String(job.status) === 'Đang tuyển');
+  const formatSalary = (job: Record<string, string | number>) => {
+    const min = Number(job.salaryMin || 0);
+    const max = Number(job.salaryMax || 0);
+    if (!min && !max) return 'Thỏa thuận';
+    const format = (amount: number) => `${Math.round(amount / 1000000)} triệu`;
+    return min && max ? `${format(min)} – ${format(max)}` : format(min || max);
+  };
+  const formatDate = (value: unknown) => {
+    const date = String(value || '');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      const [year, month, day] = date.split('-');
+      return `${day}/${month}/${year}`;
+    }
+    return date || 'Chưa cập nhật';
+  };
 
   return (
     <>
@@ -74,11 +92,20 @@ export default function Page() {
         <Stack spacing={2} sx={{ mb: { xs: 5, md: 8 } }}>
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>Vị trí tuyển dụng</Typography>
           <Typography variant="h2">Việc làm mở</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>
+            {openJobs.length} vị trí đang nhận hồ sơ. Thông tin được cập nhật trực tiếp từ bộ phận tuyển dụng.
+          </Typography>
         </Stack>
         <Stack spacing={2}>
-          {SOFA2_CAREERS.map((job) => (
+          {openJobs.length === 0 ? (
+            <Stack spacing={1} sx={{ p: 4, borderRadius: 2, bgcolor: 'background.paper' }}>
+              <Typography variant="h6">Hiện chưa có vị trí đang tuyển</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>Bạn có thể quay lại sau hoặc gửi hồ sơ giới thiệu để đội ngũ tuyển dụng liên hệ khi có vị trí phù hợp.</Typography>
+              <Button component={RouterLink} href="/sofa2/careers/apply" sx={{ alignSelf: 'flex-start' }}>Gửi hồ sơ giới thiệu</Button>
+            </Stack>
+          ) : openJobs.map((job) => (
             <Stack
-              key={job.id}
+              key={String(job.jobId)}
               component={m.div}
               variants={varFade({ distance: 24 }).inUp}
               direction={{ xs: 'column', md: 'row' }}
@@ -89,25 +116,31 @@ export default function Page() {
             >
               <Stack spacing={1} sx={{ flex: 1 }}>
                 <Typography variant="h6">{job.title}</Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{job.description}</Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{job.description || 'Xem chi tiết công việc và yêu cầu ứng tuyển.'}</Typography>
               </Stack>
               <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                 <Stack direction="row" spacing={0.5} alignItems="center" sx={{ px: 1.5, py: 0.5, borderRadius: 1, bgcolor: (t) => varAlpha(t.vars.palette.primary.mainChannel, 0.08) }}>
                   <Iconify icon="solar:map-point-bold-duotone" width={16} sx={{ color: 'primary.main' }} />
-                  <Typography variant="caption" sx={{ color: 'primary.main' }}>{job.location}</Typography>
+                  <Typography variant="caption" sx={{ color: 'primary.main' }}>{job.location || 'Chưa cập nhật'}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={0.5} alignItems="center" sx={{ px: 1.5, py: 0.5, borderRadius: 1, bgcolor: (t) => varAlpha(t.vars.palette.warning.mainChannel, 0.08) }}>
                   <Iconify icon="solar:clock-circle-bold-duotone" width={16} sx={{ color: 'warning.main' }} />
-                  <Typography variant="caption" sx={{ color: 'warning.main' }}>{job.type}</Typography>
+                  <Typography variant="caption" sx={{ color: 'warning.main' }}>{job.type || 'Toàn thời gian'}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={0.5} alignItems="center" sx={{ px: 1.5, py: 0.5, borderRadius: 1, bgcolor: (t) => varAlpha(t.vars.palette.success.mainChannel, 0.08) }}>
                   <Iconify icon="solar:wallet-bold-duotone" width={16} sx={{ color: 'success.main' }} />
-                  <Typography variant="caption" sx={{ color: 'success.main' }}>{job.salary}</Typography>
+                  <Typography variant="caption" sx={{ color: 'success.main' }}>{formatSalary(job)}</Typography>
                 </Stack>
               </Stack>
-              <Button component={RouterLink} href="/sofa2/careers/apply" variant="contained" color="primary" startIcon={<Iconify icon="solar:letter-bold-duotone" />}>
-                Ứng tuyển
-              </Button>
+              <Stack direction={{ xs: 'row', md: 'column' }} spacing={1}>
+                <Button component={RouterLink} href={`/sofa2/careers/${encodeURIComponent(String(job.jobId))}`} variant="outlined">
+                  Chi tiết
+                </Button>
+                <Button component={RouterLink} href={`/sofa2/careers/apply/${encodeURIComponent(String(job.jobId))}`} variant="contained" color="primary" startIcon={<Iconify icon="solar:letter-bold-duotone" />}>
+                  Ứng tuyển
+                </Button>
+                <Typography variant="caption" sx={{ color: 'text.disabled', textAlign: 'center' }}>Hạn nộp: {formatDate(job.deadline)}</Typography>
+              </Stack>
             </Stack>
           ))}
         </Stack>

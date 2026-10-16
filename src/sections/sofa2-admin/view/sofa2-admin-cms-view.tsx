@@ -178,6 +178,22 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         if (duplicate) next.code = 'Voucher này đã tồn tại cho khách hàng.';
       }
     }
+    if (group.slug === 'hr') {
+      const uniqueKey =
+        ['recruitment', 'job-detail', 'recruitment-tracking'].includes(module.slug)
+          ? 'jobId'
+          : ['submit-cv', 'applicant-profile'].includes(module.slug)
+            ? 'applicationId'
+            : undefined;
+      if (uniqueKey) {
+        const candidate = String(form.values[uniqueKey] ?? '').trim().toLowerCase();
+        const duplicate = candidate && rows.some((row, index) =>
+          !(form.mode === 'edit' && index === form.index) &&
+          String(row[uniqueKey] ?? '').trim().toLowerCase() === candidate
+        );
+        if (duplicate) next[uniqueKey] = 'Mã này đã được sử dụng.';
+      }
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -190,6 +206,16 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       if (field.type === 'number') clean[field.key] = Number(clean[field.key]) || 0;
       else clean[field.key] = String(clean[field.key] ?? '');
     });
+    if (
+      group.slug === 'hr' &&
+      ['recruitment', 'job-detail', 'recruitment-tracking'].includes(module.slug) &&
+      !String(clean.jobId ?? '').trim()
+    ) {
+      clean.jobId = `JOB-${Date.now().toString(36).toUpperCase()}`;
+    }
+    if (group.slug === 'hr' && ['submit-cv', 'applicant-profile'].includes(module.slug) && !String(clean.applicationId ?? '').trim()) {
+      clean.applicationId = `APP-${Date.now().toString(36).toUpperCase()}`;
+    }
     if (fields.some((x) => x.key === 'updated')) clean.updated = sofa2Today();
 
     if (form.mode === 'create') {

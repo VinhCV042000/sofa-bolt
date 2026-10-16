@@ -11,7 +11,9 @@ export type AdminRow = Record<string, string | number>;
 
 type Store = Record<string, AdminRow[]>;
 
-const key = (group: string, module: string) => `${group}/${module}`;
+const canonicalModule = (group: string, module: string) =>
+  group === 'hr' && ['job-detail', 'recruitment-tracking'].includes(module) ? 'recruitment' : module;
+const key = (group: string, module: string) => `${group}/${canonicalModule(group, module)}`;
 
 const store: Store = {};
 
@@ -19,6 +21,7 @@ const STORAGE_KEY = 'sofa2-admin-rows-v1';
 
 SOFA2_ADMIN_GROUPS.forEach((group) => {
   group.modules.forEach((module) => {
+    if (group.slug === 'hr' && ['job-detail', 'recruitment-tracking'].includes(module.slug)) return;
     store[key(group.slug, module.slug)] = module.rows.map((row) => ({ ...row }));
   });
 });
@@ -30,6 +33,15 @@ try {
 } catch {
   /* bỏ qua */
 }
+
+const defaultRecruitmentRows =
+  SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'hr')?.modules.find((module) => module.slug === 'recruitment')?.rows ?? [];
+store[key('hr', 'recruitment')] = (store[key('hr', 'recruitment')] ?? []).map((row, index) => ({
+  ...(defaultRecruitmentRows[index] ?? {}),
+  ...row,
+  jobId: String(row.jobId || defaultRecruitmentRows[index]?.jobId || `JOB-IMPORT-${index + 1}`),
+  legacyId: String(row.legacyId || defaultRecruitmentRows[index]?.legacyId || index + 1),
+}));
 
 const listeners = new Set<() => void>();
 
@@ -76,7 +88,46 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
 
   const createRow = useCallback(
     (row: AdminRow) => {
-      store[k] = [{ ...row }, ...(store[k] ?? [])];
+      const nextRow = { ...row };
+      if (k === key('hr', 'recruitment') && !nextRow.jobId) {
+        nextRow.jobId = `JOB-${Date.now().toString(36).toUpperCase()}`;
+      }
+      if (k === key('hr', 'submit-cv') && !nextRow.applicationId) {
+        nextRow.applicationId = `APP-${Date.now().toString(36).toUpperCase()}`;
+      }
+      store[k] = [nextRow, ...(store[k] ?? [])];
+      if (k === key('hr', 'submit-cv')) {
+        const jobId = String(nextRow.jobId ?? '');
+        const jobTitle = String(nextRow.job ?? '');
+        const jobsKey = key('hr', 'recruitment');
+        store[jobsKey] = (store[jobsKey] ?? []).map((job) =>
+          String(job.jobId ?? '') === jobId || (!jobId && String(job.title ?? '') === jobTitle)
+            ? { ...job, applicants: Number(job.applicants || 0) + 1 }
+            : job
+        );
+        const profilesKey = key('hr', 'applicant-profile');
+        const applicationId = String(nextRow.applicationId ?? '');
+        if (!(store[profilesKey] ?? []).some((candidate) => String(candidate.applicationId ?? '') === applicationId)) {
+          store[profilesKey] = [
+            {
+              applicationId,
+              jobId,
+              name: String(nextRow.applicant ?? ''),
+              email: String(nextRow.email ?? ''),
+              phone: String(nextRow.phone ?? ''),
+              appliedJob: jobTitle,
+              appliedDate: String(nextRow.submittedDate ?? ''),
+              source: String(nextRow.source ?? 'Website'),
+              cvUrl: String(nextRow.cvUrl ?? ''),
+              cvFileName: String(nextRow.cvFileName ?? ''),
+              interviewRound: 'Sàng lọc CV',
+              status: String(nextRow.status ?? 'Mới'),
+              note: '',
+            },
+            ...(store[profilesKey] ?? []),
+          ];
+        }
+      }
       emit();
     },
     [k]
@@ -96,6 +147,28 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
             String(child.customerId ?? '') === customerId ? { ...child, customer: String(row.name ?? '') } : child
           );
         });
+      }
+      if (
+        k === key('hr', 'submit-cv') ||
+        k === key('hr', 'applicant-profile')
+      ) {
+        const applicationId = String(row.applicationId ?? '');
+        if (applicationId) {
+          const sourceModule = k === key('hr', 'submit-cv') ? 'submit-cv' : 'applicant-profile';
+          const targetModule = sourceModule === 'submit-cv' ? 'applicant-profile' : 'submit-cv';
+          const targetKey = key('hr', targetModule);
+          store[targetKey] = (store[targetKey] ?? []).map((candidate) => {
+            if (String(candidate.applicationId ?? '') !== applicationId) return candidate;
+            const shared = {
+              email: row.email,
+              phone: row.phone,
+              status: row.status,
+            };
+            return sourceModule === 'submit-cv'
+              ? { ...candidate, ...shared, name: row.applicant, appliedJob: row.job, cvUrl: row.cvUrl }
+              : { ...candidate, ...shared, applicant: row.name, job: row.appliedJob, cvUrl: row.cvUrl };
+          });
+        }
       }
       emit();
     },
