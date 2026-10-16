@@ -189,6 +189,9 @@ const Sofa2RegisterPage = lazy(() => import('src/pages/sofa2-pages/register'));
 const Sofa2ForgotPasswordPage = lazy(() => import('src/pages/sofa2-pages/forgot-password'));
 const Sofa2WishlistPage = lazy(() => import('src/pages/sofa2-pages/wishlist'));
 const Sofa2MyOrdersPage = lazy(() => import('src/pages/sofa2-pages/my-orders'));
+const Sofa2PointsPage = lazy(() => import('src/pages/sofa2-pages/points'));
+const Sofa2VouchersPage = lazy(() => import('src/pages/sofa2-pages/vouchers'));
+const Sofa2ComplaintsPage = lazy(() => import('src/pages/sofa2-pages/complaints'));
 const Sofa2TransactionsPage = lazy(() => import('src/pages/sofa2-pages/transactions'));
 const Sofa2WarrantyPage = lazy(() => import('src/pages/sofa2-pages/warranty'));
 const Sofa2AddressesPage = lazy(() => import('src/pages/sofa2-pages/addresses'));
@@ -2582,6 +2585,36 @@ export function Router() {
         <Suspense fallback={<SplashScreen />}>
           <MainLayout data={{ nav: sofa2PagesNavData }}>
             <Sofa2ProfilePage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/points',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2PointsPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/vouchers',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2VouchersPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/complaints',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2ComplaintsPage />
           </MainLayout>
         </Suspense>
       ),

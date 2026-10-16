@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { getSofa2CmsSchema } from 'src/sections/sofa2-admin/sofa2-cms';
 import { findSofa2AdminModule } from 'src/sections/sofa2-admin/sofa2-admin-data';
@@ -15,7 +15,6 @@ import { getSofa2CustomerSchema } from 'src/sections/sofa2-admin/sofa2-customer'
 import { getSofa2AccessSchema } from 'src/sections/sofa2-admin/sofa2-access';
 import { getSofa2AnalyticsSchema } from 'src/sections/sofa2-admin/sofa2-analytics';
 import { getSofa2SeoSchema } from 'src/sections/sofa2-admin/sofa2-seo';
-import { getSofa2MemberSchema } from 'src/sections/sofa2-admin/sofa2-member';
 import { getSofa2CartSchema } from 'src/sections/sofa2-admin/sofa2-cart';
 import { Sofa2AdminCmsView } from 'src/sections/sofa2-admin/view/sofa2-admin-cms-view';
 import { Sofa2AdminAnalyticsView } from 'src/sections/sofa2-admin/view/sofa2-admin-analytics-view';
@@ -27,6 +26,19 @@ import { Sofa2AdminModuleView } from 'src/sections/sofa2-admin/view';
 
 export default function Page() {
   const { group, module } = useParams();
+  if (group === 'member') {
+    const legacyRoutes: Record<string, string> = {
+      dashboard: 'dashboard',
+      profiles: 'profiles',
+      orders: 'customer-orders',
+      warranty: 'warranties',
+      points: 'points',
+      vouchers: 'vouchers',
+      complaints: 'complaints',
+      tiers: 'profiles',
+    };
+    return <Navigate to={`/sofa2/admin/customer/${legacyRoutes[module ?? ''] ?? 'dashboard'}`} replace />;
+  }
   const found = findSofa2AdminModule(group, module);
 
   if (found && module) {
@@ -37,7 +49,6 @@ export default function Page() {
       (found.group.slug === 'orders' && getSofa2OrderSchema(found.module.slug)) ||
       (found.group.slug === 'shop' && getSofa2ShopSchema(found.module.slug)) ||
       (found.group.slug === 'support' && getSofa2SupportSchema(found.module.slug)) ||
-      (found.group.slug === 'member' && getSofa2MemberSchema(found.module.slug)) ||
       (found.group.slug === 'b2b' && getSofa2B2bSchema(found.module.slug)) ||
       (found.group.slug === 'shopping' &&
         !getSofa2CartSchema(found.module.slug) &&

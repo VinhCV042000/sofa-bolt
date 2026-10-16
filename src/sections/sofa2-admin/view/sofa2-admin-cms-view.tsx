@@ -152,6 +152,32 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       else if (field.maxLength && value.length > field.maxLength)
         next[field.key] = `Tối đa ${field.maxLength} ký tự (hiện ${value.length})`;
     });
+    if (group.slug === 'customer') {
+      const uniqueKey =
+        module.slug === 'profiles'
+          ? 'customerId'
+          : ['customer-orders', 'warranties', 'complaints'].includes(module.slug)
+            ? 'code'
+            : undefined;
+      if (uniqueKey) {
+        const candidate = String(form.values[uniqueKey] ?? '').trim().toLowerCase();
+        const duplicate = candidate && rows.some((row, index) =>
+          !(form.mode === 'edit' && index === form.index) &&
+          String(row[uniqueKey] ?? '').trim().toLowerCase() === candidate
+        );
+        if (duplicate) next[uniqueKey] = 'Giá trị này đã tồn tại.';
+      }
+      if (module.slug === 'vouchers') {
+        const code = String(form.values.code ?? '').trim().toLowerCase();
+        const customerId = String(form.values.customerId ?? '').trim().toLowerCase();
+        const duplicate = code && customerId && rows.some((row, index) =>
+          !(form.mode === 'edit' && index === form.index) &&
+          String(row.code ?? '').trim().toLowerCase() === code &&
+          String(row.customerId ?? '').trim().toLowerCase() === customerId
+        );
+        if (duplicate) next.code = 'Voucher này đã tồn tại cho khách hàng.';
+      }
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   };

@@ -1,5 +1,6 @@
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,8 +9,12 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-
-import { RouterLink } from 'src/routes/components';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
 
 import { varAlpha } from 'src/theme/styles';
 
@@ -18,26 +23,39 @@ import { varFade } from 'src/components/animate';
 
 import { SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import { belongsToSofa2Customer, formatSofa2Date, Sofa2CustomerPortalNav } from 'src/sections/sofa2/sofa2-customer-portal';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: 'Phiếu bảo hành — LUXE Sofa' };
 
-const WARRANTIES = [
-  { id: 'BH-24001', product: 'Sofa Oslo 3 Chỗ', order: 'LX-26091502', issued: '15/09/2026', expires: '15/09/2031', status: 'Còn hiệu lực', claim: 'Chưa' },
-  { id: 'BH-23102', product: 'Sofa Munich 2C', order: 'LX-26090101', issued: '01/09/2026', expires: '01/09/2031', status: 'Đang xử lý', claim: 'Bảo hành khung' },
-  { id: 'BH-22020', product: 'Sofa Berlin Góc', order: 'LX-26090201', issued: '02/09/2021', expires: '02/09/2026', status: 'Sắp hết hạn', claim: 'Chưa' },
-  { id: 'BH-21088', product: 'Sofa Helsinki', order: 'LX-26090403', issued: '04/09/2020', expires: '04/09/2025', status: 'Đã hết hạn', claim: 'Thay vải đệm' },
-];
-
-const statusColor: Record<string, 'success' | 'warning' | 'error' | 'info'> = {
-  'Còn hiệu lực': 'success',
-  'Đang xử lý': 'info',
-  'Sắp hết hạn': 'warning',
-  'Đã hết hạn': 'error',
-};
-
 export default function Page() {
+  const warrantyStore = useSofa2AdminRows('customer', 'warranties');
+  const warranties = warrantyStore.rows
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => belongsToSofa2Customer(row));
+  const [claimIndex, setClaimIndex] = useState<number | null>(null);
+  const [claimIssue, setClaimIssue] = useState('');
+  const [toast, setToast] = useState('');
+  const statusColor = (status: string): 'success' | 'warning' | 'error' | 'info' | 'default' => {
+    if (status === 'Còn hiệu lực' || status === 'Hoàn tất') return 'success';
+    if (status === 'Tiếp nhận' || status === 'Đang kiểm tra' || status === 'Đang sửa chữa') return 'info';
+    if (status === 'Hết hạn' || status === 'Từ chối') return 'error';
+    return 'warning';
+  };
+  const submitClaim = () => {
+    if (claimIndex === null || !claimIssue.trim()) return;
+    warrantyStore.updateRow(claimIndex, {
+      ...warrantyStore.rows[claimIndex],
+      issue: claimIssue.trim(),
+      status: 'Tiếp nhận',
+    });
+    setClaimIndex(null);
+    setClaimIssue('');
+    setToast('Đã gửi yêu cầu bảo hành.');
+  };
+
   return (
     <>
       <Helmet><title>{metadata.title}</title></Helmet>
@@ -52,12 +70,13 @@ export default function Page() {
       <Sofa2Section>
         <Stack spacing={2} sx={{ mb: 4 }} component={m.div} variants={varFade({ distance: 24 }).inUp}>
           <Typography variant="h4">Phiếu bảo hành của bạn</Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>{WARRANTIES.length} phiếu bảo hành.</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>{warranties.length} phiếu bảo hành.</Typography>
         </Stack>
+        <Sofa2CustomerPortalNav active="/sofa2/warranty" />
 
         <Grid container spacing={3}>
-          {WARRANTIES.map((w, index) => (
-            <Grid key={w.id} xs={12} md={6}>
+          {warranties.map(({ row: w, index }) => (
+            <Grid key={String(w.code)} xs={12} md={6}>
               <Stack
                 component={m.div}
                 variants={varFade({ distance: 24 }).inUp}
@@ -71,11 +90,11 @@ export default function Page() {
                       <Iconify icon="solar:shield-check-bold-duotone" width={24} />
                     </Box>
                     <Stack>
-                      <Typography variant="subtitle1">{w.id}</Typography>
+                      <Typography variant="subtitle1">{w.code}</Typography>
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>{w.product}</Typography>
                     </Stack>
                   </Stack>
-                  <Chip label={w.status} size="small" color={statusColor[w.status] ?? 'default'} variant="soft" />
+                  <Chip label={String(w.status)} size="small" color={statusColor(String(w.status))} variant="soft" />
                 </Stack>
 
                 <Divider sx={{ borderStyle: 'dashed' }} />
@@ -84,36 +103,36 @@ export default function Page() {
                   <Grid xs={6}>
                     <Stack spacing={0.5}>
                       <Typography variant="caption" sx={{ color: 'text.disabled' }}>Ngày phát hành</Typography>
-                      <Typography variant="body2">{w.issued}</Typography>
+                      <Typography variant="body2">{formatSofa2Date(w.purchaseDate)}</Typography>
                     </Stack>
                   </Grid>
                   <Grid xs={6}>
                     <Stack spacing={0.5}>
                       <Typography variant="caption" sx={{ color: 'text.disabled' }}>Hết hạn</Typography>
-                      <Typography variant="body2">{w.expires}</Typography>
+                      <Typography variant="body2">{formatSofa2Date(w.expiry)}</Typography>
                     </Stack>
                   </Grid>
                   <Grid xs={6}>
                     <Stack spacing={0.5}>
                       <Typography variant="caption" sx={{ color: 'text.disabled' }}>Đơn hàng</Typography>
-                      <Typography variant="body2">{w.order}</Typography>
+                      <Typography variant="body2">{w.orderCode}</Typography>
                     </Stack>
                   </Grid>
                   <Grid xs={6}>
                     <Stack spacing={0.5}>
                       <Typography variant="caption" sx={{ color: 'text.disabled' }}>Yêu cầu BH</Typography>
-                      <Typography variant="body2">{w.claim}</Typography>
+                      <Typography variant="body2">{w.issue || 'Chưa có yêu cầu'}</Typography>
                     </Stack>
                   </Grid>
                 </Grid>
 
-                {w.status !== 'Đã hết hạn' && (
+                {String(w.status) !== 'Hết hạn' && String(w.status) !== 'Từ chối' && (
                   <Stack direction="row" spacing={1}>
                     <Button size="small" variant="outlined" fullWidth startIcon={<Iconify icon="solar:eye-bold-duotone" width={16} />}>
                       Xem chi tiết
                     </Button>
-                    {w.claim === 'Chưa' && (
-                      <Button size="small" variant="contained" fullWidth startIcon={<Iconify icon="solar:hand-stars-bold-duotone" width={16} />}>
+                    {!w.issue && String(w.status) === 'Còn hiệu lực' && (
+                      <Button size="small" variant="contained" fullWidth onClick={() => setClaimIndex(index)} startIcon={<Iconify icon="solar:hand-stars-bold-duotone" width={16} />}>
                         Yêu cầu BH
                       </Button>
                     )}
@@ -122,8 +141,28 @@ export default function Page() {
               </Stack>
             </Grid>
           ))}
+          {!warranties.length && <Grid xs={12}><Typography align="center">Chưa có phiếu bảo hành nào.</Typography></Grid>}
         </Grid>
       </Sofa2Section>
+      <Dialog fullWidth maxWidth="sm" open={claimIndex !== null} onClose={() => setClaimIndex(null)}>
+        <DialogTitle>Gửi yêu cầu bảo hành</DialogTitle>
+        <DialogContent dividers>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            minRows={4}
+            label="Mô tả tình trạng sản phẩm"
+            value={claimIssue}
+            onChange={(event) => setClaimIssue(event.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setClaimIndex(null)}>Đóng</Button>
+          <Button variant="contained" disabled={!claimIssue.trim()} onClick={submitClaim}>Gửi yêu cầu</Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar open={!!toast} message={toast} autoHideDuration={2600} onClose={() => setToast('')} />
     </>
   );
 }

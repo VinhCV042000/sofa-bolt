@@ -1,12 +1,13 @@
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import { belongsToSofa2Customer, formatSofa2Date, Sofa2CustomerPortalNav } from 'src/sections/sofa2/sofa2-customer-portal';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
@@ -29,22 +30,22 @@ import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero'
 
 const metadata = { title: 'Đơn hàng của tôi — LUXE Sofa' };
 
-const ORDERS = [
-  { id: 'LX-26091502', date: '15/09/2026', items: 'Sofa Oslo 3 Chỗ', total: '25.900.000₫', status: 'Đang sản xuất' },
-  { id: 'LX-26091011', date: '10/09/2026', items: 'Sofa Berlin Góc', total: '38.500.000₫', status: 'Đang giao' },
-  { id: 'LX-26090403', date: '04/09/2026', items: 'Sofa Helsinki', total: '18.900.000₫', status: 'Đã giao' },
-  { id: 'LX-26090201', date: '02/09/2026', items: 'Sofa Copenhagen', total: '42.000.000₫', status: 'Đã huỷ' },
-  { id: 'LX-26090101', date: '01/09/2026', items: 'Sofa Munich 2C', total: '15.600.000₫', status: 'Đã giao' },
-];
-
 const statusColor: Record<string, 'success' | 'warning' | 'error' | 'info' | 'default'> = {
+  'Chờ xác nhận': 'warning',
+  'Đang xử lý': 'warning',
   'Đã giao': 'success',
+  'Hoàn thành': 'success',
   'Đang giao': 'info',
   'Đang sản xuất': 'warning',
   'Đã huỷ': 'error',
 };
 
 export default function Page() {
+  const { rows } = useSofa2AdminRows('customer', 'customer-orders');
+  const { rows: profiles } = useSofa2AdminRows('customer', 'profiles');
+  const profile = profiles.find((row) => String(row.customerId) === 'KH-1001');
+  const orders = rows.filter((row) => belongsToSofa2Customer(row, 'KH-1001'));
+
   return (
     <>
       <Helmet><title>{metadata.title}</title></Helmet>
@@ -59,8 +60,11 @@ export default function Page() {
       <Sofa2Section>
         <Stack spacing={2} sx={{ mb: 4 }} component={m.div} variants={varFade({ distance: 24 }).inUp}>
           <Typography variant="h4">Lịch sử đơn hàng</Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>Bạn có {ORDERS.length} đơn hàng.</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {profile?.name ? `Đơn hàng của ${profile.name}. ` : ''}Bạn có {orders.length} đơn hàng.
+          </Typography>
         </Stack>
+        <Sofa2CustomerPortalNav active="/sofa2/my-orders" />
 
         <Box component={m.div} variants={varFade({ distance: 24 }).inUp}>
           <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: (t) => t.customShadows.card, overflow: 'hidden' }}>
@@ -76,20 +80,20 @@ export default function Page() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {ORDERS.map((o) => (
-                  <TableRow key={o.id} sx={{ '&:last-of-type td': { borderBottom: 0 } }}>
+                {orders.map((o) => (
+                  <TableRow key={String(o.code)} sx={{ '&:last-of-type td': { borderBottom: 0 } }}>
                     <TableCell>
-                      <Typography variant="subtitle2">{o.id}</Typography>
+                      <Typography variant="subtitle2">{o.code}</Typography>
                     </TableCell>
-                    <TableCell>{o.date}</TableCell>
+                    <TableCell>{formatSofa2Date(o.orderDate)}</TableCell>
                     <TableCell>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>{o.items}</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>{o.product}</Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Typography variant="subtitle2" sx={{ color: 'primary.main' }}>{o.total}</Typography>
+                      <Typography variant="subtitle2" sx={{ color: 'primary.main' }}>{Number(o.total).toLocaleString('vi-VN')}₫</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Chip label={o.status} size="small" color={statusColor[o.status] ?? 'default'} variant="soft" />
+                      <Chip label={String(o.status)} size="small" color={statusColor[String(o.status)] ?? 'default'} variant="soft" />
                     </TableCell>
                     <TableCell align="center">
                       <Button component={RouterLink} href="/sofa2/orders/tracking" size="small" variant="outlined" startIcon={<Iconify icon="solar:delivery-bold-duotone" width={16} />}>
@@ -98,6 +102,9 @@ export default function Page() {
                     </TableCell>
                   </TableRow>
                 ))}
+                {!orders.length && (
+                  <TableRow><TableCell colSpan={6} align="center">Chưa có đơn hàng phù hợp.</TableCell></TableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

@@ -33,6 +33,18 @@ try {
 
 const listeners = new Set<() => void>();
 
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key !== STORAGE_KEY || !event.newValue) return;
+    try {
+      Object.assign(store, JSON.parse(event.newValue) as Store);
+      listeners.forEach((listener) => listener());
+    } catch {
+      /* ignore invalid data from another tab */
+    }
+  });
+}
+
 const emit = () => {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
@@ -73,8 +85,18 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
   const updateRow = useCallback(
     (index: number, row: AdminRow) => {
       const next = [...(store[k] ?? [])];
+      const previous = next[index];
       next[index] = { ...row };
       store[k] = next;
+      if (k === key('customer', 'profiles') && previous && String(previous.name) !== String(row.name)) {
+        const customerId = String(row.customerId ?? '');
+        ['dashboard', 'customer-orders', 'warranties', 'points', 'vouchers', 'complaints'].forEach((module) => {
+          const childKey = key('customer', module);
+          store[childKey] = (store[childKey] ?? []).map((child) =>
+            String(child.customerId ?? '') === customerId ? { ...child, customer: String(row.name ?? '') } : child
+          );
+        });
+      }
       emit();
     },
     [k]
