@@ -30,14 +30,13 @@ const CITIES = ['TP.HCM', 'Hà Nội', 'Đà Nẵng', 'Bình Dương', 'Hải Ph
 export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
   // ---- Danh sách tuyển dụng -------------------------------------------
   recruitment: {
-    clientPath: '/sofa2',
+    clientPath: '/sofa2/careers',
     entity: 'vị trí tuyển dụng',
     titleKey: 'title',
     statusKey: 'status',
     statusOptions: EMPLOYMENT_STATUS,
     publishLabel: 'Đăng tuyển',
     defaultStatus: 'Đang tuyển',
-    hideClientLink: true,
     fields: [
       f('title', 'Vị trí tuyển dụng', 'text', 'content', { required: true, maxLength: 120 }),
       f('department', 'Phòng ban', 'select', 'content', { required: true, options: DEPARTMENTS }),
@@ -65,14 +64,13 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Chi tiết vị trí ------------------------------------------------
   'job-detail': {
-    clientPath: '/sofa2',
+    clientPath: '/sofa2/careers',
     entity: 'chi tiết vị trí',
     titleKey: 'title',
     statusKey: 'status',
     statusOptions: EMPLOYMENT_STATUS,
     publishLabel: 'Đăng tuyển',
     defaultStatus: 'Đang tuyển',
-    hideClientLink: true,
     fields: [
       f('title', 'Vị trí', 'text', 'content', { required: true }),
       f('department', 'Phòng ban', 'select', 'content', { required: true, options: DEPARTMENTS }),
@@ -107,14 +105,13 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Nộp CV ---------------------------------------------------------
   'submit-cv': {
-    clientPath: '/sofa2',
+    clientPath: '/sofa2/careers/apply/1',
     entity: 'đơn ứng tuyển',
     titleKey: 'applicant',
     statusKey: 'status',
     statusOptions: APPLICATION_STATUS,
     publishLabel: 'Nhận hồ sơ',
     defaultStatus: 'Mới',
-    hideClientLink: true,
     fields: [
       f('applicant', 'Họ tên ứng viên', 'text', 'content', { required: true }),
       f('email', 'Email', 'text', 'content', { required: true, placeholder: 'email@example.com' }),
@@ -138,14 +135,13 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Hồ sơ ứng viên -------------------------------------------------
   'applicant-profile': {
-    clientPath: '/sofa2',
+    clientPath: '/sofa2/careers/tracking',
     entity: 'hồ sơ ứng viên',
     titleKey: 'name',
     statusKey: 'status',
     statusOptions: APPLICATION_STATUS,
     publishLabel: 'Chuyển phỏng vấn',
     defaultStatus: 'Mới',
-    hideClientLink: true,
     fields: [
       f('name', 'Họ tên', 'text', 'content', { required: true }),
       f('email', 'Email', 'text', 'content', { required: true }),
@@ -186,14 +182,13 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Theo dõi tuyển dụng --------------------------------------------
   'recruitment-tracking': {
-    clientPath: '/sofa2',
+    clientPath: '/sofa2/careers/tracking',
     entity: 'tiến trình tuyển dụng',
     titleKey: 'job',
     statusKey: 'status',
     statusOptions: ['Đang tuyển', 'Tạm dừng', 'Đã đóng', 'Đã đủ người'],
     publishLabel: 'Mở lại',
     defaultStatus: 'Đang tuyển',
-    hideClientLink: true,
     fields: [
       f('job', 'Vị trí tuyển dụng', 'text', 'content', { required: true }),
       f('department', 'Phòng ban', 'select', 'content', { required: true, options: DEPARTMENTS }),
