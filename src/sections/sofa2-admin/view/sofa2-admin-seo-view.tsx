@@ -38,6 +38,7 @@ import { Chart, useChart } from 'src/components/chart';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
+import { SeoScoreChip, SeoGeneratedFile, SeoPageAssistant, SchemaJsonAssistant } from './sofa2-seo-tools';
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
 import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2SeoSchema } from '../sofa2-seo';
@@ -405,6 +406,12 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             <SeoChart schema={schema} />
           </Grid>
 
+          {schema.kind && schema.kind !== 'page' && (
+            <Grid xs={12}>
+              <SeoGeneratedFile kind={schema.kind} rows={rows} onToast={setToast} />
+            </Grid>
+          )}
+
           {/* Table */}
           <Grid xs={12}>
             <Card>
@@ -523,6 +530,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                       {tableCols.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
+                      {schema.kind === 'page' && <TableCell align="center">Điểm SEO</TableCell>}
                       <TableCell align="center">{publishLabel}</TableCell>
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
@@ -565,6 +573,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                             </TableCell>
                           );
                         })}
+                        {schema.kind === 'page' && (
+                          <TableCell align="center">
+                            <SeoScoreChip row={row} />
+                          </TableCell>
+                        )}
                         <TableCell align="center">
                           <Switch
                             size="small"
@@ -574,6 +587,13 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                         </TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
+                            {schema.kind === 'page' && String(row.url ?? '').startsWith('/') && (
+                              <Tooltip title="Mở trang khách">
+                                <IconButton size="small" href={String(row.url)} target="_blank">
+                                  <Iconify icon="solar:square-top-down-bold-duotone" width={18} />
+                                </IconButton>
+                              </Tooltip>
+                            )}
                             <Tooltip title="Xem chi tiết">
                               <IconButton size="small" onClick={() => setDetail(row)}>
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
@@ -604,7 +624,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={tableCols.length + 3} align="center" sx={{ py: 6 }}>
+                        <TableCell colSpan={tableCols.length + (schema.kind === 'page' ? 4 : 3)} align="center" sx={{ py: 6 }}>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Chưa có {entity} nào phù hợp.
                           </Typography>
@@ -671,6 +691,13 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                 </Stack>
               );
             })}
+            {schema.kind === 'page' && (
+              <SeoPageAssistant
+                values={form.values}
+                onApplyStatus={(st) => setValue(statusKey, st)}
+              />
+            )}
+            {schema.kind === 'schema' && <SchemaJsonAssistant values={form.values} />}
           </Stack>
         </DialogContent>
         <DialogActions>
