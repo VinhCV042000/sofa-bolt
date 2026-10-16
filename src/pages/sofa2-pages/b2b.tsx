@@ -127,6 +127,7 @@ export default function Page() {
             </Button>
           </Box>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} component={m.div} variants={varFade({ distance: 24 }).inUp}>
+            <Button component={RouterLink} href="/sofa2/dealer/sign-in" variant="contained">Đăng nhập đại lý</Button>
             <Button component={RouterLink} href="/sofa2/b2b/quote" variant="outlined">Yêu cầu báo giá dự án</Button>
             <Button component={RouterLink} href="/sofa2/b2b/oem" variant="outlined">Sản xuất OEM</Button>
             <Button component={RouterLink} href="/sofa2/b2b/policy" variant="outlined">Chính sách đối tác</Button>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -34,6 +35,48 @@ const STEPS = [
 
 export default function Page() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [message, setMessage] = useState('');
+  const [form, setForm] = useState({
+    project: '',
+    projectType: '',
+    items: '',
+    budget: '',
+    delivery: '',
+    address: '',
+    note: '',
+    contactName: '',
+    phone: '',
+    email: '',
+  });
+
+  const setField = (key: keyof typeof form, value: string) =>
+    setForm((previous) => ({ ...previous, [key]: value }));
+
+  const submitQuote = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSending(true);
+    setMessage('');
+    try {
+      const response = await fetch('/api/dealer/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          products: form.note,
+          note: `Địa điểm: ${form.address}`,
+        }),
+      });
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error || 'Không gửi được yêu cầu báo giá.');
+      setSent(true);
+      setMessage(`Đã tiếp nhận yêu cầu ${body.quote?.code ?? ''}. Nhân viên sẽ liên hệ sớm.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Không gửi được yêu cầu báo giá.');
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <>
@@ -53,38 +96,42 @@ export default function Page() {
           {/* Form */}
           <Grid xs={12} md={8}>
             <Stack
-              component={m.div}
+              component={m.form}
               variants={varFade({ distance: 24 }).inUp}
               spacing={3}
               sx={{ p: { xs: 3, md: 5 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}
+              onSubmit={submitQuote}
             >
               <Typography variant="h5">Thông tin dự án</Typography>
               <Grid container spacing={2}>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Tên dự án" /></Grid>
+                <Grid xs={12} sm={6}><TextField required fullWidth label="Tên dự án" value={form.project} onChange={(event) => setField('project', event.target.value)} /></Grid>
                 <Grid xs={12} sm={6}>
-                  <TextField fullWidth select label="Loại dự án" defaultValue="">
+                  <TextField required fullWidth select label="Loại dự án" value={form.projectType} onChange={(event) => setField('projectType', event.target.value)}>
+                    <MenuItem value="">Chọn loại dự án</MenuItem>
                     {PROJECT_TYPES.map((t) => <MenuItem key={t} value={t}>{t}</MenuItem>)}
                   </TextField>
                 </Grid>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Số lượng sofa" type="number" /></Grid>
+                <Grid xs={12} sm={6}><TextField fullWidth label="Số lượng sofa" type="number" value={form.items} onChange={(event) => setField('items', event.target.value)} /></Grid>
                 <Grid xs={12} sm={6}>
-                  <TextField fullWidth select label="Ngân sách" defaultValue="">
+                  <TextField fullWidth select label="Ngân sách" value={form.budget} onChange={(event) => setField('budget', event.target.value)}>
+                    <MenuItem value="">Chọn ngân sách</MenuItem>
                     {BUDGET_RANGES.map((b) => <MenuItem key={b} value={b}>{b}</MenuItem>)}
                   </TextField>
                 </Grid>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Tiến độ mong muốn" placeholder="VD: 30 ngày" /></Grid>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Địa điểm dự án" /></Grid>
-                <Grid xs={12}><TextField fullWidth label="Mô tả yêu cầu" multiline rows={4} /></Grid>
+                <Grid xs={12} sm={6}><TextField fullWidth label="Tiến độ mong muốn" placeholder="VD: 30 ngày" value={form.delivery} onChange={(event) => setField('delivery', event.target.value)} /></Grid>
+                <Grid xs={12} sm={6}><TextField fullWidth label="Địa điểm dự án" value={form.address} onChange={(event) => setField('address', event.target.value)} /></Grid>
+                <Grid xs={12}><TextField fullWidth label="Mô tả yêu cầu" multiline rows={4} value={form.note} onChange={(event) => setField('note', event.target.value)} /></Grid>
               </Grid>
 
               <Typography variant="h6" sx={{ mt: 1 }}>Thông tin liên hệ</Typography>
               <Grid container spacing={2}>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Họ và tên" /></Grid>
-                <Grid xs={12} sm={6}><TextField fullWidth label="Số điện thoại" /></Grid>
-                <Grid xs={12}><TextField fullWidth label="Email" type="email" /></Grid>
+                <Grid xs={12} sm={6}><TextField required fullWidth label="Họ và tên" value={form.contactName} onChange={(event) => setField('contactName', event.target.value)} /></Grid>
+                <Grid xs={12} sm={6}><TextField required fullWidth label="Số điện thoại" value={form.phone} onChange={(event) => setField('phone', event.target.value)} /></Grid>
+                <Grid xs={12}><TextField required fullWidth label="Email" type="email" value={form.email} onChange={(event) => setField('email', event.target.value)} /></Grid>
               </Grid>
-              <Button variant="contained" size="large" startIcon={<Iconify icon="solar:document-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={() => setSent(true)}>
-                {sent ? 'Đã gửi yêu cầu' : 'Gửi yêu cầu báo giá'}
+              {message && <Alert severity={sent ? 'success' : 'error'}>{message}</Alert>}
+              <Button type="submit" variant="contained" size="large" disabled={sending || sent} startIcon={<Iconify icon="solar:document-bold-duotone" />} sx={{ width: 'fit-content' }}>
+                {sending ? 'Đang gửi…' : sent ? 'Đã gửi yêu cầu' : 'Gửi yêu cầu báo giá'}
               </Button>
             </Stack>
           </Grid>

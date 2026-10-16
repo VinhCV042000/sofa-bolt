@@ -3523,8 +3523,10 @@ const DEALER_GROUP: Sofa2AdminGroup = {
       ],
       [
         { key: 'dealer', label: 'Đại lý' },
+        { key: 'email', label: 'Email đăng nhập' },
         { key: 'level', label: 'Cấp' },
         { key: 'region', label: 'Vùng' },
+        { key: 'portalAccess', label: 'Cổng đại lý' },
         { key: 'target', label: 'Chỉ tiêu tháng', type: 'money' },
         { key: 'achieved', label: 'Đã đạt', type: 'money' },
         STATUS_COL,
@@ -3532,6 +3534,8 @@ const DEALER_GROUP: Sofa2AdminGroup = {
       [
         {
           dealer: 'Nội thất Việt',
+          email: '',
+          portalAccess: 'Không',
           level: 'Kim cương',
           region: 'Miền Bắc',
           target: money(400000000),
@@ -3540,6 +3544,8 @@ const DEALER_GROUP: Sofa2AdminGroup = {
         },
         {
           dealer: 'Decor Home HCM',
+          email: '',
+          portalAccess: 'Không',
           level: 'Kim cương',
           region: 'Miền Nam',
           target: money(400000000),
@@ -3548,6 +3554,8 @@ const DEALER_GROUP: Sofa2AdminGroup = {
         },
         {
           dealer: 'Living Space ĐN',
+          email: '',
+          portalAccess: 'Không',
           level: 'Vàng',
           region: 'Miền Trung',
           target: money(150000000),
@@ -3556,6 +3564,8 @@ const DEALER_GROUP: Sofa2AdminGroup = {
         },
         {
           dealer: 'Home Mart Hà Nội',
+          email: '',
+          portalAccess: 'Không',
           level: 'Bạc',
           region: 'Miền Bắc',
           target: money(120000000),
@@ -3564,6 +3574,8 @@ const DEALER_GROUP: Sofa2AdminGroup = {
         },
         {
           dealer: 'Sofa Plus Cần Thơ',
+          email: '',
+          portalAccess: 'Không',
           level: 'Bạc',
           region: 'Tây Nam Bộ',
           target: money(80000000),

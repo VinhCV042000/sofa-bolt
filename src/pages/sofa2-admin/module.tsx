@@ -21,6 +21,7 @@ import { Sofa2AdminAnalyticsView } from 'src/sections/sofa2-admin/view/sofa2-adm
 import { Sofa2AdminSeoView } from 'src/sections/sofa2-admin/view/sofa2-admin-seo-view';
 import { Sofa2AdminCartView } from 'src/sections/sofa2-admin/view/sofa2-admin-cart-view';
 import { Sofa2AdminModuleView } from 'src/sections/sofa2-admin/view';
+import { Sofa2DealerAdminGuard } from 'src/sections/sofa2-admin/view/sofa2-dealer-admin-guard';
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +60,7 @@ export default function Page() {
       (found.group.slug === 'access' && getSofa2AccessSchema(found.module.slug)) ||
       undefined;
     if (schema) {
-      return (
+      const content = (
         <Sofa2AdminCmsView
           key={`${found.group.slug}/${found.module.slug}`}
           group={found.group}
@@ -67,6 +68,9 @@ export default function Page() {
           schema={schema}
         />
       );
+      return found.group.slug === 'dealer' ? (
+        <Sofa2DealerAdminGuard>{content}</Sofa2DealerAdminGuard>
+      ) : content;
     }
 
     const analyticsSchema =

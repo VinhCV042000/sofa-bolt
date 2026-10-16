@@ -173,6 +173,17 @@ const Sofa2B2BRegisterPage = lazy(() => import('src/pages/sofa2-pages/b2b-regist
 const Sofa2B2BQuotePage = lazy(() => import('src/pages/sofa2-pages/b2b-quote'));
 const Sofa2B2BOEMPage = lazy(() => import('src/pages/sofa2-pages/b2b-oem'));
 const Sofa2B2BPolicyPage = lazy(() => import('src/pages/sofa2-pages/b2b-policy'));
+const Sofa2DealerSignInPage = lazy(() =>
+  import('src/pages/sofa2-pages/dealer-auth').then((module) => ({
+    default: module.Sofa2DealerSignInPage,
+  }))
+);
+const Sofa2DealerSignUpPage = lazy(() =>
+  import('src/pages/sofa2-pages/dealer-auth').then((module) => ({
+    default: module.Sofa2DealerSignUpPage,
+  }))
+);
+const Sofa2DealerPortalPage = lazy(() => import('src/pages/sofa2-pages/dealer-portal'));
 const Sofa2B2BDistributorsPage = lazy(() => import('src/pages/sofa2-pages/b2b-distributors'));
 const Sofa2B2BWholesalersPage = lazy(() => import('src/pages/sofa2-pages/b2b-wholesalers'));
 const Sofa2B2BContractorsPage = lazy(() => import('src/pages/sofa2-pages/b2b-contractors'));
@@ -2416,6 +2427,30 @@ export function Router() {
           <MainLayout data={{ nav: sofa2PagesNavData }}>
             <Sofa2B2BContractorsPage />
           </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/dealer/sign-in/*',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2DealerSignInPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/dealer/sign-up/*',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2DealerSignUpPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '/sofa2/dealer/*',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <Sofa2DealerPortalPage />
         </Suspense>
       ),
     },

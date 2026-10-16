@@ -70,6 +70,49 @@ const emit = () => {
 export const getSofa2AdminRows = (groupSlug: string, moduleSlug: string) =>
   store[key(groupSlug, moduleSlug)] ?? [];
 
+export async function loadSofa2DealerRows(moduleSlug: string, defaults: AdminRow[]) {
+  if (moduleSlug !== 'dashboard') {
+    const dashboard = SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'dealer')
+      ?.modules.find((module) => module.slug === 'dashboard');
+    if (dashboard) await loadSofa2DealerRows('dashboard', dashboard.rows);
+  }
+
+  const encodedModule = encodeURIComponent(moduleSlug);
+  const response = await fetch(`/api/admin/dealer/${encodedModule}`, { credentials: 'include' });
+  if (!response.ok) throw new Error('Không tải được dữ liệu đại lý từ máy chủ.');
+
+  let payload = (await response.json()) as { rows?: AdminRow[] };
+  if ((!payload.rows || payload.rows.length === 0) && defaults.length > 0) {
+    const seeded = await fetch(`/api/admin/dealer/${encodedModule}/seed`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows: defaults }),
+    });
+    if (!seeded.ok) throw new Error('Không khởi tạo được dữ liệu đại lý.');
+    payload = (await seeded.json()) as { rows?: AdminRow[] };
+  }
+
+  store[key('dealer', moduleSlug)] = (payload.rows ?? []).map((row) => ({ ...row }));
+  emit();
+}
+
+export async function syncSofa2DealerRows(moduleSlug: string, rows: AdminRow[]) {
+  const response = await fetch(`/api/admin/dealer/${encodeURIComponent(moduleSlug)}`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ rows }),
+  });
+  if (!response.ok) throw new Error('Không đồng bộ được dữ liệu đại lý với máy chủ.');
+
+  const payload = (await response.json()) as { rows?: AdminRow[] };
+  if (payload.rows) {
+    store[key('dealer', moduleSlug)] = payload.rows.map((row) => ({ ...row }));
+    emit();
+  }
+}
+
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
   return () => {

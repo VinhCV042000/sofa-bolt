@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
@@ -45,6 +47,38 @@ const SECTIONS = [
 ];
 
 export default function Page() {
+  const [policies, setPolicies] = useState<Record<string, unknown>[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/dealer/public/policies')
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error('Policies unavailable'))))
+      .then((payload: { policies?: Record<string, unknown>[] }) => {
+        if (active) setPolicies(payload.policies ?? []);
+      })
+      .catch(() => {
+        // Keep the published baseline policy visible if the admin has not published custom rows yet.
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const currency = (value: unknown) => {
+    const amount = Number(String(value ?? '').replace(/[^\d.-]/g, '')) || 0;
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(amount);
+  };
+  const tierRows = policies.length
+    ? policies.map((row) => ({
+        tier: String(row.level ?? 'Tất cả'),
+        discount: `${String(row.discount ?? 0)}%`,
+        minOrder: currency(row.minRevenue),
+        color: '#8A6746',
+        name: String(row.name ?? ''),
+        terms: String(row.terms ?? ''),
+      }))
+    : TIERS.map((row) => ({ ...row, name: '', terms: '' }));
+
   return (
     <>
       <Helmet>
@@ -75,12 +109,15 @@ export default function Page() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {TIERS.map((row) => (
-                  <TableRow key={row.tier} sx={{ '&:last-of-type td': { borderBottom: 0 } }}>
+                {tierRows.map((row, index) => (
+                  <TableRow key={`${row.tier}-${index}`} sx={{ '&:last-of-type td': { borderBottom: 0 } }}>
                     <TableCell>
                       <Stack direction="row" spacing={1.5} alignItems="center">
                         <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: row.color }} />
-                        <Typography variant="subtitle2">{row.tier}</Typography>
+                        <Stack>
+                          <Typography variant="subtitle2">{row.tier}</Typography>
+                          {row.name && <Typography variant="caption" color="text.secondary">{row.name}</Typography>}
+                        </Stack>
                       </Stack>
                     </TableCell>
                     <TableCell align="right"><Typography variant="subtitle2" sx={{ color: 'primary.main' }}>{row.discount}</Typography></TableCell>
@@ -92,6 +129,19 @@ export default function Page() {
           </TableContainer>
         </Box>
       </Sofa2Section>
+
+      {tierRows.some((row) => row.terms) && (
+        <Sofa2Section>
+          <Stack spacing={2}>
+            <Typography variant="h4">Điều kiện áp dụng</Typography>
+            {tierRows.filter((row) => row.terms).map((row, index) => (
+              <Alert key={`${row.tier}-${index}`} severity="info">
+                <strong>{row.name || row.tier}:</strong> {row.terms}
+              </Alert>
+            ))}
+          </Stack>
+        </Sofa2Section>
+      )}
 
       {/* Policy sections */}
       <Sofa2Section bg="grey">

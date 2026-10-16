@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import Tab from '@mui/material/Tab';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
@@ -39,7 +40,13 @@ import { Iconify } from 'src/components/iconify';
 
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
 import { Sofa2AdminSeoGenerator } from './sofa2-admin-seo-generator';
-import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
+import {
+  getSofa2AdminRows,
+  loadSofa2DealerRows,
+  syncSofa2DealerRows,
+  type AdminRow,
+  useSofa2AdminRows,
+} from '../sofa2-admin-store';
 import { sofa2Today, sofa2Slugify, type Sofa2CmsField, type Sofa2CmsSchema } from '../sofa2-cms';
 
 import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
@@ -71,6 +78,33 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     group.slug,
     module.slug
   );
+
+  const [dealerLoading, setDealerLoading] = useState(group.slug === 'dealer');
+  useEffect(() => {
+    if (group.slug !== 'dealer') return undefined;
+    let active = true;
+    setDealerLoading(true);
+    loadSofa2DealerRows(module.slug, module.rows)
+      .catch(() => {
+        if (active) setToast('Không tải được dữ liệu máy chủ; các thay đổi chưa thể đồng bộ.');
+      })
+      .finally(() => {
+        if (active) setDealerLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [group.slug, module.slug, module.rows]);
+
+  const syncDealerModule = async () => {
+    if (group.slug !== 'dealer') return true;
+    try {
+      await syncSofa2DealerRows(module.slug, getSofa2AdminRows(group.slug, module.slug));
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   const [search, setSearch] = useState('');
   const [tab, setTab] = useState('all');
@@ -123,7 +157,8 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     const values: AdminRow = {};
     fields.forEach((field) => {
       if (field.type === 'number') values[field.key] = 0;
-      else if (field.type === 'switch') values[field.key] = 'Có';
+      else if (field.type === 'switch')
+        values[field.key] = group.slug === 'dealer' && field.key === 'portalAccess' ? 'Không' : 'Có';
       else if (field.key === statusKey) values[field.key] = defaultDraft;
       else if (field.type === 'date') values[field.key] = sofa2Today();
       else values[field.key] = '';
@@ -198,7 +233,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     return Object.keys(next).length === 0;
   };
 
-  const submitForm = () => {
+  const submitForm = async () => {
     if (!validate()) return;
 
     const clean: AdminRow = { ...form.values };
@@ -220,23 +255,36 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
 
     if (form.mode === 'create') {
       createRow(clean);
-      setToast(`Đã thêm ${entity} mới.`);
     } else {
       updateRow(form.index, clean);
-      setToast(`Đã cập nhật ${entity}.`);
     }
+    const synced = await syncDealerModule();
+    setToast(
+      synced
+        ? form.mode === 'create'
+          ? `Đã thêm ${entity} mới.`
+          : `Đã cập nhật ${entity}.`
+        : 'Đã lưu tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+    );
     setForm((prev) => ({ ...prev, open: false }));
   };
 
-  const togglePublish = (index: number) => {
+  const togglePublish = async (index: number) => {
     const row = rows[index];
     const isPublished = String(row[statusKey]) === published;
     const next = isPublished ? statusOptions[1] ?? 'Bản nháp' : published;
     updateRow(index, { ...row, [statusKey]: next, ...(row.updated ? { updated: sofa2Today() } : {}) });
-    setToast(isPublished ? `Đã gỡ ${publishLabel.toLowerCase()} ${entity}.` : `Đã ${publishLabel.toLowerCase()} ${entity}.`);
+    const synced = await syncDealerModule();
+    setToast(
+      synced
+        ? isPublished
+          ? `Đã gỡ ${publishLabel.toLowerCase()} ${entity}.`
+          : `Đã ${publishLabel.toLowerCase()} ${entity}.`
+        : 'Đã lưu tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+    );
   };
 
-  const duplicateRow = (index: number) => {
+  const duplicateRow = async (index: number) => {
     const row = rows[index];
     const copy: AdminRow = {
       ...row,
@@ -245,24 +293,31 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     };
     if (copy.slug) copy.slug = `${sofa2Slugify(String(row[titleKey]))}-copy`;
     createRow(copy);
-    setToast(`Đã nhân bản ${entity}.`);
+    const synced = await syncDealerModule();
+    setToast(synced ? `Đã nhân bản ${entity}.` : 'Đã lưu tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.');
   };
 
-  const doDelete = () => {
+  const doDelete = async () => {
     if (confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
-      setToast(`Đã xoá ${entity}.`);
+      const synced = await syncDealerModule();
+      setToast(synced ? `Đã xoá ${entity}.` : 'Đã xoá tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.');
     }
     setConfirm({ open: false, index: null });
   };
 
-  const bulkPublish = () => {
+  const bulkPublish = async () => {
     selected
       .slice()
       .sort((a, b) => a - b)
       .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
-    setToast(`Đã ${publishLabel.toLowerCase()} ${selected.length} ${entity}.`);
+    const synced = await syncDealerModule();
+    setToast(
+      synced
+        ? `Đã ${publishLabel.toLowerCase()} ${selected.length} ${entity}.`
+        : 'Đã lưu tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+    );
     setSelected([]);
   };
 
@@ -360,6 +415,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         title={module.name}
         subtitle={module.description}
       >
+        {group.slug === 'dealer' && dealerLoading && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Đang tải dữ liệu đại lý đã đồng bộ…
+          </Alert>
+        )}
         <Grid container spacing={3}>
           {module.stats.map((stat) => (
             <Grid key={stat.label} xs={6} md={3}>
@@ -476,8 +536,14 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                         variant="outlined"
                         onClick={() => {
                           deleteRows(selected);
-                          setToast(`Đã xoá ${selected.length} ${entity}.`);
                           setSelected([]);
+                          void syncDealerModule().then((synced) =>
+                            setToast(
+                              synced
+                                ? `Đã xoá ${selected.length} ${entity}.`
+                                : 'Đã xoá tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+                            )
+                          );
                         }}
                         startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
                       >
@@ -492,7 +558,13 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     onClick={() => {
                       resetRows(module.rows);
                       setSelected([]);
-                      setToast('Đã khôi phục dữ liệu gốc.');
+                      void syncDealerModule().then((synced) =>
+                        setToast(
+                          synced
+                            ? 'Đã khôi phục dữ liệu gốc.'
+                            : 'Đã khôi phục tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+                        )
+                      );
                     }}
                     startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
                   >

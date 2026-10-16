@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="LUXE Sofa">
+  <rect width="64" height="64" rx="16" fill="#8A6746"/>
+  <path d="M16 43V21h6v17h12v5H16Zm23 0 9-11-8-11h7l5 7 5-7h7l-8 11 9 11h-7l-6-8-6 8h-7Z" fill="#fff"/>
+  <text x="77" y="30" fill="#29241f" font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="1.8">LUXE</text>
+  <text x="78" y="48" fill="#756b61" font-family="Arial, sans-serif" font-size="12" letter-spacing="3.2">SOFA</text>
+</svg>
