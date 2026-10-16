@@ -38,6 +38,7 @@ import { Chart, useChart } from 'src/components/chart';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
+import { SeoScoreChip, SeoGeneratedFile, SeoPageAssistant, SchemaJsonAssistant } from './sofa2-seo-tools';
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
 import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2SeoSchema } from '../sofa2-seo';
@@ -405,6 +406,12 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             <SeoChart schema={schema} />
           </Grid>
 
+          {schema.kind && schema.kind !== 'page' && (
+            <Grid xs={12}>
+              <SeoGeneratedFile kind={schema.kind} rows={rows} onToast={setToast} />
+            </Grid>
+          )}
+
           {/* Table */}
           <Grid xs={12}>
             <Card>
@@ -671,6 +678,13 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                 </Stack>
               );
             })}
+            {schema.kind === 'page' && (
+              <SeoPageAssistant
+                values={form.values}
+                onApplyStatus={(st) => setValue(statusKey, st)}
+              />
+            )}
+            {schema.kind === 'schema' && <SchemaJsonAssistant values={form.values} />}
           </Stack>
         </DialogContent>
         <DialogActions>
