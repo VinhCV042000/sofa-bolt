@@ -7,7 +7,11 @@ import type { Sofa2CmsField, Sofa2CmsSchema } from './sofa2-cms';
 
 export type Sofa2SeoChartType = 'bar' | 'horizontal-bar' | 'donut' | 'gauge';
 
+export type Sofa2SeoKind = 'page' | 'sitemap' | 'robots' | 'schema';
+
 export type Sofa2SeoSchema = Sofa2CmsSchema & {
+  /** Loại công cụ SEO: trang nội dung, sitemap, robots, schema */
+  kind?: Sofa2SeoKind;
   chartType: Sofa2SeoChartType;
   chartTitle: string;
   chartSubtitle?: string;
@@ -46,8 +50,10 @@ const f = (
 const seoPageSchema = (
   slug: string,
   pageName: string,
-  clientPath: string
+  clientPath: string,
+  extra: Sofa2CmsField[] = []
 ): Sofa2SeoSchema => ({
+  kind: 'page',
   clientPath,
   entity: 'URL theo dõi',
   titleKey: 'url',
@@ -75,6 +81,10 @@ const seoPageSchema = (
     f('clicks', 'Lượt click (tháng)', 'number', 'technical'),
     f('ctr', 'CTR', 'text', 'technical', { placeholder: '3.2%' }),
     f('indexable', 'Cho phép index', 'switch', 'technical'),
+    f('follow', 'Cho phép follow liên kết', 'switch', 'technical'),
+    f('inSitemap', 'Đưa vào sitemap', 'switch', 'technical'),
+    f('redirect', 'Chuyển hướng 301 tới', 'text', 'technical', { placeholder: 'Để trống nếu không' }),
+    ...extra,
     f('status', 'Đánh giá SEO', 'select', 'display', { required: true, options: SEO_STATUS }),
     f('updated', 'Cập nhật', 'date', 'display'),
     f('author', 'Người phụ trách', 'text', 'display'),
@@ -84,6 +94,7 @@ const seoPageSchema = (
 // ----------------------------------------------------------------------
 
 const sitemapSchema: Sofa2SeoSchema = {
+  kind: 'sitemap',
   clientPath: '/sofa2',
   entity: 'tệp sitemap',
   titleKey: 'file',
@@ -123,6 +134,7 @@ const sitemapSchema: Sofa2SeoSchema = {
 // ----------------------------------------------------------------------
 
 const robotsSchema: Sofa2SeoSchema = {
+  kind: 'robots',
   clientPath: '/sofa2',
   entity: 'quy tắc robots',
   titleKey: 'path',
@@ -152,6 +164,7 @@ const robotsSchema: Sofa2SeoSchema = {
 // ----------------------------------------------------------------------
 
 const schemaMarkupSchema: Sofa2SeoSchema = {
+  kind: 'schema',
   clientPath: '/sofa2',
   entity: 'loại schema',
   titleKey: 'type',
@@ -188,14 +201,50 @@ const schemaMarkupSchema: Sofa2SeoSchema = {
 
 // ----------------------------------------------------------------------
 
+const SCHEMA_TYPES = ['Product', 'CollectionPage', 'Article', 'LocalBusiness', 'Organization', 'Brand', 'WebPage'];
+const typeField = (def: string) =>
+  f('schemaType', 'Loại schema áp dụng', 'select', 'seo', { options: SCHEMA_TYPES, helper: `Đề xuất: ${def}` });
+
 export const SOFA2_SEO_SCHEMAS: Record<string, Sofa2SeoSchema> = {
-  category: seoPageSchema('category', 'Trang danh mục', '/sofa2/products/category'),
-  product: seoPageSchema('product', 'Trang sản phẩm', '/sofa2/products'),
-  collection: seoPageSchema('collection', 'Trang bộ sưu tập', '/sofa2/collections'),
-  project: seoPageSchema('project', 'Trang dự án', '/sofa2/projects'),
-  showroom: seoPageSchema('showroom', 'Trang showroom', '/sofa2/showrooms'),
-  blog: seoPageSchema('blog', 'Trang blog', '/sofa2/blog'),
-  brand: seoPageSchema('brand', 'Trang thương hiệu', '/sofa2/about'),
+  category: seoPageSchema('category', 'Trang danh mục', '/sofa2/products', [
+    typeField('CollectionPage'),
+    f('productCount', 'Số sản phẩm trong danh mục', 'number', 'seo'),
+    f('breadcrumb', 'Breadcrumb', 'text', 'seo', { placeholder: 'Trang chủ > Sofa > Sofa góc' }),
+  ]),
+  product: seoPageSchema('product', 'Trang sản phẩm', '/sofa2/products', [
+    typeField('Product'),
+    f('sku', 'SKU', 'text', 'seo'),
+    f('price', 'Giá hiển thị (đ)', 'number', 'seo'),
+    f('availability', 'Tình trạng hàng', 'select', 'seo', { options: ['InStock', 'OutOfStock', 'PreOrder'] }),
+    f('imageAlt', 'Alt ảnh chính', 'text', 'seo'),
+  ]),
+  collection: seoPageSchema('collection', 'Trang bộ sưu tập', '/sofa2/collections', [
+    typeField('CollectionPage'),
+    f('season', 'Mùa / năm', 'text', 'seo', { placeholder: 'Thu Đông 2026' }),
+  ]),
+  project: seoPageSchema('project', 'Trang dự án', '/sofa2/projects', [
+    typeField('Article'),
+    f('location', 'Địa điểm dự án', 'text', 'seo'),
+    f('gallery', 'Số ảnh có alt', 'number', 'seo'),
+  ]),
+  showroom: seoPageSchema('showroom', 'Trang showroom', '/sofa2/showrooms', [
+    typeField('LocalBusiness'),
+    f('address', 'Địa chỉ (NAP)', 'text', 'seo'),
+    f('phone', 'Số điện thoại', 'text', 'seo'),
+    f('hours', 'Giờ mở cửa', 'text', 'seo', { placeholder: 'Mo-Su 09:00-21:00' }),
+    f('mapUrl', 'Google Maps URL', 'url', 'seo'),
+  ]),
+  blog: seoPageSchema('blog', 'Trang blog', '/sofa2/blog', [
+    typeField('Article'),
+    f('postAuthor', 'Tác giả bài viết', 'text', 'seo'),
+    f('published', 'Ngày xuất bản', 'date', 'seo'),
+    f('readTime', 'Thời gian đọc (phút)', 'number', 'seo'),
+  ]),
+  brand: seoPageSchema('brand', 'Trang thương hiệu', '/sofa2/about', [
+    typeField('Organization'),
+    f('logo', 'Logo URL', 'url', 'seo'),
+    f('sameAs', 'Mạng xã hội (sameAs)', 'textarea', 'seo', { multiline: 2, helper: 'Mỗi dòng một URL.' }),
+  ]),
   sitemap: sitemapSchema,
   robots: robotsSchema,
   schema: schemaMarkupSchema,
