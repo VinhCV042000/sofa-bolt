@@ -7,8 +7,8 @@
 
 import { SOFA2_FAQS } from 'src/sections/sofa2/sofa2-pages-data';
 
-import type { Sofa2AdminGroup, Sofa2AdminColumn, Sofa2AdminModule } from './sofa2-admin-data';
 import type { Sofa2CmsField, Sofa2CmsSchema, Sofa2CmsFieldType } from './sofa2-cms';
+import type { Sofa2AdminGroup, Sofa2AdminColumn, Sofa2AdminModule } from './sofa2-admin-data';
 
 const f = (
   key: string,
@@ -22,9 +22,10 @@ const schema = (
   entity: string,
   titleKey: string,
   statusOptions: string[],
-  fields: Sofa2CmsField[]
+  fields: Sofa2CmsField[],
+  clientPath = '/sofa2/support'
 ): Sofa2CmsSchema => ({
-  clientPath: '/sofa2/support',
+  clientPath,
   entity,
   titleKey,
   statusKey: 'status',
@@ -105,9 +106,9 @@ export const SOFA2_SUPPORT_GROUP: Sofa2AdminGroup = {
       [{ label: 'Bài viết', value: '24' }, { label: 'Danh mục', value: '6' }, { label: 'Lượt đọc', value: '8,2k' }, { label: 'Đánh giá TB', value: '4,6/5' }],
       [{ key: 'title', label: 'Bài viết' }, { key: 'category', label: 'Danh mục' }, { key: 'views', label: 'Lượt đọc', type: 'number' }, { key: 'updated', label: 'Cập nhật' }, S],
       [
-        { title: 'Cách vệ sinh sofa vải đúng cách', category: 'Chất liệu & bảo quản', summary: 'Hút bụi hằng tuần, dùng khăn ẩm với dung dịch trung tính.', tags: 'vệ sinh, vải', views: 2140, updated: '08/10/2026', status: 'Đã xuất bản' },
-        { title: 'Bảo dưỡng sofa da thật', category: 'Chất liệu & bảo quản', summary: 'Dưỡng da 3–6 tháng/lần, tránh nắng trực tiếp.', tags: 'da, bảo dưỡng', views: 1780, updated: '01/10/2026', status: 'Đã xuất bản' },
-        { title: 'Đổi mật khẩu tài khoản', category: 'Tài khoản', summary: 'Vào Tài khoản → Hồ sơ → Đổi mật khẩu.', tags: 'tài khoản', views: 320, updated: '20/09/2026', status: 'Bản nháp' },
+        { title: 'Cách vệ sinh sofa vải đúng cách', category: 'Chất liệu & bảo quản', summary: 'Hút bụi hằng tuần, dùng khăn ẩm với dung dịch trung tính.', body: 'Hút bụi bề mặt và khe ghế mỗi tuần bằng đầu hút mềm. Khi có vết bẩn, thấm nhẹ bằng khăn trắng hơi ẩm, không chà xát mạnh. Thử dung dịch vệ sinh ở vùng khuất trước khi sử dụng trên toàn bộ bề mặt. Để sofa khô tự nhiên, tránh dùng nhiệt trực tiếp.', tags: 'vệ sinh, vải', views: 2140, updated: '08/10/2026', status: 'Đã xuất bản' },
+        { title: 'Bảo dưỡng sofa da thật', category: 'Chất liệu & bảo quản', summary: 'Dưỡng da 3–6 tháng/lần, tránh nắng trực tiếp.', body: 'Lau bụi thường xuyên bằng khăn mềm khô. Dùng dung dịch chuyên dụng cho da thật và dưỡng định kỳ 3–6 tháng một lần. Không đặt sofa dưới nắng gắt hoặc gần nguồn nhiệt; xử lý chất lỏng bằng cách thấm nhẹ ngay khi vừa đổ.', tags: 'da, bảo dưỡng', views: 1780, updated: '01/10/2026', status: 'Đã xuất bản' },
+        { title: 'Đổi mật khẩu tài khoản', category: 'Tài khoản', summary: 'Vào Tài khoản → Hồ sơ → Đổi mật khẩu.', body: 'Đăng nhập, mở mục Hồ sơ cá nhân và chọn Đổi mật khẩu. Nhập mật khẩu hiện tại, mật khẩu mới đủ mạnh và xác nhận để hoàn tất. Nếu không truy cập được tài khoản, hãy dùng chức năng Quên mật khẩu hoặc gửi ticket cho bộ phận hỗ trợ.', tags: 'tài khoản', views: 320, updated: '20/09/2026', status: 'Bản nháp' },
       ]),
     mod('live-chat', 'Chat trực tuyến', 'Phiên chat với khách, kịch bản trả lời nhanh và phân công tư vấn viên.', 'solar:chat-round-dots-bold-duotone',
       [{ label: 'Phiên hôm nay', value: '46' }, { label: 'Phản hồi TB', value: '42 giây' }, { label: 'Hài lòng', value: '94%' }, { label: 'Chờ', value: '3' }],
@@ -166,9 +167,9 @@ export const SOFA2_SUPPORT_GROUP: Sofa2AdminGroup = {
       [{ label: 'Kênh bật', value: '3' }],
       [{ key: 'title', label: 'Kênh' }, { key: 'value', label: 'Thông tin' }, { key: 'order', label: 'Thứ tự', type: 'number' }, S],
       [
-        { title: 'Hotline', value: '1900 6868', sub: 'Gọi ngay 8:00 - 20:00', icon: 'solar:phone-bold-duotone', order: 1, status: 'Đang bật' },
-        { title: 'Email', value: 'support@sofa2.vn', sub: 'Phản hồi trong 24h', icon: 'solar:letter-bold-duotone', order: 2, status: 'Đang bật' },
-        { title: 'Chat trực tuyến', value: 'Chat với tư vấn viên', sub: 'Hỗ trợ trực tiếp trên web', icon: 'solar:chat-bold-duotone', order: 3, status: 'Đang bật' },
+        { title: 'Hotline', value: '1900 6868', href: 'tel:19006868', sub: 'Gọi ngay 8:00 - 20:00', icon: 'solar:phone-bold-duotone', order: 1, status: 'Đang bật' },
+        { title: 'Email', value: 'support@sofa2.vn', href: 'mailto:support@sofa2.vn', sub: 'Phản hồi trong 24h', icon: 'solar:letter-bold-duotone', order: 2, status: 'Đang bật' },
+        { title: 'Chat trực tuyến', value: 'Chat với tư vấn viên', href: '#chat', sub: 'Hỗ trợ trực tiếp trên web', icon: 'solar:chat-round-dots-bold-duotone', order: 3, status: 'Đang bật' },
         { title: 'Zalo OA', value: 'Sofa2 Official', sub: 'Nhắn tin 24/7', icon: 'solar:chat-round-bold-duotone', order: 4, status: 'Tạm tắt' },
       ]),
   ],
@@ -176,13 +177,13 @@ export const SOFA2_SUPPORT_GROUP: Sofa2AdminGroup = {
 
 // ----------------------------------------------------------------------
 
-const articleSchema = (entity: string) =>
+const articleSchema = (entity: string, clientPath = '/sofa2/support#guides') =>
   schema(entity, 'title', PUBLISHED, [
     f('title', 'Tiêu đề mục', 'text', 'content', { required: true, maxLength: 120 }),
     f('body', 'Nội dung', 'textarea', 'content', { required: true, multiline: 5 }),
     f('order', 'Thứ tự hiển thị', 'number', 'display'),
     f('updated', 'Ngày cập nhật', 'text', 'display'),
-  ]);
+  ], clientPath);
 
 export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
   faq: schema('câu hỏi', 'question', PUBLISHED, [
@@ -190,23 +191,25 @@ export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     f('answer', 'Câu trả lời', 'textarea', 'content', { required: true, multiline: 4 }),
     f('category', 'Danh mục', 'select', 'display', { options: SOFA2_SUPPORT_CATEGORIES }),
     f('order', 'Thứ tự hiển thị', 'number', 'display'),
-  ]),
+  ], '/sofa2/support#faq'),
   'help-center': schema('bài viết', 'title', PUBLISHED, [
     f('title', 'Tiêu đề', 'text', 'content', { required: true }),
-    f('summary', 'Nội dung', 'textarea', 'content', { multiline: 5 }),
+    f('summary', 'Mô tả ngắn', 'textarea', 'content', { required: true, multiline: 3 }),
+    f('body', 'Nội dung hướng dẫn', 'textarea', 'content', { required: true, multiline: 7 }),
     f('category', 'Danh mục', 'select', 'display', { options: SOFA2_SUPPORT_CATEGORIES }),
     f('tags', 'Thẻ', 'text', 'seo'),
     f('views', 'Lượt đọc', 'number', 'display'),
     f('updated', 'Cập nhật', 'text', 'display'),
-  ]),
-  'live-chat': schema('phiên chat', 'customer', ['Đã kết thúc', 'Chờ', 'Đang chat', 'Bỏ lỡ'], [
+  ], '/sofa2/support#help-center'),
+  'live-chat': schema('phiên chat', 'customer', ['Đang chat', 'Chờ', 'Đã kết thúc', 'Bỏ lỡ'], [
     f('customer', 'Khách', 'text', 'content', { required: true }),
     f('contact', 'Liên hệ', 'text', 'content'),
     f('topic', 'Chủ đề', 'text', 'content'),
     f('transcript', 'Nội dung trao đổi', 'textarea', 'content', { multiline: 4 }),
+    f('reply', 'Phản hồi của tư vấn viên', 'textarea', 'content', { multiline: 3 }),
     f('agent', 'Tư vấn viên', 'select', 'display', { options: AGENTS }),
     f('started', 'Bắt đầu', 'text', 'display'),
-  ]),
+  ], '/sofa2/support#chat'),
   tickets: schema('ticket', 'subject', TICKET_STATUSES, [
     f('code', 'Mã ticket', 'text', 'content', { required: true }),
     f('customer', 'Khách hàng', 'text', 'content', { required: true }),
@@ -218,15 +221,16 @@ export const SOFA2_SUPPORT_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     f('priority', 'Ưu tiên', 'select', 'display', { options: PRIORITIES }),
     f('agent', 'Phụ trách', 'select', 'display', { options: AGENTS }),
     f('created', 'Ngày tạo', 'text', 'display'),
-  ]),
+  ], '/sofa2/support#ticket'),
   ...Object.fromEntries(ARTICLE_SLUGS.map((s) => [s, articleSchema('mục')])),
   channels: schema('kênh', 'title', ['Đang bật', 'Tạm tắt'], [
     f('title', 'Tên kênh', 'text', 'content', { required: true }),
     f('value', 'Thông tin hiển thị', 'text', 'content', { required: true }),
+    f('href', 'Liên kết (tel:, mailto:, URL hoặc #chat)', 'text', 'display'),
     f('sub', 'Mô tả ngắn', 'text', 'content'),
     f('icon', 'Biểu tượng (Iconify)', 'text', 'display'),
     f('order', 'Thứ tự', 'number', 'display'),
-  ]),
+  ], '/sofa2/support#contact-options'),
 };
 
 export function getSofa2SupportSchema(moduleSlug?: string) {
