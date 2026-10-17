@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useTheme } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 
 import { varAlpha } from 'src/theme/styles';
@@ -16,6 +16,7 @@ import { Iconify } from 'src/components/iconify';
 import { varFade } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
 import { SOFA2_PAGE_IMAGES, SOFA2_COMPANY_INFO } from 'src/sections/sofa2/sofa2-pages-data';
 
 // ----------------------------------------------------------------------
@@ -30,13 +31,32 @@ const TIMELINE = [
 ];
 
 export default function Page() {
-  const theme = useTheme();
+  const { rows: applications } = useSofa2AdminRows('hr', 'submit-cv');
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
+  const [result, setResult] = useState<(typeof applications)[number] | null>(null);
 
   const handleSearch = () => {
-    if (query.trim()) setSearched(true);
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return;
+    const digits = normalized.replace(/\D/g, '');
+    const match = applications.find((application) => {
+      const applicationId = String(application.applicationId || '').toLowerCase();
+      const email = String(application.email || '').trim().toLowerCase();
+      const phone = String(application.phone || '').replace(/\D/g, '');
+      return applicationId === normalized || email === normalized || (!!digits && phone === digits);
+    });
+    setResult(match ?? null);
+    setSearched(true);
   };
+  const currentStep = (status: string) => {
+    if (status === 'Mới') return 1;
+    if (status === 'Đang sàng lọc') return 2;
+    if (status === 'Phỏng vấn') return 3;
+    return 4;
+  };
+  const activeStep = result ? currentStep(String(result.status || 'Mới')) : 0;
+  const terminalStatus = !!result && ['Trúng tuyển', 'Không đạt', 'Đã rút', 'Thử việc'].includes(String(result.status));
 
   return (
     <>
@@ -65,34 +85,38 @@ export default function Page() {
               <Stack spacing={1}>
                 <Typography variant="overline" sx={{ color: 'text.disabled' }}>Tra cứu</Typography>
                 <Typography variant="h4">Nhập thông tin ứng tuyển</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Nhập số điện thoại hoặc email bạn đã dùng khi nộp hồ sơ.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Nhập email, số điện thoại hoặc mã hồ sơ đã được cấp sau khi nộp.</Typography>
               </Stack>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-                <TextField fullWidth label="Số điện thoại hoặc email" value={query} onChange={(e) => setQuery(e.target.value)} />
+                <TextField fullWidth label="Email, số điện thoại hoặc mã hồ sơ" value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') handleSearch(); }} />
                 <Button onClick={handleSearch} variant="contained" size="large" startIcon={<Iconify icon="solar:search-bold-duotone" />}>
                   Tra cứu
                 </Button>
               </Stack>
 
-              {/* Results placeholder */}
               {searched && (
-                <Stack spacing={3} sx={{ mt: 2 }}>
+                result ? <Stack spacing={3} sx={{ mt: 2 }}>
                   <Stack direction="row" spacing={1.5} alignItems="center" sx={{ p: 2, borderRadius: 1.5, bgcolor: (t) => varAlpha(t.vars.palette.primary.mainChannel, 0.04) }}>
                     <Iconify icon="solar:user-bold-duotone" width={24} sx={{ color: 'primary.main' }} />
                     <Box>
-                      <Typography variant="subtitle2">Hồ sơ ứng tuyển</Typography>
-                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>Mã hồ sơ: LUXE-2025-0142</Typography>
+                      <Typography variant="subtitle2">{result.applicant || 'Hồ sơ ứng tuyển'} · {result.job || 'Vị trí tuyển dụng'}</Typography>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>Mã hồ sơ: {result.applicationId} · Nộp ngày: {result.submittedDate || '—'}</Typography>
                     </Box>
                   </Stack>
+                  <Alert severity={terminalStatus ? (result.status === 'Trúng tuyển' || result.status === 'Thử việc' ? 'success' : 'info') : 'info'}>
+                    Trạng thái hiện tại: <strong>{result.status}</strong>
+                  </Alert>
 
                   <Typography variant="h6">Tiến trình hồ sơ</Typography>
                   <Stack spacing={2}>
                     {TIMELINE.map((item, index) => {
-                      const current = index === 1; // Đang xem xét
+                      const stepNumber = index + 1;
+                      const current = stepNumber === activeStep;
+                      const complete = stepNumber < activeStep;
                       return (
                         <Stack key={item.step} direction="row" spacing={2} alignItems="flex-start">
                           <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Box sx={{ width: 44, height: 44, display: 'flex', borderRadius: '50%', alignItems: 'center', justifyContent: 'center', bgcolor: current ? 'primary.main' : (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.12), color: current ? 'common.white' : 'text.disabled' }}>
+                            <Box sx={{ width: 44, height: 44, display: 'flex', borderRadius: '50%', alignItems: 'center', justifyContent: 'center', bgcolor: current || complete ? 'primary.main' : (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.12), color: current || complete ? 'common.white' : 'text.disabled' }}>
                               <Iconify icon={item.icon} width={22} />
                             </Box>
                             {index < TIMELINE.length - 1 && (
@@ -110,7 +134,7 @@ export default function Page() {
                       );
                     })}
                   </Stack>
-                </Stack>
+                </Stack> : <Alert severity="warning">Không tìm thấy hồ sơ phù hợp. Hãy kiểm tra lại email, số điện thoại hoặc mã hồ sơ.</Alert>
               )}
             </Stack>
           </Grid>

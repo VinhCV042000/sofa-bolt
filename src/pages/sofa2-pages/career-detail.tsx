@@ -2,7 +2,6 @@ import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -66,8 +65,8 @@ export default function Page() {
 
       <Sofa2PageHero
         overline="Chi tiết vị trí"
-        title={job.title}
-        subtitle={job.description}
+        title={String(job.title)}
+        subtitle={String(job.description || '')}
         image={SOFA2_PAGE_IMAGES.careers}
       />
 

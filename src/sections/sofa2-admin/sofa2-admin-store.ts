@@ -43,6 +43,48 @@ store[key('hr', 'recruitment')] = (store[key('hr', 'recruitment')] ?? []).map((r
   legacyId: String(row.legacyId || defaultRecruitmentRows[index]?.legacyId || index + 1),
 }));
 
+(['submit-cv', 'applicant-profile'] as const).forEach((module) => {
+  const defaultRows =
+    SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'hr')?.modules.find((item) => item.slug === module)?.rows ?? [];
+  const rowKey = key('hr', module);
+  store[rowKey] = (store[rowKey] ?? []).map((row, index) => {
+    const name = String(module === 'submit-cv' ? row.applicant : row.name).trim().toLowerCase();
+    const seed = defaultRows.find((candidate) =>
+      String(module === 'submit-cv' ? candidate.applicant : candidate.name).trim().toLowerCase() === name
+    );
+    return {
+      ...(seed ?? {}),
+      ...row,
+      applicationId: String(row.applicationId || seed?.applicationId || `APP-IMPORT-${index + 1}`),
+    };
+  });
+});
+
+function adjustRecruitmentApplicants(application: AdminRow, change: number) {
+  const jobId = String(application.jobId ?? '');
+  const jobTitle = String(application.job ?? application.appliedJob ?? '');
+  const jobsKey = key('hr', 'recruitment');
+  store[jobsKey] = (store[jobsKey] ?? []).map((job) => {
+    const matches = jobId
+      ? String(job.jobId ?? '') === jobId
+      : String(job.title ?? '') === jobTitle;
+    return matches ? { ...job, applicants: Math.max(0, Number(job.applicants || 0) + change) } : job;
+  });
+}
+
+function removeLinkedApplications(sourceModule: 'submit-cv' | 'applicant-profile', removed: AdminRow[]) {
+  const targetModule = sourceModule === 'submit-cv' ? 'applicant-profile' : 'submit-cv';
+  const targetKey = key('hr', targetModule);
+  const ids = new Set(removed.map((row) => String(row.applicationId ?? '')).filter(Boolean));
+  const targetRows = store[targetKey] ?? [];
+  if (sourceModule === 'submit-cv') {
+    removed.forEach((row) => adjustRecruitmentApplicants(row, -1));
+  } else {
+    targetRows.filter((row) => ids.has(String(row.applicationId ?? ''))).forEach((row) => adjustRecruitmentApplicants(row, -1));
+  }
+  store[targetKey] = targetRows.filter((row) => !ids.has(String(row.applicationId ?? '')));
+}
+
 const listeners = new Set<() => void>();
 
 if (typeof window !== 'undefined') {
@@ -208,9 +250,17 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
               status: row.status,
             };
             return sourceModule === 'submit-cv'
-              ? { ...candidate, ...shared, name: row.applicant, appliedJob: row.job, cvUrl: row.cvUrl }
-              : { ...candidate, ...shared, applicant: row.name, job: row.appliedJob, cvUrl: row.cvUrl };
+              ? { ...candidate, ...shared, name: row.applicant, appliedJob: row.job, jobId: row.jobId, cvUrl: row.cvUrl, cvFileName: row.cvFileName }
+              : { ...candidate, ...shared, applicant: row.name, job: row.appliedJob, jobId: row.jobId, cvUrl: row.cvUrl, cvFileName: row.cvFileName };
           });
+        }
+      }
+      if (k === key('hr', 'submit-cv') && previous) {
+        const oldJobId = String(previous.jobId ?? '');
+        const newJobId = String(row.jobId ?? '');
+        if (oldJobId !== newJobId) {
+          adjustRecruitmentApplicants(previous, -1);
+          adjustRecruitmentApplicants(row, 1);
         }
       }
       emit();
@@ -220,7 +270,12 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
 
   const deleteRow = useCallback(
     (index: number) => {
-      store[k] = (store[k] ?? []).filter((_, i) => i !== index);
+      const currentRows = store[k] ?? [];
+      const removed = currentRows[index];
+      store[k] = currentRows.filter((_, i) => i !== index);
+      if (removed && (k === key('hr', 'submit-cv') || k === key('hr', 'applicant-profile'))) {
+        removeLinkedApplications(k === key('hr', 'submit-cv') ? 'submit-cv' : 'applicant-profile', [removed]);
+      }
       emit();
     },
     [k]
@@ -229,7 +284,12 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
   const deleteRows = useCallback(
     (indexes: number[]) => {
       const set = new Set(indexes);
-      store[k] = (store[k] ?? []).filter((_, i) => !set.has(i));
+      const currentRows = store[k] ?? [];
+      const removed = currentRows.filter((_, i) => set.has(i));
+      store[k] = currentRows.filter((_, i) => !set.has(i));
+      if (k === key('hr', 'submit-cv') || k === key('hr', 'applicant-profile')) {
+        removeLinkedApplications(k === key('hr', 'submit-cv') ? 'submit-cv' : 'applicant-profile', removed);
+      }
       emit();
     },
     [k]

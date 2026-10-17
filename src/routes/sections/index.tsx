@@ -2311,6 +2311,16 @@ export function Router() {
       ),
     },
     {
+      path: '/sofa2/careers/apply',
+      element: (
+        <Suspense fallback={<SplashScreen />}>
+          <MainLayout data={{ nav: sofa2PagesNavData }}>
+            <Sofa2CareerApplyPage />
+          </MainLayout>
+        </Suspense>
+      ),
+    },
+    {
       path: '/sofa2/careers/apply/:id',
       element: (
         <Suspense fallback={<SplashScreen />}>

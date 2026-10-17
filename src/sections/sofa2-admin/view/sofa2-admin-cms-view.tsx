@@ -246,10 +246,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       ['recruitment', 'job-detail', 'recruitment-tracking'].includes(module.slug) &&
       !String(clean.jobId ?? '').trim()
     ) {
-      clean.jobId = `JOB-${Date.now().toString(36).toUpperCase()}`;
+      clean.jobId = `JOB-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     }
     if (group.slug === 'hr' && ['submit-cv', 'applicant-profile'].includes(module.slug) && !String(clean.applicationId ?? '').trim()) {
-      clean.applicationId = `APP-${Date.now().toString(36).toUpperCase()}`;
+      clean.applicationId = `APP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     }
     if (fields.some((x) => x.key === 'updated')) clean.updated = sofa2Today();
 
@@ -400,6 +400,54 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const groupedFields = (g: Sofa2CmsField['group']) => fields.filter((x) => x.group === g);
+  const dashboardStats = useMemo(() => {
+    if (group.slug !== 'hr') return module.stats;
+
+    const sum = (key: string, items = rows) =>
+      items.reduce((total, row) => total + (Number(row[key]) || 0), 0);
+    const average = (key: string, items = rows) =>
+      items.length ? sum(key, items) / items.length : 0;
+    const count = (predicate: (row: AdminRow) => boolean) => rows.filter(predicate).length;
+    const openJobs = rows.filter((row) => String(row.status) === 'Đang tuyển');
+    const totalApplicants = sum('applicants');
+    const hired = sum('hired');
+    const formatCount = (value: number) => Math.round(value).toLocaleString('vi-VN');
+
+    const statsByModule: Record<string, typeof module.stats> = {
+      recruitment: [
+        { label: 'Vị trí đang tuyển', value: formatCount(openJobs.length) },
+        { label: 'Chỉ tiêu còn mở', value: formatCount(sum('quantity', openJobs)) },
+        { label: 'Hồ sơ nhận', value: formatCount(totalApplicants) },
+        { label: 'Đã nhận việc', value: formatCount(hired) },
+      ],
+      'job-detail': [
+        { label: 'Vị trí đã đăng', value: formatCount(rows.length) },
+        { label: 'Lượt xem tin', value: formatCount(sum('views')) },
+        { label: 'Hồ sơ/vị trí', value: formatCount(average('applicants')) },
+        { label: 'Ngày mở TB', value: `${Math.round(average('daysOpen'))} ngày` },
+      ],
+      'submit-cv': [
+        { label: 'Tổng hồ sơ', value: formatCount(rows.length) },
+        { label: 'Mới chưa xử lý', value: formatCount(count((row) => String(row.status) === 'Mới')) },
+        { label: 'Đang tuyển chọn', value: formatCount(count((row) => ['Đang sàng lọc', 'Phỏng vấn', 'Thử việc'].includes(String(row.status)))) },
+        { label: 'Trúng tuyển', value: formatCount(count((row) => String(row.status) === 'Trúng tuyển')) },
+      ],
+      'applicant-profile': [
+        { label: 'Tổng ứng viên', value: formatCount(rows.length) },
+        { label: 'Đang phỏng vấn', value: formatCount(count((row) => String(row.status) === 'Phỏng vấn')) },
+        { label: 'Thử việc / offer', value: formatCount(count((row) => ['Thử việc', 'Trúng tuyển'].includes(String(row.status)))) },
+        { label: 'Đã nhận việc', value: formatCount(count((row) => String(row.status) === 'Trúng tuyển')) },
+      ],
+      'recruitment-tracking': [
+        { label: 'Vị trí đang tuyển', value: formatCount(openJobs.length) },
+        { label: 'Ngày mở TB', value: `${Math.round(average('daysOpen', openJobs))} ngày` },
+        { label: 'Chi phí TB/vị trí', value: `${(average('cost', rows) / 1000000).toFixed(1)} tr` },
+        { label: 'Tỷ lệ trúng tuyển', value: `${totalApplicants ? Math.round((hired / totalApplicants) * 100) : 0}%` },
+      ],
+    };
+
+    return statsByModule[module.slug] ?? module.stats;
+  }, [group.slug, module, rows]);
 
   return (
     <>
@@ -421,7 +469,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           </Alert>
         )}
         <Grid container spacing={3}>
-          {module.stats.map((stat) => (
+          {dashboardStats.map((stat) => (
             <Grid key={stat.label} xs={6} md={3}>
               <Card sx={{ p: 2.5 }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
@@ -537,7 +585,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                         onClick={() => {
                           deleteRows(selected);
                           setSelected([]);
-                          void syncDealerModule().then((synced) =>
+                          syncDealerModule().then((synced) =>
                             setToast(
                               synced
                                 ? `Đã xoá ${selected.length} ${entity}.`
@@ -558,7 +606,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     onClick={() => {
                       resetRows(module.rows);
                       setSelected([]);
-                      void syncDealerModule().then((synced) =>
+                      syncDealerModule().then((synced) =>
                         setToast(
                           synced
                             ? 'Đã khôi phục dữ liệu gốc.'
@@ -630,6 +678,17 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                                   label={String(value)}
                                   color={statusColor(String(value)) as any}
                                 />
+                              ) : col.key === 'cvUrl' && /^https?:\/\//i.test(String(value)) ? (
+                                <Typography
+                                  component="a"
+                                  href={String(value)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  variant="body2"
+                                  sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                                >
+                                  Mở CV / Portfolio
+                                </Typography>
                               ) : (
                                 <Typography
                                   variant="body2"

@@ -134,7 +134,16 @@ export const sofa2PagesNavData = [
       { title: 'Đổi trả hàng', path: '/sofa2/promotions/returns' },
     ],
   },
-  { title: 'Tuyển dụng', path: '/sofa2/careers', icon: <Iconify width={22} icon="solar:case-bold-duotone" /> },
+  {
+    title: 'Tuyển dụng',
+    path: '/sofa2/careers',
+    icon: <Iconify width={22} icon="solar:case-bold-duotone" />,
+    children: [
+      { title: 'Vị trí đang tuyển', path: '/sofa2/careers' },
+      { title: 'Nộp hồ sơ', path: '/sofa2/careers/apply' },
+      { title: 'Tra cứu hồ sơ', path: '/sofa2/careers/tracking' },
+    ],
+  },
   { title: 'Liên hệ', path: '/sofa2/contact', icon: <Iconify width={22} icon="solar:phone-bold-duotone" /> },
   {
     title: 'Tài khoản',
