@@ -34,7 +34,7 @@ export type Sofa2CmsSchema = {
   titleKey: string;
   /** Khoá trạng thái xuất bản */
   statusKey: string;
-  /** Các trạng thái hợp lệ (giá trị đầu tiên = đã xuất bản) */
+  /** Các trạng thái hợp lệ */
   statusOptions: string[];
   fields: Sofa2CmsField[];
   /** Nhãn cho hành động "xuất bản" (mặc định: "Xuất bản") */
@@ -43,6 +43,8 @@ export type Sofa2CmsSchema = {
   defaultStatus?: string;
   /** Ẩn thẻ "trang tương ứng" — dùng cho module không có trang client trực tiếp */
   hideClientLink?: boolean;
+  /** Ẩn công tắc trạng thái khi trạng thái biểu thị tiến trình nghiệp vụ, không phải xuất bản */
+  statusToggle?: boolean;
 };
 
 // ----------------------------------------------------------------------

@@ -48,6 +48,7 @@ import {
   useSofa2AdminRows,
 } from '../sofa2-admin-store';
 import { sofa2Today, sofa2Slugify, type Sofa2CmsField, type Sofa2CmsSchema } from '../sofa2-cms';
+import { Sofa2AdminDealerInsights } from './sofa2-admin-dealer-insights';
 
 import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
 
@@ -62,6 +63,25 @@ const statusColor = (value: string) => {
   if (/(ẩn|hết hạn|thiếu)/.test(v)) return 'error';
   return 'default';
 };
+
+const asNumber = (value: unknown) => Number(String(value ?? '').replace(/[^\d.-]/g, '')) || 0;
+
+const compactMoney = (value: number) => {
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)} tỷ`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)} tr`;
+  return `${Math.round(value).toLocaleString('vi-VN')} ₫`;
+};
+
+const getDate = (value: unknown) => {
+  const raw = String(value ?? '').trim();
+  const localized = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (localized) return new Date(Number(localized[3]), Number(localized[2]) - 1, Number(localized[1]));
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const isPortalEnabled = (value: unknown) =>
+  value === true || ['có', 'yes', 'true', '1'].includes(String(value ?? '').trim().toLowerCase());
 
 const GROUP_LABEL: Record<Sofa2CmsField['group'], string> = {
   content: 'Nội dung',
@@ -118,6 +138,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     open: false,
     index: null,
   });
+  const [bulkConfirm, setBulkConfirm] = useState(false);
   const [form, setForm] = useState<FormState>({
     open: false,
     mode: 'create',
@@ -131,6 +152,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Bản nháp';
   const published = statusOptions[0];
   const hideClientLink = schema.hideClientLink ?? false;
+  const showStatusToggle = schema.statusToggle !== false;
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -229,6 +251,43 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         if (duplicate) next[uniqueKey] = 'Mã này đã được sử dụng.';
       }
     }
+    if (group.slug === 'dealer') {
+      const uniqueKeyByModule: Record<string, string> = {
+        dashboard: 'dealer',
+        'price-policy': 'name',
+        quotes: 'code',
+        'dealer-orders': 'code',
+        'sales-docs': 'title',
+      };
+      const uniqueKey = uniqueKeyByModule[module.slug];
+      if (uniqueKey) {
+        const candidate = String(form.values[uniqueKey] ?? '').trim().toLowerCase();
+        const duplicate = candidate && rows.some(
+          (row, index) =>
+            !(form.mode === 'edit' && index === form.index) &&
+            String(row[uniqueKey] ?? '').trim().toLowerCase() === candidate
+        );
+        if (duplicate) next[uniqueKey] = 'Giá trị này đã tồn tại.';
+      }
+
+      if (module.slug === 'dashboard') {
+        const email = String(form.values.email ?? '').trim().toLowerCase();
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          next.email = 'Vui lòng nhập email hợp lệ.';
+        }
+        const duplicateEmail =
+          email &&
+          rows.some(
+            (row, index) =>
+              !(form.mode === 'edit' && index === form.index) &&
+              String(row.email ?? '').trim().toLowerCase() === email
+          );
+        if (duplicateEmail) next.email = 'Email này đã được gán cho đại lý khác.';
+        if (String(form.values.portalAccess) === 'Có' && !email) {
+          next.email = 'Cần email đăng nhập trước khi bật quyền cổng đại lý.';
+        }
+      }
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -307,6 +366,19 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     setConfirm({ open: false, index: null });
   };
 
+  const doBulkDelete = async () => {
+    const deletedCount = selected.length;
+    deleteRows(selected);
+    setSelected([]);
+    setBulkConfirm(false);
+    const synced = await syncDealerModule();
+    setToast(
+      synced
+        ? `Đã xoá ${deletedCount} ${entity}.`
+        : 'Đã xoá tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+    );
+  };
+
   const bulkPublish = async () => {
     selected
       .slice()
@@ -349,6 +421,20 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const renderField = (field: Sofa2CmsField) => {
     const value = form.values[field.key] ?? '';
     const error = errors[field.key];
+    const fieldOptions =
+      field.key === 'dealer' && group.slug === 'dealer'
+        ? Array.from(
+            new Set(
+              [
+                ...getSofa2AdminRows('dealer', 'dashboard').map((row) =>
+                  String(row.dealer ?? '').trim()
+                ),
+                ...(field.options ?? []),
+                String(value).trim(),
+              ].filter(Boolean)
+            )
+          )
+        : field.options ?? [];
 
     if (field.type === 'switch') {
       return (
@@ -390,7 +476,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           }
         }}
       >
-        {(field.options ?? []).map((opt) => (
+        {fieldOptions.map((opt) => (
           <MenuItem key={opt} value={opt}>
             {opt}
           </MenuItem>
@@ -401,6 +487,88 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
 
   const groupedFields = (g: Sofa2CmsField['group']) => fields.filter((x) => x.group === g);
   const dashboardStats = useMemo(() => {
+    if (group.slug === 'dealer') {
+      const sum = (field: string, items = rows) =>
+        items.reduce((total, row) => total + asNumber(row[field]), 0);
+      const countStatus = (status: string) =>
+        rows.filter((row) => String(row.status) === status).length;
+      const endDateWithinDays = (days: number) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const limit = new Date(today);
+        limit.setDate(limit.getDate() + days);
+        return rows.filter((row) => {
+          const endDate = getDate(row.endDate);
+          return (
+            String(row.status) === 'Đang áp dụng' &&
+            endDate !== null &&
+            endDate >= today &&
+            endDate <= limit
+          );
+        }).length;
+      };
+      const activePolicies = rows.filter((row) => String(row.status) === 'Đang áp dụng');
+      const statsByModule: Record<string, typeof module.stats> = {
+        dashboard: [
+          { label: 'Đại lý trong hệ thống', value: rows.length.toLocaleString('vi-VN') },
+          {
+            label: 'Cổng đại lý đã bật',
+            value: rows.filter((row) => isPortalEnabled(row.portalAccess)).length.toLocaleString('vi-VN'),
+          },
+          { label: 'Doanh số tháng', value: compactMoney(sum('achieved')) },
+          { label: 'Đang tạm ngưng', value: countStatus('Tạm ngưng').toLocaleString('vi-VN') },
+        ],
+        'price-policy': [
+          { label: 'Chính sách đang áp dụng', value: activePolicies.length.toLocaleString('vi-VN') },
+          {
+            label: 'Chiết khấu trung bình',
+            value: `${activePolicies.length ? Math.round(sum('discount', activePolicies) / activePolicies.length) : 0}%`,
+          },
+          { label: 'Sắp hết hạn 30 ngày', value: endDateWithinDays(30).toLocaleString('vi-VN') },
+          { label: 'Bản nháp', value: countStatus('Bản nháp').toLocaleString('vi-VN') },
+        ],
+        quotes: [
+          {
+            label: 'Chờ xử lý',
+            value: (countStatus('Chờ xử lý') + countStatus('Chờ phản hồi')).toLocaleString('vi-VN'),
+          },
+          { label: 'Đã gửi', value: countStatus('Đã gửi').toLocaleString('vi-VN') },
+          {
+            label: 'Tỷ lệ chốt',
+            value: `${rows.length ? Math.round((countStatus('Đã chốt') / rows.length) * 100) : 0}%`,
+          },
+          { label: 'Giá trị báo giá', value: compactMoney(sum('value')) },
+        ],
+        'dealer-orders': [
+          { label: 'Tổng đơn hàng', value: rows.length.toLocaleString('vi-VN') },
+          { label: 'Đang giao', value: countStatus('Đang giao').toLocaleString('vi-VN') },
+          { label: 'Chờ xác nhận', value: countStatus('Chờ xác nhận').toLocaleString('vi-VN') },
+          { label: 'Tổng giá trị đơn', value: compactMoney(sum('total')) },
+        ],
+        debts: [
+          { label: 'Tổng dư nợ', value: compactMoney(sum('balance')) },
+          {
+            label: 'Dư nợ quá hạn',
+            value: compactMoney(
+              sum('balance', rows.filter((row) => String(row.status) === 'Quá hạn'))
+            ),
+          },
+          { label: 'Sắp đến hạn', value: countStatus('Sắp đến hạn').toLocaleString('vi-VN') },
+          { label: 'Tổng hạn mức', value: compactMoney(sum('limit')) },
+        ],
+        'sales-docs': [
+          { label: 'Đã xuất bản', value: countStatus('Đã xuất bản').toLocaleString('vi-VN') },
+          { label: 'Lượt tải', value: sum('downloads').toLocaleString('vi-VN') },
+          {
+            label: 'Tài liệu giới hạn',
+            value: rows.filter((row) => row.access !== 'Tất cả đại lý').length.toLocaleString('vi-VN'),
+          },
+          { label: 'Bản nháp', value: countStatus('Bản nháp').toLocaleString('vi-VN') },
+        ],
+      };
+      return statsByModule[module.slug] ?? module.stats;
+    }
+
     if (group.slug !== 'hr') return module.stats;
 
     const sum = (key: string, items = rows) =>
@@ -489,6 +657,12 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
             </Grid>
           ))}
 
+          {group.slug === 'dealer' && module.slug === 'dashboard' && (
+            <Grid xs={12}>
+              <Sofa2AdminDealerInsights moduleSlug={module.slug} rows={rows} />
+            </Grid>
+          )}
+
           {!hideClientLink && (
             <Grid xs={12}>
               <Card sx={{ p: 2.5 }}>
@@ -569,30 +743,22 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {!!selected.length && (
                     <>
-                      <Button
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        onClick={bulkPublish}
-                        startIcon={<Iconify icon="solar:cloud-upload-bold-duotone" />}
-                      >
-                        {publishLabel} ({selected.length})
-                      </Button>
+                      {showStatusToggle && (
+                        <Button
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                          onClick={bulkPublish}
+                          startIcon={<Iconify icon="solar:cloud-upload-bold-duotone" />}
+                        >
+                          {publishLabel} ({selected.length})
+                        </Button>
+                      )}
                       <Button
                         size="small"
                         color="error"
                         variant="outlined"
-                        onClick={() => {
-                          deleteRows(selected);
-                          setSelected([]);
-                          syncDealerModule().then((synced) =>
-                            setToast(
-                              synced
-                                ? `Đã xoá ${selected.length} ${entity}.`
-                                : 'Đã xoá tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
-                            )
-                          );
-                        }}
+                        onClick={() => setBulkConfirm(true)}
                         startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
                       >
                         Xoá ({selected.length})
@@ -655,7 +821,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       {module.columns.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                      <TableCell align="center">{publishLabel}</TableCell>
+                       {showStatusToggle && <TableCell align="center">{publishLabel}</TableCell>}
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
@@ -700,13 +866,15 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                             </TableCell>
                           );
                         })}
-                        <TableCell align="center">
-                          <Switch
-                            size="small"
-                            checked={String(row[statusKey]) === published}
-                            onChange={() => togglePublish(index)}
-                          />
-                        </TableCell>
+                        {showStatusToggle && (
+                          <TableCell align="center">
+                            <Switch
+                              size="small"
+                              checked={String(row[statusKey]) === published}
+                              onChange={() => togglePublish(index)}
+                            />
+                          </TableCell>
+                        )}
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                             <Tooltip title="Xem chi tiết">
@@ -739,7 +907,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={module.columns.length + 3} align="center" sx={{ py: 6 }}>
+                          <TableCell
+                            colSpan={module.columns.length + (showStatusToggle ? 3 : 2)}
+                            align="center"
+                            sx={{ py: 6 }}
+                          >
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Chưa có {entity} nào phù hợp.
                           </Typography>

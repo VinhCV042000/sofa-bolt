@@ -30,7 +30,8 @@ const schema = (
   entity: string,
   titleKey: string,
   statusOptions: string[],
-  fields: Sofa2CmsField[]
+  fields: Sofa2CmsField[],
+  options: Partial<Sofa2CmsSchema> = {}
 ): Sofa2CmsSchema => ({
   clientPath,
   entity,
@@ -38,6 +39,7 @@ const schema = (
   statusKey: 'status',
   statusOptions,
   fields: [...fields, status(statusOptions)],
+  ...options,
 });
 
 export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
@@ -59,7 +61,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('achieved', 'Doanh số đã đạt (₫)', 'number', 'display'),
       f('manager', 'Nhân viên quản lý', 'text', 'display'),
       f('portalAccess', 'Cho phép đăng nhập cổng đại lý', 'switch', 'display'),
-    ]
+    ],
+    { defaultStatus: 'Đúng tiến độ', statusToggle: false }
   ),
 
   'price-policy': schema(
@@ -84,7 +87,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('startDate', 'Bắt đầu', 'date', 'display'),
       f('endDate', 'Hết hạn', 'date', 'display'),
       f('showOnPortal', 'Hiển thị trên trang chính sách đại lý', 'switch', 'seo'),
-    ]
+    ],
+    { defaultStatus: 'Bản nháp' }
   ),
 
   quotes: schema(
@@ -105,7 +109,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('shipping', 'Phí vận chuyển (₫)', 'number', 'display'),
       f('validUntil', 'Hiệu lực đến', 'date', 'display'),
       f('sales', 'Người phụ trách', 'text', 'display'),
-    ]
+    ],
+    { defaultStatus: 'Chờ xử lý', statusToggle: false }
   ),
 
   'dealer-orders': schema(
@@ -127,7 +132,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('orderDate', 'Ngày đặt', 'date', 'display'),
       f('deliveryDate', 'Ngày giao dự kiến', 'date', 'display'),
       f('carrier', 'Đơn vị vận chuyển', 'text', 'display'),
-    ]
+    ],
+    { defaultStatus: 'Chờ xác nhận', statusToggle: false }
   ),
 
   debts: schema(
@@ -144,7 +150,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('paid', 'Đã thanh toán kỳ này (₫)', 'number', 'display'),
       f('dueDate', 'Hạn thanh toán', 'date', 'display'),
       f('autoRemind', 'Tự động gửi nhắc nợ', 'switch', 'display'),
-    ]
+    ],
+    { defaultStatus: 'Trong hạn', statusToggle: false }
   ),
 
   'sales-docs': schema(
@@ -166,7 +173,8 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       }),
       f('downloads', 'Lượt tải', 'number', 'display'),
       f('updated', 'Cập nhật', 'date', 'display'),
-    ]
+    ],
+    { defaultStatus: 'Bản nháp' }
   ),
 };
 
