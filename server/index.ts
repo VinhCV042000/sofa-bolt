@@ -196,6 +196,14 @@ async function replaceModuleRows(
           ]
         );
       }
+      const retainedIds = rows
+        .filter((row) => asText(row.dealer, 180))
+        .map((row) => asText(row.dealerId, 120) || slugify(asText(row.dealer, 180)))
+        .filter(Boolean);
+      await client.query(
+        'DELETE FROM sofa2_dealer_profiles WHERE NOT (id = ANY($1::text[]))',
+        [retainedIds]
+      );
     } else {
       if (!RECORD_MODULES.has(module)) throw new Error('Unsupported dealer module.');
       if (onlyIfEmpty) {
@@ -366,6 +374,7 @@ app.post(
       email,
       phone,
       project,
+      address: asText(body.address, 300),
       projectType: asText(body.projectType, 80),
       items: Math.max(0, Number(body.items) || 0),
       budget: asText(body.budget, 80),

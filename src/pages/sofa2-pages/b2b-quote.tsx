@@ -64,7 +64,7 @@ export default function Page() {
         body: JSON.stringify({
           ...form,
           products: form.note,
-          note: `Địa điểm: ${form.address}`,
+          address: form.address,
         }),
       });
       const body = await response.json();

@@ -98,13 +98,28 @@ export const SOFA2_DEALER_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     ['Chờ xử lý', 'Đã gửi', 'Đã chốt', 'Hết hạn', 'Từ chối'],
     [
       f('code', 'Mã báo giá', 'text', 'content', { required: true, placeholder: 'BG-DL-0000' }),
-      f('dealer', 'Đại lý', 'select', 'content', { required: true, options: DEALERS }),
-      f('products', 'Danh sách sản phẩm (SKU x SL)', 'textarea', 'content', {
+      f('dealer', 'Đại lý / khách hàng dự án', 'select', 'content', {
+        required: true,
+        options: [...DEALERS, 'Yêu cầu dự án'],
+      }),
+      f('project', 'Tên dự án', 'text', 'content'),
+      f('projectType', 'Loại dự án', 'select', 'content', {
+        options: ['Căn hộ', 'Biệt thự', 'Khách sạn', 'Resort', 'Văn phòng', 'Showroom'],
+      }),
+      f('contactName', 'Người liên hệ', 'text', 'content'),
+      f('phone', 'Điện thoại liên hệ', 'text', 'content'),
+      f('email', 'Email liên hệ', 'text', 'content'),
+      f('items', 'Số lượng sản phẩm', 'number', 'display'),
+      f('budget', 'Ngân sách dự kiến', 'select', 'display', {
+        options: ['Dưới 100 triệu', '100 - 500 triệu', '500 triệu - 1 tỷ', 'Trên 1 tỷ'],
+      }),
+      f('delivery', 'Tiến độ mong muốn', 'text', 'display'),
+      f('address', 'Địa điểm dự án', 'text', 'content'),
+      f('products', 'Mô tả sản phẩm / yêu cầu', 'textarea', 'content', {
         multiline: 4,
-        placeholder: 'LX-OSL-01 x 4, LX-BER-04 x 2',
+        placeholder: 'SKU, số lượng hoặc mô tả nhu cầu dự án',
       }),
       f('note', 'Ghi chú cho đại lý', 'textarea', 'content', { multiline: 3 }),
-      f('items', 'Số sản phẩm', 'number', 'display'),
       f('value', 'Giá trị sau chiết khấu (₫)', 'number', 'display', { required: true }),
       f('shipping', 'Phí vận chuyển (₫)', 'number', 'display'),
       f('validUntil', 'Hiệu lực đến', 'date', 'display'),

@@ -311,6 +311,9 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       clean.applicationId = `APP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     }
     if (fields.some((x) => x.key === 'updated')) clean.updated = sofa2Today();
+    if (group.slug === 'dealer' && module.slug === 'dashboard' && form.mode === 'edit') {
+      clean.dealerId = rows[form.index]?.dealerId ?? '';
+    }
 
     if (form.mode === 'create') {
       createRow(clean);
@@ -350,6 +353,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       [titleKey]: `${row[titleKey]} (bản sao)`,
       [statusKey]: statusOptions[1] ?? 'Bản nháp',
     };
+    if (group.slug === 'dealer' && module.slug === 'dashboard') {
+      delete copy.dealerId;
+      copy.email = '';
+      copy.portalAccess = 'Không';
+    }
     if (copy.slug) copy.slug = `${sofa2Slugify(String(row[titleKey]))}-copy`;
     createRow(copy);
     const synced = await syncDealerModule();
@@ -1034,8 +1042,9 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         <DialogTitle>{`Xoá ${entity}?`}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm “Khôi phục” để nạp
-            lại dữ liệu gốc.
+            {group.slug === 'dealer' && module.slug === 'dashboard'
+              ? 'Hồ sơ sẽ bị xoá và quyền truy cập cổng đại lý bị thu hồi. Các báo giá, đơn hàng và công nợ đã lưu vẫn được giữ nhưng sẽ không còn liên kết với hồ sơ này. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu.'
+              : `Bản ghi sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác bản ghi đã xoá.`}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -1044,6 +1053,26 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           </Button>
           <Button color="error" variant="contained" onClick={doDelete}>
             Xoá
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Xác nhận xoá hàng loạt */}
+      <Dialog open={bulkConfirm} onClose={() => setBulkConfirm(false)}>
+        <DialogTitle>{`Xoá ${selected.length} ${entity}?`}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {group.slug === 'dealer' && module.slug === 'dashboard'
+              ? `Bạn đang xoá ${selected.length} hồ sơ đại lý. Quyền truy cập cổng sẽ bị thu hồi; báo giá, đơn hàng và công nợ được giữ lại nhưng không còn liên kết với hồ sơ. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu.`
+              : `Các bản ghi đã chọn sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác các bản ghi đã xoá.`}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setBulkConfirm(false)}>
+            Huỷ
+          </Button>
+          <Button color="error" variant="contained" onClick={doBulkDelete}>
+            Xoá {selected.length}
           </Button>
         </DialogActions>
       </Dialog>
