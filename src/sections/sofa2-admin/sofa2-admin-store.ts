@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
-import { supabase } from 'src/integrations/supabase/client';
-
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
 
 // ----------------------------------------------------------------------
@@ -117,30 +115,26 @@ const emit = () => {
 export const getSofa2AdminRows = (groupSlug: string, moduleSlug: string) =>
   store[key(groupSlug, moduleSlug)] ?? [];
 
-const coerceSeoRows = (value: unknown): AdminRow[] =>
-  (Array.isArray(value) ? value : []).map((row) => ({ ...(row as AdminRow) }));
-
 export async function loadSofa2SeoRows(moduleSlug: string, defaults: AdminRow[]) {
   const k = key('seo', moduleSlug);
-  const { data, error } = await supabase
-    .from('sofa2_seo_rows')
-    .select('rows')
-    .eq('module_slug', moduleSlug)
-    .maybeSingle();
-  if (error) throw new Error('Không tải được dữ liệu SEO từ cơ sở dữ liệu.');
+  const response = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}`, {
+    credentials: 'include',
+  });
+  if (!response.ok) throw new Error('Không tải được dữ liệu SEO. Hãy đăng nhập bằng tài khoản quản trị.');
 
-  let nextRows: AdminRow[];
-  if (!data) {
-    const seedRows = coerceSeoRows(store[k] ?? defaults);
-    const { error: seedError } = await supabase
-      .from('sofa2_seo_rows')
-      .upsert({ module_slug: moduleSlug, rows: seedRows }, { onConflict: 'module_slug' });
-    if (seedError) throw new Error('Không khởi tạo được dữ liệu SEO trên cơ sở dữ liệu.');
-    nextRows = seedRows;
-  } else {
-    nextRows = coerceSeoRows(data.rows);
+  let payload = (await response.json()) as { rows?: AdminRow[]; initialized?: boolean };
+  if (!payload.initialized) {
+    const seeded = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}/seed`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows: store[k] ?? defaults }),
+    });
+    if (!seeded.ok) throw new Error('Không khởi tạo được dữ liệu SEO trên máy chủ.');
+    payload = (await seeded.json()) as { rows?: AdminRow[]; initialized?: boolean };
   }
 
+  const nextRows = (payload.rows ?? []).map((row) => ({ ...row }));
   store[k] = nextRows;
   savedSeoRows.set(k, nextRows.map((row) => ({ ...row })));
   emit();
@@ -153,16 +147,18 @@ export async function syncSofa2SeoRows(moduleSlug: string, rows: AdminRow[]) {
   const next = previous
     .catch(() => [])
     .then(async () => {
-      const { data, error } = await supabase
-        .from('sofa2_seo_rows')
-        .upsert(
-          { module_slug: moduleSlug, rows, updated_at: new Date().toISOString() },
-          { onConflict: 'module_slug' }
-        )
-        .select('rows')
-        .single();
-      if (error) throw new Error('Không lưu được dữ liệu SEO lên cơ sở dữ liệu.');
-      return coerceSeoRows(data?.rows ?? rows);
+      const response = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows }),
+      });
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(payload.error || 'Không lưu được dữ liệu SEO trên máy chủ.');
+      }
+      const payload = (await response.json()) as { rows?: AdminRow[] };
+      return (payload.rows ?? rows).map((row) => ({ ...row }));
     });
 
   seoWriteQueues.set(k, next);

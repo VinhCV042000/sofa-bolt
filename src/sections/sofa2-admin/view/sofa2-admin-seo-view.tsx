@@ -329,10 +329,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     if (schema.kind === 'sitemap') {
       const errorsCount = rows.filter((row) => ['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
       const enabledFilesCount = rows.filter((row) => !['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
-      if (index === 0) return { ...stat, value: format(sitemapEligiblePageRows) };
+      if (index === 0) return { ...stat, value: format(sitemapEligiblePageRows.length) };
       if (index === 1) return { ...stat, value: format(enabledFilesCount) };
       if (index === 2) return { ...stat, value: format(errorsCount) };
-      if (index === 3) return { ...stat, value: format(allManagedPageRows.length - sitemapEligiblePageRows) };
+      if (index === 3) return { ...stat, value: format(allManagedPageRows.length - sitemapEligiblePageRows.length) };
     }
     if (schema.kind === 'robots') {
       const blocked = rows.filter((row) => row.rule === 'Disallow').length;

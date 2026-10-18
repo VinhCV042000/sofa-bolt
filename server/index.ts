@@ -46,13 +46,11 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-const pool = process.env.DATABASE_URL
-  ? new Pool({ connectionString: process.env.DATABASE_URL })
-  : (new Proxy({} as Pool, {
-      get: () => () => {
-        throw new Error('Dealer portal database is not configured.');
-      },
-    }) as Pool);
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is required for the dealer portal API.');
+}
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const app = express();
 const httpServer = createHttpServer(app);
 
@@ -408,18 +406,14 @@ async function replaceModuleRows(
 app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
-if (process.env.CLERK_SECRET_KEY) {
-  app.use(
-    clerkMiddleware((req) => ({
-      publishableKey: publishableKeyFromHost(
-        getClerkProxyHost(req) ?? '',
-        process.env.CLERK_PUBLISHABLE_KEY
-      ),
-    }))
-  );
-} else {
-  console.warn('CLERK_SECRET_KEY missing: dealer portal auth endpoints are disabled.');
-}
+app.use(
+  clerkMiddleware((req) => ({
+    publishableKey: publishableKeyFromHost(
+      getClerkProxyHost(req) ?? '',
+      process.env.CLERK_PUBLISHABLE_KEY
+    ),
+  }))
+);
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
