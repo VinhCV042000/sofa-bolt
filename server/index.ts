@@ -46,11 +46,20 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required for the dealer portal API.');
+let pool: Pool | null = null;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({ connectionString: process.env.DATABASE_URL });
+} else {
+  console.warn('DATABASE_URL missing: dealer portal API endpoints are disabled.');
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const requirePool = (res: Response): Pool | null => {
+  if (!pool) {
+    res.status(503).json({ error: 'Dealer portal database is not configured.' });
+    return null;
+  }
+  return pool;
+};
 const app = express();
 const httpServer = createHttpServer(app);
 
