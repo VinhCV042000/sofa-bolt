@@ -408,14 +408,18 @@ async function replaceModuleRows(
 app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
-app.use(
-  clerkMiddleware((req) => ({
-    publishableKey: publishableKeyFromHost(
-      getClerkProxyHost(req) ?? '',
-      process.env.CLERK_PUBLISHABLE_KEY
-    ),
-  }))
-);
+if (process.env.CLERK_SECRET_KEY) {
+  app.use(
+    clerkMiddleware((req) => ({
+      publishableKey: publishableKeyFromHost(
+        getClerkProxyHost(req) ?? '',
+        process.env.CLERK_PUBLISHABLE_KEY
+      ),
+    }))
+  );
+} else {
+  console.warn('CLERK_SECRET_KEY missing: dealer portal auth endpoints are disabled.');
+}
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
