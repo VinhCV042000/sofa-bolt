@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { SOFA2_PRODUCTS } from 'src/sections/sofa2/sofa2-pages-data';
 
 import { SOFA2_SITE_ORIGIN } from './sofa2-seo-generator';
+import { seoCanonical, seoEnabled } from './sofa2-seo-utils';
 
 // ----------------------------------------------------------------------
 // Áp dụng dữ liệu module SEO (/sofa2/admin/seo/*) lên trang khách sofa2:
@@ -60,6 +61,7 @@ function setLink(rel: string, href?: string) {
     return;
   }
   if (!el) {
+    document.head.querySelectorAll(`link[rel="${rel}"]`).forEach((link) => link.remove());
     el = document.createElement('link');
     el.rel = rel;
     el.setAttribute('data-sofa2-seo', '');
@@ -104,7 +106,7 @@ function clearAll() {
 export function Sofa2SeoHead() {
   const { pathname } = useLocation();
   const path = norm(pathname);
-  const active = path.startsWith('/sofa2') && !path.startsWith('/sofa2/admin');
+  const active = (path === '/sofa2' || path.startsWith('/sofa2/')) && !path.startsWith('/sofa2/admin');
 
   const [seoData, setSeoData] = useState<PublicSeoData>(EMPTY_SEO_DATA);
 
@@ -173,8 +175,8 @@ export function Sofa2SeoHead() {
           String(hit.ogDescription || hit.description || '') || undefined
         );
         setMeta('property', 'og:image', String(hit.ogImage || '') || undefined);
-        const noindex = String(hit.indexable ?? 'Có').toLowerCase() === 'không';
-        const nofollow = String(hit.follow ?? 'Có').toLowerCase() === 'không';
+        const noindex = !seoEnabled(hit.indexable);
+        const nofollow = !seoEnabled(hit.follow);
         setMeta(
           'name',
           'robots',
@@ -182,18 +184,18 @@ export function Sofa2SeoHead() {
             ? `${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`
             : undefined
         );
-        const canonicalPath = norm(String(hit.canonical || ''));
-        setLink('canonical', canonicalPath ? `${SOFA2_SITE_ORIGIN}${canonicalPath}` : `${SOFA2_SITE_ORIGIN}${path}`);
+        setLink('canonical', seoCanonical(path, String(hit.canonical || ''), SOFA2_SITE_ORIGIN));
       } else {
         setH1();
         ['description', 'keywords', 'robots'].forEach((k) => setMeta('name', k));
         ['og:title', 'og:description', 'og:image'].forEach((k) => setMeta('property', k));
         setLink('canonical', `${SOFA2_SITE_ORIGIN}${path}`);
       }
+      setMeta('property', 'og:url', `${SOFA2_SITE_ORIGIN}${path}`);
 
       // JSON-LD tự động theo loại trang
       const productMatch = path.match(/^\/sofa2\/products\/([^/]+)$/);
-      const product = productMatch && SOFA2_PRODUCTS.find((p) => p.id === productMatch[1]);
+      const product = productMatch && SOFA2_PRODUCTS.find((p) => p.slug === productMatch[1] || p.id === productMatch[1]);
       if (customSchema) {
         setJsonLd(customSchema);
       } else if (product && (!hit?.schemaType || hit.schemaType === 'Product')) {
