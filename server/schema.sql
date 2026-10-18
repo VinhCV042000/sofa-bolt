@@ -53,3 +53,64 @@ CREATE TABLE IF NOT EXISTS sofa2_seo_modules (
   rows JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(rows) = 'array'),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS sofa2_customer_profiles (
+  clerk_user_id TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  account_status TEXT NOT NULL DEFAULT 'Hoạt động',
+  tier TEXT NOT NULL DEFAULT 'Thường',
+  profile JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS sofa2_customer_profiles_email_idx
+  ON sofa2_customer_profiles (LOWER(email));
+
+CREATE TABLE IF NOT EXISTS sofa2_customer_records (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  customer_user_id TEXT NOT NULL REFERENCES sofa2_customer_profiles(clerk_user_id) ON DELETE CASCADE,
+  module TEXT NOT NULL CHECK (module IN ('addresses', 'wishlist', 'transactions', 'warranties')),
+  data JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS sofa2_customer_records_owner_module_idx
+  ON sofa2_customer_records (customer_user_id, module, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS sofa2_shop_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code TEXT NOT NULL UNIQUE,
+  customer_user_id TEXT REFERENCES sofa2_customer_profiles(clerk_user_id) ON DELETE SET NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  data JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS sofa2_shop_orders_customer_idx
+  ON sofa2_shop_orders (customer_user_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS sofa2_shop_orders_tracking_idx
+  ON sofa2_shop_orders (UPPER(code), phone);
+
+CREATE TABLE IF NOT EXISTS sofa2_shop_carts (
+  visitor_id TEXT PRIMARY KEY,
+  customer_user_id TEXT REFERENCES sofa2_customer_profiles(clerk_user_id) ON DELETE SET NULL,
+  items JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(items) = 'array'),
+  subtotal BIGINT NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'Đang mở',
+  data JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS sofa2_shop_carts_status_updated_idx
+  ON sofa2_shop_carts (status, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS sofa2_shop_modules (
+  module TEXT PRIMARY KEY CHECK (module IN ('checkout', 'checkout-success')),
+  rows JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(rows) = 'array'),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
