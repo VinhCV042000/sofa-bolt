@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from 'src/integrations/supabase/client';
 
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
 
