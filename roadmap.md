@@ -1,4 +1,5 @@
 # Current task
+- [ ] Restore preview startup without requiring external API database credentials and verify the website renders.
 - [x] Review all ten sofa2 SEO modules and repair sitemap metrics, draft saves, editable validation fields, canonical URLs, indexing flags and CSV escaping.
 - [x] Run focused SEO transformation tests (5 passed).
 - [ ] Verify actual SEO create/edit/delete, generated public files and client read-back — blocked by existing server requiring unconfigured DATABASE_URL; preview does not start.
