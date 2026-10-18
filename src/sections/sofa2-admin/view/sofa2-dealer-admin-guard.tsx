@@ -9,9 +9,9 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-type Props = { children: React.ReactNode };
+type Props = { children: React.ReactNode; resource?: string };
 
-export function Sofa2DealerAdminGuard({ children }: Props) {
+export function Sofa2DealerAdminGuard({ children, resource = 'dữ liệu đại lý' }: Props) {
   const { isLoaded, isSignedIn } = useAuth();
   const location = useLocation();
   const [checking, setChecking] = useState(true);
@@ -61,10 +61,10 @@ export function Sofa2DealerAdminGuard({ children }: Props) {
           <Stack spacing={2} alignItems="center">
             <Typography variant="h5">Không có quyền truy cập</Typography>
             <Typography color="text.secondary">
-              Chỉ tài khoản quản trị viên mới được quản lý dữ liệu đại lý.
+              Chỉ tài khoản quản trị viên mới được quản lý {resource}.
             </Typography>
-            <Button component={RouterLink} to="/sofa2/dealer" variant="contained">
-              Về cổng đại lý
+            <Button component={RouterLink} to="/sofa2/admin" variant="contained">
+              Về trang quản trị
             </Button>
           </Stack>
         </Paper>

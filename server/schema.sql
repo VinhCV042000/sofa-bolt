@@ -34,3 +34,22 @@ CREATE INDEX IF NOT EXISTS sofa2_dealer_records_module_idx
 
 CREATE INDEX IF NOT EXISTS sofa2_dealer_records_dealer_module_idx
   ON sofa2_dealer_records (dealer_id, module, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS sofa2_seo_modules (
+  module TEXT PRIMARY KEY CHECK (
+    module IN (
+      'category',
+      'product',
+      'collection',
+      'project',
+      'showroom',
+      'blog',
+      'brand',
+      'sitemap',
+      'robots',
+      'schema'
+    )
+  ),
+  rows JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(rows) = 'array'),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

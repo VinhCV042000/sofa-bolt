@@ -90,12 +90,14 @@ export default function Page() {
       found.group.slug === 'seo' ? getSofa2SeoSchema(found.module.slug) : undefined;
     if (seoSchema) {
       return (
-        <Sofa2AdminSeoView
-          key={`${found.group.slug}/${found.module.slug}`}
-          group={found.group}
-          module={found.module}
-          schema={seoSchema}
-        />
+        <Sofa2DealerAdminGuard resource="SEO">
+          <Sofa2AdminSeoView
+            key={`${found.group.slug}/${found.module.slug}`}
+            group={found.group}
+            module={found.module}
+            schema={seoSchema}
+          />
+        </Sofa2DealerAdminGuard>
       );
     }
 

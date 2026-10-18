@@ -32,9 +32,23 @@ export type Sofa2SeoSchema = Sofa2CmsSchema & {
 // ----------------------------------------------------------------------
 
 const SEO_STATUS = ['Tốt', 'Cần cải thiện', 'Thiếu meta', 'Lỗi'];
-const SITEMAP_STATUS = ['Hợp lệ', 'Cảnh báo', 'Lỗi URL'];
+const SITEMAP_STATUS = ['Hợp lệ', 'Cảnh báo', 'Lỗi URL', 'Tạm tắt'];
 const ROBOTS_STATUS = ['Hoạt động', 'Tạm tắt', 'Lỗi cú pháp'];
-const SCHEMA_STATUS = ['Hợp lệ', 'Cảnh báo', 'Lỗi'];
+const SCHEMA_STATUS = ['Hợp lệ', 'Chưa kiểm tra', 'Cảnh báo', 'Lỗi'];
+const SCHEMA_TYPES = [
+  'Product',
+  'CollectionPage',
+  'Article',
+  'LocalBusiness',
+  'FurnitureStore',
+  'Organization',
+  'Brand',
+  'WebPage',
+  'WebSite',
+  'BreadcrumbList',
+  'FAQPage',
+  'CreativeWork',
+];
 
 const f = (
   key: string,
@@ -64,26 +78,42 @@ const seoPageSchema = (
   chartType: 'horizontal-bar',
   chartTitle: `Thứ hạng từ khoá — ${pageName}`,
   chartSubtitle: 'Vị trí trung bình trên Google (thấp hơn = tốt hơn)',
-  chartCategories: ['sofa scandinavian', 'sofa oslo', 'sofa góc', 'sofa linen', 'sofaIndustrial', 'sofa 3 chỗ'],
-  chartSeries: [{ name: 'Thứ hạng', data: [4, 7, 16, 11, 23, 6] }],
+  chartCategories: [],
+  chartSeries: [{ name: 'Thứ hạng Google', data: [] }],
   fields: [
     f('url', 'URL', 'text', 'content', { required: true, placeholder: `${clientPath}/...` }),
     f('title', 'Meta title', 'text', 'content', { required: true, maxLength: 60, helper: 'Tối đa 60 ký tự.' }),
     f('description', 'Meta description', 'textarea', 'content', { multiline: 3, maxLength: 160 }),
     f('keyword', 'Từ khoá chính', 'text', 'content', { required: true }),
     f('keyword2', 'Từ khoá phụ', 'text', 'content'),
-    f('h1', 'Heading H1', 'text', 'seo'),
-    f('canonical', 'Canonical URL', 'url', 'seo', { placeholder: 'https://luxe.vn/...' }),
+    f('h1', 'Heading H1', 'text', 'seo', {
+      helper: 'Thay nội dung H1 đầu tiên trên trang khách khi bản ghi được xuất bản.',
+    }),
+    f('canonical', 'Canonical URL', 'url', 'seo', { placeholder: 'https://luxesofa.vn/sofa2/...' }),
     f('ogImage', 'Ảnh chia sẻ (OG)', 'url', 'seo', { placeholder: 'https://...' }),
+    f('ogTitle', 'Open Graph title', 'text', 'seo', { maxLength: 90 }),
+    f('ogDescription', 'Open Graph description', 'textarea', 'seo', { multiline: 2, maxLength: 200 }),
     f('internalLinks', 'Liên kết nội bộ', 'number', 'seo', { helper: 'Số internal link trên trang.' }),
-    f('position', 'Thứ hạng Google', 'number', 'technical', { helper: '1 = top 1.' }),
-    f('impressions', 'Lượt hiển thị (tháng)', 'number', 'technical'),
-    f('clicks', 'Lượt click (tháng)', 'number', 'technical'),
-    f('ctr', 'CTR', 'text', 'technical', { placeholder: '3.2%' }),
+    f('position', 'Thứ hạng Google', 'number', 'technical', {
+      helper: 'Nhập từ Google Search Console; chưa tự đồng bộ.',
+    }),
+    f('impressions', 'Lượt hiển thị (tháng)', 'number', 'technical', {
+      helper: 'Nhập từ Google Search Console; chưa tự đồng bộ.',
+    }),
+    f('clicks', 'Lượt click (tháng)', 'number', 'technical', {
+      helper: 'Nhập từ Google Search Console; chưa tự đồng bộ.',
+    }),
+    f('ctr', 'CTR', 'text', 'technical', {
+      placeholder: '3.2%',
+      helper: 'Nhập từ Google Search Console; chưa tự đồng bộ.',
+    }),
     f('indexable', 'Cho phép index', 'switch', 'technical'),
     f('follow', 'Cho phép follow liên kết', 'switch', 'technical'),
     f('inSitemap', 'Đưa vào sitemap', 'switch', 'technical'),
-    f('redirect', 'Chuyển hướng 301 tới', 'text', 'technical', { placeholder: 'Để trống nếu không' }),
+    f('redirect', 'URL chuyển hướng dự kiến', 'text', 'technical', {
+      placeholder: '/sofa2/duong-dan-moi',
+      helper: 'Đường dẫn nội bộ; chuyển hướng thật cần được triển khai ở máy chủ.',
+    }),
     ...extra,
     f('status', 'Đánh giá SEO', 'select', 'display', { required: true, options: SEO_STATUS }),
     f('updated', 'Cập nhật', 'date', 'display'),
@@ -100,31 +130,28 @@ const sitemapSchema: Sofa2SeoSchema = {
   titleKey: 'file',
   statusKey: 'status',
   statusOptions: SITEMAP_STATUS,
-  defaultStatus: 'Hợp lệ',
+  defaultStatus: 'Tạm tắt',
   hideClientLink: true,
   chartType: 'bar',
-  chartTitle: 'Tỷ lệ index theo tệp sitemap',
-  chartSubtitle: 'So sánh tổng URL và URL đã được index',
-  chartCategories: ['products', 'categories', 'blog', 'pages', 'images'],
+  chartTitle: 'URL đủ điều kiện đưa vào sitemap theo nhóm',
+  chartSubtitle: 'Đếm từ các trang đã bật index và sitemap; không giả lập số liệu Search Console',
+  chartCategories: ['pages', 'categories', 'products', 'collections', 'projects', 'showrooms', 'blog'],
   chartSeries: [
-    { name: 'Tổng URL', data: [428, 24, 142, 48, 786] },
-    { name: 'Đã index', data: [418, 24, 136, 44, 742] },
+    { name: 'Trang được quản lý', data: [0, 0, 0, 0, 0, 0, 0] },
+    { name: 'Đưa vào sitemap', data: [0, 0, 0, 0, 0, 0, 0] },
   ],
   fields: [
-    f('file', 'Tệp sitemap', 'text', 'content', { required: true, placeholder: 'sitemap-products.xml' }),
-    f('type', 'Loại', 'select', 'content', {
+    f('file', 'Tệp sitemap', 'select', 'content', {
       required: true,
-      options: ['URL', 'Images', 'Video', 'News', 'Sitemap index'],
-    }),
-    f('urls', 'Tổng số URL', 'number', 'content', { required: true }),
-    f('indexed', 'Đã index', 'number', 'technical'),
-    f('errors', 'URL lỗi', 'number', 'technical'),
-    f('lastPing', 'Lần gửi GSC cuối', 'date', 'technical'),
-    f('priority', 'Mức độ ưu tiên', 'select', 'technical', {
-      options: ['1.0', '0.9', '0.8', '0.7', '0.6', '0.5'],
-    }),
-    f('changeFreq', 'Tần suất thay đổi', 'select', 'technical', {
-      options: ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'],
+      options: [
+        'sitemap-pages.xml',
+        'sitemap-categories.xml',
+        'sitemap-products.xml',
+        'sitemap-collections.xml',
+        'sitemap-projects.xml',
+        'sitemap-showrooms.xml',
+        'sitemap-blog.xml',
+      ],
     }),
     f('status', 'Trạng thái', 'select', 'display', { required: true, options: SITEMAP_STATUS }),
     f('updated', 'Cập nhật', 'date', 'display'),
@@ -140,13 +167,13 @@ const robotsSchema: Sofa2SeoSchema = {
   titleKey: 'path',
   statusKey: 'status',
   statusOptions: ROBOTS_STATUS,
-  defaultStatus: 'Hoạt động',
+  defaultStatus: 'Tạm tắt',
   hideClientLink: true,
   chartType: 'donut',
   chartTitle: 'Phân bổ quy tắc robots.txt',
   chartSubtitle: 'Tỷ lệ Allow / Disallow theo user-agent',
-  chartLabels: ['Allow (*, )', 'Disallow (*, )', 'Allow Googlebot', 'Disallow Googlebot-Image'],
-  chartDonutData: [3, 4, 2, 3],
+  chartLabels: ['Allow', 'Disallow'],
+  chartDonutData: [0, 0],
   fields: [
     f('agent', 'User-agent', 'text', 'content', { required: true, placeholder: '*' }),
     f('rule', 'Quy tắc', 'select', 'content', {
@@ -170,26 +197,43 @@ const schemaMarkupSchema: Sofa2SeoSchema = {
   titleKey: 'type',
   statusKey: 'status',
   statusOptions: SCHEMA_STATUS,
-  defaultStatus: 'Hợp lệ',
+  defaultStatus: 'Chưa kiểm tra',
   hideClientLink: true,
   chartType: 'horizontal-bar',
   chartTitle: 'Số URL áp dụng theo loại schema',
   chartSubtitle: 'Phạm vi phủ sóng dữ liệu có cấu trúc',
-  chartCategories: ['Product', 'BreadcrumbList', 'Article', 'LocalBusiness', 'FAQPage', 'Organization', 'Review', 'CollectionPage'],
-  chartSeries: [{ name: 'URL áp dụng', data: [428, 1248, 142, 12, 1, 1, 86, 24] }],
+  chartCategories: [],
+  chartSeries: [{ name: 'URL áp dụng', data: [] }],
   fields: [
-    f('type', 'Loại schema', 'text', 'content', { required: true, placeholder: 'Product' }),
+    f('type', 'Loại schema', 'select', 'content', { required: true, options: SCHEMA_TYPES }),
     f('scope', 'Áp dụng cho', 'select', 'content', {
       required: true,
-      options: ['Trang sản phẩm', 'Toàn site', 'Blog', 'Showroom', 'Trang FAQ', 'Trang chủ', 'Trang bộ sưu tập', 'Trang danh mục'],
+      options: [
+        'Toàn site',
+        'Trang sản phẩm',
+        'Trang danh mục',
+        'Trang bộ sưu tập',
+        'Trang dự án',
+        'Showroom',
+        'Blog',
+        'Trang FAQ',
+        'Trang chủ',
+        'Trang thương hiệu',
+      ],
     }),
-    f('urls', 'Số URL áp dụng', 'number', 'content', { required: true }),
+    f('url', 'URL cụ thể (không bắt buộc)', 'text', 'content', { placeholder: '/sofa2/products/1' }),
+    f('urls', 'Số URL khai báo', 'number', 'content', {
+      required: true,
+      helper: 'Số tham khảo do quản trị viên nhập; chưa đồng bộ Search Console.',
+    }),
     f('jsonld', 'Mẫu JSON-LD', 'textarea', 'technical', {
+      required: true,
       multiline: 6,
       helper: 'Dán JSON-LD mẫu cho loại schema này.',
       placeholder: '{ "@context": "https://schema.org", "@type": "Product", ... }',
     }),
     f('validation', 'Kết quả kiểm tra', 'select', 'technical', {
+      required: true,
       options: ['Hợp lệ', 'Cảnh báo', 'Lỗi', 'Chưa kiểm tra'],
     }),
     f('warnings', 'Số cảnh báo', 'number', 'technical'),
@@ -201,7 +245,6 @@ const schemaMarkupSchema: Sofa2SeoSchema = {
 
 // ----------------------------------------------------------------------
 
-const SCHEMA_TYPES = ['Product', 'CollectionPage', 'Article', 'LocalBusiness', 'Organization', 'Brand', 'WebPage'];
 const typeField = (def: string) =>
   f('schemaType', 'Loại schema áp dụng', 'select', 'seo', { options: SCHEMA_TYPES, helper: `Đề xuất: ${def}` });
 

@@ -15,12 +15,30 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 import { Iconify } from 'src/components/iconify';
 
+import { SOFA2_SITE_ORIGIN } from '../sofa2-seo-generator';
+
 import type { AdminRow } from '../sofa2-admin-store';
 import type { Sofa2SeoKind } from '../sofa2-seo';
 
-const SITE = 'https://luxe.vn';
+const SITE = SOFA2_SITE_ORIGIN;
+const SITEMAP_FILES = new Set([
+  'sitemap-pages.xml',
+  'sitemap-categories.xml',
+  'sitemap-products.xml',
+  'sitemap-collections.xml',
+  'sitemap-projects.xml',
+  'sitemap-showrooms.xml',
+  'sitemap-blog.xml',
+]);
 const yes = (v: unknown) => v === undefined || v === '' || ['có', 'true', '1', 'yes'].includes(String(v).toLowerCase());
 const str = (v: unknown) => String(v ?? '').trim();
+const escapeXml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 
 // ----------------------------------------------------------------------
 
@@ -124,23 +142,106 @@ export function validateJsonLd(text: string): { ok: boolean; message: string } {
   if (!str(text)) return { ok: false, message: 'Chưa có JSON-LD.' };
   try {
     const data = JSON.parse(text);
-    if (!data['@context']) return { ok: false, message: 'Thiếu "@context".' };
-    if (!data['@type']) return { ok: false, message: 'Thiếu "@type".' };
-    return { ok: true, message: `JSON hợp lệ — @type: ${data['@type']}` };
+    const nodes = Array.isArray(data)
+      ? data
+      : Array.isArray(data['@graph'])
+        ? data['@graph']
+        : [data];
+    const hasContext = !!data['@context'] || nodes.every((node) => !!node?.['@context']);
+    if (!hasContext) return { ok: false, message: 'Thiếu "@context".' };
+    if (!nodes.length || nodes.some((node) => !node || typeof node !== 'object' || !node['@type'])) {
+      return { ok: false, message: 'Mỗi phần tử cần có "@type".' };
+    }
+    const types = nodes.map((node) => node['@type']).join(', ');
+    return { ok: true, message: `JSON hợp lệ — @type: ${types}` };
   } catch (e) {
     return { ok: false, message: `Lỗi cú pháp JSON: ${(e as Error).message}` };
   }
 }
 
-export function SchemaJsonAssistant({ values }: { values: AdminRow }) {
+export function createJsonLdTemplate(type: string, name = 'LUXE Sofa'): string {
+  const common = { '@context': 'https://schema.org', '@type': type };
+  const templates: Record<string, object> = {
+    Product: {
+      ...common,
+      name,
+      description: '',
+      image: '',
+      sku: '',
+      brand: { '@type': 'Brand', name },
+      offers: { '@type': 'Offer', priceCurrency: 'VND', price: 0, availability: 'https://schema.org/InStock' },
+    },
+    Article: {
+      ...common,
+      headline: '',
+      description: '',
+      author: { '@type': 'Person', name: '' },
+      datePublished: '',
+      image: '',
+    },
+    FurnitureStore: {
+      ...common,
+      name,
+      url: '',
+      telephone: '',
+      address: { '@type': 'PostalAddress', streetAddress: '', addressCountry: 'VN' },
+      openingHours: '',
+    },
+    LocalBusiness: {
+      ...common,
+      name,
+      url: '',
+      telephone: '',
+      address: { '@type': 'PostalAddress', streetAddress: '', addressCountry: 'VN' },
+    },
+    FAQPage: {
+      ...common,
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Câu hỏi thường gặp',
+          acceptedAnswer: { '@type': 'Answer', text: 'Nhập câu trả lời tại đây.' },
+        },
+      ],
+    },
+    BreadcrumbList: {
+      ...common,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: '/sofa2' },
+      ],
+    },
+  };
+  return JSON.stringify(
+    templates[type] ?? { ...common, name, url: '', description: '' },
+    null,
+    2
+  );
+}
+
+export function SchemaJsonAssistant({
+  values,
+  onApplyTemplate,
+}: {
+  values: AdminRow;
+  onApplyTemplate?: (jsonld: string) => void;
+}) {
   const res = validateJsonLd(str(values.jsonld));
   return (
-    <Stack direction="row" spacing={1} alignItems="center">
+    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ sm: 'center' }}>
       <Iconify
         icon={res.ok ? 'solar:check-circle-bold' : 'solar:danger-triangle-bold'}
         sx={{ color: res.ok ? 'success.main' : 'warning.main' }}
       />
-      <Typography variant="body2">{res.message}</Typography>
+      <Typography variant="body2" sx={{ flex: 1 }}>{res.message}</Typography>
+      {onApplyTemplate && (
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={() => onApplyTemplate(createJsonLdTemplate(str(values.type) || 'WebPage'))}
+        >
+          Chèn mẫu JSON-LD
+        </Button>
+      )}
     </Stack>
   );
 }
@@ -151,31 +252,37 @@ export function buildRobotsTxt(rows: AdminRow[]) {
   const active = rows.filter((r) => str(r.status) === 'Hoạt động');
   const byAgent = new Map<string, AdminRow[]>();
   active.forEach((r) => {
-    const a = str(r.agent) || '*';
+    const rawAgent = str(r.agent) || '*';
+    const a = /^[A-Za-z0-9_*.-]{1,120}$/.test(rawAgent) ? rawAgent : '*';
     byAgent.set(a, [...(byAgent.get(a) ?? []), r]);
   });
   const blocks = [...byAgent.entries()].map(([agent, list]) => {
     const lines = [`User-agent: ${agent}`];
     list.forEach((r) => {
-      if (str(r.comment)) lines.push(`# ${str(r.comment).replace(/\n/g, ' ')}`);
-      lines.push(`${str(r.rule) || 'Allow'}: ${str(r.path) || '/'}`);
+      if (str(r.comment)) lines.push(`# ${str(r.comment).replace(/[\r\n]/g, ' ')}`);
+      const rule = ['Allow', 'Disallow'].includes(str(r.rule)) ? str(r.rule) : 'Disallow';
+      const path = (str(r.path) || '/').replace(/[\r\n]/g, '');
+      if (path.startsWith('/')) lines.push(`${rule}: ${path}`);
     });
     const delay = Math.max(0, ...list.map((r) => Number(r.crawlDelay) || 0));
     if (delay) lines.push(`Crawl-delay: ${delay}`);
     return lines.join('\n');
   });
-  return [...blocks, `Sitemap: ${SITE}/sitemap.xml`].join('\n\n');
+  const fallback = [
+    'User-agent: *',
+    'Allow: /',
+    'Disallow: /sofa2/admin',
+    'Disallow: /sofa2/account',
+    'Disallow: /sofa2/cart',
+    'Disallow: /sofa2/checkout',
+  ].join('\n');
+  return [...(blocks.length ? blocks : [fallback]), `Sitemap: ${SITE}/sitemap.xml`].join('\n\n');
 }
 
 export function buildSitemapIndex(rows: AdminRow[]) {
   const items = rows
-    .filter((r) => str(r.status) !== 'Lỗi URL')
-    .map(
-      (r) =>
-        `  <sitemap>\n    <loc>${SITE}/${str(r.file)}</loc>${
-          str(r.updated) ? `\n    <lastmod>${str(r.updated)}</lastmod>` : ''
-        }\n  </sitemap>`
-    );
+    .filter((r) => !['Lỗi URL', 'Tạm tắt'].includes(str(r.status)) && SITEMAP_FILES.has(str(r.file)))
+    .map((r) => `  <sitemap>\n    <loc>${escapeXml(`${SITE}/${str(r.file)}`)}</loc>\n  </sitemap>`);
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items.join('\n')}\n</sitemapindex>`;
 }
 
@@ -237,6 +344,19 @@ export function SeoGeneratedFile({
         subheader="Tạo từ các bản ghi đang hoạt động/hợp lệ bên dưới — cập nhật ngay khi bạn sửa."
         action={
           <Stack direction="row" spacing={1}>
+            {(kind === 'sitemap' || kind === 'robots') && (
+              <Button
+                component="a"
+                href={kind === 'sitemap' ? '/sitemap.xml' : '/robots.txt'}
+                target="_blank"
+                rel="noreferrer"
+                size="small"
+                variant="outlined"
+                startIcon={<Iconify icon="solar:square-top-down-bold-duotone" />}
+              >
+                Mở công khai
+              </Button>
+            )}
             <Button size="small" variant="outlined" onClick={copy} startIcon={<Iconify icon="solar:copy-bold-duotone" />}>
               Sao chép
             </Button>

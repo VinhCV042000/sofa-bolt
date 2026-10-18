@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import Tab from '@mui/material/Tab';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
@@ -38,17 +39,35 @@ import { Chart, useChart } from 'src/components/chart';
 import { Iconify } from 'src/components/iconify';
 
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
-import { SeoScoreChip, SeoGeneratedFile, SeoPageAssistant, SchemaJsonAssistant } from './sofa2-seo-tools';
-import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
+import {
+  auditSeoPage,
+  SeoScoreChip,
+  SeoGeneratedFile,
+  SeoPageAssistant,
+  SchemaJsonAssistant,
+  createJsonLdTemplate,
+  validateJsonLd,
+} from './sofa2-seo-tools';
+import {
+  type AdminRow,
+  loadSofa2SeoRows,
+  useSofa2AdminRows,
+} from '../sofa2-admin-store';
 import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2SeoSchema } from '../sofa2-seo';
+import { SOFA2_SITE_ORIGIN } from '../sofa2-seo-generator';
 
-import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
+import { SOFA2_ADMIN_GROUPS, type Sofa2AdminGroup, type Sofa2AdminModule } from '../sofa2-admin-data';
 
 // ----------------------------------------------------------------------
 
 const SURFACE = '#2A2A2A';
 const PALETTE = ['#1A1A1A', '#455A64', '#607D8B', '#90A4AE', '#CFD8DC', '#B0BEC5'];
+const seoFlagOn = (value: unknown) =>
+  value === undefined ||
+  value === '' ||
+  value === true ||
+  ['có', 'yes', 'true', '1'].includes(String(value).toLowerCase());
 
 const statusColor = (value: string) => {
   const v = String(value).toLowerCase();
@@ -71,13 +90,20 @@ type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2Se
 
 // ----------------------------------------------------------------------
 
-function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
+function SeoChart({ schema, rows }: { schema: Sofa2SeoSchema; rows: AdminRow[] }) {
   const { chartType, chartTitle, chartSubtitle, chartCategories, chartSeries, chartLabels, chartDonutData } = schema;
 
   if (chartType === 'donut') {
+    const counts = rows.reduce<Record<string, number>>((result, row) => {
+      const label = `${String(row.rule || 'Allow')} — ${String(row.agent || '*')}`;
+      result[label] = (result[label] ?? 0) + 1;
+      return result;
+    }, {});
+    const labels = rows.length ? Object.keys(counts) : chartLabels ?? [];
+    const values = rows.length ? Object.values(counts) : chartDonutData ?? [];
     const donutOptions = useChart({
       colors: PALETTE,
-      labels: chartLabels ?? [],
+      labels,
       stroke: { width: 0 },
       legend: { position: 'bottom', horizontalAlign: 'center' },
       tooltip: { y: { formatter: (val: number) => `${val} quy tắc` } },
@@ -87,7 +113,7 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
         <Chart
           type="donut"
-          series={chartDonutData ?? []}
+          series={values}
           options={donutOptions}
           height={340}
           sx={{ px: 2, pb: 2 }}
@@ -97,9 +123,21 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
   }
 
   if (chartType === 'horizontal-bar') {
+    const categories =
+      schema.kind === 'page' && rows.length
+        ? rows.slice(0, 8).map((row) => String(row.keyword || row.url || 'Trang'))
+        : schema.kind === 'schema' && rows.length
+          ? rows.map((row) => String(row.type || 'Schema'))
+          : chartCategories ?? [];
+    const series =
+      schema.kind === 'page' && rows.length
+        ? [{ name: 'Thứ hạng Google', data: rows.slice(0, 8).map((row) => Number(row.position) || 0) }]
+        : schema.kind === 'schema' && rows.length
+          ? [{ name: 'URL áp dụng', data: rows.map((row) => Number(row.urls) || 0) }]
+          : chartSeries ?? [];
     const hbarOptions = useChart({
       colors: [PALETTE[0]],
-      xaxis: { categories: chartCategories ?? [] },
+      xaxis: { categories },
       plotOptions: { bar: { horizontal: true, barHeight: '55%', borderRadius: 4 } },
       legend: { show: false },
     });
@@ -108,7 +146,7 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
         <Chart
           type="bar"
-          series={chartSeries ?? []}
+          series={series}
           options={hbarOptions}
           height={340}
           sx={{ px: 2, pb: 2 }}
@@ -118,11 +156,22 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
   }
 
   // bar (mặc định)
+  const categories =
+    schema.kind === 'sitemap' && rows.length
+      ? rows.map((row) => String(row.file || 'Sitemap'))
+      : chartCategories ?? [];
+  const series =
+    schema.kind === 'sitemap' && rows.length
+      ? [
+          { name: 'Trang được quản lý', data: rows.map((row) => Number(row.urls) || 0) },
+          { name: 'Đưa vào sitemap', data: rows.map((row) => Number(row.indexed) || 0) },
+        ]
+      : chartSeries ?? [];
   const barOptions = useChart({
     colors: [PALETTE[0], PALETTE[1]],
-    xaxis: { categories: chartCategories ?? [] },
+    xaxis: { categories },
     plotOptions: { bar: { columnWidth: '45%', borderRadius: 4 } },
-    legend: { show: (chartSeries ?? []).length > 1, position: 'top' },
+    legend: { show: series.length > 1, position: 'top' },
   });
 
   return (
@@ -130,7 +179,7 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
       <CardHeader title={chartTitle} subheader={chartSubtitle} />
       <Chart
         type="bar"
-        series={chartSeries ?? []}
+        series={series}
         options={barOptions}
         height={340}
         sx={{ px: 2, pb: 2 }}
@@ -142,10 +191,25 @@ function SeoChart({ schema }: { schema: Sofa2SeoSchema }) {
 // ----------------------------------------------------------------------
 
 export function Sofa2AdminSeoView({ group, module, schema }: Props) {
-  const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa2AdminRows(
-    group.slug,
-    module.slug
-  );
+  const {
+    rows,
+    createRow,
+    updateRow,
+    deleteRow,
+    deleteRows,
+    resetRows,
+    loading,
+    saving,
+    error,
+    retry,
+  } = useSofa2AdminRows(group.slug, module.slug);
+  const categoryRows = useSofa2AdminRows('seo', 'category', { load: false }).rows;
+  const productRows = useSofa2AdminRows('seo', 'product', { load: false }).rows;
+  const collectionRows = useSofa2AdminRows('seo', 'collection', { load: false }).rows;
+  const projectRows = useSofa2AdminRows('seo', 'project', { load: false }).rows;
+  const showroomRows = useSofa2AdminRows('seo', 'showroom', { load: false }).rows;
+  const blogRows = useSofa2AdminRows('seo', 'blog', { load: false }).rows;
+  const brandRows = useSofa2AdminRows('seo', 'brand', { load: false }).rows;
 
   const [search, setSearch] = useState('');
   const [tab, setTab] = useState('all');
@@ -159,6 +223,8 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     open: false,
     index: null,
   });
+  const [bulkConfirm, setBulkConfirm] = useState(false);
+  const [resetConfirm, setResetConfirm] = useState(false);
   const [form, setForm] = useState<FormState>({
     open: false,
     mode: 'create',
@@ -170,6 +236,60 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   const publishLabel = schema.publishLabel ?? 'Đánh dấu tốt';
   const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Cần cải thiện';
   const published = statusOptions[0];
+  const seoPageModules = useMemo(
+    () =>
+      SOFA2_ADMIN_GROUPS.find((item) => item.slug === 'seo')?.modules.filter((item) =>
+        ['category', 'product', 'collection', 'project', 'showroom', 'blog', 'brand'].includes(item.slug)
+      ) ?? [],
+    []
+  );
+  const sitemapPageModules = [
+    { file: 'sitemap-pages.xml', rows: brandRows },
+    { file: 'sitemap-categories.xml', rows: categoryRows },
+    { file: 'sitemap-products.xml', rows: productRows },
+    { file: 'sitemap-collections.xml', rows: collectionRows },
+    { file: 'sitemap-projects.xml', rows: projectRows },
+    { file: 'sitemap-showrooms.xml', rows: showroomRows },
+    { file: 'sitemap-blog.xml', rows: blogRows },
+  ];
+  const enabledSitemapFiles =
+    schema.kind === 'sitemap'
+      ? new Set(
+          rows
+            .filter((row) => !['Lỗi URL', 'Tạm tắt'].includes(String(row.status)))
+            .map((row) => String(row.file))
+        )
+      : new Set<string>();
+  const allManagedPageRows = sitemapPageModules.flatMap((item) => item.rows);
+  const sitemapChartRows = sitemapPageModules.map(({ file, rows: moduleRows }) => ({
+    file,
+    urls: moduleRows.length,
+    indexed: enabledSitemapFiles.has(file)
+      ? moduleRows.filter(
+          (row) => row.status === 'Tốt' && seoFlagOn(row.indexable) && seoFlagOn(row.inSitemap)
+        ).length
+      : 0,
+  }));
+  const sitemapEligiblePageRows = sitemapChartRows.reduce((sum, item) => sum + item.indexed, 0);
+
+  useEffect(() => {
+    if (module.slug !== 'sitemap') return undefined;
+    let active = true;
+    Promise.all(seoPageModules.map((item) => loadSofa2SeoRows(item.slug, item.rows))).catch(
+      (loadError: unknown) => {
+        if (active) {
+          setToast(
+            loadError instanceof Error
+              ? loadError.message
+              : 'Không thể khởi tạo dữ liệu SEO cho sitemap.'
+          );
+        }
+      }
+    );
+    return () => {
+      active = false;
+    };
+  }, [module.slug, seoPageModules]);
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -189,6 +309,51 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     );
 
   const paged = filtered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const pageScores = schema.kind === 'page' ? rows.map((row) => auditSeoPage(row).score) : [];
+  const averageScore = pageScores.length
+    ? Math.round(pageScores.reduce((total, score) => total + score, 0) / pageScores.length)
+    : 0;
+  const missingMetaCount = rows.filter(
+    (row) => !String(row.title ?? '').trim() || !String(row.description ?? '').trim()
+  ).length;
+  const topTenCount = rows.filter((row) => Number(row.position) > 0 && Number(row.position) <= 10).length;
+  const visibleStats = module.stats.map((stat, index) => {
+    const format = (value: number) => value.toLocaleString('vi-VN');
+    if (schema.kind === 'page') {
+      const label = stat.label.toLowerCase();
+      if (label.includes('url')) return { ...stat, value: format(rows.length) };
+      if (label.includes('điểm trung bình')) return { ...stat, value: `${averageScore}/100` };
+      if (label.includes('thiếu meta')) return { ...stat, value: format(missingMetaCount) };
+      if (label.includes('top 10')) return { ...stat, value: format(topTenCount) };
+    }
+    if (schema.kind === 'sitemap') {
+      const errorsCount = rows.filter((row) => ['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
+      const enabledFilesCount = rows.filter((row) => !['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
+      if (index === 0) return { ...stat, value: format(sitemapEligiblePageRows.length) };
+      if (index === 1) return { ...stat, value: format(enabledFilesCount) };
+      if (index === 2) return { ...stat, value: format(errorsCount) };
+      if (index === 3) return { ...stat, value: format(allManagedPageRows.length - sitemapEligiblePageRows.length) };
+    }
+    if (schema.kind === 'robots') {
+      const blocked = rows.filter((row) => row.rule === 'Disallow').length;
+      const agents = new Set(rows.map((row) => String(row.agent || '*'))).size;
+      const disabledRules = rows.filter((row) => row.status === 'Tạm tắt').length;
+      if (index === 0) return { ...stat, value: format(rows.length) };
+      if (index === 1) return { ...stat, value: format(blocked) };
+      if (index === 2) return { ...stat, value: format(agents) };
+      if (index === 3) return { ...stat, value: format(disabledRules) };
+    }
+    if (schema.kind === 'schema') {
+      const urls = rows.reduce((sum, row) => sum + (Number(row.urls) || 0), 0);
+      const warnings = rows.filter((row) => row.status === 'Cảnh báo').length;
+      const errorsCount = rows.filter((row) => row.status === 'Lỗi').length;
+      if (index === 0) return { ...stat, value: format(new Set(rows.map((row) => String(row.type || ''))).size) };
+      if (index === 1) return { ...stat, value: format(urls) };
+      if (index === 2) return { ...stat, value: format(warnings) };
+      if (index === 3) return { ...stat, value: format(errorsCount) };
+    }
+    return stat;
+  });
 
   // ----------------------------------------------------------------------
 
@@ -198,6 +363,9 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
       if (field.type === 'number') values[field.key] = 0;
       else if (field.type === 'switch') values[field.key] = 'Có';
       else if (field.key === statusKey) values[field.key] = defaultDraft;
+      else if (field.key === 'jsonld' && schema.kind === 'schema') {
+        values[field.key] = createJsonLdTemplate(String(values.type || 'WebPage'));
+      }
       else if (field.type === 'date') values[field.key] = sofa2Today();
       else values[field.key] = '';
     });
@@ -205,11 +373,13 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const openCreate = () => {
+    if (loading || saving || error) return;
     setErrors({});
     setForm({ open: true, mode: 'create', index: -1, values: emptyValues() });
   };
 
   const openEdit = (index: number) => {
+    if (loading || saving || error) return;
     setErrors({});
     setForm({ open: true, mode: 'edit', index, values: { ...emptyValues(), ...rows[index] } });
   };
@@ -225,11 +395,120 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
       else if (field.maxLength && value.length > field.maxLength)
         next[field.key] = `Tối đa ${field.maxLength} ký tự (hiện ${value.length})`;
     });
+    if (schema.kind === 'page') {
+      const value = String(form.values.url ?? '').trim();
+      const normalized = value.replace(/\/+$/, '') || '/';
+      if (value && (!value.startsWith('/sofa2/') && value !== '/sofa2')) {
+        next.url = 'URL phải là đường dẫn nội bộ bắt đầu bằng /sofa2/.';
+      } else if (value && /[?#\s]/.test(value)) {
+        next.url = 'URL không được chứa query, hash hoặc khoảng trắng.';
+      } else if (
+        value &&
+        rows.some(
+          (row, index) =>
+            index !== (form.mode === 'edit' ? form.index : -1) &&
+            String(row.url ?? '').replace(/\/+$/, '') === normalized
+        )
+      ) {
+        next.url = 'URL này đã có trong danh sách SEO của module.';
+      }
+    }
+    if (schema.kind === 'schema') {
+      const result = validateJsonLd(String(form.values.jsonld ?? ''));
+      if (!result.ok) next.jsonld = result.message;
+      const url = String(form.values.url ?? '').trim();
+      if (url && url !== '/sofa2' && !url.startsWith('/sofa2/')) {
+        next.url = 'URL cụ thể phải bắt đầu bằng /sofa2/.';
+      }
+      if (result.ok) {
+        try {
+          const data = JSON.parse(String(form.values.jsonld ?? ''));
+          const nodes = Array.isArray(data)
+            ? data
+            : Array.isArray(data['@graph'])
+              ? data['@graph']
+              : [data];
+          const expectedType = String(form.values.type ?? '');
+          if (
+            expectedType &&
+            nodes.some((node: Record<string, unknown>) => {
+              const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
+              return !types.includes(expectedType);
+            })
+          ) {
+            next.jsonld = `JSON-LD cần có loại "${expectedType}" khớp với trường Loại schema.`;
+          }
+        } catch {
+          // validateJsonLd đã báo lỗi cú pháp ở trên.
+        }
+      }
+      const duplicate = rows.some(
+        (row, index) =>
+          index !== (form.mode === 'edit' ? form.index : -1) &&
+          row.scope === form.values.scope &&
+          row.type === form.values.type &&
+          String(row.url ?? '') === url
+      );
+      if (duplicate) next.url = 'Schema cùng loại và phạm vi/URL này đã tồn tại.';
+    }
+    if (schema.kind === 'sitemap') {
+      const file = String(form.values.file ?? '');
+      if (file && rows.some(
+        (row, index) =>
+          index !== (form.mode === 'edit' ? form.index : -1) &&
+          String(row.file ?? '') === file
+      )) {
+        next.file = 'Tệp sitemap này đã được cấu hình.';
+      }
+    }
+    if (schema.kind === 'robots') {
+      const agent = String(form.values.agent ?? '').trim();
+      const path = String(form.values.path ?? '').trim();
+      if (agent && !/^[A-Za-z0-9_*.-]{1,120}$/.test(agent)) {
+        next.agent = 'User-agent chỉ gồm chữ, số, dấu chấm, gạch dưới hoặc dấu gạch ngang.';
+      }
+      if (path && (!path.startsWith('/') || /[\r\n]/.test(path))) {
+        next.path = 'Đường dẫn phải bắt đầu bằng / và không được chứa xuống dòng.';
+      }
+      if (
+        rows.some(
+          (row, index) =>
+            index !== (form.mode === 'edit' ? form.index : -1) &&
+            String(row.agent ?? '*') === agent &&
+            String(row.rule ?? '') === String(form.values.rule ?? '') &&
+            String(row.path ?? '') === path
+        )
+      ) {
+        next.path = 'Quy tắc này đã tồn tại.';
+      }
+    }
+    ['canonical', 'ogImage'].forEach((key) => {
+      const value = String(form.values[key] ?? '').trim();
+      if (!value) return;
+      try {
+        const base = key === 'canonical' ? SOFA2_SITE_ORIGIN : window.location.origin;
+        const parsed = new URL(value, base);
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+          next[key] = 'Chỉ chấp nhận URL HTTP hoặc HTTPS.';
+        } else if (
+          key === 'canonical' &&
+          (parsed.origin !== SOFA2_SITE_ORIGIN ||
+            !(parsed.pathname === '/sofa2' || parsed.pathname.startsWith('/sofa2/')) ||
+            parsed.search ||
+            parsed.hash)
+        ) {
+          next[key] = 'Canonical phải thuộc website LUXE Sofa, nằm trong /sofa2 và không có query/hash.';
+        }
+      } catch {
+        next[key] = 'URL không hợp lệ.';
+      }
+    });
     setErrors(next);
     return Object.keys(next).length === 0;
   };
 
   const submitForm = () => {
+    if (loading || saving || error) return;
     if (!validate()) return;
 
     const clean: AdminRow = { ...form.values };
@@ -250,6 +529,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const togglePublish = (index: number) => {
+    if (loading || saving || error) return;
     const row = rows[index];
     const isPublished = String(row[statusKey]) === published;
     const next = isPublished ? defaultDraft : published;
@@ -258,18 +538,27 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const duplicateRow = (index: number) => {
+    if (loading || saving || error) return;
     const row = rows[index];
     const copy: AdminRow = {
       ...row,
       [titleKey]: `${row[titleKey]} (bản sao)`,
       [statusKey]: defaultDraft,
     };
-    createRow(copy);
-    setToast(`Đã nhân bản ${entity}.`);
+    if (schema.kind === 'page') copy.url = '';
+    if (schema.kind === 'sitemap') copy.file = '';
+    if (schema.kind === 'robots') copy.path = '';
+    if (schema.kind === 'schema') {
+      copy.url = '';
+      copy.type = row.type;
+    }
+    setErrors({});
+    setForm({ open: true, mode: 'create', index: -1, values: { ...emptyValues(), ...copy } });
+    setToast(`Đã mở bản sao ${entity}; hãy kiểm tra và lưu.`);
   };
 
   const doDelete = () => {
-    if (confirm.index !== null) {
+    if (!loading && !saving && !error && confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
       setToast(`Đã xoá ${entity}.`);
@@ -277,7 +566,25 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     setConfirm({ open: false, index: null });
   };
 
+  const doBulkDelete = () => {
+    if (loading || saving || error) return;
+    const count = selected.length;
+    deleteRows(selected);
+    setSelected([]);
+    setBulkConfirm(false);
+    setToast(`Đã xoá ${count} ${entity}.`);
+  };
+
+  const doReset = () => {
+    if (loading || saving || error) return;
+    resetRows(module.rows);
+    setSelected([]);
+    setResetConfirm(false);
+    setToast('Đã khôi phục dữ liệu gốc.');
+  };
+
   const bulkPublish = () => {
+    if (loading || saving || error) return;
     selected
       .slice()
       .sort((a, b) => a - b)
@@ -322,6 +629,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
           control={
             <Switch
               checked={String(value) === 'Có'}
+            disabled={loading || saving || !!error}
               onChange={(e) => setValue(field.key, e.target.checked ? 'Có' : 'Không')}
             />
           }
@@ -340,6 +648,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
         type={field.type === 'number' ? 'number' : 'text'}
         label={field.label}
         value={value}
+        disabled={loading || saving || !!error}
         error={!!error}
         placeholder={field.placeholder}
         helperText={
@@ -381,7 +690,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
       >
         <Grid container spacing={3}>
           {/* KPI cards */}
-          {module.stats.map((stat) => (
+          {visibleStats.map((stat) => (
             <Grid key={stat.label} xs={6} md={3}>
               <Card sx={{ p: 2.5 }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
@@ -401,9 +710,29 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             </Grid>
           ))}
 
+          {(loading || saving || error) && (
+            <Grid xs={12}>
+              <Alert
+                severity={error ? 'error' : 'info'}
+                action={
+                  error ? (
+                    <Button color="inherit" size="small" onClick={retry}>
+                      Tải lại
+                    </Button>
+                  ) : undefined
+                }
+              >
+                {error || (loading ? 'Đang tải dữ liệu SEO từ máy chủ…' : 'Đang lưu thay đổi SEO…')}
+              </Alert>
+            </Grid>
+          )}
+
           {/* Chart */}
           <Grid xs={12}>
-            <SeoChart schema={schema} />
+            <SeoChart
+              schema={schema}
+              rows={schema.kind === 'sitemap' ? sitemapChartRows : rows}
+            />
           </Grid>
 
           {schema.kind && schema.kind !== 'page' && (
@@ -461,6 +790,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                         color="success"
                         variant="outlined"
                         onClick={bulkPublish}
+                        disabled={loading || saving || !!error}
                         startIcon={<Iconify icon="solar:check-circle-bold-duotone" />}
                       >
                         {publishLabel} ({selected.length})
@@ -469,11 +799,8 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                         size="small"
                         color="error"
                         variant="outlined"
-                        onClick={() => {
-                          deleteRows(selected);
-                          setToast(`Đã xoá ${selected.length} ${entity}.`);
-                          setSelected([]);
-                        }}
+                        onClick={() => setBulkConfirm(true)}
+                        disabled={loading || saving || !!error}
                         startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
                       >
                         Xoá ({selected.length})
@@ -484,11 +811,8 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     size="small"
                     variant="outlined"
                     color="inherit"
-                    onClick={() => {
-                      resetRows(module.rows);
-                      setSelected([]);
-                      setToast('Đã khôi phục dữ liệu gốc.');
-                    }}
+                    onClick={() => setResetConfirm(true)}
+                    disabled={loading || saving || !!error}
                     startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
                   >
                     Khôi phục
@@ -498,6 +822,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     variant="outlined"
                     color="inherit"
                     onClick={exportCsv}
+                    disabled={loading || saving || !!error}
                     startIcon={<Iconify icon="solar:export-bold-duotone" />}
                   >
                     Xuất CSV
@@ -507,6 +832,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     variant="contained"
                     color="inherit"
                     onClick={openCreate}
+                    disabled={loading || saving || !!error}
                     sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
                     startIcon={<Iconify icon="mingcute:add-line" />}
                   >
@@ -522,6 +848,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={allOnPage}
+                          disabled={loading || saving || !!error}
                           onChange={() =>
                             setSelected(allOnPage ? [] : paged.map(({ index }) => index))
                           }
@@ -541,6 +868,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                         <TableCell padding="checkbox">
                           <Checkbox
                             checked={selected.includes(index)}
+                            disabled={loading || saving || !!error}
                             onChange={() => toggleSelect(index)}
                           />
                         </TableCell>
@@ -582,12 +910,15 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                           <Switch
                             size="small"
                             checked={String(row[statusKey]) === published}
+                            disabled={loading || saving || !!error}
                             onChange={() => togglePublish(index)}
                           />
                         </TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            {schema.kind === 'page' && String(row.url ?? '').startsWith('/') && (
+                            {schema.kind === 'page' &&
+                              (String(row.url ?? '') === '/sofa2' ||
+                                String(row.url ?? '').startsWith('/sofa2/')) && (
                               <Tooltip title="Mở trang khách">
                                 <IconButton size="small" href={String(row.url)} target="_blank">
                                   <Iconify icon="solar:square-top-down-bold-duotone" width={18} />
@@ -600,12 +931,12 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Sửa">
-                              <IconButton size="small" onClick={() => openEdit(index)}>
+                              <IconButton size="small" disabled={loading || saving || !!error} onClick={() => openEdit(index)}>
                                 <Iconify icon="solar:pen-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Nhân bản">
-                              <IconButton size="small" onClick={() => duplicateRow(index)}>
+                              <IconButton size="small" disabled={loading || saving || !!error} onClick={() => duplicateRow(index)}>
                                 <Iconify icon="solar:copy-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
@@ -613,6 +944,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                               <IconButton
                                 size="small"
                                 color="error"
+                                disabled={loading || saving || !!error}
                                 onClick={() => setConfirm({ open: true, index })}
                               >
                                 <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
@@ -697,7 +1029,12 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                 onApplyStatus={(st) => setValue(statusKey, st)}
               />
             )}
-            {schema.kind === 'schema' && <SchemaJsonAssistant values={form.values} />}
+            {schema.kind === 'schema' && (
+              <SchemaJsonAssistant
+                values={form.values}
+                onApplyTemplate={(jsonld) => setValue('jsonld', jsonld)}
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -707,6 +1044,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
           <Button
             color="inherit"
             variant="outlined"
+            disabled={loading || saving || !!error}
             onClick={() => {
               setValue(statusKey, defaultDraft);
               setTimeout(submitForm, 0);
@@ -717,6 +1055,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
           <Button
             variant="contained"
             color="inherit"
+            disabled={loading || saving || !!error}
             onClick={submitForm}
             sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
           >
@@ -754,16 +1093,47 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
         <DialogTitle>{`Xoá ${entity}?`}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục" để nạp
-            lại dữ liệu gốc.
+            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Thao tác này chỉ có thể hoàn tác
+            bằng cách khôi phục dữ liệu gốc.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={() => setConfirm({ open: false, index: null })}>
             Huỷ
           </Button>
-          <Button color="error" variant="contained" onClick={doDelete}>
+          <Button color="error" variant="contained" disabled={loading || saving || !!error} onClick={doDelete}>
             Xoá
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={bulkConfirm} onClose={() => setBulkConfirm(false)}>
+        <DialogTitle>{`Xoá ${selected.length} ${entity}?`}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Tất cả bản ghi đã chọn sẽ bị xoá khỏi cơ sở dữ liệu SEO. Hãy xác nhận trước khi tiếp tục.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setBulkConfirm(false)}>Huỷ</Button>
+          <Button color="error" variant="contained" disabled={loading || saving || !!error} onClick={doBulkDelete}>
+            Xoá bản ghi
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={resetConfirm} onClose={() => setResetConfirm(false)}>
+        <DialogTitle>Khôi phục dữ liệu mẫu?</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Thao tác này thay thế toàn bộ dữ liệu {module.name.toLowerCase()} hiện tại bằng dữ liệu
+            mẫu, không chỉ bổ sung phần còn thiếu. Hãy xuất CSV trước nếu cần lưu bản sao.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setResetConfirm(false)}>Huỷ</Button>
+          <Button color="error" variant="contained" disabled={loading || saving || !!error} onClick={doReset}>
+            Thay thế dữ liệu
           </Button>
         </DialogActions>
       </Dialog>

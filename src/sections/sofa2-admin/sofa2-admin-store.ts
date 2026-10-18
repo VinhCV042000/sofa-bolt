@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
 
@@ -16,6 +16,9 @@ const canonicalModule = (group: string, module: string) =>
 const key = (group: string, module: string) => `${group}/${canonicalModule(group, module)}`;
 
 const store: Store = {};
+const savedSeoRows = new Map<string, AdminRow[]>();
+const seoWriteQueues = new Map<string, Promise<AdminRow[]>>();
+const seoWriteRevisions = new Map<string, number>();
 
 const STORAGE_KEY = 'sofa2-admin-rows-v1';
 
@@ -112,6 +115,60 @@ const emit = () => {
 export const getSofa2AdminRows = (groupSlug: string, moduleSlug: string) =>
   store[key(groupSlug, moduleSlug)] ?? [];
 
+export async function loadSofa2SeoRows(moduleSlug: string, defaults: AdminRow[]) {
+  const k = key('seo', moduleSlug);
+  const response = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}`, {
+    credentials: 'include',
+  });
+  if (!response.ok) throw new Error('Không tải được dữ liệu SEO. Hãy đăng nhập bằng tài khoản quản trị.');
+
+  let payload = (await response.json()) as { rows?: AdminRow[]; initialized?: boolean };
+  if (!payload.initialized) {
+    const seeded = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}/seed`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows: store[k] ?? defaults }),
+    });
+    if (!seeded.ok) throw new Error('Không khởi tạo được dữ liệu SEO trên máy chủ.');
+    payload = (await seeded.json()) as { rows?: AdminRow[]; initialized?: boolean };
+  }
+
+  const nextRows = (payload.rows ?? []).map((row) => ({ ...row }));
+  store[k] = nextRows;
+  savedSeoRows.set(k, nextRows.map((row) => ({ ...row })));
+  emit();
+  return nextRows;
+}
+
+export async function syncSofa2SeoRows(moduleSlug: string, rows: AdminRow[]) {
+  const k = key('seo', moduleSlug);
+  const previous = seoWriteQueues.get(k) ?? Promise.resolve([]);
+  const next = previous
+    .catch(() => [])
+    .then(async () => {
+      const response = await fetch(`/api/admin/seo/${encodeURIComponent(moduleSlug)}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows }),
+      });
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(payload.error || 'Không lưu được dữ liệu SEO trên máy chủ.');
+      }
+      const payload = (await response.json()) as { rows?: AdminRow[] };
+      return (payload.rows ?? rows).map((row) => ({ ...row }));
+    });
+
+  seoWriteQueues.set(k, next);
+  try {
+    return await next;
+  } finally {
+    if (seoWriteQueues.get(k) === next) seoWriteQueues.delete(k);
+  }
+}
+
 export async function loadSofa2DealerRows(moduleSlug: string, defaults: AdminRow[]) {
   if (moduleSlug !== 'dashboard') {
     const dashboard = SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'dealer')
@@ -162,13 +219,77 @@ const subscribe = (listener: () => void) => {
   };
 };
 
-export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
+export function useSofa2AdminRows(
+  groupSlug: string,
+  moduleSlug: string,
+  options: { load?: boolean } = {}
+) {
   const k = key(groupSlug, moduleSlug);
+  const isSeoModule = groupSlug === 'seo';
+  const shouldLoad = isSeoModule && options.load !== false;
+  const [loading, setLoading] = useState(shouldLoad);
+  const [error, setError] = useState('');
+  const [pendingWrites, setPendingWrites] = useState(0);
+  const [reloadToken, setReloadToken] = useState(0);
 
   const rows = useSyncExternalStore(
     subscribe,
     () => store[k] ?? EMPTY,
     () => store[k] ?? EMPTY
+  );
+
+  useEffect(() => {
+    if (!shouldLoad) {
+      setLoading(false);
+      return undefined;
+    }
+
+    let active = true;
+    setLoading(true);
+    setError('');
+    loadSofa2SeoRows(moduleSlug, store[k] ?? [])
+      .catch((loadError: unknown) => {
+        if (active) {
+          setError(
+            loadError instanceof Error ? loadError.message : 'Không tải được dữ liệu SEO.'
+          );
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [shouldLoad, k, moduleSlug, reloadToken]);
+
+  const persistSeoRows = useCallback(
+    (nextRows: AdminRow[], previousRows: AdminRow[]) => {
+      if (!isSeoModule) return;
+      const revision = (seoWriteRevisions.get(k) ?? 0) + 1;
+      seoWriteRevisions.set(k, revision);
+      setPendingWrites((count) => count + 1);
+      setError('');
+
+      void syncSofa2SeoRows(moduleSlug, nextRows)
+        .then((savedRows) => {
+          savedSeoRows.set(k, savedRows.map((row) => ({ ...row })));
+          if (seoWriteRevisions.get(k) === revision) {
+            store[k] = savedRows;
+            emit();
+          }
+        })
+        .catch((saveError: unknown) => {
+          if (seoWriteRevisions.get(k) === revision) {
+            store[k] = (savedSeoRows.get(k) ?? previousRows).map((row) => ({ ...row }));
+            emit();
+            setError(saveError instanceof Error ? saveError.message : 'Không lưu được dữ liệu SEO.');
+          }
+        })
+        .finally(() => setPendingWrites((count) => Math.max(0, count - 1)));
+    },
+    [isSeoModule, k, moduleSlug]
   );
 
   const createRow = useCallback(
@@ -180,7 +301,8 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
       if (k === key('hr', 'submit-cv') && !nextRow.applicationId) {
         nextRow.applicationId = `APP-${Date.now().toString(36).toUpperCase()}`;
       }
-      store[k] = [nextRow, ...(store[k] ?? [])];
+      const previousRows = store[k] ?? [];
+      store[k] = [nextRow, ...previousRows];
       if (k === key('hr', 'submit-cv')) {
         const jobId = String(nextRow.jobId ?? '');
         const jobTitle = String(nextRow.job ?? '');
@@ -214,13 +336,15 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
         }
       }
       emit();
+      persistSeoRows(store[k], previousRows);
     },
-    [k]
+    [k, persistSeoRows]
   );
 
   const updateRow = useCallback(
     (index: number, row: AdminRow) => {
       const next = [...(store[k] ?? [])];
+      const previousRows = next.map((item) => ({ ...item }));
       const previous = next[index];
       next[index] = { ...row };
       store[k] = next;
@@ -264,46 +388,64 @@ export function useSofa2AdminRows(groupSlug: string, moduleSlug: string) {
         }
       }
       emit();
+      persistSeoRows(next, previousRows);
     },
-    [k]
+    [k, persistSeoRows]
   );
 
   const deleteRow = useCallback(
     (index: number) => {
       const currentRows = store[k] ?? [];
+      const previousRows = currentRows.map((item) => ({ ...item }));
       const removed = currentRows[index];
       store[k] = currentRows.filter((_, i) => i !== index);
       if (removed && (k === key('hr', 'submit-cv') || k === key('hr', 'applicant-profile'))) {
         removeLinkedApplications(k === key('hr', 'submit-cv') ? 'submit-cv' : 'applicant-profile', [removed]);
       }
       emit();
+      persistSeoRows(store[k], previousRows);
     },
-    [k]
+    [k, persistSeoRows]
   );
 
   const deleteRows = useCallback(
     (indexes: number[]) => {
       const set = new Set(indexes);
       const currentRows = store[k] ?? [];
+      const previousRows = currentRows.map((item) => ({ ...item }));
       const removed = currentRows.filter((_, i) => set.has(i));
       store[k] = currentRows.filter((_, i) => !set.has(i));
       if (k === key('hr', 'submit-cv') || k === key('hr', 'applicant-profile')) {
         removeLinkedApplications(k === key('hr', 'submit-cv') ? 'submit-cv' : 'applicant-profile', removed);
       }
       emit();
+      persistSeoRows(store[k], previousRows);
     },
-    [k]
+    [k, persistSeoRows]
   );
 
   const resetRows = useCallback(
     (initial: AdminRow[]) => {
+      const previousRows = (store[k] ?? []).map((row) => ({ ...row }));
       store[k] = initial.map((row) => ({ ...row }));
       emit();
+      persistSeoRows(store[k], previousRows);
     },
-    [k]
+    [k, persistSeoRows]
   );
 
-  return { rows, createRow, updateRow, deleteRow, deleteRows, resetRows };
+  return {
+    rows,
+    createRow,
+    updateRow,
+    deleteRow,
+    deleteRows,
+    resetRows,
+    loading,
+    saving: pendingWrites > 0,
+    error,
+    retry: () => setReloadToken((token) => token + 1),
+  };
 }
 
 const EMPTY: AdminRow[] = [];

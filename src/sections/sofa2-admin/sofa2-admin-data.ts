@@ -2698,34 +2698,27 @@ const seoPage = (slug: string, name: string, sample: string) =>
     [
       {
         url: sample,
-        title: `${name} – LUXE Sofa`,
-        keyword: 'sofa scandinavian',
-        position: 4,
-        status: 'Tốt',
-      },
-      {
-        url: `${sample}/oslo`,
-        title: 'Sofa Oslo 3 chỗ gỗ sồi',
-        keyword: 'sofa oslo',
-        position: 7,
-        status: 'Tốt',
-      },
-      {
-        url: `${sample}/berlin`,
-        title: '',
-        keyword: 'soa góc industrial',
-        position: 16,
-        status: 'Thiếu meta',
-      },
-      {
-        url: `${sample}/copenhagen`,
-        title: 'Sofa Copenhagen linen tự nhiên',
-        keyword: 'sofa linen',
-        position: 11,
+        title: `${name} - LUXE Sofa`,
+        description: `Khám phá ${name.toLowerCase()} và các sản phẩm sofa thiết kế tại LUXE Sofa.`,
+        keyword: name.replace(/^Trang\s+/i, '').toLowerCase(),
+        h1: name,
+        canonical: `https://luxesofa.vn${sample}`,
+        ogTitle: `${name} - LUXE Sofa`,
+        ogDescription: `Thông tin ${name.toLowerCase()} từ LUXE Sofa.`,
+        internalLinks: 3,
+        position: 0,
+        impressions: 0,
+        clicks: 0,
+        ctr: '0%',
+        indexable: 'Có',
+        follow: 'Có',
+        inSitemap: 'Có',
         status: 'Cần cải thiện',
+        updated: '2026-10-18',
+        author: 'SEO',
       },
     ],
-    ['Quét SEO', 'Xuất báo cáo']
+    ['Thêm URL']
   );
 
 const SEO_GROUP: Sofa2AdminGroup = {
@@ -2733,12 +2726,12 @@ const SEO_GROUP: Sofa2AdminGroup = {
   name: 'SEO',
   icon: 'solar:graph-new-bold-duotone',
   modules: [
-    seoPage('category', 'Trang danh mục', '/sofa2/products/category'),
-    seoPage('product', 'Trang sản phẩm', '/sofa2/products'),
-    seoPage('collection', 'Trang bộ sưu tập', '/sofa2/collections'),
-    seoPage('project', 'Trang dự án', '/sofa2/projects'),
-    seoPage('showroom', 'Trang showroom', '/sofa2/showrooms'),
-    seoPage('blog', 'Trang blog', '/sofa2/blog'),
+    seoPage('category', 'Trang danh mục', '/sofa2/products/category/sofa-goc-chu-l'),
+    seoPage('product', 'Trang sản phẩm', '/sofa2/products/1'),
+    seoPage('collection', 'Trang bộ sưu tập', '/sofa2/collections/new'),
+    seoPage('project', 'Trang dự án', '/sofa2/projects/1'),
+    seoPage('showroom', 'Trang showroom', '/sofa2/showrooms/1'),
+    seoPage('blog', 'Trang blog', '/sofa2/blog/cach-chon-sofa-scandinavia'),
     seoPage('brand', 'Trang thương hiệu', '/sofa2/about'),
     mod(
       'sitemap',
@@ -2746,24 +2739,26 @@ const SEO_GROUP: Sofa2AdminGroup = {
       'Sơ đồ site XML gửi tới công cụ tìm kiếm.',
       'solar:sitemap-bold-duotone',
       [
-        { label: 'URL trong sitemap', value: '1.428' },
-        { label: 'Đã index', value: '1.362' },
-        { label: 'Lỗi', value: '3' },
-        { label: 'Cập nhật cuối', value: '14/09' },
+        { label: 'URL đủ điều kiện', value: '0' },
+        { label: 'Tệp sitemap bật', value: '7' },
+        { label: 'Tệp lỗi hoặc tắt', value: '0' },
+        { label: 'Trang chưa vào sitemap', value: '7' },
       ],
       [
         { key: 'file', label: 'Tệp sitemap' },
-        { key: 'urls', label: 'Số URL', type: 'number' },
-        { key: 'indexed', label: 'Đã index', type: 'number' },
         STATUS_COL,
+        { key: 'updated', label: 'Cập nhật' },
       ],
       [
-        { file: 'sitemap-products.xml', urls: 428, indexed: 418, status: 'Hợp lệ' },
-        { file: 'sitemap-categories.xml', urls: 24, indexed: 24, status: 'Hợp lệ' },
-        { file: 'sitemap-blog.xml', urls: 142, indexed: 136, status: 'Hợp lệ' },
-        { file: 'sitemap-pages.xml', urls: 48, indexed: 44, status: '3 URL lỗi' },
+        { file: 'sitemap-pages.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-categories.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-products.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-collections.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-projects.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-showrooms.xml', status: 'Hợp lệ', updated: '18/10/2026' },
+        { file: 'sitemap-blog.xml', status: 'Hợp lệ', updated: '18/10/2026' },
       ],
-      ['Tạo lại sitemap', 'Gửi Search Console']
+      ['Thêm tệp sitemap']
     ),
     mod(
       'robots',
@@ -2771,10 +2766,10 @@ const SEO_GROUP: Sofa2AdminGroup = {
       'Quy tắc thu thập dữ liệu cho từng bot.',
       'solar:shield-check-bold-duotone',
       [
-        { label: 'Quy tắc', value: '12' },
-        { label: 'Đường dẫn chặn', value: '7' },
-        { label: 'Bot cho phép', value: '4' },
-        { label: 'Cập nhật cuối', value: '02/09' },
+        { label: 'Quy tắc', value: '8' },
+        { label: 'Đường dẫn chặn', value: '6' },
+        { label: 'Bot quản lý', value: '2' },
+        { label: 'Quy tắc đang tắt', value: '0' },
       ],
       [
         { key: 'agent', label: 'User-agent' },
@@ -2785,10 +2780,14 @@ const SEO_GROUP: Sofa2AdminGroup = {
       [
         { agent: '*', rule: 'Allow', path: '/', status: 'Hoạt động' },
         { agent: '*', rule: 'Disallow', path: '/sofa2/admin', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa2/account', status: 'Hoạt động' },
         { agent: '*', rule: 'Disallow', path: '/sofa2/cart', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa2/checkout', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/sofa2/payment', status: 'Hoạt động' },
+        { agent: '*', rule: 'Disallow', path: '/*?sort=', status: 'Hoạt động' },
         { agent: 'Googlebot', rule: 'Allow', path: '/', status: 'Hoạt động' },
       ],
-      ['Sửa robots.txt']
+      ['Thêm quy tắc']
     ),
     mod(
       'schema',
@@ -2808,13 +2807,61 @@ const SEO_GROUP: Sofa2AdminGroup = {
         STATUS_COL,
       ],
       [
-        { type: 'Product', scope: 'Trang sản phẩm', urls: 428, status: 'Hợp lệ' },
-        { type: 'BreadcrumbList', scope: 'Toàn site', urls: 1248, status: 'Hợp lệ' },
-        { type: 'Article', scope: 'Blog', urls: 142, status: '2 cảnh báo' },
-        { type: 'LocalBusiness', scope: 'Showroom', urls: 12, status: 'Hợp lệ' },
-        { type: 'FAQPage', scope: 'Trang FAQ', urls: 1, status: 'Hợp lệ' },
+        {
+          type: 'Product',
+          scope: 'Trang sản phẩm',
+          urls: 1,
+          jsonld: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'Sofa Oslo 3 Chỗ',
+            description: 'Sofa Scandinavian với vải linen và khung gỗ sồi FSC.',
+            sku: 'LUXE-1',
+            offers: { '@type': 'Offer', priceCurrency: 'VND', price: 14500000 },
+          }, null, 2),
+          validation: 'Hợp lệ',
+          status: 'Hợp lệ',
+        },
+        {
+          type: 'BreadcrumbList',
+          scope: 'Toàn site',
+          urls: 7,
+          jsonld: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Trang chủ', item: 'https://luxesofa.vn/sofa2' }],
+          }, null, 2),
+          validation: 'Hợp lệ',
+          status: 'Hợp lệ',
+        },
+        {
+          type: 'Article',
+          scope: 'Blog',
+          urls: 1,
+          jsonld: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Cách chọn sofa Scandinavia cho phòng khách nhỏ',
+            author: { '@type': 'Person', name: 'Nguyễn Minh Anh' },
+          }, null, 2),
+          validation: 'Hợp lệ',
+          status: 'Hợp lệ',
+        },
+        {
+          type: 'FurnitureStore',
+          scope: 'Showroom',
+          urls: 1,
+          jsonld: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FurnitureStore',
+            name: 'LUXE Sofa Hà Nội',
+            telephone: '024 3855 1234',
+          }, null, 2),
+          validation: 'Hợp lệ',
+          status: 'Hợp lệ',
+        },
       ],
-      ['Kiểm tra schema']
+      ['Thêm schema']
     ),
   ],
 };

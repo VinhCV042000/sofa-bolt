@@ -22,6 +22,29 @@ const DEALER_MODULES = new Set([
   'sales-docs',
 ]);
 const RECORD_MODULES = new Set(['price-policy', 'quotes', 'dealer-orders', 'debts', 'sales-docs']);
+const SEO_MODULES = new Set([
+  'category',
+  'product',
+  'collection',
+  'project',
+  'showroom',
+  'blog',
+  'brand',
+  'sitemap',
+  'robots',
+  'schema',
+]);
+const SEO_PAGE_MODULES = ['category', 'product', 'collection', 'project', 'showroom', 'blog', 'brand'];
+const SEO_SITE_ORIGIN = (process.env.SOFA2_SITE_ORIGIN || 'https://luxesofa.vn').replace(/\/+$/, '');
+const SEO_SITEMAP_ROUTES = [
+  { file: 'sitemap-pages.xml', module: 'brand' },
+  { file: 'sitemap-categories.xml', module: 'category' },
+  { file: 'sitemap-products.xml', module: 'product' },
+  { file: 'sitemap-collections.xml', module: 'collection' },
+  { file: 'sitemap-projects.xml', module: 'project' },
+  { file: 'sitemap-showrooms.xml', module: 'showroom' },
+  { file: 'sitemap-blog.xml', module: 'blog' },
+] as const;
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL is required for the dealer portal API.');
@@ -66,6 +89,138 @@ function validRows(value: unknown): Record<string, unknown>[] | null {
   if (!Array.isArray(value) || value.length > 1000) return null;
   if (!value.every((row) => row && typeof row === 'object' && !Array.isArray(row))) return null;
   return value as Record<string, unknown>[];
+}
+
+async function readSeoModule(module: string): Promise<Record<string, unknown>[] | null> {
+  const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
+  if (!result.rows.length) return null;
+  return validRows(result.rows[0].rows) ?? [];
+}
+
+function escapeXml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function validJsonLd(value: unknown) {
+  if (!value || typeof value !== 'object') return false;
+  const data = value as Record<string, unknown>;
+  const nodes = Array.isArray(value)
+    ? value
+    : Array.isArray(data['@graph'])
+      ? data['@graph'] as unknown[]
+      : [value];
+  if (!nodes.length) return false;
+  const hasContext = !!data['@context'] || nodes.every(
+    (node) => !!node && typeof node === 'object' && !!(node as Record<string, unknown>)['@context']
+  );
+  return hasContext && nodes.every(
+    (node) => !!node && typeof node === 'object' && !!(node as Record<string, unknown>)['@type']
+  );
+}
+
+function seoPath(value: unknown) {
+  const raw = asText(value, 2048);
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, SEO_SITE_ORIGIN);
+    if (url.origin !== SEO_SITE_ORIGIN || !(url.pathname === '/sofa2' || url.pathname.startsWith('/sofa2/'))) return '';
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return '';
+  }
+}
+
+function publishedSeoRows(rows: Record<string, unknown>[]) {
+  return rows.filter((row) => row.status === 'Tốt');
+}
+
+async function buildSeoSitemap(module: string) {
+  const rows = (await readSeoModule(module)) ?? [];
+  const urls = publishedSeoRows(rows)
+    .filter((row) => isEnabled(row.indexable) && isEnabled(row.inSitemap))
+    .map((row) => {
+      const pathname = seoPath(row.url);
+      if (!pathname || pathname.includes('?')) return '';
+      const canonical = asText(row.canonical, 2048);
+      const loc = canonical ? seoPath(canonical) : pathname;
+      if (!loc || loc.includes('?')) return '';
+      const parsed = new URL(loc, SEO_SITE_ORIGIN);
+      const updated = asText(row.updated, 40);
+      const isoDate = /^\d{4}-\d{2}-\d{2}$/.test(updated)
+        ? updated
+        : updated.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+          ? `${updated.slice(6)}-${updated.slice(3, 5)}-${updated.slice(0, 2)}`
+          : '';
+      const lastmod = isoDate ? `\n    <lastmod>${isoDate}</lastmod>` : '';
+      return `  <url>\n    <loc>${escapeXml(parsed.href)}</loc>${lastmod}\n  </url>`;
+    })
+    .filter(Boolean);
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls,
+    '</urlset>',
+  ].join('\n');
+}
+
+async function buildSeoSitemapIndex() {
+  const configured = await readSeoModule('sitemap');
+  const enabledFiles = configured
+    ? new Set(
+        configured
+          .filter((row) => row.status !== 'Lỗi URL' && row.status !== 'Tạm tắt')
+          .map((row) => asText(row.file, 100))
+      )
+    : new Set(SEO_SITEMAP_ROUTES.map(({ file }) => file));
+  const items = SEO_SITEMAP_ROUTES.filter(({ file }) => enabledFiles.has(file)).map(
+    ({ file }) => `  <sitemap>\n    <loc>${escapeXml(`${SEO_SITE_ORIGIN}/${file}`)}</loc>\n  </sitemap>`
+  );
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...items,
+    '</sitemapindex>',
+  ].join('\n');
+}
+
+async function buildSeoRobotsTxt() {
+  const rows = (await readSeoModule('robots')) ?? [];
+  const active = rows.filter((row) => row.status === 'Hoạt động');
+  const byAgent = new Map<string, Record<string, unknown>[]>();
+  active.forEach((row) => {
+    const agent = asText(row.agent, 120) || '*';
+    byAgent.set(agent, [...(byAgent.get(agent) ?? []), row]);
+  });
+  const blocks = [...byAgent.entries()].map(([agent, rules]) => {
+    const safeAgent = /^[A-Za-z0-9_*.-]{1,120}$/.test(agent) ? agent : '*';
+    const lines = [`User-agent: ${safeAgent}`];
+    rules.forEach((row) => {
+      const rule = ['Allow', 'Disallow'].includes(asText(row.rule, 20)) ? asText(row.rule, 20) : 'Disallow';
+      const path = asText(row.path, 500).replace(/[\r\n]/g, '');
+      const comment = asText(row.comment, 500).replace(/[\r\n]/g, ' ');
+      if (comment) lines.push(`# ${comment}`);
+      if (path.startsWith('/')) lines.push(`${rule}: ${path}`);
+    });
+    const delay = Math.max(0, ...rules.map((row) => Number(row.crawlDelay) || 0));
+    if (delay) lines.push(`Crawl-delay: ${delay}`);
+    return lines.join('\n');
+  });
+  const safeDefault = [
+    'User-agent: *',
+    'Allow: /',
+    'Disallow: /sofa2/admin',
+    'Disallow: /sofa2/account',
+    'Disallow: /sofa2/cart',
+    'Disallow: /sofa2/checkout',
+  ];
+  return [...(blocks.length ? blocks : [safeDefault.join('\n')]), `Sitemap: ${SEO_SITE_ORIGIN}/sitemap.xml`].join('\n\n');
 }
 
 async function resolveIdentity(req: Request, res: Response): Promise<Identity | null> {
@@ -117,6 +272,16 @@ async function resolveIdentity(req: Request, res: Response): Promise<Identity | 
     dealerId: dealer.id,
     profile: dealer.profile,
   };
+}
+
+async function requireAdmin(req: Request, res: Response) {
+  const identity = await resolveIdentity(req, res);
+  if (!identity) return false;
+  if (identity.role !== 'admin') {
+    res.status(403).json({ error: 'Chỉ quản trị viên mới được cập nhật dữ liệu SEO.' });
+    return false;
+  }
+  return true;
 }
 
 async function findDealerId(name: string, client = pool): Promise<string | null> {
@@ -251,6 +416,147 @@ app.use(
 );
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+app.get(
+  '/api/seo/public',
+  asyncRoute(async (_req, res) => {
+    const result = await pool.query(
+      'SELECT module, rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+      [[...SEO_MODULES]]
+    );
+    const modules = new Map<string, Record<string, unknown>[]>();
+    result.rows.forEach((record) => {
+      modules.set(record.module, validRows(record.rows) ?? []);
+    });
+    const pages = SEO_PAGE_MODULES.flatMap((module) =>
+      publishedSeoRows(modules.get(module) ?? [])
+        .map((row) => {
+          const url = seoPath(row.url);
+          if (!url) return null;
+          return {
+            url,
+            title: asText(row.title, 200),
+            description: asText(row.description, 500),
+            keyword: asText(row.keyword, 200),
+            keyword2: asText(row.keyword2, 200),
+            h1: asText(row.h1, 200),
+            canonical: seoPath(row.canonical) || '',
+            ogImage: asText(row.ogImage, 2048),
+            ogTitle: asText(row.ogTitle, 200),
+            ogDescription: asText(row.ogDescription, 500),
+            indexable: row.indexable,
+            follow: row.follow,
+            schemaType: asText(row.schemaType, 100),
+          };
+        })
+        .filter((row): row is NonNullable<typeof row> => !!row)
+    );
+    const schemas = (modules.get('schema') ?? [])
+      .filter(
+        (row) =>
+          row.status === 'Hợp lệ' &&
+          row.validation === 'Hợp lệ' &&
+          (Number(row.errors) || 0) === 0 &&
+          asText(row.jsonld, 12000)
+      )
+      .map((row) => {
+        const jsonld = asText(row.jsonld, 12000);
+        try {
+          const data = JSON.parse(jsonld);
+          if (!validJsonLd(data)) return null;
+          return {
+            scope: asText(row.scope, 120),
+            url: seoPath(row.url),
+            jsonld: data,
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter((row): row is NonNullable<typeof row> => !!row);
+
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    res.json({ pages, schemas });
+  })
+);
+
+app.get(
+  '/robots.txt',
+  asyncRoute(async (_req, res) => {
+    res.type('text/plain; charset=utf-8').send(await buildSeoRobotsTxt());
+  })
+);
+
+app.get(
+  '/sitemap.xml',
+  asyncRoute(async (_req, res) => {
+    res.type('application/xml; charset=utf-8').send(await buildSeoSitemapIndex());
+  })
+);
+
+SEO_SITEMAP_ROUTES.forEach(({ file, module }) => {
+  app.get(
+    `/${file}`,
+    asyncRoute(async (_req, res) => {
+      res.type('application/xml; charset=utf-8').send(await buildSeoSitemap(module));
+    })
+  );
+});
+
+app.get(
+  '/api/admin/seo/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    if (!SEO_MODULES.has(module)) {
+      res.status(404).json({ error: 'Không tìm thấy module SEO.' });
+      return;
+    }
+    const rows = await readSeoModule(module);
+    res.json({ rows: rows ?? [], initialized: rows !== null });
+  })
+);
+
+app.post(
+  '/api/admin/seo/:module/seed',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    const rows = validRows(req.body?.rows);
+    if (!SEO_MODULES.has(module) || !rows) {
+      res.status(400).json({ error: 'Dữ liệu khởi tạo SEO không hợp lệ.' });
+      return;
+    }
+    await pool.query(
+      `INSERT INTO sofa2_seo_modules (module, rows)
+       VALUES ($1, $2::jsonb)
+       ON CONFLICT (module) DO NOTHING`,
+      [module, JSON.stringify(rows)]
+    );
+    res.json({ rows: (await readSeoModule(module)) ?? [], initialized: true });
+  })
+);
+
+app.put(
+  '/api/admin/seo/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    const rows = validRows(req.body?.rows);
+    if (!SEO_MODULES.has(module) || !rows) {
+      res.status(400).json({ error: 'Danh sách dữ liệu SEO không hợp lệ.' });
+      return;
+    }
+    await pool.query(
+      `INSERT INTO sofa2_seo_modules (module, rows, updated_at)
+       VALUES ($1, $2::jsonb, NOW())
+       ON CONFLICT (module) DO UPDATE
+         SET rows = EXCLUDED.rows, updated_at = NOW()`,
+      [module, JSON.stringify(rows)]
+    );
+    res.json({ rows: (await readSeoModule(module)) ?? [] });
+  })
+);
 
 app.get(
   '/api/dealer/session',
