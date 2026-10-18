@@ -1,8 +1,8 @@
 # Current task
-- [ ] Restore preview startup without requiring external API database credentials and verify the website renders.
+- [x] Restore preview startup without requiring external API database credentials; verified Sofa2 renders in a fresh browser with no runtime errors.
 - [x] Review all ten sofa2 SEO modules and repair sitemap metrics, draft saves, editable validation fields, canonical URLs, indexing flags and CSV escaping.
 - [x] Run focused SEO transformation tests (5 passed).
-- [ ] Verify actual SEO create/edit/delete, generated public files and client read-back — blocked by existing server requiring unconfigured DATABASE_URL; preview does not start.
+- [ ] Verify actual SEO create/edit/delete, generated public files and client read-back — blocked by external API requiring unconfigured DATABASE_URL; frontend preview now works.
 - [ ] Establish authoritative public domain before new sitemap creation; preserve existing server mechanism and base URL.
 - [ ] Translate sofa2 SEO and Analytics interfaces and navigation for all five supported languages.
-- [ ] Verify language switching, forms, charts and retained values in the browser — blocked by unavailable preview.
+- [ ] Verify language switching, forms, charts and retained values after the pending translations are implemented.
