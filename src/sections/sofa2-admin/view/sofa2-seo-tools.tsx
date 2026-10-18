@@ -288,7 +288,12 @@ export function buildSitemapIndex(rows: AdminRow[]) {
 
 export function buildSchemaBundle(rows: AdminRow[]) {
   const valid = rows
-    .filter((r) => str(r.status) !== 'Lỗi')
+    .filter(
+      (r) =>
+        str(r.status) === 'Hợp lệ' &&
+        str(r.validation) === 'Hợp lệ' &&
+        (Number(r.errors) || 0) === 0
+    )
     .map((r) => {
       try {
         return JSON.parse(str(r.jsonld));

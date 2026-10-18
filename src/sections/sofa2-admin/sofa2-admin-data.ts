@@ -1,6 +1,7 @@
 import { SOFA2_SUPPORT_GROUP } from './sofa2-support';
 import { SOFA2_CUSTOMER_GROUP } from './sofa2-customer';
 import { SOFA2_SHOP_GROUP } from './sofa2-shop';
+import { getSofa2SeoEntries, SOFA2_SITE_ORIGIN, type Sofa2SeoScope } from './sofa2-seo-generator';
 // SOFA2 ADMIN — Bold, dark, modern editorial style
 // ----------------------------------------------------------------------
 
@@ -2676,8 +2677,62 @@ const ANALYTICS_GROUP: Sofa2AdminGroup = {
 // SEO
 // ----------------------------------------------------------------------
 
-const seoPage = (slug: string, name: string, sample: string) =>
-  mod(
+const SEO_SCOPE_BY_SLUG: Record<string, Sofa2SeoScope> = {
+  category: 'category',
+  product: 'product',
+  collection: 'collection',
+  project: 'project',
+  showroom: 'showroom',
+  blog: 'blog',
+  brand: 'brand',
+};
+
+const SEO_SCHEMA_TYPE_BY_SLUG: Record<string, string> = {
+  category: 'CollectionPage',
+  product: 'Product',
+  collection: 'CollectionPage',
+  project: 'Article',
+  showroom: 'LocalBusiness',
+  blog: 'Article',
+  brand: 'Organization',
+};
+
+const seoPage = (slug: string, name: string, sample: string) => {
+  const entries = getSofa2SeoEntries(SEO_SCOPE_BY_SLUG[slug] ?? 'brand');
+  const sources = entries.length ? entries : [{ loc: sample, title: name }];
+  const rows = sources.map((entry) => {
+    const title = `${entry.title} | LUXE Sofa`.slice(0, 60);
+    const description = `Khám phá ${entry.title} tại LUXE Sofa. Xem hình ảnh, chất liệu, kích thước và nhận tư vấn miễn phí để chọn sofa phù hợp với không gian sống của bạn.`;
+    return {
+      url: entry.loc,
+      title,
+      description,
+      keyword: entry.title,
+      keyword2: '',
+      h1: entry.title,
+      canonical: `${SOFA2_SITE_ORIGIN}${entry.loc}`,
+      ogImage: '',
+      ogTitle: title,
+      ogDescription: description,
+      schemaType: SEO_SCHEMA_TYPE_BY_SLUG[slug] ?? 'WebPage',
+      internalLinks: 3,
+      position: 0,
+      impressions: 0,
+      clicks: 0,
+      ctr: '0%',
+      indexable: 'Có',
+      follow: 'Có',
+      inSitemap: 'Có',
+      published: 'Có',
+      redirect: '',
+      redirectStatus: '301',
+      status: 'Cần cải thiện',
+      updated: '2026-10-18',
+      author: 'SEO',
+    };
+  });
+
+  return mod(
     slug,
     name,
     `Tối ưu tiêu đề, mô tả, heading và liên kết nội bộ cho ${name.toLowerCase()}.`,
@@ -2695,31 +2750,10 @@ const seoPage = (slug: string, name: string, sample: string) =>
       { key: 'position', label: 'Thứ hạng', type: 'number' },
       STATUS_COL,
     ],
-    [
-      {
-        url: sample,
-        title: `${name} - LUXE Sofa`,
-        description: `Khám phá ${name.toLowerCase()} và các sản phẩm sofa thiết kế tại LUXE Sofa.`,
-        keyword: name.replace(/^Trang\s+/i, '').toLowerCase(),
-        h1: name,
-        canonical: `https://luxesofa.vn${sample}`,
-        ogTitle: `${name} - LUXE Sofa`,
-        ogDescription: `Thông tin ${name.toLowerCase()} từ LUXE Sofa.`,
-        internalLinks: 3,
-        position: 0,
-        impressions: 0,
-        clicks: 0,
-        ctr: '0%',
-        indexable: 'Có',
-        follow: 'Có',
-        inSitemap: 'Có',
-        status: 'Cần cải thiện',
-        updated: '2026-10-18',
-        author: 'SEO',
-      },
-    ],
+    rows,
     ['Thêm URL']
   );
+};
 
 const SEO_GROUP: Sofa2AdminGroup = {
   slug: 'seo',

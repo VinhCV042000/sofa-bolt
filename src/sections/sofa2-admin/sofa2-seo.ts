@@ -74,6 +74,7 @@ const seoPageSchema = (
   statusKey: 'status',
   statusOptions: SEO_STATUS,
   defaultStatus: 'Cần cải thiện',
+  publishLabel: 'Xuất bản',
   hideClientLink: true,
   chartType: 'horizontal-bar',
   chartTitle: `Thứ hạng từ khoá — ${pageName}`,
@@ -110,9 +111,14 @@ const seoPageSchema = (
     f('indexable', 'Cho phép index', 'switch', 'technical'),
     f('follow', 'Cho phép follow liên kết', 'switch', 'technical'),
     f('inSitemap', 'Đưa vào sitemap', 'switch', 'technical'),
+    f('published', 'Xuất bản metadata SEO', 'switch', 'display'),
     f('redirect', 'URL chuyển hướng dự kiến', 'text', 'technical', {
       placeholder: '/sofa2/duong-dan-moi',
-      helper: 'Đường dẫn nội bộ; chuyển hướng thật cần được triển khai ở máy chủ.',
+      helper: 'Khi bật Xuất bản, máy chủ sẽ chuyển hướng URL này theo mã 301 hoặc 302.',
+    }),
+    f('redirectStatus', 'Mã chuyển hướng', 'select', 'technical', {
+      options: ['301', '302'],
+      helper: '301: thay đổi vĩnh viễn; 302: thay đổi tạm thời.',
     }),
     ...extra,
     f('status', 'Đánh giá SEO', 'select', 'display', { required: true, options: SEO_STATUS }),

@@ -4,9 +4,9 @@ import { createServer as createHttpServer } from 'node:http';
 
 import { clerkClient, clerkMiddleware, getAuth } from '@clerk/express';
 import { publishableKeyFromHost } from '@clerk/shared/keys';
-import type { Request, RequestHandler, Response } from 'express';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import express from 'express';
-import { Pool } from 'pg';
+import { Pool, type PoolClient } from 'pg';
 import { createServer as createViteServer } from 'vite';
 
 import { clerkProxyMiddleware, CLERK_PROXY_PATH, getClerkProxyHost } from './middlewares/clerkProxyMiddleware';
@@ -67,9 +67,9 @@ type Identity =
 type DealerRequest = Request & { dealerIdentity?: Identity };
 
 const asyncRoute =
-  (handler: (req: DealerRequest, res: Response) => Promise<void>): RequestHandler =>
+  (handler: (req: DealerRequest, res: Response, next: NextFunction) => Promise<void>): RequestHandler =>
   (req, res, next) => {
-    void handler(req as DealerRequest, res).catch(next);
+    void handler(req as DealerRequest, res, next).catch(next);
   };
 
 const asText = (value: unknown, limit = 2000) => String(value ?? '').trim().slice(0, limit);
@@ -135,14 +135,41 @@ function seoPath(value: unknown) {
   }
 }
 
+function normalizedSeoPath(value: unknown) {
+  const pathname = seoPath(value).split('?')[0];
+  return pathname.replace(/\/+$/, '') || '/';
+}
+
+const isSeoPublished = (row: Record<string, unknown>) =>
+  row.published === undefined ? row.status === 'Tốt' : isEnabled(row.published);
+
 function publishedSeoRows(rows: Record<string, unknown>[]) {
-  return rows.filter((row) => row.status === 'Tốt');
+  return rows.filter(isSeoPublished);
+}
+
+let seoRedirectRowsCache: Record<string, unknown>[] = [];
+let seoRedirectCacheExpiresAt = 0;
+
+async function getSeoRedirectRows() {
+  if (Date.now() < seoRedirectCacheExpiresAt) return seoRedirectRowsCache;
+  const result = await pool.query(
+    'SELECT rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+    [SEO_PAGE_MODULES]
+  );
+  seoRedirectRowsCache = result.rows.flatMap((record) => validRows(record.rows) ?? []);
+  seoRedirectCacheExpiresAt = Date.now() + 5000;
+  return seoRedirectRowsCache;
 }
 
 async function buildSeoSitemap(module: string) {
   const rows = (await readSeoModule(module)) ?? [];
   const urls = publishedSeoRows(rows)
-    .filter((row) => isEnabled(row.indexable) && isEnabled(row.inSitemap))
+    .filter(
+      (row) =>
+        isEnabled(row.indexable) &&
+        isEnabled(row.inSitemap) &&
+        !asText(row.redirect, 2048)
+    )
     .map((row) => {
       const pathname = seoPath(row.url);
       if (!pathname || pathname.includes('?')) return '';
@@ -284,7 +311,7 @@ async function requireAdmin(req: Request, res: Response) {
   return true;
 }
 
-async function findDealerId(name: string, client = pool): Promise<string | null> {
+async function findDealerId(name: string, client: Pool | PoolClient = pool): Promise<string | null> {
   if (!name) return null;
   const result = await client.query(
     `SELECT id FROM sofa2_dealer_profiles WHERE name = $1 LIMIT 1`,
@@ -533,6 +560,7 @@ app.post(
        ON CONFLICT (module) DO NOTHING`,
       [module, JSON.stringify(rows)]
     );
+    if (SEO_PAGE_MODULES.includes(module)) seoRedirectCacheExpiresAt = 0;
     res.json({ rows: (await readSeoModule(module)) ?? [], initialized: true });
   })
 );
@@ -554,6 +582,7 @@ app.put(
          SET rows = EXCLUDED.rows, updated_at = NOW()`,
       [module, JSON.stringify(rows)]
     );
+    if (SEO_PAGE_MODULES.includes(module)) seoRedirectCacheExpiresAt = 0;
     res.json({ rows: (await readSeoModule(module)) ?? [] });
   })
 );
@@ -790,6 +819,54 @@ app.put(
   })
 );
 
+app.use(
+  asyncRoute(async (req, res, next) => {
+    if (!['GET', 'HEAD'].includes(req.method)) {
+      next();
+      return;
+    }
+    const sourcePath = normalizedSeoPath(req.path);
+    if (
+      !(sourcePath === '/sofa2' || sourcePath.startsWith('/sofa2/')) ||
+      sourcePath === '/sofa2/admin' ||
+      sourcePath.startsWith('/sofa2/admin/') ||
+      /\.[a-z0-9]{2,}$/i.test(sourcePath)
+    ) {
+      next();
+      return;
+    }
+
+    const page = (await getSeoRedirectRows()).find(
+      (row) =>
+        normalizedSeoPath(row.url) === sourcePath &&
+        isSeoPublished(row) &&
+        !!asText(row.redirect, 2048)
+    );
+    if (!page) {
+      next();
+      return;
+    }
+
+    const destination = seoPath(page.redirect);
+    if (!destination) {
+      next();
+      return;
+    }
+    const target = new URL(destination, SEO_SITE_ORIGIN);
+    const targetPath = target.pathname.replace(/\/+$/, '') || '/';
+    if (
+      targetPath === sourcePath ||
+      targetPath === '/sofa2/admin' ||
+      targetPath.startsWith('/sofa2/admin/')
+    ) {
+      next();
+      return;
+    }
+    const statusCode = String(page.redirectStatus) === '302' ? 302 : 301;
+    res.redirect(statusCode, `${target.pathname}${target.search}`);
+  })
+);
+
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Không tìm thấy API.' }));
 app.use((error: unknown, _req: Request, res: Response, next: (error?: unknown) => void) => {
   if (res.headersSent) {
@@ -804,7 +881,7 @@ async function start() {
   if (process.env.NODE_ENV === 'production') {
     const distPath = path.resolve(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (_req, res) => res.sendFile(path.join(distPath, 'index.html')));
+    app.use((_req, res) => res.sendFile(path.join(distPath, 'index.html')));
   } else {
     const vite = await createViteServer({
       server: { middlewareMode: true, hmr: { server: httpServer } },

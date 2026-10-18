@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "tsx server/index.ts",
     "start": "tsx server/index.ts",
-    "build": "tsc && vite build",
+    "build": "export NODE_OPTIONS=--max-old-space-size=3072 && tsc && tsc --noEmit --skipLibCheck --module ESNext --moduleResolution Bundler --target ES2022 --types node --esModuleInterop --strict server/index.ts server/middlewares/clerkProxyMiddleware.ts && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",

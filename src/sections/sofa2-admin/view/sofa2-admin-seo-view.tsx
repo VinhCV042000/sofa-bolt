@@ -69,6 +69,9 @@ const seoFlagOn = (value: unknown) =>
   value === true ||
   ['có', 'yes', 'true', '1'].includes(String(value).toLowerCase());
 
+const seoPageIsPublished = (row: AdminRow, publishedStatus: string) =>
+  row.published === undefined ? String(row.status) === publishedStatus : seoFlagOn(row.published);
+
 const statusColor = (value: string) => {
   const v = String(value).toLowerCase();
   if (/(tốt|hợp lệ|hoạt động|đã xuất bản)/.test(v)) return 'success';
@@ -266,7 +269,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     urls: moduleRows.length,
     indexed: enabledSitemapFiles.has(file)
       ? moduleRows.filter(
-          (row) => row.status === 'Tốt' && seoFlagOn(row.indexable) && seoFlagOn(row.inSitemap)
+            (row) =>
+              seoPageIsPublished(row, 'Tốt') &&
+              seoFlagOn(row.indexable) &&
+              seoFlagOn(row.inSitemap) &&
+              !String(row.redirect ?? '').trim()
         ).length
       : 0,
   }));
@@ -329,10 +336,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     if (schema.kind === 'sitemap') {
       const errorsCount = rows.filter((row) => ['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
       const enabledFilesCount = rows.filter((row) => !['Lỗi URL', 'Tạm tắt'].includes(String(row.status))).length;
-      if (index === 0) return { ...stat, value: format(sitemapEligiblePageRows.length) };
+      if (index === 0) return { ...stat, value: format(sitemapEligiblePageRows) };
       if (index === 1) return { ...stat, value: format(enabledFilesCount) };
       if (index === 2) return { ...stat, value: format(errorsCount) };
-      if (index === 3) return { ...stat, value: format(allManagedPageRows.length - sitemapEligiblePageRows.length) };
+      if (index === 3) return { ...stat, value: format(allManagedPageRows.length - sitemapEligiblePageRows) };
     }
     if (schema.kind === 'robots') {
       const blocked = rows.filter((row) => row.rule === 'Disallow').length;
@@ -411,6 +418,24 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
         )
       ) {
         next.url = 'URL này đã có trong danh sách SEO của module.';
+      }
+
+      const redirect = String(form.values.redirect ?? '').trim();
+      const normalizedRedirect = redirect.replace(/\/+$/, '') || '/';
+      if (
+        redirect &&
+        (!redirect.startsWith('/sofa2/') && redirect !== '/sofa2')
+      ) {
+        next.redirect = 'URL đích phải là đường dẫn nội bộ bắt đầu bằng /sofa2/.';
+      } else if (redirect && /[?#\s]/.test(redirect)) {
+        next.redirect = 'URL đích không được chứa query, hash hoặc khoảng trắng.';
+      } else if (redirect && /^\/sofa2\/admin(?:\/|$)/.test(normalizedRedirect)) {
+        next.redirect = 'Không thể chuyển hướng SEO đến khu vực quản trị.';
+      } else if (redirect && normalizedRedirect === normalized) {
+        next.redirect = 'URL nguồn và URL đích không được giống nhau.';
+      }
+      if (form.values.redirectStatus && !['301', '302'].includes(String(form.values.redirectStatus))) {
+        next.redirectStatus = 'Chỉ hỗ trợ chuyển hướng 301 hoặc 302.';
       }
     }
     if (schema.kind === 'schema') {
@@ -531,10 +556,17 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   const togglePublish = (index: number) => {
     if (loading || saving || error) return;
     const row = rows[index];
-    const isPublished = String(row[statusKey]) === published;
-    const next = isPublished ? defaultDraft : published;
-    updateRow(index, { ...row, [statusKey]: next, ...(row.updated ? { updated: sofa2Today() } : {}) });
-    setToast(isPublished ? `Đã huỷ đánh dấu ${entity}.` : `Đã đánh dấu tốt ${entity}.`);
+    const isPageModule = schema.kind === 'page';
+    const isPublished = isPageModule
+      ? seoPageIsPublished(row, published)
+      : String(row[statusKey]) === published;
+    const next = isPublished ? 'Không' : 'Có';
+    updateRow(index, {
+      ...row,
+      ...(isPageModule ? { published: next } : { [statusKey]: isPublished ? defaultDraft : published }),
+      ...(row.updated ? { updated: sofa2Today() } : {}),
+    });
+    setToast(isPublished ? `Đã ngừng xuất bản ${entity}.` : `Đã xuất bản ${entity}.`);
   };
 
   const duplicateRow = (index: number) => {
@@ -588,8 +620,19 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     selected
       .slice()
       .sort((a, b) => a - b)
-      .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
-    setToast(`Đã đánh dấu tốt ${selected.length} ${entity}.`);
+      .forEach((index) =>
+        updateRow(
+          index,
+          schema.kind === 'page'
+            ? { ...rows[index], published: 'Có' }
+            : { ...rows[index], [statusKey]: published }
+        )
+      );
+    setToast(
+      schema.kind === 'page'
+        ? `Đã xuất bản ${selected.length} ${entity}.`
+        : `Đã đánh dấu tốt ${selected.length} ${entity}.`
+    );
     setSelected([]);
   };
 
@@ -602,9 +645,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
 
   const exportCsv = () => {
     const keys = fields.map((x) => x.key);
-    const header = fields.map((x) => x.label).join(',');
+    const csvCell = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+    const header = fields.map((x) => csvCell(x.label)).join(',');
     const body = filtered
-      .map(({ row }) => keys.map((k) => `"${String(row[k] ?? '')}"`).join(','))
+      .map(({ row }) => keys.map((k) => csvCell(row[k])).join(','))
       .join('\n');
     const blob = new Blob([`\ufeff${header}\n${body}`], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -909,7 +953,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                         <TableCell align="center">
                           <Switch
                             size="small"
-                            checked={String(row[statusKey]) === published}
+                            checked={
+                              schema.kind === 'page'
+                                ? seoPageIsPublished(row, published)
+                                : String(row[statusKey]) === published
+                            }
                             disabled={loading || saving || !!error}
                             onChange={() => togglePublish(index)}
                           />

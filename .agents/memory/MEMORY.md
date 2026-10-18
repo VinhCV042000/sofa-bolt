@@ -1,0 +1,2 @@
+- [Sofa2 SEO publishing rules](sofa2-seo-publication.md) — keep page publication separate from SEO quality; sitemap inclusion also requires indexability and no redirect.
+- [Sofa2 dealer isolation](sofa2-dealer-access.md) — gate the separate dealer portal on an approved login and enforce dealer-scoped records on the server.

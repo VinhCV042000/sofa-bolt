@@ -50,7 +50,7 @@ const escapeXml = (value: string) =>
 
 const productEntries = (): Sofa2SeoEntry[] =>
   SOFA2_PRODUCTS.map((item) => ({
-    loc: `/sofa2/products/${item.slug}`,
+    loc: `/sofa2/products/${item.id}`,
     title: item.name,
     changefreq: 'weekly' as const,
     priority: '0.9',
@@ -93,7 +93,7 @@ const projectEntries = (): Sofa2SeoEntry[] =>
 
 const showroomEntries = (): Sofa2SeoEntry[] =>
   SOFA2_SHOWROOMS.map((item: any) => ({
-    loc: `/sofa2/showrooms/${item.slug ?? item.id}`,
+    loc: `/sofa2/showrooms/${item.id}`,
     title: item.name ?? item.city ?? 'Showroom',
     changefreq: 'monthly' as const,
     priority: '0.6',
@@ -101,7 +101,7 @@ const showroomEntries = (): Sofa2SeoEntry[] =>
 
 const blogEntries = (): Sofa2SeoEntry[] =>
   SOFA2_BLOG_POSTS.map((item) => ({
-    loc: `/sofa2/blog/${item.slug}`,
+    loc: `/sofa2/blog/${item.id}`,
     title: item.title,
     changefreq: 'monthly' as const,
     priority: '0.6',
@@ -245,7 +245,7 @@ const productSchema = (item: (typeof SOFA2_PRODUCTS)[number]) => ({
   description: item.description,
   material: item.material,
   color: item.colors,
-  url: abs(`/sofa2/products/${item.slug}`),
+  url: abs(`/sofa2/products/${item.id}`),
   brand: { '@type': 'Brand', name: SOFA2_COMPANY_INFO.name },
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -257,15 +257,15 @@ const productSchema = (item: (typeof SOFA2_PRODUCTS)[number]) => ({
     price: item.price,
     priceCurrency: 'VND',
     availability: 'https://schema.org/InStock',
-    url: abs(`/sofa2/products/${item.slug}`),
+    url: abs(`/sofa2/products/${item.id}`),
   },
 });
 
-const categorySchema = (cat: { slug: string; label: string }) => ({
+const categorySchema = (cat: { slug: string; label: string; url?: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: cat.label,
-  url: abs(`/sofa2/products/category/${cat.slug}`),
+  url: abs(cat.url ?? `/sofa2/products/category/${cat.slug}`),
   isPartOf: { '@type': 'WebSite', name: SOFA2_COMPANY_INFO.name, url: abs('/sofa2') },
   breadcrumb: {
     '@type': 'BreadcrumbList',
@@ -303,14 +303,14 @@ const articleSchema = (item: (typeof SOFA2_BLOG_POSTS)[number]) => ({
   description: item.excerpt,
   author: { '@type': 'Person', name: item.author },
   publisher: { '@type': 'Organization', name: SOFA2_COMPANY_INFO.name },
-  url: abs(`/sofa2/blog/${item.slug}`),
+  url: abs(`/sofa2/blog/${item.id}`),
 });
 
 const showroomSchema = (item: any) => ({
   '@context': 'https://schema.org',
   '@type': 'FurnitureStore',
   name: item.name ?? 'Showroom LUXE Sofa',
-  url: abs(`/sofa2/showrooms/${item.slug ?? item.id}`),
+  url: abs(`/sofa2/showrooms/${item.id}`),
   telephone: item.phone ?? SOFA2_COMPANY_INFO.phone,
   address: {
     '@type': 'PostalAddress',
@@ -328,7 +328,13 @@ export function buildSofa2Schema(scope: Sofa2SeoScope): string {
       blocks = SOFA2_PRODUCTS.map(productSchema);
       break;
     case 'category':
-      blocks = SOFA2_PRODUCT_CATEGORIES.types.map(categorySchema);
+      blocks = categoryEntries().map((entry) =>
+        categorySchema({
+          slug: entry.loc.split('/').pop() ?? '',
+          label: entry.title,
+          url: entry.loc,
+        })
+      );
       break;
     case 'collection':
       blocks = SOFA2_COLLECTIONS.map(collectionSchema);
