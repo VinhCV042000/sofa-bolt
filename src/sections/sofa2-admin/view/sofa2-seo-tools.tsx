@@ -288,15 +288,17 @@ export function buildSitemapIndex(rows: AdminRow[]) {
 
 export function buildSchemaBundle(rows: AdminRow[]) {
   const valid = rows
-    .filter((r) => str(r.status) !== 'Lỗi')
+    .filter((r) => str(r.status) === 'Hợp lệ' && str(r.validation) === 'Hợp lệ' && (Number(r.errors) || 0) === 0)
     .map((r) => {
       try {
+        if (!validateJsonLd(str(r.jsonld)).ok) return null;
         return JSON.parse(str(r.jsonld));
       } catch {
         return null;
       }
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .flatMap((data) => Array.isArray(data) ? data : Array.isArray(data['@graph']) ? data['@graph'] : [data]);
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': valid }, null, 2);
 }
 
