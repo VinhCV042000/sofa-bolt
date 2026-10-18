@@ -698,6 +698,24 @@ export type Database = {
           },
         ]
       }
+      sofa2_seo_rows: {
+        Row: {
+          module_slug: string
+          rows: Json
+          updated_at: string
+        }
+        Insert: {
+          module_slug: string
+          rows?: Json
+          updated_at?: string
+        }
+        Update: {
+          module_slug?: string
+          rows?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
