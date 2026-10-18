@@ -56,7 +56,6 @@ import {
 import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2SeoSchema } from '../sofa2-seo';
 import { SOFA2_SITE_ORIGIN } from '../sofa2-seo-generator';
-import { seoCanonical, seoCsvCell, seoFormValues } from '../sofa2-seo-utils';
 
 import { SOFA2_ADMIN_GROUPS, type Sofa2AdminGroup, type Sofa2AdminModule } from '../sofa2-admin-data';
 
@@ -499,9 +498,6 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             parsed.hash)
         ) {
           next[key] = 'Canonical phải thuộc website LUXE Sofa, nằm trong /sofa2 và không có query/hash.';
-        } else if (key === 'canonical' && value &&
-          seoCanonical(String(form.values.url || '/sofa2'), value, SOFA2_SITE_ORIGIN) !== parsed.href) {
-          next[key] = 'Canonical phải trỏ đến chính URL của trang này.';
         }
       } catch {
         next[key] = 'URL không hợp lệ.';
@@ -511,11 +507,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
     return Object.keys(next).length === 0;
   };
 
-  const submitForm = (draftStatus?: string) => {
+  const submitForm = () => {
     if (loading || saving || error) return;
     if (!validate()) return;
 
-    const clean: AdminRow = seoFormValues(form.values, statusKey, draftStatus);
+    const clean: AdminRow = { ...form.values };
     fields.forEach((field) => {
       if (field.type === 'number') clean[field.key] = Number(clean[field.key]) || 0;
       else clean[field.key] = String(clean[field.key] ?? '');
@@ -606,9 +602,9 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
 
   const exportCsv = () => {
     const keys = fields.map((x) => x.key);
-    const header = fields.map((x) => seoCsvCell(x.label)).join(',');
+    const header = fields.map((x) => x.label).join(',');
     const body = filtered
-      .map(({ row }) => keys.map((k) => seoCsvCell(row[k])).join(','))
+      .map(({ row }) => keys.map((k) => `"${String(row[k] ?? '')}"`).join(','))
       .join('\n');
     const blob = new Blob([`\ufeff${header}\n${body}`], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -624,7 +620,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
 
   const renderField = (field: Sofa2CmsField) => {
     const value = form.values[field.key] ?? '';
-    const fieldError = errors[field.key];
+    const error = errors[field.key];
 
     if (field.type === 'switch') {
       return (
@@ -653,10 +649,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
         label={field.label}
         value={value}
         disabled={loading || saving || !!error}
-        error={!!fieldError}
+        error={!!error}
         placeholder={field.placeholder}
         helperText={
-          fieldError ??
+          error ??
           (field.maxLength
             ? `${String(value).length}/${field.maxLength} ký tự${field.helper ? ` — ${field.helper}` : ''}`
             : field.helper)
@@ -1049,7 +1045,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             color="inherit"
             variant="outlined"
             disabled={loading || saving || !!error}
-            onClick={() => submitForm(defaultDraft)}
+            onClick={() => {
+              setValue(statusKey, defaultDraft);
+              setTimeout(submitForm, 0);
+            }}
           >
             Lưu nháp
           </Button>
@@ -1057,7 +1056,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
             variant="contained"
             color="inherit"
             disabled={loading || saving || !!error}
-            onClick={() => submitForm()}
+            onClick={submitForm}
             sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
           >
             {form.mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}

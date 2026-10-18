@@ -46,11 +46,13 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required for the dealer portal API.');
-}
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL })
+  : (new Proxy({} as Pool, {
+      get: () => () => {
+        throw new Error('Dealer portal database is not configured.');
+      },
+    }) as Pool);
 const app = express();
 const httpServer = createHttpServer(app);
 
@@ -150,9 +152,14 @@ async function buildSeoSitemap(module: string) {
       const loc = canonical ? seoPath(canonical) : pathname;
       if (!loc || loc.includes('?')) return '';
       const parsed = new URL(loc, SEO_SITE_ORIGIN);
-      // row.updated is an SEO-save date, not an authoritative page-content timestamp.
-      // Omit lastmod until a page-specific significant-content date is available.
-      return `  <url>\n    <loc>${escapeXml(parsed.href)}</loc>\n  </url>`;
+      const updated = asText(row.updated, 40);
+      const isoDate = /^\d{4}-\d{2}-\d{2}$/.test(updated)
+        ? updated
+        : updated.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+          ? `${updated.slice(6)}-${updated.slice(3, 5)}-${updated.slice(0, 2)}`
+          : '';
+      const lastmod = isoDate ? `\n    <lastmod>${isoDate}</lastmod>` : '';
+      return `  <url>\n    <loc>${escapeXml(parsed.href)}</loc>${lastmod}\n  </url>`;
     })
     .filter(Boolean);
 
@@ -401,14 +408,18 @@ async function replaceModuleRows(
 app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
-app.use(
-  clerkMiddleware((req) => ({
-    publishableKey: publishableKeyFromHost(
-      getClerkProxyHost(req) ?? '',
-      process.env.CLERK_PUBLISHABLE_KEY
-    ),
-  }))
-);
+if (process.env.CLERK_SECRET_KEY) {
+  app.use(
+    clerkMiddleware((req) => ({
+      publishableKey: publishableKeyFromHost(
+        getClerkProxyHost(req) ?? '',
+        process.env.CLERK_PUBLISHABLE_KEY
+      ),
+    }))
+  );
+} else {
+  console.warn('CLERK_SECRET_KEY missing: dealer portal auth endpoints are disabled.');
+}
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
