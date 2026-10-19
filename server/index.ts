@@ -46,10 +46,6 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required for the dealer portal API.');
-}
-
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const app = express();
 const httpServer = createHttpServer(app);
@@ -447,6 +443,13 @@ app.use(
 );
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+if (!process.env.DATABASE_URL) {
+  console.warn('DATABASE_URL is not configured; database-backed API routes will return 503.');
+  app.use('/api', (_req, res) => {
+    res.status(503).json({ error: 'Database connection is not configured.' });
+  });
+}
 
 app.get(
   '/api/seo/public',
