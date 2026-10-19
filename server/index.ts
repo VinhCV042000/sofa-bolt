@@ -436,15 +436,12 @@ app.use(express.json({ limit: '1mb' }));
 app.use(
   clerkMiddleware((req) => ({
     publishableKey: (() => {
-      const hostname = (getClerkProxyHost(req) ?? '')
-        .split(',')[0]
-        ?.trim()
-        .replace(/:\d+$/, '')
-        .toLowerCase() ?? '';
-      return publishableKeyFromHost(
-        hostname.endsWith('.lovable.app') ? '' : hostname,
-        process.env.CLERK_PUBLISHABLE_KEY
-      );
+      const host = getClerkProxyHost(req) ?? '';
+      const hostname = host.split(',')[0]?.trim().replace(/:\d+$/, '').toLowerCase() ?? '';
+      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY;
+      return hostname.endsWith('.lovable.app')
+        ? configuredKey || publishableKeyFromHost(hostname)
+        : publishableKeyFromHost(hostname, configuredKey);
     })(),
   }))
 );

@@ -41,14 +41,14 @@ const AuthProvider =
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const clerkHostname = window.location.hostname.toLowerCase();
 const configuredClerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-const clerkPubKey = publishableKeyFromHost(
-  clerkHostname.endsWith('.lovable.app') ? '' : clerkHostname,
-  configuredClerkKey
-);
+const isLovableHostedHost = clerkHostname.endsWith('.lovable.app');
+const clerkPubKey = isLovableHostedHost
+  ? configuredClerkKey
+  : publishableKeyFromHost(clerkHostname, configuredClerkKey);
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 
 if (!clerkPubKey) {
-  throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY in the Replit environment.');
+  throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY for this hosted preview.');
 }
 
 const clerkAppearance = {
