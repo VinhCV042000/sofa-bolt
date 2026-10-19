@@ -429,25 +429,38 @@ async function replaceModuleRows(
 app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
-app.use(
-  clerkMiddleware((req) => ({
-    publishableKey: (() => {
-      const host = getClerkProxyHost(req) ?? '';
-      const hostname = host.split(',')[0]?.trim().replace(/:\d+$/, '').toLowerCase() ?? '';
-      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY;
-      return hostname.endsWith('.lovable.app')
-        ? configuredKey || publishableKeyFromHost(hostname)
-        : publishableKeyFromHost(hostname, configuredKey);
-    })(),
-  }))
+const hasClerkCredentials = Boolean(
+  process.env.CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY
 );
+
+if (hasClerkCredentials) {
+  app.use(
+    clerkMiddleware((req) => ({
+      publishableKey: (() => {
+        const host = getClerkProxyHost(req) ?? '';
+        const hostname = host.split(',')[0]?.trim().replace(/:\d+$/, '').toLowerCase() ?? '';
+        const configuredKey = process.env.CLERK_PUBLISHABLE_KEY;
+        return hostname.endsWith('.lovable.app')
+          ? configuredKey || publishableKeyFromHost(hostname)
+          : publishableKeyFromHost(hostname, configuredKey);
+      })(),
+    }))
+  );
+} else {
+  console.warn('Clerk credentials are not configured; authenticated API routes will return 503.');
+}
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-if (!process.env.DATABASE_URL) {
-  console.warn('DATABASE_URL is not configured; database-backed API routes will return 503.');
+if (!hasClerkCredentials || !process.env.DATABASE_URL) {
+  if (!process.env.DATABASE_URL) {
+    console.warn('DATABASE_URL is not configured; database-backed API routes will return 503.');
+  }
   app.use('/api', (_req, res) => {
-    res.status(503).json({ error: 'Database connection is not configured.' });
+    const reason = !hasClerkCredentials
+      ? 'Clerk credentials are not configured.'
+      : 'Database connection is not configured.';
+    res.status(503).json({ error: reason });
   });
 }
 
