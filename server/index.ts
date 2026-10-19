@@ -46,6 +46,10 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is required for the dealer portal API.');
+}
+
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const app = express();
 const httpServer = createHttpServer(app);
