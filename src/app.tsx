@@ -45,7 +45,9 @@ const isLovableHostedHost = clerkHostname.endsWith('.lovable.app');
 const clerkPubKey = isLovableHostedHost
   ? configuredClerkKey
   : publishableKeyFromHost(clerkHostname, configuredClerkKey);
-const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
+const clerkProxyUrl = isLovableHostedHost
+  ? '/api/__clerk'
+  : import.meta.env.VITE_CLERK_PROXY_URL;
 
 if (!clerkPubKey) {
   throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY for this hosted preview.');
