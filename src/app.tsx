@@ -39,9 +39,11 @@ const AuthProvider =
   JwtAuthProvider;
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const clerkHostname = window.location.hostname.toLowerCase();
+const configuredClerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 const clerkPubKey = publishableKeyFromHost(
-  window.location.hostname,
-  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+  clerkHostname.endsWith('.lovable.app') ? '' : clerkHostname,
+  configuredClerkKey
 );
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 
