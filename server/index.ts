@@ -452,16 +452,8 @@ if (hasClerkCredentials) {
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-if (!hasClerkCredentials || !process.env.DATABASE_URL) {
-  if (!process.env.DATABASE_URL) {
-    console.warn('DATABASE_URL is not configured; database-backed API routes will return 503.');
-  }
-  app.use('/api', (_req, res) => {
-    const reason = !hasClerkCredentials
-      ? 'Clerk credentials are not configured.'
-      : 'Database connection is not configured.';
-    res.status(503).json({ error: reason });
-  });
+if (!process.env.DATABASE_URL) {
+  console.warn('DATABASE_URL is not configured; database-backed API routes will return 503.');
 }
 
 app.get(
@@ -887,7 +879,16 @@ app.use(
   })
 );
 
-app.use('/api', (_req, res) => res.status(404).json({ error: 'Không tìm thấy API.' }));
+app.use('/api', (req, res) => {
+  if (!hasClerkCredentials || !process.env.DATABASE_URL) {
+    const reason = !hasClerkCredentials
+      ? 'Clerk credentials are not configured.'
+      : 'Database connection is not configured.';
+    res.status(503).json({ error: reason });
+    return;
+  }
+  res.status(404).json({ error: 'Không tìm thấy API.' });
+});
 app.use((error: unknown, _req: Request, res: Response, next: (error?: unknown) => void) => {
   if (res.headersSent) {
     next(error);
