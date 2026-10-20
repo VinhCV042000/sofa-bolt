@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
@@ -29,17 +30,26 @@ const STEPS = [
   { icon: 'solar:check-circle-bold-duotone', label: 'Xác nhận', desc: 'Đã xác nhận thông tin' },
   { icon: 'solar:hammer-bold-duotone', label: 'Sản xuất', desc: 'Đang sản xuất / đóng gói' },
   { icon: 'solar:delivery-bold-duotone', label: 'Giao hàng', desc: 'Đang giao đến bạn' },
+  { icon: 'solar:verified-check-bold-duotone', label: 'Hoàn tất', desc: 'Đơn hàng đã giao thành công' },
 ];
 
 export default function Page() {
-  const [searched, setSearched] = useState(false);
-  const [code, setCode] = useState('');
-  const [phone, setPhone] = useState('');
-  const [error, setError] = useState('');
+  const [searchParams] = useSearchParams();
+  const initialCode = searchParams.get('code') ?? '';
+  const initialPhone = searchParams.get('phone') ?? '';
+  const [searched, setSearched] = useState(Boolean(initialCode && initialPhone));
+  const [code, setCode] = useState(initialCode);
+  const [phone, setPhone] = useState(initialPhone);
+  const [error, setError] = useState(
+    initialCode && initialPhone ? 'Không tìm thấy đơn hàng. Kiểm tra lại mã đơn và số điện thoại.' : ''
+  );
   const { rows } = useSofa2AdminRows('shop', 'tracking');
   const norm = (v: unknown) => String(v ?? '').replace(/[#\s.]/g, '').toUpperCase();
   const order = rows.find((r) => norm(r.code) === norm(code) && norm(r.phone) === norm(phone));
-  const stepIndex = Math.max(0, SOFA2_TRACKING_STEPS.indexOf(String(order?.step ?? '')));
+  const stepIndex = Math.max(
+    0,
+    SOFA2_TRACKING_STEPS.indexOf(String(order?.step ?? order?.status ?? ''))
+  );
   const items = String(order?.items ?? '').split(';').map((x) => x.trim()).filter(Boolean).map((x) => {
     const mm = x.match(/^(.*?)\s*x\s*(\d+)$/i);
     return { name: mm ? mm[1] : x, qty: mm ? Number(mm[2]) : 1 };
@@ -55,13 +65,13 @@ export default function Page() {
       <Sofa2PageHero title="Theo dõi đơn hàng" subtitle="Nhập mã đơn hàng và số điện thoại để xem trạng thái giao hàng." image={SOFA2_PAGE_IMAGES.service2} overline="Theo dõi" />
 
       <Sofa2Section>
-        {!searched ? (
+        {!searched || !order ? (
           <Grid container justifyContent="center">
             <Grid xs={12} md={7}>
               <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={3} sx={{ p: { xs: 3, md: 5 }, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card }}>
                 <Typography variant="h5">Tra cứu đơn hàng</Typography>
                 <Grid container spacing={2}>
-                  <Grid xs={12} sm={6}><TextField fullWidth label="Mã đơn hàng" placeholder="VD: #LX20250218001" value={code} onChange={(e) => setCode(e.target.value)} /></Grid>
+                  <Grid xs={12} sm={6}><TextField fullWidth label="Mã đơn hàng" placeholder="VD: LX-20261020-ABCD" value={code} onChange={(e) => setCode(e.target.value)} /></Grid>
                   <Grid xs={12} sm={6}><TextField fullWidth label="Số điện thoại" placeholder="VD: 0901234567" value={phone} onChange={(e) => setPhone(e.target.value)} error={!!error} helperText={error} /></Grid>
                 </Grid>
                 <Button variant="contained" size="large" startIcon={<Iconify icon="solar:minimalistic-magnifer-bold-duotone" />} sx={{ width: 'fit-content' }} onClick={search}>
@@ -81,7 +91,7 @@ export default function Page() {
               {STEPS.map((s, index) => {
                 const active = index <= stepIndex;
                 return (
-                  <Grid key={s.label} xs={12} sm={6} md={3}>
+                  <Grid key={s.label} xs={12} sm={6} md={2.4}>
                     <Stack spacing={2} sx={{ p: 3, height: 1, borderRadius: 2, bgcolor: 'background.paper', boxShadow: (t) => t.customShadows.card, opacity: active ? 1 : 0.5, border: active ? (t) => `1px solid ${varAlpha(t.vars.palette.primary.mainChannel, 0.24)}` : 'none' }}>
                       <Box sx={{ width: 48, height: 48, display: 'flex', borderRadius: 1.5, alignItems: 'center', justifyContent: 'center', bgcolor: active ? 'primary.main' : (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.12), color: active ? 'common.white' : 'text.disabled' }}>
                         <Iconify icon={s.icon} width={24} />

@@ -26,6 +26,16 @@ import {
   SOFA2_PRODUCTS,
   formatSofa2Price,
 } from 'src/sections/sofa2/sofa2-pages-data';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import {
+  addSofa2CartLine,
+  makeSofa2CartRow,
+  parseSofa2CartItems,
+} from 'src/sections/sofa2/sofa2-commerce-store';
+import {
+  SOFA2_PORTAL_CUSTOMER_ID,
+  SOFA2_PORTAL_CUSTOMER_NAME,
+} from 'src/sections/sofa2/sofa2-customer-portal';
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +62,11 @@ export default function Page() {
   const [tab, setTab] = useState('info');
   const [selectedImage, setSelectedImage] = useState(0);
   const [added, setAdded] = useState(false);
+  const cartStore = useSofa2AdminRows('shopping', 'cart');
+  const profileStore = useSofa2AdminRows('customer', 'profiles');
+  const profile = profileStore.rows.find(
+    (row) => String(row.customerId) === SOFA2_PORTAL_CUSTOMER_ID
+  );
 
   const product = SOFA2_PRODUCTS.find((p) => p.id === id);
 
@@ -70,6 +85,33 @@ export default function Page() {
 
   const related = SOFA2_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
   const images = product.images?.length ? product.images : [product.image];
+  const addToCart = () => {
+    const cartIndex = cartStore.rows.findIndex(
+      (row) => String(row.customerId) === SOFA2_PORTAL_CUSTOMER_ID
+    );
+    const existing = cartIndex >= 0 ? cartStore.rows[cartIndex] : undefined;
+    const nextItems = addSofa2CartLine(parseSofa2CartItems(existing?.items), {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      material: product.material,
+      qty: 1,
+    });
+    const updated = makeSofa2CartRow(
+      nextItems,
+      {
+        customerId: SOFA2_PORTAL_CUSTOMER_ID,
+        name: String(profile?.name || SOFA2_PORTAL_CUSTOMER_NAME),
+        phone: String(profile?.phone ?? ''),
+        email: String(profile?.email ?? ''),
+      },
+      existing
+    );
+    if (cartIndex < 0) cartStore.createRow(updated);
+    else cartStore.updateRow(cartIndex, updated);
+    setAdded(true);
+  };
 
   return (
     <>
@@ -133,7 +175,7 @@ export default function Page() {
                     variant="contained"
                     color={added ? 'success' : 'primary'}
                     startIcon={<Iconify icon={added ? 'solar:check-circle-bold-duotone' : 'solar:cart-bold-duotone'} />}
-                    onClick={() => setAdded(true)}
+                    onClick={addToCart}
                   >
                     {added ? 'Đã thêm vào giỏ' : 'Thêm vào giỏ'}
                   </Button>

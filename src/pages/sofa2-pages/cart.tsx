@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
@@ -17,22 +16,51 @@ import { varFade } from 'src/components/animate';
 
 import { useTranslate } from 'src/locales';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
-import { SOFA2_PRODUCTS, formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { formatSofa2Price, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
+import {
+  makeSofa2CartRow,
+  parseSofa2CartItems,
+  type Sofa2CartLine,
+} from 'src/sections/sofa2/sofa2-commerce-store';
+import {
+  SOFA2_PORTAL_CUSTOMER_ID,
+  SOFA2_PORTAL_CUSTOMER_NAME,
+} from 'src/sections/sofa2/sofa2-customer-portal';
 
 // ----------------------------------------------------------------------
 
 export default function Page() {
   const { t } = useTranslate('sofa2');
+  const cartStore = useSofa2AdminRows('shopping', 'cart');
+  const { rows: profiles } = useSofa2AdminRows('customer', 'profiles');
+  const profile = profiles.find((row) => String(row.customerId) === SOFA2_PORTAL_CUSTOMER_ID);
+  const customer = {
+    customerId: SOFA2_PORTAL_CUSTOMER_ID,
+    name: String(profile?.name || SOFA2_PORTAL_CUSTOMER_NAME),
+    phone: String(profile?.phone ?? ''),
+    email: String(profile?.email ?? ''),
+  };
+  const cartIndex = cartStore.rows.findIndex(
+    (row) => String(row.customerId) === SOFA2_PORTAL_CUSTOMER_ID
+  );
+  const cartRow = cartIndex >= 0 ? cartStore.rows[cartIndex] : undefined;
+  const items = parseSofa2CartItems(cartRow?.items);
 
-  const [items, setItems] = useState(() => [
-    { ...SOFA2_PRODUCTS[0], qty: 1 },
-    { ...SOFA2_PRODUCTS[1], qty: 2 },
-  ]);
+  const saveItems = (nextItems: Sofa2CartLine[]) => {
+    const latestIndex = cartStore.rows.findIndex(
+      (row) => String(row.customerId) === SOFA2_PORTAL_CUSTOMER_ID
+    );
+    const latestRow = latestIndex >= 0 ? cartStore.rows[latestIndex] : undefined;
+    const updated = makeSofa2CartRow(nextItems, customer, latestRow);
+    if (latestIndex < 0) cartStore.createRow(updated);
+    else cartStore.updateRow(latestIndex, updated);
+  };
 
   const updateQty = (id: string, qty: number) => {
-    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, qty: Math.max(1, qty) } : it)));
+    saveItems(items.map((item) => (item.id === id ? { ...item, qty: Math.max(1, qty) } : item)));
   };
-  const removeItem = (id: string) => setItems((prev) => prev.filter((it) => it.id !== id));
+  const removeItem = (id: string) => saveItems(items.filter((item) => item.id !== id));
 
   const subtotal = items.reduce((sum, it) => sum + it.price * it.qty, 0);
   const shipping = subtotal > 0 ? 300000 : 0;

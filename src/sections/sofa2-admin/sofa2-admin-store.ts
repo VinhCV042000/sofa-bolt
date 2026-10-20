@@ -11,9 +11,18 @@ export type AdminRow = Record<string, string | number>;
 
 type Store = Record<string, AdminRow[]>;
 
-const canonicalModule = (group: string, module: string) =>
-  group === 'hr' && ['job-detail', 'recruitment-tracking'].includes(module) ? 'recruitment' : module;
-const key = (group: string, module: string) => `${group}/${canonicalModule(group, module)}`;
+const key = (group: string, module: string) => {
+  if (group === 'hr' && ['job-detail', 'recruitment-tracking'].includes(module)) {
+    return 'hr/recruitment';
+  }
+  if (group === 'shopping') {
+    if (['account', 'profile'].includes(module)) return 'customer/profiles';
+    if (module === 'my-orders') return 'customer/customer-orders';
+    if (module === 'warranty') return 'customer/warranties';
+    if (module === 'tracking') return 'shop/tracking';
+  }
+  return `${group}/${module}`;
+};
 
 const store: Store = {};
 const savedSeoRows = new Map<string, AdminRow[]>();
@@ -25,6 +34,12 @@ const STORAGE_KEY = 'sofa2-admin-rows-v1';
 SOFA2_ADMIN_GROUPS.forEach((group) => {
   group.modules.forEach((module) => {
     if (group.slug === 'hr' && ['job-detail', 'recruitment-tracking'].includes(module.slug)) return;
+    if (
+      group.slug === 'shopping' &&
+      ['account', 'profile', 'my-orders', 'warranty', 'tracking'].includes(module.slug)
+    ) {
+      return;
+    }
     store[key(group.slug, module.slug)] = module.rows.map((row) => ({ ...row }));
   });
 });
@@ -32,7 +47,98 @@ SOFA2_ADMIN_GROUPS.forEach((group) => {
 // Khôi phục dữ liệu đã lưu (giữ thay đổi sau khi tải lại trang, dùng chung với trang khách)
 try {
   const saved = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
-  if (saved) Object.assign(store, JSON.parse(saved) as Store);
+  if (saved) {
+    Object.assign(store, JSON.parse(saved) as Store);
+  } else {
+    const addressesKey = key('shopping', 'addresses');
+    const wishlistKey = key('shop', 'wishlist');
+    const transactionsKey = key('shopping', 'transactions');
+    const customerId = 'KH-1001';
+    const customer = 'Nguyễn Minh Anh';
+
+    if (
+      !(store[addressesKey] ?? []).some(
+        (row) =>
+          String(row.customerId ?? '') === customerId ||
+          String(row.customer ?? '') === customer
+      )
+    ) {
+      store[addressesKey] = [
+        {
+          addressId: 'ADDR-KH-1001-1',
+          customerId,
+          customer,
+          label: 'Nhà',
+          recipient: customer,
+          phone: '0901 234 567',
+          address: '123 Nguyễn Trãi',
+          ward: 'Thanh Xuân',
+          district: 'Thanh Xuân',
+          city: 'Hà Nội',
+          zipCode: '',
+          deliveryType: 'Giao tận nhà',
+          deliveryNote: '',
+          isDefault: 'true',
+          status: 'Mặc định',
+        },
+        ...(store[addressesKey] ?? []),
+      ];
+    }
+
+    if (
+      !(store[wishlistKey] ?? []).some(
+        (row) =>
+          String(row.customerId ?? '') === customerId ||
+          String(row.customer ?? '') === customer
+      )
+    ) {
+      store[wishlistKey] = [
+        ...['Sofa Oslo 3 Chỗ', 'Sofa Berlin Góc', 'Sofa Copenhagen', 'Sofa Tokyo Đơn'].map(
+          (product, index) => ({
+            customerId,
+            customer,
+            product,
+            added: `2026-10-${String(20 - index).padStart(2, '0')}`,
+            notify: 'Có',
+            status: 'Đang lưu',
+          })
+        ),
+        ...(store[wishlistKey] ?? []),
+      ];
+    }
+
+    if (
+      !(store[transactionsKey] ?? []).some(
+        (row) =>
+          String(row.customerId ?? '') === customerId ||
+          String(row.customer ?? '') === customer
+      )
+    ) {
+      store[transactionsKey] = [
+        {
+          txnId: 'GD-KH1001-01',
+          customerId,
+          customer,
+          order: 'LX-26091502',
+          method: 'VNPay QR',
+          amount: 25900000,
+          date: '2026-09-15',
+          status: 'Thành công',
+        },
+        {
+          txnId: 'GD-KH1001-02',
+          customerId,
+          customer,
+          order: 'LX-26091011',
+          method: 'Chuyển khoản',
+          amount: 11550000,
+          date: '2026-09-10',
+          status: 'Thành công',
+        },
+        ...(store[transactionsKey] ?? []),
+      ];
+    }
+  }
 } catch {
   /* bỏ qua */
 }
@@ -272,7 +378,7 @@ export function useSofa2AdminRows(
       setPendingWrites((count) => count + 1);
       setError('');
 
-      void syncSofa2SeoRows(moduleSlug, nextRows)
+      syncSofa2SeoRows(moduleSlug, nextRows)
         .then((savedRows) => {
           savedSeoRows.set(k, savedRows.map((row) => ({ ...row })));
           if (seoWriteRevisions.get(k) === revision) {

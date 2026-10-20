@@ -91,6 +91,25 @@ function validRows(value: unknown): Record<string, unknown>[] | null {
   return value as Record<string, unknown>[];
 }
 
+function validateDealerProfileRows(rows: Record<string, unknown>[]) {
+  const names = new Set<string>();
+  const emails = new Set<string>();
+  for (const row of rows) {
+    const name = asText(row.dealer, 180).toLowerCase();
+    const email = asText(row.email, 254).toLowerCase();
+    if (!name) return 'Tên đại lý không được để trống.';
+    if (names.has(name)) return 'Tên đại lý bị trùng.';
+    names.add(name);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Email đại lý không hợp lệ.';
+    if (email && emails.has(email)) return 'Email đã được gán cho đại lý khác.';
+    if (email) emails.add(email);
+    if (isEnabled(row.portalAccess) && !email) {
+      return 'Cần email đăng nhập trước khi bật quyền cổng đại lý.';
+    }
+  }
+  return null;
+}
+
 async function readSeoModule(module: string): Promise<Record<string, unknown>[] | null> {
   const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
   if (!result.rows.length) return null;
@@ -380,7 +399,9 @@ async function replaceModuleRows(
             id,
             name,
             email,
-            isEnabled(row.portalAccess) && Boolean(email),
+             isEnabled(row.portalAccess) &&
+               Boolean(email) &&
+               !['Tạm ngưng', 'Đã chấm dứt'].includes(asText(row.status, 100)),
             asText(row.level, 80),
             asText(row.region, 100),
             asText(row.status, 100),
@@ -796,8 +817,9 @@ app.post(
     }
     const module = asText(req.params.module, 80);
     const rows = validRows(req.body?.rows);
-    if (!DEALER_MODULES.has(module) || !rows) {
-      res.status(400).json({ error: 'Dữ liệu khởi tạo không hợp lệ.' });
+    const profileError = module === 'dashboard' && rows ? validateDealerProfileRows(rows) : null;
+    if (!DEALER_MODULES.has(module) || !rows || profileError) {
+      res.status(400).json({ error: profileError || 'Dữ liệu khởi tạo không hợp lệ.' });
       return;
     }
     res.json({ rows: await replaceModuleRows(module, rows, true) });
@@ -815,8 +837,9 @@ app.put(
     }
     const module = asText(req.params.module, 80);
     const rows = validRows(req.body?.rows);
-    if (!DEALER_MODULES.has(module) || !rows) {
-      res.status(400).json({ error: 'Danh sách dữ liệu không hợp lệ.' });
+    const profileError = module === 'dashboard' && rows ? validateDealerProfileRows(rows) : null;
+    if (!DEALER_MODULES.has(module) || !rows || profileError) {
+      res.status(400).json({ error: profileError || 'Danh sách dữ liệu không hợp lệ.' });
       return;
     }
     res.json({ rows: await replaceModuleRows(module, rows) });

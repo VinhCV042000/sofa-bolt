@@ -96,7 +96,7 @@ export default function Page() {
                       <Chip label={String(o.status)} size="small" color={statusColor[String(o.status)] ?? 'default'} variant="soft" />
                     </TableCell>
                     <TableCell align="center">
-                      <Button component={RouterLink} href="/sofa2/orders/tracking" size="small" variant="outlined" startIcon={<Iconify icon="solar:delivery-bold-duotone" width={16} />}>
+                      <Button component={RouterLink} href={`/sofa2/orders/tracking?code=${encodeURIComponent(String(o.code))}&phone=${encodeURIComponent(String(o.phone ?? ''))}`} size="small" variant="outlined" startIcon={<Iconify icon="solar:delivery-bold-duotone" width={16} />}>
                         Theo dõi
                       </Button>
                     </TableCell>

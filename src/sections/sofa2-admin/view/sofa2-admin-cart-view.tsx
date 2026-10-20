@@ -34,8 +34,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TablePagination from '@mui/material/TablePagination';
 
-import { RouterLink } from 'src/routes/components';
-
 import { Chart, useChart } from 'src/components/chart';
 import { Iconify } from 'src/components/iconify';
 
@@ -74,14 +72,37 @@ type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2Ca
 
 function CartChart({ schema }: { schema: Sofa2CartSchema }) {
   const { chartType, chartTitle, chartSubtitle, chartCategories, chartSeries, chartLabels, chartDonutData } = schema;
+  const donutOptions = useChart({
+    colors: PALETTE,
+    labels: chartLabels ?? [],
+    stroke: { width: 0 },
+    legend: { position: 'bottom', horizontalAlign: 'center' },
+  });
+  const hbarOptions = useChart({
+    colors: [PALETTE[1]],
+    xaxis: { categories: chartCategories ?? [] },
+    plotOptions: { bar: { horizontal: true, barHeight: '55%', borderRadius: 4 } },
+    legend: { show: false },
+  });
+  const areaOptions = useChart({
+    colors: [PALETTE[1]],
+    xaxis: { categories: chartCategories ?? [] },
+    stroke: { curve: 'smooth', width: 3 },
+    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 } },
+  });
+  const lineOptions = useChart({
+    colors: [PALETTE[1]],
+    xaxis: { categories: chartCategories ?? [] },
+    stroke: { curve: 'smooth', width: 3 },
+  });
+  const barOptions = useChart({
+    colors: [PALETTE[0], PALETTE[1]],
+    xaxis: { categories: chartCategories ?? [] },
+    plotOptions: { bar: { columnWidth: '45%', borderRadius: 4 } },
+    legend: { show: (chartSeries ?? []).length > 1, position: 'top' },
+  });
 
   if (chartType === 'donut') {
-    const donutOptions = useChart({
-      colors: PALETTE,
-      labels: chartLabels ?? [],
-      stroke: { width: 0 },
-      legend: { position: 'bottom', horizontalAlign: 'center' },
-    });
     return (
       <Card>
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
@@ -91,12 +112,6 @@ function CartChart({ schema }: { schema: Sofa2CartSchema }) {
   }
 
   if (chartType === 'horizontal-bar') {
-    const hbarOptions = useChart({
-      colors: [PALETTE[1]],
-      xaxis: { categories: chartCategories ?? [] },
-      plotOptions: { bar: { horizontal: true, barHeight: '55%', borderRadius: 4 } },
-      legend: { show: false },
-    });
     return (
       <Card>
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
@@ -106,12 +121,6 @@ function CartChart({ schema }: { schema: Sofa2CartSchema }) {
   }
 
   if (chartType === 'area') {
-    const areaOptions = useChart({
-      colors: [PALETTE[1]],
-      xaxis: { categories: chartCategories ?? [] },
-      stroke: { curve: 'smooth', width: 3 },
-      fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05 } },
-    });
     return (
       <Card>
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
@@ -121,11 +130,6 @@ function CartChart({ schema }: { schema: Sofa2CartSchema }) {
   }
 
   if (chartType === 'line') {
-    const lineOptions = useChart({
-      colors: [PALETTE[1]],
-      xaxis: { categories: chartCategories ?? [] },
-      stroke: { curve: 'smooth', width: 3 },
-    });
     return (
       <Card>
         <CardHeader title={chartTitle} subheader={chartSubtitle} />
@@ -135,18 +139,133 @@ function CartChart({ schema }: { schema: Sofa2CartSchema }) {
   }
 
   // bar (mặc định)
-  const barOptions = useChart({
-    colors: [PALETTE[0], PALETTE[1]],
-    xaxis: { categories: chartCategories ?? [] },
-    plotOptions: { bar: { columnWidth: '45%', borderRadius: 4 } },
-    legend: { show: (chartSeries ?? []).length > 1, position: 'top' },
-  });
   return (
     <Card>
       <CardHeader title={chartTitle} subheader={chartSubtitle} />
       <Chart type="bar" series={chartSeries ?? []} options={barOptions} height={340} sx={{ px: 2, pb: 2 }} />
     </Card>
   );
+}
+
+// ----------------------------------------------------------------------
+
+const readMonth = (value: unknown) => {
+  const text = String(value ?? '');
+  const iso = text.match(/^\d{4}-(\d{1,2})/);
+  if (iso) return Number(iso[1]) - 1;
+  const local = text.match(/^\d{1,2}\/(\d{1,2})\/\d{4}$/);
+  if (local) return Number(local[1]) - 1;
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? -1 : parsed.getMonth();
+};
+
+function getDynamicCartChart(
+  schema: Sofa2CartSchema,
+  rows: AdminRow[],
+  moduleSlug: string
+): Sofa2CartSchema {
+  const next = { ...schema };
+
+  if (schema.chartType === 'donut') {
+    const labels = schema.chartLabels ?? schema.statusOptions;
+    const key = moduleSlug === 'account' ? 'tier' : schema.statusKey;
+    return {
+      ...next,
+      chartDonutData: labels.map(
+        (label) => rows.filter((row) => String(row[key]) === label).length
+      ),
+    };
+  }
+
+  if (moduleSlug === 'profile') {
+    const categories = ['Có điện thoại', 'Có email', 'Có ảnh', 'Có ngày sinh'];
+    const completion = [
+      rows.filter((row) => String(row.phone ?? '').trim()).length,
+      rows.filter((row) => String(row.email ?? '').trim()).length,
+      rows.filter((row) => String(row.avatar ?? '').trim()).length,
+      rows.filter((row) => String(row.birthday ?? '').trim()).length,
+    ];
+    return { ...next, chartCategories: categories, chartSeries: [{ name: 'Hồ sơ', data: completion }] };
+  }
+
+  if (moduleSlug === 'addresses') {
+    const byCity = new Map<string, number>();
+    rows.forEach((row) => {
+      const city = String(row.city || 'Chưa phân loại');
+      byCity.set(city, (byCity.get(city) ?? 0) + 1);
+    });
+    const entries = [...byCity.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+    return {
+      ...next,
+      chartCategories: entries.map(([city]) => city),
+      chartSeries: [{ name: 'Địa chỉ', data: entries.map(([, count]) => count) }],
+    };
+  }
+
+  if (moduleSlug === 'tracking') {
+    const steps = ['Đặt hàng', 'Xác nhận', 'Sản xuất', 'Giao hàng', 'Hoàn tất'];
+    return {
+      ...next,
+      chartCategories: steps,
+      chartSeries: [
+        {
+          name: 'Đơn hàng',
+          data: steps.map((step) => rows.filter((row) => String(row.step) === step).length),
+        },
+      ],
+    };
+  }
+
+  if (moduleSlug === 'my-orders' || moduleSlug === 'transactions') {
+    const categories = Array.from({ length: 12 }, (_, index) => `T${index + 1}`);
+    const values = Array.from({ length: 12 }, () => 0);
+    rows.forEach((row) => {
+      const month = readMonth(row.orderDate ?? row.date);
+      if (month >= 0 && month < 12) {
+        values[month] +=
+          moduleSlug === 'transactions' ? Number(row.amount ?? 0) / 1_000_000 : 1;
+      }
+    });
+    return {
+      ...next,
+      chartCategories: categories,
+      chartSeries: [
+        {
+          name: moduleSlug === 'transactions' ? 'Giá trị (triệu ₫)' : 'Đơn hàng',
+          data: values,
+        },
+      ],
+    };
+  }
+
+  if (moduleSlug === 'checkout') {
+    const methods = rows.filter((row) => row.type !== 'Phí giao hàng');
+    return {
+      ...next,
+      chartCategories: methods.map((row) => String(row.label || row.method || 'Chưa đặt tên')),
+      chartSeries: [
+        {
+          name: 'Đang bật',
+          data: methods.map((row) => (row.status === 'Đang bật' ? 1 : 0)),
+        },
+      ],
+    };
+  }
+
+  if (moduleSlug === 'success') {
+    return {
+      ...next,
+      chartCategories: rows.map((row) => String(row.name || 'Mẫu')),
+      chartSeries: [
+        {
+          name: 'Mẫu đang áp dụng',
+          data: rows.map((row) => (row.status === 'Đang áp dụng' ? 1 : 0)),
+        },
+      ],
+    };
+  }
+
+  return next;
 }
 
 // ----------------------------------------------------------------------
@@ -169,6 +288,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
     open: false,
     index: null,
   });
+  const [bulkConfirm, setBulkConfirm] = useState(false);
   const [form, setForm] = useState<FormState>({
     open: false,
     mode: 'create',
@@ -176,11 +296,22 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
     values: {},
   });
 
-  const { titleKey, statusKey, statusOptions, fields, clientPath, entity } = schema;
+  const { titleKey, statusKey, statusOptions, fields, entity } = schema;
   const publishLabel = schema.publishLabel ?? 'Kích hoạt';
   const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Bản nháp';
   const published = statusOptions[0];
-  const hideClientLink = schema.hideClientLink ?? false;
+  const showStatusToggle = schema.statusToggle !== false;
+  const sharedClientModules = new Set([
+    'account',
+    'profile',
+    'cart',
+    'tracking',
+    'addresses',
+    'my-orders',
+    'transactions',
+    'warranty',
+  ]);
+  const showReset = !(group.slug === 'shopping' && sharedClientModules.has(module.slug));
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -189,6 +320,84 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
     });
     return map;
   }, [rows, statusKey, statusOptions]);
+  const chartSchema = useMemo(
+    () => getDynamicCartChart(schema, rows, module.slug),
+    [module.slug, rows, schema]
+  );
+  const dynamicStats = useMemo(() => {
+    const statusCount = (status: string) =>
+      rows.filter((row) => String(row[statusKey]) === status).length;
+    const total = rows.length;
+    const amount = (key: string) => rows.reduce((sum, row) => sum + Number(row[key] ?? 0), 0);
+    const valuesByModule: Record<string, (string | number)[]> = {
+      cart: [
+        total,
+        statusCount('Đang mua'),
+        statusCount('Bỏ dở'),
+        `${amount('value').toLocaleString('vi-VN')} ₫`,
+      ],
+      checkout: [
+        total,
+        statusCount('Đang bật'),
+        rows.filter((row) => row.type === 'Phí giao hàng').length,
+        rows.filter((row) => Number(row.fee ?? 0) > 0).length,
+      ],
+      tracking: [
+        total,
+        statusCount('Đang giao'),
+        statusCount('Đã giao'),
+        statusCount('Chờ xác nhận'),
+      ],
+      account: [
+        total,
+        rows.filter((row) => String(row.status) === 'Đầy đủ').length,
+        rows.filter((row) => String(row.status) === 'Thiếu thông tin').length,
+        rows.filter((row) => row.emailOptIn === 'Có' || row.smsOptIn === 'Có').length,
+      ],
+      profile: [
+        total,
+        rows.filter((row) => Boolean(String(row.phone ?? '').trim())).length,
+        rows.filter((row) => Boolean(String(row.email ?? '').trim())).length,
+        rows.filter((row) => Boolean(String(row.birthday ?? '').trim())).length,
+      ],
+      addresses: [
+        total,
+        rows.filter((row) => String(row.status) === 'Mặc định').length,
+        new Set(rows.map((row) => String(row.city ?? '')).filter(Boolean)).size,
+        rows.filter((row) => Boolean(String(row.phone ?? '').trim())).length,
+      ],
+      'my-orders': [
+        total,
+        statusCount('Chờ xác nhận'),
+        statusCount('Đã giao') + statusCount('Hoàn thành'),
+        `${amount('total').toLocaleString('vi-VN')} ₫`,
+      ],
+      transactions: [
+        total,
+        statusCount('Thành công'),
+        statusCount('Đang xử lý'),
+        `${amount('amount').toLocaleString('vi-VN')} ₫`,
+      ],
+      warranty: [
+        total,
+        statusCount('Còn hiệu lực'),
+        statusCount('Đang sửa chữa') + statusCount('Đang xử lý'),
+        statusCount('Hết hạn') + statusCount('Đã hết hạn'),
+      ],
+      success: [
+        total,
+        statusCount('Đang áp dụng'),
+        statusCount('Bản nháp'),
+        statusCount('Tạm tắt'),
+      ],
+    };
+    return valuesByModule[module.slug];
+  }, [module.slug, rows, statusKey]);
+  const visibleStats = module.stats.map((stat, index) => ({
+    ...stat,
+    value: dynamicStats?.[index] ?? stat.value,
+    trend: dynamicStats ? undefined : stat.trend,
+  }));
 
   const filtered = rows
     .map((row, index) => ({ row, index }))
@@ -235,6 +444,42 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
       if (field.required && !value) next[field.key] = 'Trường bắt buộc';
       else if (field.maxLength && value.length > field.maxLength)
         next[field.key] = `Tối đa ${field.maxLength} ký tự (hiện ${value.length})`;
+      else if (
+        field.key === 'email' &&
+        value &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      ) {
+        next[field.key] = 'Email chưa đúng định dạng';
+      } else if (module.slug === 'cart' && field.key === 'items' && value) {
+        try {
+          const parsed: unknown = JSON.parse(value);
+          if (
+            !Array.isArray(parsed) ||
+            parsed.some(
+              (item) =>
+                !item ||
+                typeof item !== 'object' ||
+                !('id' in item) ||
+                !('name' in item) ||
+                !('price' in item) ||
+                !('qty' in item)
+            )
+          ) {
+            next[field.key] = 'Chi tiết giỏ phải là danh sách JSON có id, name, price và qty.';
+          }
+        } catch {
+          next[field.key] = 'Chi tiết giỏ phải có định dạng JSON hợp lệ.';
+        }
+      } else if (
+        ['code', 'txnId', 'addressId', 'method'].includes(field.key) &&
+        value &&
+        rows.some(
+          (row, index) =>
+            index !== form.index && String(row[field.key] ?? '').toLowerCase() === value.toLowerCase()
+        )
+      ) {
+        next[field.key] = 'Giá trị này đã tồn tại';
+      }
     });
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -289,12 +534,20 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const bulkPublish = () => {
+    if (!showStatusToggle) return;
     selected
       .slice()
       .sort((a, b) => a - b)
       .forEach((index) => updateRow(index, { ...rows[index], [statusKey]: published }));
     setToast(`Đã ${publishLabel.toLowerCase()} ${selected.length} ${entity}.`);
     setSelected([]);
+  };
+
+  const bulkDelete = () => {
+    deleteRows(selected);
+    setToast(`Đã xoá ${selected.length} ${entity}.`);
+    setSelected([]);
+    setBulkConfirm(false);
   };
 
   const toggleSelect = (index: number) =>
@@ -390,7 +643,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
       >
         <Grid container spacing={3}>
           {/* KPI cards */}
-          {module.stats.map((stat) => (
+          {visibleStats.map((stat) => (
             <Grid key={stat.label} xs={6} md={3}>
               <Card sx={{ p: 2.5 }}>
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
@@ -412,7 +665,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
 
           {/* Chart */}
           <Grid xs={12}>
-            <CartChart schema={schema} />
+            <CartChart schema={chartSchema} />
           </Grid>
 
           {/* Table */}
@@ -459,43 +712,43 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {!!selected.length && (
                     <>
-                      <Button
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        onClick={bulkPublish}
-                        startIcon={<Iconify icon="solar:check-circle-bold-duotone" />}
-                      >
-                        {publishLabel} ({selected.length})
-                      </Button>
+                      {showStatusToggle && (
+                        <Button
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                          onClick={bulkPublish}
+                          startIcon={<Iconify icon="solar:check-circle-bold-duotone" />}
+                        >
+                          {publishLabel} ({selected.length})
+                        </Button>
+                      )}
                       <Button
                         size="small"
                         color="error"
                         variant="outlined"
-                        onClick={() => {
-                          deleteRows(selected);
-                          setToast(`Đã xoá ${selected.length} ${entity}.`);
-                          setSelected([]);
-                        }}
+                        onClick={() => setBulkConfirm(true)}
                         startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
                       >
                         Xoá ({selected.length})
                       </Button>
                     </>
                   )}
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="inherit"
-                    onClick={() => {
-                      resetRows(module.rows);
-                      setSelected([]);
-                      setToast('Đã khôi phục dữ liệu gốc.');
-                    }}
-                    startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
-                  >
-                    Khôi phục
-                  </Button>
+                  {showReset && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="inherit"
+                      onClick={() => {
+                        resetRows(module.rows);
+                        setSelected([]);
+                        setToast('Đã khôi phục dữ liệu gốc.');
+                      }}
+                      startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
+                    >
+                      Khôi phục
+                    </Button>
+                  )}
                   <Button
                     size="small"
                     variant="outlined"
@@ -533,7 +786,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                       {tableCols.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                      <TableCell align="center">{publishLabel}</TableCell>
+                      {showStatusToggle && <TableCell align="center">{publishLabel}</TableCell>}
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
@@ -575,13 +828,15 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                             </TableCell>
                           );
                         })}
-                        <TableCell align="center">
-                          <Switch
-                            size="small"
-                            checked={String(row[statusKey]) === published}
-                            onChange={() => togglePublish(index)}
-                          />
-                        </TableCell>
+                        {showStatusToggle && (
+                          <TableCell align="center">
+                            <Switch
+                              size="small"
+                              checked={String(row[statusKey]) === published}
+                              onChange={() => togglePublish(index)}
+                            />
+                          </TableCell>
+                        )}
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                             <Tooltip title="Xem chi tiết">
@@ -614,7 +869,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={tableCols.length + 3} align="center" sx={{ py: 6 }}>
+                        <TableCell colSpan={tableCols.length + (showStatusToggle ? 3 : 2)} align="center" sx={{ py: 6 }}>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Chưa có {entity} nào phù hợp.
                           </Typography>
@@ -737,8 +992,9 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
         <DialogTitle>{`Xoá ${entity}?`}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Bản ghi sẽ bị xoá khỏi {module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục" để nạp
-            lại dữ liệu gốc.
+            {showReset
+              ? `Bản ghi sẽ bị xoá khỏi ${module.name.toLowerCase()}. Bạn có thể bấm "Khôi phục" để nạp lại dữ liệu gốc.`
+              : `Bản ghi sẽ bị xoá khỏi ${module.name.toLowerCase()} và trang khách hàng liên quan. Thao tác này không thể hoàn tác.`}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -748,6 +1004,20 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
           <Button color="error" variant="contained" onClick={doDelete}>
             Xoá
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={bulkConfirm} onClose={() => setBulkConfirm(false)}>
+        <DialogTitle>{`Xoá ${selected.length} ${entity}?`}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Các bản ghi đã chọn sẽ bị xoá khỏi dữ liệu quản trị và trang khách hàng liên quan.
+            Thao tác này không thể hoàn tác.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={() => setBulkConfirm(false)}>Huỷ</Button>
+          <Button color="error" variant="contained" onClick={bulkDelete}>Xoá {selected.length} bản ghi</Button>
         </DialogActions>
       </Dialog>
 
