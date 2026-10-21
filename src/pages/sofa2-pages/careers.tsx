@@ -18,6 +18,7 @@ import { varFade, MotionViewport } from 'src/components/animate';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
 import { SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { isSofa2JobOpen } from 'src/sections/sofa2/sofa2-recruitment';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ const BENEFITS = [
 export default function Page() {
   const theme = useTheme();
   const { rows: jobs } = useSofa2AdminRows('hr', 'recruitment');
-  const openJobs = jobs.filter((job) => String(job.status) === 'Đang tuyển');
+  const openJobs = jobs.filter(isSofa2JobOpen);
   const formatSalary = (job: Record<string, string | number>) => {
     const min = Number(job.salaryMin || 0);
     const max = Number(job.salaryMax || 0);

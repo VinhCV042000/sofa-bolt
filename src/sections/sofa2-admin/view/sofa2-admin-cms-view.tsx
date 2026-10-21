@@ -38,6 +38,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
+import { isSofa2JobOpen } from 'src/sections/sofa2/sofa2-recruitment';
+
 import { Sofa2AdminLayout } from './sofa2-admin-layout';
 import { Sofa2AdminSeoGenerator } from './sofa2-admin-seo-generator';
 import {
@@ -153,6 +155,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const published = statusOptions[0];
   const hideClientLink = schema.hideClientLink ?? false;
   const showStatusToggle = schema.statusToggle !== false;
+  const linkedRecruitmentDeleteNote =
+    group.slug === 'hr' && ['submit-cv', 'applicant-profile'].includes(module.slug)
+      ? ' Hồ sơ và đơn ứng tuyển có cùng mã sẽ bị xoá cùng nhau; bộ đếm hồ sơ của vị trí cũng được cập nhật.'
+      : '';
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -249,6 +255,47 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           String(row[uniqueKey] ?? '').trim().toLowerCase() === candidate
         );
         if (duplicate) next[uniqueKey] = 'Mã này đã được sử dụng.';
+        if (
+          form.mode === 'edit' &&
+          String(form.values[uniqueKey] ?? '') !== String(rows[form.index]?.[uniqueKey] ?? '')
+        ) {
+          next[uniqueKey] = 'Không thể đổi mã sau khi tạo vì mã này liên kết với hồ sơ tuyển dụng.';
+        }
+      }
+
+      if (['submit-cv', 'applicant-profile'].includes(module.slug)) {
+        const email = String(form.values.email ?? '').trim();
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          next.email = 'Vui lòng nhập email hợp lệ.';
+        }
+        const phone = String(form.values.phone ?? '').replace(/\D/g, '');
+        if (phone && (phone.length < 9 || phone.length > 15)) {
+          next.phone = 'Số điện thoại cần có từ 9 đến 15 chữ số.';
+        }
+        const cvUrl = String(form.values.cvUrl ?? '').trim();
+        if (cvUrl) {
+          try {
+            const parsed = new URL(cvUrl);
+            if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('invalid protocol');
+          } catch {
+            next.cvUrl = 'Vui lòng nhập đường dẫn CV bắt đầu bằng http:// hoặc https://.';
+          }
+        }
+      }
+
+      if (['recruitment', 'job-detail'].includes(module.slug)) {
+        const salaryMin = Number(form.values.salaryMin) || 0;
+        const salaryMax = Number(form.values.salaryMax) || 0;
+        if (salaryMin && salaryMax && salaryMax < salaryMin) {
+          next.salaryMax = 'Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu.';
+        }
+      }
+
+      if (module.slug === 'applicant-profile') {
+        const score = Number(form.values.interviewScore);
+        if (Number.isFinite(score) && (score < 0 || score > 10)) {
+          next.interviewScore = 'Điểm phỏng vấn phải nằm trong khoảng 0–10.';
+        }
       }
     }
     if (group.slug === 'dealer') {
@@ -584,7 +631,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     const average = (key: string, items = rows) =>
       items.length ? sum(key, items) / items.length : 0;
     const count = (predicate: (row: AdminRow) => boolean) => rows.filter(predicate).length;
-    const openJobs = rows.filter((row) => String(row.status) === 'Đang tuyển');
+    const openJobs = rows.filter(isSofa2JobOpen);
     const totalApplicants = sum('applicants');
     const hired = sum('hired');
     const formatCount = (value: number) => Math.round(value).toLocaleString('vi-VN');
@@ -773,25 +820,27 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       </Button>
                     </>
                   )}
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="inherit"
-                    onClick={() => {
-                      resetRows(module.rows);
-                      setSelected([]);
-                      syncDealerModule().then((synced) =>
-                        setToast(
-                          synced
-                            ? 'Đã khôi phục dữ liệu gốc.'
-                            : 'Đã khôi phục tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
-                        )
-                      );
-                    }}
-                    startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
-                  >
-                    Khôi phục
-                  </Button>
+                  {group.slug !== 'hr' && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="inherit"
+                      onClick={() => {
+                        resetRows(module.rows);
+                        setSelected([]);
+                        syncDealerModule().then((synced) =>
+                          setToast(
+                            synced
+                              ? 'Đã khôi phục dữ liệu gốc.'
+                              : 'Đã khôi phục tạm trên trình duyệt nhưng chưa đồng bộ được với máy chủ.'
+                          )
+                        );
+                      }}
+                      startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
+                    >
+                      Khôi phục
+                    </Button>
+                  )}
                   <Button
                     size="small"
                     variant="outlined"
@@ -1044,7 +1093,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {group.slug === 'dealer' && module.slug === 'dashboard'
               ? 'Hồ sơ sẽ bị xoá và quyền truy cập cổng đại lý bị thu hồi. Các báo giá, đơn hàng và công nợ đã lưu vẫn được giữ nhưng sẽ không còn liên kết với hồ sơ này. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu.'
-              : `Bản ghi sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác bản ghi đã xoá.`}
+              : `${linkedRecruitmentDeleteNote} Bản ghi sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác bản ghi đã xoá.`}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -1064,7 +1113,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {group.slug === 'dealer' && module.slug === 'dashboard'
               ? `Bạn đang xoá ${selected.length} hồ sơ đại lý. Quyền truy cập cổng sẽ bị thu hồi; báo giá, đơn hàng và công nợ được giữ lại nhưng không còn liên kết với hồ sơ. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu.`
-              : `Các bản ghi đã chọn sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác các bản ghi đã xoá.`}
+              : `${linkedRecruitmentDeleteNote} Các bản ghi đã chọn sẽ bị xoá khỏi ${module.name.toLowerCase()}. Khôi phục chỉ nạp lại dữ liệu mẫu ban đầu, không hoàn tác các bản ghi đã xoá.`}
           </Typography>
         </DialogContent>
         <DialogActions>

@@ -32,6 +32,8 @@ import TablePagination from '@mui/material/TablePagination';
 import { Iconify } from 'src/components/iconify';
 
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
+import { getSofa2HrSchema } from '../sofa2-hr';
+import { Sofa2AdminCmsView } from './sofa2-admin-cms-view';
 import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
 import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../sofa2-admin-data';
 
@@ -101,6 +103,11 @@ export function Sofa2AdminModuleView() {
   if (!found || !group || !module) {
     const first = SOFA2_ADMIN_GROUPS[0];
     return <Navigate to={`${adminRoot}/${first.slug}/${first.modules[0].slug}`} replace />;
+  }
+
+  const hrSchema = group.slug === 'hr' ? getSofa2HrSchema(module.slug) : undefined;
+  if (hrSchema) {
+    return <Sofa2AdminCmsView group={group} module={module} schema={hrSchema} />;
   }
 
   const filtered = rows

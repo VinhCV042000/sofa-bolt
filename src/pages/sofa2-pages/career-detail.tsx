@@ -17,6 +17,7 @@ import { varFade, MotionViewport } from 'src/components/animate';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
 import { SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { isSofa2JobOpen } from 'src/sections/sofa2/sofa2-recruitment';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,7 @@ export default function Page() {
       : fallback;
   const requirements = parseLines(job?.requirements, ['Đọc kỹ mô tả và chuẩn bị hồ sơ phù hợp với vị trí.']);
   const benefits = parseLines(job?.benefits, ['Chế độ lương thưởng cạnh tranh.', 'Được đào tạo và phát triển chuyên môn.']);
-  const isOpen = String(job?.status) === 'Đang tuyển';
+  const isOpen = job ? isSofa2JobOpen(job) : false;
 
   if (!job) {
     return (

@@ -454,6 +454,20 @@ export function useSofa2AdminRows(
       const previous = next[index];
       next[index] = { ...row };
       store[k] = next;
+      if (k === key('hr', 'recruitment') && previous) {
+        const jobId = String(row.jobId ?? '');
+        const title = String(row.title ?? '');
+        if (jobId && title !== String(previous.title ?? '')) {
+          const applicationsKey = key('hr', 'submit-cv');
+          const profilesKey = key('hr', 'applicant-profile');
+          store[applicationsKey] = (store[applicationsKey] ?? []).map((application) =>
+            String(application.jobId ?? '') === jobId ? { ...application, job: title } : application
+          );
+          store[profilesKey] = (store[profilesKey] ?? []).map((profile) =>
+            String(profile.jobId ?? '') === jobId ? { ...profile, appliedJob: title } : profile
+          );
+        }
+      }
       if (k === key('customer', 'profiles') && previous && String(previous.name) !== String(row.name)) {
         const customerId = String(row.customerId ?? '');
         ['dashboard', 'customer-orders', 'warranties', 'points', 'vouchers', 'complaints'].forEach((module) => {

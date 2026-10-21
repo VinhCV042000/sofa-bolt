@@ -56,7 +56,7 @@ export default function Page() {
     return 4;
   };
   const activeStep = result ? currentStep(String(result.status || 'Mới')) : 0;
-  const terminalStatus = !!result && ['Trúng tuyển', 'Không đạt', 'Đã rút', 'Thử việc'].includes(String(result.status));
+  const terminalStatus = !!result && ['Trúng tuyển', 'Không đạt', 'Tự rút', 'Thử việc'].includes(String(result.status));
 
   return (
     <>

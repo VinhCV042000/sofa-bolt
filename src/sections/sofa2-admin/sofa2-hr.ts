@@ -110,13 +110,14 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
 
   // ---- Nộp CV ---------------------------------------------------------
   'submit-cv': {
-    clientPath: '/sofa2/careers/apply/1',
+    clientPath: '/sofa2/careers/apply',
     entity: 'đơn ứng tuyển',
     titleKey: 'applicant',
     statusKey: 'status',
     statusOptions: APPLICATION_STATUS,
     publishLabel: 'Nhận hồ sơ',
     defaultStatus: 'Mới',
+    statusToggle: false,
     fields: [
       f('applicationId', 'Mã hồ sơ', 'text', 'display', { helper: 'Được tạo tự động khi nộp từ website.' }),
       f('jobId', 'Mã vị trí', 'text', 'display'),
@@ -150,6 +151,7 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
     statusOptions: APPLICATION_STATUS,
     publishLabel: 'Chuyển phỏng vấn',
     defaultStatus: 'Mới',
+    statusToggle: false,
     fields: [
       f('applicationId', 'Mã hồ sơ', 'text', 'display', { helper: 'Liên kết với đơn ứng tuyển tương ứng.' }),
       f('jobId', 'Mã vị trí', 'text', 'display'),
@@ -195,7 +197,7 @@ export const SOFA2_HR_SCHEMAS: Record<string, Sofa2CmsSchema> = {
   'recruitment-tracking': {
     clientPath: '/sofa2/careers',
     entity: 'tiến trình tuyển dụng',
-    titleKey: 'job',
+    titleKey: 'title',
     statusKey: 'status',
     statusOptions: ['Đang tuyển', 'Tạm dừng', 'Đã đóng', 'Đã đủ người'],
     publishLabel: 'Mở lại',

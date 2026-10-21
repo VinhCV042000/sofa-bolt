@@ -21,6 +21,7 @@ import { varFade, MotionViewport } from 'src/components/animate';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { useSofa2AdminRows } from 'src/sections/sofa2-admin/sofa2-admin-store';
 import { SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { isSofa2JobOpen } from 'src/sections/sofa2/sofa2-recruitment';
 
 // ----------------------------------------------------------------------
 
@@ -29,9 +30,11 @@ const metadata = { title: 'Ứng tuyển - LUXE Sofa' };
 export default function Page() {
   const { id } = useParams();
   const { rows: jobs, createRow } = useSofa2AdminRows('hr', 'recruitment');
-  const openJobs = jobs.filter((job) => String(job.status) === 'Đang tuyển');
+  const { rows: applications } = useSofa2AdminRows('hr', 'submit-cv');
+  const openJobs = jobs.filter(isSofa2JobOpen);
   const [applicationId, setApplicationId] = useState('');
   const [fileError, setFileError] = useState('');
+  const [formError, setFormError] = useState('');
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -43,28 +46,59 @@ export default function Page() {
     expectedSalary: '',
     availableDate: '',
   });
-  const selectedJob = jobs.find((job) => String(job.status) === 'Đang tuyển' && String(job.jobId) === form.position);
+  const selectedJob = jobs.find((job) => isSofa2JobOpen(job) && String(job.jobId) === form.position);
   const isGeneralApplication = form.position === 'GENERAL';
 
   useEffect(() => {
     if (!id) return;
-    const matched = jobs.find((job) => String(job.status) === 'Đang tuyển' && (String(job.jobId) === id || String(job.legacyId) === id));
+    const matched = jobs.find((job) => isSofa2JobOpen(job) && (String(job.jobId) === id || String(job.legacyId) === id));
     if (matched) {
       const jobId = String(matched.jobId);
       setForm((previous) => previous.position === jobId ? previous : { ...previous, position: jobId });
     }
   }, [id, jobs]);
 
-  const handleChange = (field: keyof typeof form, value: string) => setForm((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof typeof form, value: string) => {
+    setFormError('');
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if ((!selectedJob && !isGeneralApplication) || !form.name.trim() || !form.email.trim() || !form.phone.trim() || fileError) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setFormError('Vui lòng kiểm tra lại địa chỉ email.');
+      return;
+    }
+    const phoneDigits = form.phone.replace(/\D/g, '');
+    if (phoneDigits.length < 9 || phoneDigits.length > 15) {
+      setFormError('Vui lòng nhập số điện thoại hợp lệ.');
+      return;
+    }
+    if (form.cvUrl.trim()) {
+      try {
+        const parsed = new URL(form.cvUrl.trim());
+        if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('invalid protocol');
+      } catch {
+        setFormError('Link CV cần bắt đầu bằng http:// hoặc https://.');
+        return;
+      }
+    }
+    const email = form.email.trim().toLowerCase();
+    const jobId = selectedJob ? String(selectedJob.jobId) : '';
+    if (applications.some(
+      (application) =>
+        String(application.email ?? '').trim().toLowerCase() === email &&
+        String(application.jobId ?? '') === jobId
+    )) {
+      setFormError('Email này đã có hồ sơ cho vị trí đã chọn. Vui lòng tra cứu hồ sơ hoặc liên hệ HR.');
+      return;
+    }
     const reference = `APP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     const submittedAt = new Date();
     const submittedDate = `${submittedAt.getFullYear()}-${String(submittedAt.getMonth() + 1).padStart(2, '0')}-${String(submittedAt.getDate()).padStart(2, '0')}`;
     createRow({
       applicationId: reference,
-      jobId: selectedJob ? String(selectedJob.jobId) : '',
+      jobId,
       applicant: form.name.trim(),
       email: form.email.trim().toLowerCase(),
       phone: form.phone.trim(),
@@ -78,7 +112,7 @@ export default function Page() {
       submittedDate,
       screeningResult: 'Chưa sàng lọc',
       screenedBy: '',
-      notes: '',
+      note: '',
       status: 'Mới',
     });
     setApplicationId(reference);
@@ -173,7 +207,11 @@ export default function Page() {
                       accept=".pdf,.doc,.docx"
                       onChange={(event) => {
                         const file = event.target.files?.[0];
-                        if (file && file.size > 5 * 1024 * 1024) {
+                          if (file && !/\.(pdf|doc|docx)$/i.test(file.name)) {
+                            setFileError('Chỉ nhận tệp PDF, DOC hoặc DOCX.');
+                            return;
+                          }
+                          if (file && file.size > 5 * 1024 * 1024) {
                           setFileError('Tệp CV phải nhỏ hơn 5MB.');
                           return;
                         }
@@ -185,6 +223,7 @@ export default function Page() {
                   <Typography variant="caption" sx={{ display: 'block', mt: 1, color: 'text.disabled' }}>Hỗ trợ PDF, DOC, DOCX; tối đa 5MB. Bản demo lưu tên tệp; để HR mở CV, hãy thêm đường dẫn bên dưới.</Typography>
                 </Grid>
                 {fileError && <Grid xs={12}><Alert severity="error">{fileError}</Alert></Grid>}
+                {formError && <Grid xs={12}><Alert severity="error">{formError}</Alert></Grid>}
                 <Grid xs={12}>
                   <TextField fullWidth label="Link CV / portfolio (khuyến nghị)" placeholder="https://..." value={form.cvUrl} onChange={(e) => handleChange('cvUrl', e.target.value)} />
                 </Grid>
