@@ -33,6 +33,7 @@ import { Iconify } from 'src/components/iconify';
 
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
 import { getSofa2HrSchema } from '../sofa2-hr';
+import { useSofa2HrT } from '../sofa2-hr-i18n';
 import { Sofa2AdminCmsView } from './sofa2-admin-cms-view';
 import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
 import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../sofa2-admin-data';
@@ -61,6 +62,14 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 export function Sofa2AdminModuleView() {
   const { group: groupSlug, module: moduleSlug } = useParams();
   const { pathname } = useLocation();
+  const {
+    t,
+    translateGroupLabel,
+    translateModuleLabel,
+    translateModuleDescription,
+    translateFieldLabel,
+    translateHelper,
+  } = useSofa2HrT();
   const adminRoot = pathname.startsWith('/sofa10')
     ? '/sofa10/admin'
     : pathname.startsWith('/sofa9')
@@ -107,7 +116,32 @@ export function Sofa2AdminModuleView() {
 
   const hrSchema = group.slug === 'hr' ? getSofa2HrSchema(module.slug) : undefined;
   if (hrSchema) {
-    return <Sofa2AdminCmsView group={group} module={module} schema={hrSchema} />;
+    const translatedGroup = {
+      ...group,
+      name: translateGroupLabel(group.slug, group.name),
+    };
+    const translatedModule = {
+      ...module,
+      name: translateModuleLabel(module.slug, module.name),
+      description: translateModuleDescription(module.slug, module.description),
+      actions: [t('addNew')],
+    };
+    const translatedSchema = {
+      ...hrSchema,
+      entity: translatedModule.name.toLowerCase(),
+      fields: hrSchema.fields.map((field) => ({
+        ...field,
+        label: translateFieldLabel(field.key, module.slug, field.label),
+        helper: translateHelper(field.helper),
+      })),
+    };
+    return (
+      <Sofa2AdminCmsView
+        group={translatedGroup}
+        module={translatedModule}
+        schema={translatedSchema}
+      />
+    );
   }
 
   const filtered = rows
