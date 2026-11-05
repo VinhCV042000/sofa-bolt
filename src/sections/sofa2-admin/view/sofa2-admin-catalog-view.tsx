@@ -48,7 +48,6 @@ import {
   SOFA2_CATALOG_MOVE_TYPES,
   SOFA2_CATALOG_PRICE_LISTS,
   SOFA2_CATALOG_PRICE_STATUSES,
-  SOFA2_CATALOG_PRODUCT_STATUSES_LIST,
   SOFA2_CATALOG_STATUSES,
   SOFA2_CATALOG_VARIANT_STATUSES,
   SOFA2_CATALOG_WAREHOUSES,
@@ -61,7 +60,6 @@ import {
   removeSofa2CatalogCategory,
   removeSofa2CatalogPriceRow,
   removeSofa2CatalogPriceRule,
-  removeSofa2CatalogProduct,
   removeSofa2CatalogProducts,
   removeSofa2CatalogVariant,
   saveSofa2CatalogAttribute,
@@ -84,6 +82,7 @@ import type {
   Sofa2CatalogPriceRule,
   Sofa2CatalogProduct,
   Sofa2CatalogState,
+  Sofa2CatalogStockRow,
   Sofa2CatalogVariant,
 } from 'src/sections/sofa2-admin/sofa2-catalog-store';
 
@@ -1657,5 +1656,3 @@ export function Sofa2AdminCatalogView({ group, module }: { group: Sofa2AdminGrou
   }
 }
 
-// giữ tham chiếu cho lint: SOFA2_CATALOG_PRODUCT_STATUSES_LIST dùng ở nơi khác nếu cần
-export const SOFA2_CATALOG_ALL_STATUSES = [...SOFA2_CATALOG_PRODUCT_STATUSES_LIST ?? SOFA2_CATALOG_STATUSES];
