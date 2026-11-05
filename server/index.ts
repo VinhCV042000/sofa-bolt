@@ -45,6 +45,19 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-showrooms.xml', module: 'showroom' },
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
+const CMS_MODULES = new Set([
+  'home',
+  'about',
+  'contact',
+  'policy',
+  'terms',
+  'faq',
+  'static-pages',
+  'menu',
+  'banner',
+  'slider',
+]);
+const CMS_PUBLISHED_STATUSES = new Set(['Đã xuất bản', 'Đang chạy']);
 
 // Cổng đại lý và lưu SEO cần PostgreSQL; khi chưa cấu hình DATABASE_URL,
 // ứng dụng vẫn khởi động và trả lỗi 503 cho các API cần cơ sở dữ liệu.
@@ -127,6 +140,17 @@ function validateDealerProfileRows(rows: Record<string, unknown>[]) {
 async function readSeoModule(module: string): Promise<Record<string, unknown>[] | null> {
   try {
     const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
+    if (!result.rows.length) return null;
+    return validRows(result.rows[0].rows) ?? [];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') return null;
+    throw error;
+  }
+}
+
+async function readCmsModule(module: string): Promise<Record<string, unknown>[] | null> {
+  try {
+    const result = await pool.query('SELECT rows FROM sofa2_cms_modules WHERE module = $1', [module]);
     if (!result.rows.length) return null;
     return validRows(result.rows[0].rows) ?? [];
   } catch (error) {
@@ -348,7 +372,7 @@ async function requireAdmin(req: Request, res: Response) {
   const identity = await resolveIdentity(req, res);
   if (!identity) return false;
   if (identity.role !== 'admin') {
-    res.status(403).json({ error: 'Chỉ quản trị viên mới được cập nhật dữ liệu SEO.' });
+    res.status(403).json({ error: 'Chỉ quản trị viên mới được cập nhật dữ liệu quản trị.' });
     return false;
   }
   return true;
