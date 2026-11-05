@@ -46,11 +46,17 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
+const DATABASE_URL = process.env.DATABASE_URL ?? process.env.SUPABASE_DB_URL ?? '';
+
+if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is required for the dealer portal API.');
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const isLocalDatabase = /(?:@|\/\/)(?:localhost|127\.0\.0\.1)/.test(DATABASE_URL);
+const pool = new Pool({
+  connectionString: DATABASE_URL,
+  ssl: isLocalDatabase ? undefined : { rejectUnauthorized: false },
+});
 const app = express();
 const httpServer = createHttpServer(app);
 
@@ -292,6 +298,19 @@ async function resolveIdentity(req: Request, res: Response): Promise<Identity | 
     return { role: 'admin', userId, email };
   }
 
+  // Fallback cho phép danh sách quản trị trong database (khi chưa cấu hình env).
+  try {
+    const allowList = await pool.query(
+      'SELECT 1 FROM sofa2_admin_emails WHERE LOWER(email) = $1 LIMIT 1',
+      [email]
+    );
+    if (allowList.rowCount && allowList.rowCount > 0) {
+      return { role: 'admin', userId, email };
+    }
+  } catch {
+    /* bảng chưa sẵn sàng — bỏ qua */
+  }
+
   const result = await pool.query(
     `SELECT id, profile
        FROM sofa2_dealer_profiles
@@ -455,11 +474,12 @@ app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
 app.use(
+  ['/api/admin', '/api/dealer'],
   clerkMiddleware((req) => ({
     publishableKey: (() => {
       const host = getClerkProxyHost(req) ?? '';
       const hostname = host.split(',')[0]?.trim().replace(/:\d+$/, '').toLowerCase() ?? '';
-      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY;
+      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY ?? process.env.VITE_CLERK_PUBLISHABLE_KEY;
       return hostname.endsWith('.lovable.app')
         ? configuredKey || publishableKeyFromHost(hostname)
         : publishableKeyFromHost(hostname, configuredKey);
