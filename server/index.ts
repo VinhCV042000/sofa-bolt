@@ -643,6 +643,63 @@ app.put(
 );
 
 app.get(
+  '/api/cms/public',
+  asyncRoute(async (_req, res) => {
+    let result: { rows: { module: string; rows: unknown }[] };
+    try {
+      result = await pool.query('SELECT module, rows FROM sofa2_cms_modules');
+    } catch (error) {
+      if (!(error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE')) throw error;
+      result = { rows: [] };
+    }
+    const modules: Record<string, Record<string, unknown>[]> = {};
+    result.rows.forEach((record) => {
+      if (!CMS_MODULES.has(record.module)) return;
+      modules[record.module] = (validRows(record.rows) ?? []).filter((row) =>
+        CMS_PUBLISHED_STATUSES.has(String(row.status))
+      );
+    });
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    res.json({ modules });
+  })
+);
+
+app.get(
+  '/api/admin/cms/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    if (!CMS_MODULES.has(module)) {
+      res.status(404).json({ error: 'Không tìm thấy module CMS.' });
+      return;
+    }
+    const rows = await readCmsModule(module);
+    res.json({ rows: rows ?? [], initialized: rows !== null });
+  })
+);
+
+app.put(
+  '/api/admin/cms/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    const rows = validRows(req.body?.rows);
+    if (!CMS_MODULES.has(module) || !rows) {
+      res.status(400).json({ error: 'Dữ liệu CMS không hợp lệ.' });
+      return;
+    }
+    await pool.query(
+      `INSERT INTO sofa2_cms_modules (module, rows, updated_at)
+       VALUES ($1, $2::jsonb, NOW())
+       ON CONFLICT (module) DO UPDATE
+         SET rows = EXCLUDED.rows, updated_at = NOW()`,
+      [module, JSON.stringify(rows)]
+    );
+    res.json({ rows: (await readCmsModule(module)) ?? [] });
+  })
+);
+
+app.get(
   '/api/dealer/session',
   asyncRoute(async (req, res) => {
     const identity = await resolveIdentity(req, res);
