@@ -496,10 +496,16 @@ app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.get(
   '/api/seo/public',
   asyncRoute(async (_req, res) => {
-    const result = await pool.query(
-      'SELECT module, rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
-      [[...SEO_MODULES]]
-    );
+    let result: { rows: { module: string; rows: unknown }[] };
+    try {
+      result = await pool.query(
+        'SELECT module, rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+        [[...SEO_MODULES]]
+      );
+    } catch (error) {
+      if (!(error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE')) throw error;
+      result = { rows: [] };
+    }
     const modules = new Map<string, Record<string, unknown>[]>();
     result.rows.forEach((record) => {
       modules.set(record.module, validRows(record.rows) ?? []);
