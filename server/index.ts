@@ -46,17 +46,25 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-const DATABASE_URL = process.env.DATABASE_URL ?? process.env.SUPABASE_DB_URL ?? '';
-
-if (!DATABASE_URL) {
-  throw new Error('DATABASE_URL is required for the dealer portal API.');
+// Cổng đại lý và lưu SEO cần PostgreSQL; khi chưa cấu hình DATABASE_URL,
+// ứng dụng vẫn khởi động và trả lỗi 503 cho các API cần cơ sở dữ liệu.
+const DB_ENABLED = Boolean(process.env.DATABASE_URL);
+if (!DB_ENABLED) {
+  console.warn('DATABASE_URL is not configured — dealer portal and SEO persistence run in degraded mode.');
 }
 
-const isLocalDatabase = /(?:@|\/\/)(?:localhost|127\.0\.0\.1)/.test(DATABASE_URL);
-const pool = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: isLocalDatabase ? undefined : { rejectUnauthorized: false },
-});
+const pool = (
+  DB_ENABLED
+    ? new Pool({ connectionString: process.env.DATABASE_URL })
+    : {
+        query: async () => {
+          throw new Error('SOFA2_DB_UNAVAILABLE');
+        },
+        connect: async () => {
+          throw new Error('SOFA2_DB_UNAVAILABLE');
+        },
+      }
+) as Pool;
 const app = express();
 const httpServer = createHttpServer(app);
 
@@ -117,9 +125,14 @@ function validateDealerProfileRows(rows: Record<string, unknown>[]) {
 }
 
 async function readSeoModule(module: string): Promise<Record<string, unknown>[] | null> {
-  const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
-  if (!result.rows.length) return null;
-  return validRows(result.rows[0].rows) ?? [];
+  try {
+    const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
+    if (!result.rows.length) return null;
+    return validRows(result.rows[0].rows) ?? [];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') return null;
+    throw error;
+  }
 }
 
 function escapeXml(value: string) {
@@ -177,11 +190,16 @@ let seoRedirectCacheExpiresAt = 0;
 
 async function getSeoRedirectRows() {
   if (Date.now() < seoRedirectCacheExpiresAt) return seoRedirectRowsCache;
-  const result = await pool.query(
-    'SELECT rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
-    [SEO_PAGE_MODULES]
-  );
-  seoRedirectRowsCache = result.rows.flatMap((record) => validRows(record.rows) ?? []);
+  try {
+    const result = await pool.query(
+      'SELECT rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+      [SEO_PAGE_MODULES]
+    );
+    seoRedirectRowsCache = result.rows.flatMap((record) => validRows(record.rows) ?? []);
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE')) throw error;
+    seoRedirectRowsCache = [];
+  }
   seoRedirectCacheExpiresAt = Date.now() + 5000;
   return seoRedirectRowsCache;
 }
@@ -296,19 +314,6 @@ async function resolveIdentity(req: Request, res: Response): Promise<Identity | 
 
   if (ADMIN_EMAIL && email === ADMIN_EMAIL) {
     return { role: 'admin', userId, email };
-  }
-
-  // Fallback cho phép danh sách quản trị trong database (khi chưa cấu hình env).
-  try {
-    const allowList = await pool.query(
-      'SELECT 1 FROM sofa2_admin_emails WHERE LOWER(email) = $1 LIMIT 1',
-      [email]
-    );
-    if (allowList.rowCount && allowList.rowCount > 0) {
-      return { role: 'admin', userId, email };
-    }
-  } catch {
-    /* bảng chưa sẵn sàng — bỏ qua */
   }
 
   const result = await pool.query(
@@ -474,12 +479,11 @@ app.disable('x-powered-by');
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(express.json({ limit: '1mb' }));
 app.use(
-  ['/api/admin', '/api/dealer'],
   clerkMiddleware((req) => ({
     publishableKey: (() => {
       const host = getClerkProxyHost(req) ?? '';
       const hostname = host.split(',')[0]?.trim().replace(/:\d+$/, '').toLowerCase() ?? '';
-      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY ?? process.env.VITE_CLERK_PUBLISHABLE_KEY;
+      const configuredKey = process.env.CLERK_PUBLISHABLE_KEY;
       return hostname.endsWith('.lovable.app')
         ? configuredKey || publishableKeyFromHost(hostname)
         : publishableKeyFromHost(hostname, configuredKey);
@@ -492,10 +496,16 @@ app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.get(
   '/api/seo/public',
   asyncRoute(async (_req, res) => {
-    const result = await pool.query(
-      'SELECT module, rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
-      [[...SEO_MODULES]]
-    );
+    let result: { rows: { module: string; rows: unknown }[] };
+    try {
+      result = await pool.query(
+        'SELECT module, rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+        [[...SEO_MODULES]]
+      );
+    } catch (error) {
+      if (!(error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE')) throw error;
+      result = { rows: [] };
+    }
     const modules = new Map<string, Record<string, unknown>[]>();
     result.rows.forEach((record) => {
       modules.set(record.module, validRows(record.rows) ?? []);
@@ -918,6 +928,10 @@ app.use('/api', (_req, res) => res.status(404).json({ error: 'Không tìm thấy
 app.use((error: unknown, _req: Request, res: Response, next: (error?: unknown) => void) => {
   if (res.headersSent) {
     next(error);
+    return;
+  }
+  if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') {
+    res.status(503).json({ error: 'Cơ sở dữ liệu chưa được kết nối. Vui lòng cấu hình DATABASE_URL.' });
     return;
   }
   console.error('API request failed:', error instanceof Error ? error.message : 'unknown error');
