@@ -46,11 +46,17 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
+const DATABASE_URL = process.env.DATABASE_URL ?? process.env.SUPABASE_DB_URL ?? '';
+
+if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is required for the dealer portal API.');
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const isLocalDatabase = /(?:@|\/\/)(?:localhost|127\.0\.0\.1)/.test(DATABASE_URL);
+const pool = new Pool({
+  connectionString: DATABASE_URL,
+  ssl: isLocalDatabase ? undefined : { rejectUnauthorized: false },
+});
 const app = express();
 const httpServer = createHttpServer(app);
 
