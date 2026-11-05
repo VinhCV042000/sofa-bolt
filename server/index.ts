@@ -298,6 +298,19 @@ async function resolveIdentity(req: Request, res: Response): Promise<Identity | 
     return { role: 'admin', userId, email };
   }
 
+  // Fallback cho phép danh sách quản trị trong database (khi chưa cấu hình env).
+  try {
+    const allowList = await pool.query(
+      'SELECT 1 FROM sofa2_admin_emails WHERE LOWER(email) = $1 LIMIT 1',
+      [email]
+    );
+    if (allowList.rowCount && allowList.rowCount > 0) {
+      return { role: 'admin', userId, email };
+    }
+  } catch {
+    /* bảng chưa sẵn sàng — bỏ qua */
+  }
+
   const result = await pool.query(
     `SELECT id, profile
        FROM sofa2_dealer_profiles
