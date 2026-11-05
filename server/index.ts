@@ -46,11 +46,25 @@ const SEO_SITEMAP_ROUTES = [
   { file: 'sitemap-blog.xml', module: 'blog' },
 ] as const;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required for the dealer portal API.');
+// Cổng đại lý và lưu SEO cần PostgreSQL; khi chưa cấu hình DATABASE_URL,
+// ứng dụng vẫn khởi động và trả lỗi 503 cho các API cần cơ sở dữ liệu.
+const DB_ENABLED = Boolean(process.env.DATABASE_URL);
+if (!DB_ENABLED) {
+  console.warn('DATABASE_URL is not configured — dealer portal and SEO persistence run in degraded mode.');
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = (
+  DB_ENABLED
+    ? new Pool({ connectionString: process.env.DATABASE_URL })
+    : {
+        query: async () => {
+          throw new Error('SOFA2_DB_UNAVAILABLE');
+        },
+        connect: async () => {
+          throw new Error('SOFA2_DB_UNAVAILABLE');
+        },
+      }
+) as Pool;
 const app = express();
 const httpServer = createHttpServer(app);
 
@@ -111,9 +125,14 @@ function validateDealerProfileRows(rows: Record<string, unknown>[]) {
 }
 
 async function readSeoModule(module: string): Promise<Record<string, unknown>[] | null> {
-  const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
-  if (!result.rows.length) return null;
-  return validRows(result.rows[0].rows) ?? [];
+  try {
+    const result = await pool.query('SELECT rows FROM sofa2_seo_modules WHERE module = $1', [module]);
+    if (!result.rows.length) return null;
+    return validRows(result.rows[0].rows) ?? [];
+  } catch (error) {
+    if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') return null;
+    throw error;
+  }
 }
 
 function escapeXml(value: string) {
@@ -171,11 +190,16 @@ let seoRedirectCacheExpiresAt = 0;
 
 async function getSeoRedirectRows() {
   if (Date.now() < seoRedirectCacheExpiresAt) return seoRedirectRowsCache;
-  const result = await pool.query(
-    'SELECT rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
-    [SEO_PAGE_MODULES]
-  );
-  seoRedirectRowsCache = result.rows.flatMap((record) => validRows(record.rows) ?? []);
+  try {
+    const result = await pool.query(
+      'SELECT rows FROM sofa2_seo_modules WHERE module = ANY($1::text[])',
+      [SEO_PAGE_MODULES]
+    );
+    seoRedirectRowsCache = result.rows.flatMap((record) => validRows(record.rows) ?? []);
+  } catch (error) {
+    if (!(error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE')) throw error;
+    seoRedirectRowsCache = [];
+  }
   seoRedirectCacheExpiresAt = Date.now() + 5000;
   return seoRedirectRowsCache;
 }
@@ -898,6 +922,10 @@ app.use('/api', (_req, res) => res.status(404).json({ error: 'Không tìm thấy
 app.use((error: unknown, _req: Request, res: Response, next: (error?: unknown) => void) => {
   if (res.headersSent) {
     next(error);
+    return;
+  }
+  if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') {
+    res.status(503).json({ error: 'Cơ sở dữ liệu chưa được kết nối. Vui lòng cấu hình DATABASE_URL.' });
     return;
   }
   console.error('API request failed:', error instanceof Error ? error.message : 'unknown error');
