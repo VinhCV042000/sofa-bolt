@@ -52,7 +52,7 @@ const STATUS_COL: Sofa2AdminColumn = { key: 'status', label: 'Trạng thái', ty
 // CMS
 // ----------------------------------------------------------------------
 
-const cmsPage = (slug: string, name: string, path: string) =>
+const cmsPage = (slug: string, name: string, path: string, rows?: Record<string, string | number>[]) =>
   mod(
     slug,
     name,
@@ -71,7 +71,7 @@ const cmsPage = (slug: string, name: string, path: string) =>
       { key: 'updated', label: 'Cập nhật' },
       { key: 'author', label: 'Người sửa' },
     ],
-    [
+    rows ?? [
       {
         block: 'Hero bold editorial',
         type: 'Banner',
@@ -110,6 +110,147 @@ const cmsPage = (slug: string, name: string, path: string) =>
     ],
     ['Thêm khối', 'Xem trước', 'Xuất bản']
   );
+
+// Nội dung mẫu cho các trang CMS hiển thị trực tiếp bên website khách hàng
+// (chính sách, điều khoản, FAQ) — khối "Đã xuất bản" hiện trên trang client.
+const cmsPolicyRows: Record<string, string | number>[] = [
+  {
+    block: 'Chính sách bảo hành',
+    type: 'Rich text',
+    heading: 'Bảo hành chế tác 5 năm',
+    content:
+      'Mọi sản phẩm LUXE Sofa được bảo hành 5 năm với khung gỗ và 2 năm với phần đệm, vải bọc. Bảo hành trọn đời đối với lỗi chế tác thủ công tại xưởng.',
+    status: 'Đã xuất bản',
+    updated: '12/09/2026',
+    author: 'Thu Hà',
+  },
+  {
+    block: 'Chính sách giao hàng & lắp đặt',
+    type: 'Rich text',
+    heading: 'Giao hàng miễn phí nội thành',
+    content:
+      'Miễn phí giao hàng và lắp đặt tại Hà Nội và TP. Hồ Chí Minh với đơn từ 20 triệu. Các tỉnh khác tính theo km, giao trong 5–10 ngày làm việc.',
+    status: 'Đã xuất bản',
+    updated: '10/09/2026',
+    author: 'Minh Anh',
+  },
+  {
+    block: 'Chính sách đổi trả',
+    type: 'Rich text',
+    heading: 'Đổi trả trong 14 ngày',
+    content:
+      'Sản phẩm còn nguyên tem, chưa sử dụng được đổi trả trong 14 ngày kể từ ngày nhận hàng. Sản phẩm đặt may theo kích thước riêng không áp dụng đổi trả.',
+    status: 'Đã xuất bản',
+    updated: '08/09/2026',
+    author: 'Đức Anh',
+  },
+  {
+    block: 'Chính sách bảo mật thông tin',
+    type: 'Rich text',
+    heading: 'Thông tin của bạn được bảo vệ',
+    content:
+      'Chúng tôi chỉ sử dụng thông tin cá nhân để xử lý đơn hàng và chăm sóc khách hàng, không chia sẻ cho bên thứ ba khi chưa có sự đồng ý.',
+    status: 'Bản nháp',
+    updated: '05/09/2026',
+    author: 'Thu Hà',
+  },
+];
+
+const cmsTermsRows: Record<string, string | number>[] = [
+  {
+    block: 'Điều khoản sử dụng website',
+    type: 'Rich text',
+    heading: 'Chấp nhận điều khoản',
+    content:
+      'Khi truy cập và đặt hàng trên website, bạn đồng ý tuân theo các điều khoản sử dụng do LUXE Sofa ban hành và cập nhật theo từng thời kỳ.',
+    status: 'Đã xuất bản',
+    updated: '11/09/2026',
+    author: 'Minh Anh',
+  },
+  {
+    block: 'Điều kiện đặt hàng & thanh toán',
+    type: 'Rich text',
+    heading: 'Đặt cọc và thanh toán',
+    content:
+      'Đơn hàng được xác nhận sau khi đặt cọc 30%. Phần còn lại thanh toán trước khi giao hàng hoặc khi nhận hàng (COD trong nội thành).',
+    status: 'Đã xuất bản',
+    updated: '09/09/2026',
+    author: 'Thu Hà',
+  },
+  {
+    block: 'Quy định bảo hành & đổi trả',
+    type: 'Rich text',
+    heading: 'Phạm vi áp dụng',
+    content:
+      'Điều khoản này bổ sung cho chính sách bảo hành: lỗi do sử dụng sai hướng dẫn,moire ẩm mốc do môi trường hoặc tự ý tháo rời không thuộc phạm vi bảo hành.',
+    status: 'Đã xuất bản',
+    updated: '07/09/2026',
+    author: 'Đức Anh',
+  },
+  {
+    block: 'Giải quyết tranh chấp',
+    type: 'Rich text',
+    heading: 'Trước tiên là đối thoại',
+    content:
+      'Mọi tranh chấp sẽ được hai bên ưu tiên giải quyết thông qua thương lượng; trường hợp không đạt, tranh chấp xử lý tại cơ quan có thẩm quyền của Việt Nam.',
+    status: 'Bản nháp',
+    updated: '04/09/2026',
+    author: 'Thu Hà',
+  },
+];
+
+const cmsFaqRows: Record<string, string | number>[] = [
+  {
+    block: 'Sofa có làm theo kích thước riêng không?',
+    type: 'Câu hỏi thường gặp',
+    heading: 'Đặt may theo yêu cầu',
+    content:
+      'Có. LUXE Sofa nhận đặt may sofa theo kích thước, chất liệu và màu vải bạn chọn; thời gian hoàn thiện từ 20–30 ngày kể khi chốt thiết kế.',
+    status: 'Đã xuất bản',
+    updated: '13/09/2026',
+    author: 'Minh Anh',
+  },
+  {
+    block: 'Thời gian giao hàng bao lâu?',
+    type: 'Câu hỏi thường gặp',
+    heading: 'Giao hàng toàn quốc',
+    content:
+      'Sản phẩm có sẵn giao trong 3–5 ngày tại Hà Nội và TP.HCM. Đơn đặt may riêng giao trong 20–30 ngày, có thông báo lịch hẹn trước khi giao.',
+    status: 'Đã xuất bản',
+    updated: '11/09/2026',
+    author: 'Thu Hà',
+  },
+  {
+    block: 'Chính sách bảo hành như thế nào?',
+    type: 'Câu hỏi thường gặp',
+    heading: 'Bảo hành 5 năm',
+    content:
+      'Khung gỗ bảo hành 5 năm, đệm và vải bọc 2 năm, lỗi chế tác thủ công được bảo hành trọn đời. Chi tiết xem trang Chính sách.',
+    status: 'Đã xuất bản',
+    updated: '09/09/2026',
+    author: 'Đức Anh',
+  },
+  {
+    block: 'Có thể xem trực tiếp sản phẩm ở đâu?',
+    type: 'Câu hỏi thường gặp',
+    heading: 'Showroom Hà Nội',
+    content:
+      'Bạn có thể ghé showroom LUXE Sofa tại Hà Nội để trải nghiệm trực tiếp chất liệu và độ êm; xem danh sách showroom trong mục Showroom.',
+    status: 'Đã xuất bản',
+    updated: '06/09/2026',
+    author: 'Minh Anh',
+  },
+  {
+    block: 'Sofa vải có dễ vệ sinh không?',
+    type: 'Câu hỏi thường gặp',
+    heading: 'Vệ sinh tại nhà',
+    content:
+      'Các dòng vải của chúng tôi đều có lớp chống bám bẩn; bạn chỉ cần hút bụi định kỳ và lau vết bẩn bằng khăn ẩm ngay khi phát hiện.',
+    status: 'Bản nháp',
+    updated: '03/09/2026',
+    author: 'Thu Hà',
+  },
+];
 
 const CMS_GROUP: Sofa2AdminGroup = {
   slug: 'cms',
