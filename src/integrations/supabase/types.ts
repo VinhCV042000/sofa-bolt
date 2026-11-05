@@ -14,7 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      sofa2_admin_emails: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
+      sofa2_dealer_profiles: {
+        Row: {
+          clerk_user_id: string | null
+          created_at: string
+          email: string | null
+          id: string
+          level: string | null
+          name: string
+          portal_access: boolean
+          profile: Json
+          region: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          clerk_user_id?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          level?: string | null
+          name: string
+          portal_access?: boolean
+          profile?: Json
+          region?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          clerk_user_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          level?: string | null
+          name?: string
+          portal_access?: boolean
+          profile?: Json
+          region?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sofa2_dealer_records: {
+        Row: {
+          created_at: string
+          data: Json
+          dealer_id: string | null
+          id: number
+          module: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          dealer_id?: string | null
+          id?: number
+          module: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          dealer_id?: string | null
+          id?: number
+          module?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sofa2_dealer_records_dealer_id_fkey"
+            columns: ["dealer_id"]
+            isOneToOne: false
+            referencedRelation: "sofa2_dealer_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sofa2_seo_modules: {
+        Row: {
+          module: string
+          rows: Json
+          updated_at: string
+        }
+        Insert: {
+          module: string
+          rows?: Json
+          updated_at?: string
+        }
+        Update: {
+          module?: string
+          rows?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
