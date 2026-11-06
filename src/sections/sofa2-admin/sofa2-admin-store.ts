@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
+import { supabase } from 'src/integrations/supabase/client';
+
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
+import { sofa2Slugify, sofa2Today } from './sofa2-cms';
 
 // ----------------------------------------------------------------------
 // Kho dữ liệu CRUD tại chỗ (in-memory) cho khu quản trị sofa2.
@@ -275,6 +278,404 @@ export async function syncSofa2SeoRows(moduleSlug: string, rows: AdminRow[]) {
   }
 }
 
+// ----------------------------------------------------------------------
+// CMS — đồng bộ với 7 bảng Supabase (sofa2_cms_pages, sofa2_cms_posts, ...)
+// Admin schema dùng giá trị tiếng Việt; DB dùng tiếng Anh snake_case.
+// ----------------------------------------------------------------------
+
+const CMS_TABLE_MAP: Record<string, string> = {
+  home: 'sofa2_cms_pages',
+  about: 'sofa2_cms_pages',
+  contact: 'sofa2_cms_pages',
+  policy: 'sofa2_cms_pages',
+  terms: 'sofa2_cms_pages',
+  faq: 'sofa2_cms_pages',
+  blog: 'sofa2_cms_posts',
+  menu: 'sofa2_cms_menus',
+  banner: 'sofa2_cms_banners',
+  slider: 'sofa2_cms_sliders',
+  seo: 'sofa2_cms_seo',
+  'static-pages': 'sofa2_cms_static_pages',
+};
+
+const STATUS_VN_TO_EN: Record<string, string> = {
+  'Đã xuất bản': 'published',
+  'Đang chạy': 'published',
+  'Bản nháp': 'draft',
+  'Tạm ẩn': 'hidden',
+  'Hết hạn': 'expired',
+  'Chờ duyệt': 'pending',
+  'Tốt': 'published',
+  'Cần cải thiện': 'draft',
+  'Thiếu meta': 'draft',
+};
+
+const STATUS_EN_TO_VN: Record<string, string> = {
+  published: 'Đã xuất bản',
+  draft: 'Bản nháp',
+  hidden: 'Tạm ẩn',
+  expired: 'Hết hạn',
+  pending: 'Chờ duyệt',
+  active: 'Đang chạy',
+};
+
+const dateToVn = (raw: unknown): string => {
+  if (!raw) return '';
+  const d = new Date(String(raw));
+  if (Number.isNaN(d.getTime())) return String(raw);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+};
+
+const vnDateToIso = (raw: unknown): string | null => {
+  const s = String(raw ?? '').trim();
+  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
+  return null;
+};
+
+const PAGE_MODULES = ['home', 'about', 'contact', 'policy', 'terms', 'faq'];
+
+/** Chuyển một hàng DB (snake_case, status tiếng Anh) sang admin row (camelCase, status tiếng Việt) */
+function cmsDbToAdminRow(moduleSlug: string, row: Record<string, unknown>): AdminRow {
+  if (moduleSlug === 'blog') {
+    return {
+      id: String(row.id ?? ''),
+      title: String(row.title ?? ''),
+      slug: String(row.slug ?? ''),
+      category: String(row.category ?? ''),
+      excerpt: String(row.excerpt ?? ''),
+      content: String(row.content ?? ''),
+      cover: String(row.cover ?? ''),
+      tags: Array.isArray(row.tags) ? (row.tags as string[]).join(', ') : String(row.tags ?? ''),
+      status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+      views: Number(row.views ?? 0),
+      updated: dateToVn(row.published_at),
+      author: String(row.author ?? ''),
+      metaTitle: String(row.meta_title ?? ''),
+      metaDescription: String(row.meta_description ?? ''),
+      ogImage: String(row.og_image ?? ''),
+      indexable: row.indexable === false ? 'Không' : 'Có',
+    };
+  }
+  if (PAGE_MODULES.includes(moduleSlug)) {
+    return {
+      id: String(row.id ?? ''),
+      block: String(row.block ?? ''),
+      type: String(row.type ?? 'Rich text'),
+      heading: String(row.heading ?? ''),
+      content: String(row.content ?? ''),
+      image: String(row.image ?? ''),
+      ctaLabel: String(row.cta_label ?? ''),
+      ctaLink: String(row.cta_link ?? ''),
+      status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+      order: Number(row.sort_order ?? 0),
+      updated: dateToVn(row.updated_at ?? row.created_at),
+      author: String(row.author ?? ''),
+      metaTitle: String(row.meta_title ?? ''),
+      metaDescription: String(row.meta_description ?? ''),
+      ogImage: String(row.og_image ?? ''),
+      indexable: row.indexable === false ? 'Không' : 'Có',
+    };
+  }
+  if (moduleSlug === 'menu') {
+    return {
+      id: String(row.id ?? ''),
+      menu: String(row.menu ?? row.name ?? ''),
+      position: String(row.position ?? ''),
+      items: Number(row.items ?? 0),
+      structure: String(row.structure ?? ''),
+      depth: Number(row.depth ?? 3),
+      status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+      order: Number(row.sort_order ?? 0),
+      updated: dateToVn(row.updated_at ?? row.created_at),
+      author: String(row.author ?? ''),
+    };
+  }
+  if (moduleSlug === 'banner') {
+    return {
+      id: String(row.id ?? ''),
+      name: String(row.name ?? ''),
+      position: String(row.position ?? ''),
+      image: String(row.image_desktop ?? ''),
+      imageMobile: String(row.image_mobile ?? ''),
+      headline: String(row.headline ?? ''),
+      ctaLink: String(row.cta_link ?? ''),
+      schedule: String(row.schedule ?? ''),
+      status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+      order: Number(row.sort_order ?? 0),
+      updated: dateToVn(row.updated_at ?? row.created_at),
+    };
+  }
+  if (moduleSlug === 'slider') {
+    return {
+      id: String(row.id ?? ''),
+      name: String(row.name ?? ''),
+      page: String(row.page ?? 'Trang chủ'),
+      slides: Number(row.slides ?? 0),
+      slidesData: String(row.slides_data ?? ''),
+      interval: Number(row.interval ?? 5),
+      autoplay: row.autoplay === false ? 'Không' : 'Có',
+      status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+      order: Number(row.sort_order ?? 0),
+      updated: dateToVn(row.updated_at ?? row.created_at),
+      author: String(row.author ?? ''),
+    };
+  }
+  if (moduleSlug === 'seo') {
+    const title = String(row.meta_title ?? '');
+    return {
+      id: String(row.id ?? ''),
+      page: String(row.page_path ?? ''),
+      title,
+      description: String(row.meta_description ?? ''),
+      keywords: String(row.keywords ?? ''),
+      canonical: String(row.canonical ?? ''),
+      ogImage: String(row.og_image ?? ''),
+      length: title.length,
+      status: title ? 'Tốt' : 'Thiếu meta',
+      indexable: row.indexable === false ? 'Không' : 'Có',
+    };
+  }
+  // static-pages
+  return {
+    id: String(row.id ?? ''),
+    title: String(row.title ?? ''),
+    slug: String(row.slug ?? ''),
+    template: String(row.template ?? 'Một cột'),
+    content: String(row.content ?? ''),
+    cover: String(row.cover ?? ''),
+    status: STATUS_EN_TO_VN[String(row.status ?? 'draft')] ?? 'Bản nháp',
+    order: Number(row.sort_order ?? 0),
+    updated: dateToVn(row.updated_at ?? row.created_at),
+    author: String(row.author ?? ''),
+    metaTitle: String(row.meta_title ?? ''),
+    metaDescription: String(row.meta_description ?? ''),
+    ogImage: String(row.og_image ?? ''),
+    indexable: row.indexable === false ? 'Không' : 'Có',
+  };
+}
+
+/** Chuyển một admin row sang payload DB (snake_case, status tiếng Anh) */
+function cmsAdminToDbRow(moduleSlug: string, row: AdminRow): Record<string, unknown> {
+  const statusEn = STATUS_VN_TO_EN[String(row.status ?? '')] ?? 'draft';
+  const order = Number(row.order ?? 0);
+  const updated = vnDateToIso(row.updated) ?? new Date().toISOString().slice(0, 10);
+  const indexable = row.indexable === 'Không' ? false : true;
+
+  if (moduleSlug === 'blog') {
+    return {
+      title: String(row.title ?? ''),
+      slug: String(row.slug ?? sofa2Slugify(String(row.title ?? ''))),
+      category: String(row.category ?? ''),
+      excerpt: String(row.excerpt ?? ''),
+      content: String(row.content ?? ''),
+      cover: String(row.cover ?? ''),
+      tags: String(row.tags ?? '').split(',').map((t) => t.trim()).filter(Boolean),
+      status: statusEn,
+      views: Number(row.views ?? 0),
+      author: String(row.author ?? ''),
+      published_at: statusEn === 'published' ? updated : null,
+      meta_title: String(row.metaTitle ?? ''),
+      meta_description: String(row.metaDescription ?? ''),
+      og_image: String(row.ogImage ?? ''),
+      indexable,
+    };
+  }
+  if (PAGE_MODULES.includes(moduleSlug)) {
+    return {
+      slug: moduleSlug,
+      block: String(row.block ?? ''),
+      type: String(row.type ?? 'Rich text'),
+      heading: String(row.heading ?? ''),
+      content: String(row.content ?? ''),
+      image: String(row.image ?? ''),
+      cta_label: String(row.ctaLabel ?? ''),
+      cta_link: String(row.ctaLink ?? ''),
+      status: statusEn,
+      sort_order: order,
+      author: String(row.author ?? ''),
+      meta_title: String(row.metaTitle ?? ''),
+      meta_description: String(row.metaDescription ?? ''),
+      og_image: String(row.ogImage ?? ''),
+      indexable,
+    };
+  }
+  if (moduleSlug === 'menu') {
+    return {
+      menu: String(row.menu ?? ''),
+      position: String(row.position ?? 'Header'),
+      items: Number(row.items ?? 0),
+      structure: String(row.structure ?? ''),
+      depth: Number(row.depth ?? 3),
+      status: statusEn,
+      sort_order: order,
+      author: String(row.author ?? ''),
+    };
+  }
+  if (moduleSlug === 'banner') {
+    return {
+      name: String(row.name ?? ''),
+      position: String(row.position ?? ''),
+      image_desktop: String(row.image ?? ''),
+      image_mobile: String(row.imageMobile ?? ''),
+      headline: String(row.headline ?? ''),
+      cta_link: String(row.ctaLink ?? ''),
+      schedule: String(row.schedule ?? ''),
+      status: statusEn,
+      sort_order: order,
+    };
+  }
+  if (moduleSlug === 'slider') {
+    return {
+      name: String(row.name ?? ''),
+      page: String(row.page ?? 'Trang chủ'),
+      slides: Number(row.slides ?? 0),
+      slides_data: String(row.slidesData ?? ''),
+      interval: Number(row.interval ?? 5),
+      autoplay: row.autoplay !== 'Không',
+      status: statusEn,
+      sort_order: order,
+      author: String(row.author ?? ''),
+    };
+  }
+  if (moduleSlug === 'seo') {
+    const title = String(row.title ?? '');
+    return {
+      page_path: String(row.page ?? ''),
+      meta_title: title,
+      meta_description: String(row.description ?? ''),
+      keywords: String(row.keywords ?? ''),
+      canonical: String(row.canonical ?? ''),
+      og_image: String(row.ogImage ?? ''),
+      indexable,
+    };
+  }
+  // static-pages
+  return {
+    title: String(row.title ?? ''),
+    slug: String(row.slug ?? sofa2Slugify(String(row.title ?? ''))),
+    template: String(row.template ?? 'Một cột'),
+    content: String(row.content ?? ''),
+    cover: String(row.cover ?? ''),
+    status: statusEn,
+    sort_order: order,
+    author: String(row.author ?? ''),
+    meta_title: String(row.metaTitle ?? ''),
+    meta_description: String(row.metaDescription ?? ''),
+    og_image: String(row.ogImage ?? ''),
+    indexable,
+  };
+}
+
+const cmsWriteQueues = new Map<string, Promise<AdminRow[]>>();
+const cmsWriteRevisions = new Map<string, number>();
+const savedCmsRows = new Map<string, AdminRow[]>();
+
+export async function loadSofa2CmsRows(moduleSlug: string, defaults: AdminRow[]): Promise<AdminRow[]> {
+  const k = key('cms', moduleSlug);
+  const table = CMS_TABLE_MAP[moduleSlug];
+  if (!table) return store[k] ?? defaults;
+
+  let query = supabase.from(table).select('*');
+  if (PAGE_MODULES.includes(moduleSlug)) {
+    query = query.eq('slug', moduleSlug);
+  }
+  if (moduleSlug === 'seo') {
+    query = query.order('page_path', { ascending: true });
+  } else {
+    query = query.order('sort_order', { ascending: true });
+  }
+
+  const { data, error } = await query;
+  if (error || !data || data.length === 0) {
+    // Giữ dữ liệu mẫu trong store nếu DB trống
+    if (!store[k] || store[k].length === 0) {
+      store[k] = defaults.map((row) => ({ ...row }));
+      emit();
+    }
+    return store[k] ?? [];
+  }
+
+  const rows = data.map((row) => cmsDbToAdminRow(moduleSlug, row as unknown as Record<string, unknown>));
+  store[k] = rows;
+  savedCmsRows.set(k, rows.map((row) => ({ ...row })));
+  emit();
+  return rows;
+}
+
+export async function syncSofa2CmsRow(
+  moduleSlug: string,
+  mode: 'create' | 'update' | 'delete',
+  row: AdminRow,
+  index: number
+): Promise<AdminRow[]> {
+  const k = key('cms', moduleSlug);
+  const table = CMS_TABLE_MAP[moduleSlug];
+  if (!table) return store[k] ?? [];
+
+  const previous = cmsWriteQueues.get(k) ?? Promise.resolve([]);
+  const next = previous
+    .catch(() => [])
+    .then(async () => {
+      if (mode === 'delete') {
+        const id = String(row.id ?? '');
+        if (id) {
+          const { error: delError } = await supabase.from(table).delete().eq('id', id);
+          if (delError) throw new Error(delError.message);
+        }
+        return store[k] ?? [];
+      }
+
+      const payload = cmsAdminToDbRow(moduleSlug, row);
+      if (mode === 'update') {
+        const id = String(row.id ?? '');
+        if (id) {
+          const { data: updated, error: updError } = await supabase
+            .from(table)
+            .update(payload)
+            .eq('id', id)
+            .select('*')
+            .maybeSingle();
+          if (updError) throw new Error(updError.message);
+          if (updated) {
+            return (store[k] ?? []).map((r, i) =>
+              i === index ? cmsDbToAdminRow(moduleSlug, updated as unknown as Record<string, unknown>) : r
+            );
+          }
+        }
+        // Không có id — rơi về create
+      }
+
+      // Create
+      const { data: created, error: insError } = await supabase
+        .from(table)
+        .insert(payload)
+        .select('*')
+        .maybeSingle();
+      if (insError) throw new Error(insError.message);
+      if (created) {
+        const newRow = cmsDbToAdminRow(moduleSlug, created as unknown as Record<string, unknown>);
+        return [newRow, ...(store[k] ?? [])];
+      }
+      return store[k] ?? [];
+    });
+
+  cmsWriteQueues.set(k, next);
+  try {
+    const result = await next;
+    if (result) {
+      store[k] = result;
+      savedCmsRows.set(k, result.map((r) => ({ ...r })));
+      emit();
+    }
+    return store[k] ?? [];
+  } finally {
+    if (cmsWriteQueues.get(k) === next) cmsWriteQueues.delete(k);
+  }
+}
+
 export async function loadSofa2DealerRows(moduleSlug: string, defaults: AdminRow[]) {
   if (moduleSlug !== 'dashboard') {
     const dashboard = SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'dealer')
@@ -332,7 +733,8 @@ export function useSofa2AdminRows(
 ) {
   const k = key(groupSlug, moduleSlug);
   const isSeoModule = groupSlug === 'seo';
-  const shouldLoad = isSeoModule && options.load !== false;
+  const isCmsModule = groupSlug === 'cms';
+  const shouldLoad = (isSeoModule || isCmsModule) && options.load !== false;
   const [loading, setLoading] = useState(shouldLoad);
   const [error, setError] = useState('');
   const [pendingWrites, setPendingWrites] = useState(0);
@@ -353,11 +755,20 @@ export function useSofa2AdminRows(
     let active = true;
     setLoading(true);
     setError('');
-    loadSofa2SeoRows(moduleSlug, store[k] ?? [])
+
+    const loader = isCmsModule
+      ? loadSofa2CmsRows(moduleSlug, store[k] ?? [])
+      : loadSofa2SeoRows(moduleSlug, store[k] ?? []);
+
+    loader
       .catch((loadError: unknown) => {
         if (active) {
           setError(
-            loadError instanceof Error ? loadError.message : 'Không tải được dữ liệu SEO.'
+            loadError instanceof Error
+              ? loadError.message
+              : isCmsModule
+                ? 'Không tải được dữ liệu CMS.'
+                : 'Không tải được dữ liệu SEO.'
           );
         }
       })
@@ -368,7 +779,34 @@ export function useSofa2AdminRows(
     return () => {
       active = false;
     };
-  }, [shouldLoad, k, moduleSlug, reloadToken]);
+  }, [shouldLoad, isCmsModule, k, moduleSlug, reloadToken]);
+
+  const persistCmsRow = useCallback(
+    (mode: 'create' | 'update' | 'delete', row: AdminRow, index: number, previousRows: AdminRow[]) => {
+      if (!isCmsModule) return;
+      const revision = (cmsWriteRevisions.get(k) ?? 0) + 1;
+      cmsWriteRevisions.set(k, revision);
+      setPendingWrites((count) => count + 1);
+      setError('');
+
+      syncSofa2CmsRow(moduleSlug, mode, row, index)
+        .then((savedRows) => {
+          if (cmsWriteRevisions.get(k) === revision) {
+            store[k] = savedRows;
+            emit();
+          }
+        })
+        .catch((saveError: unknown) => {
+          if (cmsWriteRevisions.get(k) === revision) {
+            store[k] = (savedCmsRows.get(k) ?? previousRows).map((r) => ({ ...r }));
+            emit();
+            setError(saveError instanceof Error ? saveError.message : 'Không lưu được dữ liệu CMS.');
+          }
+        })
+        .finally(() => setPendingWrites((count) => Math.max(0, count - 1)));
+    },
+    [isCmsModule, k, moduleSlug]
+  );
 
   const persistSeoRows = useCallback(
     (nextRows: AdminRow[], previousRows: AdminRow[]) => {
@@ -443,11 +881,10 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      if (isCmsModule) persistCmsRow('create', nextRow, 0, previousRows);
     },
-    [k, persistSeoRows]
+    [k, persistSeoRows, isCmsModule, persistCmsRow]
   );
-
-  const updateRow = useCallback(
     (index: number, row: AdminRow) => {
       const next = [...(store[k] ?? [])];
       const previousRows = next.map((item) => ({ ...item }));
@@ -509,8 +946,9 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(next, previousRows);
+      if (isCmsModule) persistCmsRow('update', row, index, previousRows);
     },
-    [k, persistSeoRows]
+    [k, persistSeoRows, isCmsModule, persistCmsRow]
   );
 
   const deleteRow = useCallback(
@@ -524,8 +962,9 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      if (isCmsModule && removed) persistCmsRow('delete', removed, index, previousRows);
     },
-    [k, persistSeoRows]
+    [k, persistSeoRows, isCmsModule, persistCmsRow]
   );
 
   const deleteRows = useCallback(
@@ -540,8 +979,11 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      if (isCmsModule) {
+        removed.forEach((r) => persistCmsRow('delete', r, -1, previousRows));
+      }
     },
-    [k, persistSeoRows]
+    [k, persistSeoRows, isCmsModule, persistCmsRow]
   );
 
   const resetRows = useCallback(

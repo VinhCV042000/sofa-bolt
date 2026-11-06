@@ -66,9 +66,11 @@ export default function Page() {
     setPost(staticPost ?? null);
     setNotFound(false);
 
+    let foundCms = false;
     fetchBlogPostBySlug(id)
       .then((cmsPost: Sofa2CmsBlogPost | null) => {
         if (!active || !cmsPost) return;
+        foundCms = true;
         setPost({
           id: cmsPost.slug || cmsPost.id,
           title: cmsPost.title,
@@ -84,8 +86,8 @@ export default function Page() {
       })
       .catch(() => {})
       .finally(() => {
-        if (active) {
-          setNotFound((prev) => !prev && !staticPost);
+        if (active && !staticPost && !foundCms) {
+          setNotFound(true);
         }
       });
 
