@@ -56,6 +56,14 @@ const CMS_MODULES = new Set([
   'menu',
   'banner',
   'slider',
+  'cooperation',
+  'distributors',
+  'wholesalers',
+  'registration',
+  'project-quotes',
+  'oem',
+  'contractors',
+  'policies',
 ]);
 const CMS_PUBLISHED_STATUSES = new Set(['Đã xuất bản', 'Đang chạy']);
 

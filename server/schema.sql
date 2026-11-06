@@ -54,6 +54,12 @@ CREATE TABLE IF NOT EXISTS sofa2_seo_modules (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS sofa2_cms_modules (
+  module TEXT PRIMARY KEY,
+  rows JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(rows) = 'array'),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS sofa2_customer_profiles (
   clerk_user_id TEXT PRIMARY KEY,
   email TEXT NOT NULL,
