@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 
@@ -17,21 +18,65 @@ import { Iconify } from 'src/components/iconify';
 import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
-import { SOFA2_BLOG_POSTS, SOFA2_PAGE_IMAGES, SOFA2_BLOG_CATEGORIES } from 'src/sections/sofa2/sofa2-pages-data';
+import { SOFA2_BLOG_POSTS, SOFA2_BLOG_CATEGORIES, SOFA2_PAGE_IMAGES } from 'src/sections/sofa2/sofa2-pages-data';
+import { fetchPublishedBlogPosts, cmsBlogPostToUi } from 'src/sections/sofa2/sofa2-cms-client';
 
-// ----------------------------------------------------------------------
+type UiPost = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  categoryLabel: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  author: string;
+  date: string;
+  readTime: string;
+};
 
-const metadata = { title: 'Blog nội thất - LUXE Sofa' };
+const STATIC_POSTS: UiPost[] = SOFA2_BLOG_POSTS.map((p) => ({
+  id: p.id,
+  title: p.title,
+  slug: p.slug,
+  category: p.category,
+  categoryLabel: p.categoryLabel,
+  excerpt: p.excerpt,
+  content: p.content,
+  image: p.image,
+  author: p.author,
+  date: p.date,
+  readTime: p.readTime,
+}));
 
 export default function Page() {
   const theme = useTheme();
-  const featured = SOFA2_BLOG_POSTS[0];
-  const rest = SOFA2_BLOG_POSTS.slice(1);
+  const [posts, setPosts] = useState<UiPost[]>(STATIC_POSTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetchPublishedBlogPosts()
+      .then((cmsPosts) => {
+        if (!active || cmsPosts.length === 0) return;
+        setPosts(cmsPosts.map((p, i) => cmsBlogPostToUi(p, i) as UiPost));
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const featured = posts[0];
+  const rest = posts.slice(1);
 
   return (
     <>
       <Helmet>
-        <title>{metadata.title}</title>
+        <title>Blog nội thất - LUXE Sofa</title>
       </Helmet>
 
       <Sofa2PageHero
@@ -41,41 +86,41 @@ export default function Page() {
         image={SOFA2_PAGE_IMAGES.blog1}
       />
 
-      {/* Featured */}
-      <Sofa2Section py={{ xs: 8, md: 10 }}>
-        <Container component={MotionViewport}>
-          <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
-            <Grid xs={12} md={7}>
-              <Box
-                component={m.img}
-                variants={varFade({ distance: 24 }).inLeft}
-                src={featured.image}
-                alt={featured.title}
-                sx={{ width: 1, borderRadius: 2, aspectRatio: '16/10', objectFit: 'cover' }}
-              />
-            </Grid>
-            <Grid xs={12} md={5}>
-              <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inRight}>
-                <Chip label={featured.categoryLabel} size="small" color="primary" sx={{ width: 'fit-content' }} />
-                <Typography variant="h3">{featured.title}</Typography>
-                <Typography sx={{ color: 'text.secondary' }}>{featured.excerpt}</Typography>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>{featured.author.charAt(0)}</Avatar>
-                    <Typography variant="caption">{featured.author}</Typography>
+      {featured && (
+        <Sofa2Section py={{ xs: 8, md: 10 }}>
+          <Container component={MotionViewport}>
+            <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
+              <Grid xs={12} md={7}>
+                <Box
+                  component={m.img}
+                  variants={varFade({ distance: 24 }).inLeft}
+                  src={featured.image}
+                  alt={featured.title}
+                  sx={{ width: 1, borderRadius: 2, aspectRatio: '16/10', objectFit: 'cover' }}
+                />
+              </Grid>
+              <Grid xs={12} md={5}>
+                <Stack spacing={2} component={m.div} variants={varFade({ distance: 24 }).inRight}>
+                  <Chip label={featured.categoryLabel} size="small" color="primary" sx={{ width: 'fit-content' }} />
+                  <Typography variant="h3">{featured.title}</Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>{featured.excerpt}</Typography>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>{featured.author.charAt(0)}</Avatar>
+                      <Typography variant="caption">{featured.author}</Typography>
+                    </Stack>
+                    <Typography variant="caption" sx={{ color: 'text.disabled' }}>· {featured.date} · {featured.readTime}</Typography>
                   </Stack>
-                  <Typography variant="caption" sx={{ color: 'text.disabled' }}>· {featured.date} · {featured.readTime}</Typography>
+                  <Button component={RouterLink} href={`/sofa2/blog/${featured.slug || featured.id}`} variant="contained" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
+                    Đọc tiếp
+                  </Button>
                 </Stack>
-                <Button component={RouterLink} href={`/sofa2/blog/${featured.id}`} variant="contained" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
-                  Đọc tiếp
-                </Button>
-              </Stack>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </Sofa2Section>
+          </Container>
+        </Sofa2Section>
+      )}
 
-      {/* Filter + Grid */}
       <Sofa2Section bg="grey">
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: { xs: 4, md: 6 } }}>
           <Chip
@@ -115,7 +160,7 @@ export default function Page() {
                     <Typography variant="caption">{post.date}</Typography>
                     <Typography variant="caption">· {post.readTime}</Typography>
                   </Stack>
-                  <Button component={RouterLink} href={`/sofa2/blog/${post.id}`} size="small" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>Đọc tiếp</Button>
+                  <Button component={RouterLink} href={`/sofa2/blog/${post.slug || post.id}`} size="small" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>Đọc tiếp</Button>
                 </Stack>
               </Stack>
             </Grid>

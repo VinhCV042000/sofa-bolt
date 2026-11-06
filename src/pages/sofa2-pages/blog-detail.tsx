@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { m } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -21,41 +22,103 @@ import { varFade, MotionViewport } from 'src/components/animate';
 
 import { SOFA2_BLOG_POSTS } from 'src/sections/sofa2/sofa2-pages-data';
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
+import { fetchBlogPostBySlug, type Sofa2CmsBlogPost } from 'src/sections/sofa2/sofa2-cms-client';
 
-// ----------------------------------------------------------------------
+type UiPost = {
+  id: string;
+  title: string;
+  slug: string;
+  categoryLabel: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  author: string;
+  date: string;
+  readTime: string;
+};
 
-const BODY = [
-  'Nội thất không chỉ là vật dụng trong ngôi nhà mà còn là ngôn ngữ thể hiện cá tính và gu thẩm mỹ của gia chủ. Với hơn một thập kỷ chế tác sofa, LUXE Sofa luôn tâm niệm rằng mỗi không gian đều có câu chuyện riêng và chiếc sofa phải góp phần kể câu chuyện ấy một cách trọn vẹn nhất.',
-  'Khi lựa chọn sofa, nhiều khách hàng thường chỉ chú ý đến vẻ bề ngoài mà bỏ qua những yếu tố kỹ thuật quan trọng như kết cấu khung, mật độ đệm hay nguồn gốc chất liệu. Một chiếc sofa đẹp mắt nhưng đệm xẹp sau vài tháng sẽ làm mất đi sự thoải mái vốn có. Vì vậy, chúng tôi khuyến cáo nên tìm hiểu kỹ thành phần trước khi quyết định.',
-  'Tại LUXE Sofa, mọi sản phẩm đều trải qua hơn 200 giờ chế tác thủ công. Nghệ nhân của chúng tôi chọn lọc từng tấm da bò, từng thanh gỗ sồi và may từng đường kim bằng tay. Điều này không chỉ đảm bảo độ bền mà còn mang lại dấu ấn độc bản mà máy móc khó có thể sao chép.',
-  'Bảo dưỡng đóng vai trò then chốt để duy trì vẻ đẹp và tuổi thọ của sofa. Với sofa da, nên lau sạch định kỳ bằng dung dịch chuyên dụng và tránh ánh nắng trực tiếp. Với sofa vải, giặt hút bụi sâu mỗi 6 tháng giúp kháng khuẩn và giữ màu sáng lâu dài.',
-  'Cuối cùng, đừng ngần ngại nhờ chuyên gia tư vấn. Một chiếc sofa phù hợp không chỉ nâng tầm không gian sống mà còn đồng hành cùng gia đình bạn qua nhiều năm tháng. Hãy để LUXE Sofa giúp bạn tìm ra kiệt tác cho ngôi nhà của mình.',
-];
+const STATIC_POSTS: UiPost[] = SOFA2_BLOG_POSTS.map((p) => ({
+  id: p.id,
+  title: p.title,
+  slug: p.slug,
+  categoryLabel: p.categoryLabel,
+  excerpt: p.excerpt,
+  content: p.content,
+  image: p.image,
+  author: p.author,
+  date: p.date,
+  readTime: p.readTime,
+}));
 
 export default function Page() {
   const theme = useTheme();
   const { id } = useParams();
-  const post = SOFA2_BLOG_POSTS.find((item) => item.id === id);
+  const [post, setPost] = useState<UiPost | null>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    if (!id) return;
+
+    const staticPost = STATIC_POSTS.find(
+      (item) => item.id === id || item.slug === id
+    );
+    setPost(staticPost ?? null);
+    setNotFound(false);
+
+    fetchBlogPostBySlug(id)
+      .then((cmsPost: Sofa2CmsBlogPost | null) => {
+        if (!active || !cmsPost) return;
+        setPost({
+          id: cmsPost.slug || cmsPost.id,
+          title: cmsPost.title,
+          slug: cmsPost.slug,
+          categoryLabel: cmsPost.category,
+          excerpt: cmsPost.excerpt,
+          content: cmsPost.content,
+          image: cmsPost.cover,
+          author: cmsPost.author || 'LUXE Sofa',
+          date: cmsPost.publishedAt || '',
+          readTime: `${Math.max(3, Math.ceil(cmsPost.content.length / 600))} phút`,
+        });
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) {
+          setNotFound((prev) => !prev && !staticPost);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
 
   if (!post) {
-    return (
-      <>
-        <Helmet><title>Không tìm thấy bài viết - LUXE Sofa</title></Helmet>
-        <Container sx={{ py: { xs: 10, md: 16 }, textAlign: 'center' }}>
-          <Stack spacing={3} alignItems="center">
-            <Iconify icon="solar:question-circle-bold-duotone" width={80} sx={{ color: 'text.disabled' }} />
-            <Typography variant="h3">Không tìm thấy bài viết</Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Bài viết bạn tìm kiếm không tồn tại hoặc đã bị gỡ.</Typography>
-            <Button component={RouterLink} href="/sofa2/blog" variant="contained" startIcon={<Iconify icon="eva:arrow-back-fill" />}>
-              Quay lại blog
-            </Button>
-          </Stack>
-        </Container>
-      </>
-    );
+    if (notFound) {
+      return (
+        <>
+          <Helmet><title>Không tìm thấy bài viết - LUXE Sofa</title></Helmet>
+          <Container sx={{ py: { xs: 10, md: 16 }, textAlign: 'center' }}>
+            <Stack spacing={3} alignItems="center">
+              <Iconify icon="solar:question-circle-bold-duotone" width={80} sx={{ color: 'text.disabled' }} />
+              <Typography variant="h3">Không tìm thấy bài viết</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Bài viết bạn tìm kiếm không tồn tại hoặc đã bị gỡ.</Typography>
+              <Button component={RouterLink} href="/sofa2/blog" variant="contained" startIcon={<Iconify icon="eva:arrow-back-fill" />}>
+                Quay lại blog
+              </Button>
+            </Stack>
+          </Container>
+        </>
+      );
+    }
+    return null;
   }
 
-  const related = SOFA2_BLOG_POSTS.filter((item) => item.id !== post.id).slice(0, 3);
+  const related = STATIC_POSTS.filter((item) => item.id !== post.id).slice(0, 3);
+  const paragraphs = post.content
+    ? post.content.split('\n').filter((p) => p.trim())
+    : ['Nội dung bài viết đang được cập nhật.'];
 
   return (
     <>
@@ -69,7 +132,6 @@ export default function Page() {
         image={post.image}
       />
 
-      {/* Meta bar */}
       <Sofa2Section py={{ xs: 4, md: 5 }}>
         <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap>
           <Stack direction="row" spacing={1} alignItems="center">
@@ -80,18 +142,16 @@ export default function Page() {
         </Stack>
       </Sofa2Section>
 
-      {/* Body */}
       <Sofa2Section py={{ xs: 4, md: 8 }}>
         <Container component={MotionViewport} maxWidth="md">
           <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inUp}>
-            {BODY.map((para, i) => (
+            {paragraphs.map((para, i) => (
               <Typography key={i} variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
                 {para}
               </Typography>
             ))}
           </Stack>
 
-          {/* Author info box */}
           <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={2} sx={{ mt: 6, p: 4, borderRadius: 2, bgcolor: (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04) }}>
             <Divider />
             <Stack direction="row" spacing={2} alignItems="center">
@@ -104,7 +164,6 @@ export default function Page() {
             <Divider />
           </Stack>
 
-          {/* Comments placeholder */}
           <Stack component={m.div} variants={varFade({ distance: 24 }).inUp} spacing={2} sx={{ mt: 6 }}>
             <Typography variant="h5">Bình luận</Typography>
             <Stack spacing={2} sx={{ p: 4, borderRadius: 2, bgcolor: (t) => varAlpha(t.vars.palette.grey['500Channel'], 0.04), textAlign: 'center' }}>
@@ -113,7 +172,6 @@ export default function Page() {
             </Stack>
           </Stack>
 
-          {/* Social share */}
           <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mt: 4 }}>
             <Typography variant="subtitle2">Chia sẻ:</Typography>
             {[
@@ -129,7 +187,6 @@ export default function Page() {
         </Container>
       </Sofa2Section>
 
-      {/* Related */}
       <Sofa2Section bg="grey">
         <Stack spacing={2} sx={{ mb: { xs: 5, md: 8 } }}>
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>Bài viết liên quan</Typography>
@@ -144,7 +201,7 @@ export default function Page() {
                   <Typography variant="overline" sx={{ color: 'primary.main' }}>{item.categoryLabel}</Typography>
                   <Typography variant="h6">{item.title}</Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>{item.excerpt}</Typography>
-                  <Button component={RouterLink} href={`/sofa2/blog/${item.id}`} size="small" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>Đọc tiếp</Button>
+                  <Button component={RouterLink} href={`/sofa2/blog/${item.slug || item.id}`} size="small" sx={{ width: 'fit-content' }} endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>Đọc tiếp</Button>
                 </Stack>
               </Stack>
             </Grid>
