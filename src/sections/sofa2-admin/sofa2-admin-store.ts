@@ -1,9 +1,12 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
 import { supabase } from 'src/integrations/supabase/client';
 
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
 import { sofa2Slugify, sofa2Today } from './sofa2-cms';
+
+const untypedSupabase = supabase as unknown as SupabaseClient;
 
 // ----------------------------------------------------------------------
 // Kho dữ liệu CRUD tại chỗ (in-memory) cho khu quản trị sofa2.
@@ -620,7 +623,7 @@ export async function loadSofa2CmsRows(moduleSlug: string, defaults: AdminRow[])
   const table = CMS_TABLE_MAP[moduleSlug];
   if (!table) return store[k] ?? defaults;
 
-  let query = supabase.from(table).select('*');
+  let query = untypedSupabase.from(table).select('*');
   if (PAGE_MODULES.includes(moduleSlug)) {
     query = query.eq('slug', moduleSlug);
   }
@@ -675,7 +678,7 @@ export async function syncSofa2CmsRow(
       if (mode === 'delete') {
         const id = String(row.id ?? '');
         if (id) {
-          const { error: delError } = await supabase.from(table).delete().eq('id', id);
+          const { error: delError } = await untypedSupabase.from(table).delete().eq('id', id);
           if (delError) throw new Error(delError.message);
         }
         return store[k] ?? [];
@@ -685,7 +688,7 @@ export async function syncSofa2CmsRow(
       if (mode === 'update') {
         const id = String(row.id ?? '');
         if (id) {
-          const { data: updated, error: updError } = await supabase
+          const { data: updated, error: updError } = await untypedSupabase
             .from(table)
             .update(payload)
             .eq('id', id)
@@ -702,7 +705,7 @@ export async function syncSofa2CmsRow(
       }
 
       // Create
-      const { data: created, error: insError } = await supabase
+      const { data: created, error: insError } = await untypedSupabase
         .from(table)
         .insert(payload)
         .select('*')

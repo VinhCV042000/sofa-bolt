@@ -1,5 +1,8 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from 'src/integrations/supabase/client';
 import { SOFA2_BLOG_POSTS, SOFA2_PAGE_IMAGES } from './sofa2-pages-data';
+
+const untypedSupabase = supabase as unknown as SupabaseClient;
 
 export type Sofa2CmsBlogPost = {
   id: string;
@@ -90,7 +93,7 @@ const DB_BANNER_TO_BANNER = (row: Record<string, unknown>): Sofa2CmsBanner => ({
 });
 
 export async function fetchPublishedBlogPosts(): Promise<Sofa2CmsBlogPost[]> {
-  const { data, error } = await supabase
+  const { data, error } = await untypedSupabase
     .from('sofa2_cms_posts')
     .select('*')
     .eq('status', 'published')
@@ -100,7 +103,7 @@ export async function fetchPublishedBlogPosts(): Promise<Sofa2CmsBlogPost[]> {
 }
 
 export async function fetchBlogPostBySlug(slug: string): Promise<Sofa2CmsBlogPost | null> {
-  const { data, error } = await supabase
+  const { data, error } = await untypedSupabase
     .from('sofa2_cms_posts')
     .select('*')
     .eq('slug', slug)
@@ -111,7 +114,7 @@ export async function fetchBlogPostBySlug(slug: string): Promise<Sofa2CmsBlogPos
 }
 
 export async function fetchPublishedPageBlocks(slug: string): Promise<Sofa2CmsPageBlock[]> {
-  const { data, error } = await supabase
+  const { data, error } = await untypedSupabase
     .from('sofa2_cms_pages')
     .select('*')
     .eq('slug', slug)
@@ -122,7 +125,7 @@ export async function fetchPublishedPageBlocks(slug: string): Promise<Sofa2CmsPa
 }
 
 export async function fetchPublishedBanners(position?: string): Promise<Sofa2CmsBanner[]> {
-  let query = supabase.from('sofa2_cms_banners').select('*').eq('status', 'published');
+  let query = untypedSupabase.from('sofa2_cms_banners').select('*').eq('status', 'published');
   if (position) query = query.eq('position', position);
   const { data, error } = await query.order('sort_order', { ascending: true });
   if (error || !data) return [];
@@ -130,7 +133,7 @@ export async function fetchPublishedBanners(position?: string): Promise<Sofa2Cms
 }
 
 export async function fetchPublishedSeo(pagePath: string) {
-  const { data, error } = await supabase
+  const { data, error } = await untypedSupabase
     .from('sofa2_cms_seo')
     .select('*')
     .eq('page_path', pagePath)
