@@ -34,6 +34,7 @@ import { Iconify } from 'src/components/iconify';
 import { type AdminRow, useSofa2AdminRows } from '../sofa2-admin-store';
 import { getSofa2HrSchema } from '../sofa2-hr';
 import { useSofa2HrT } from '../sofa2-hr-i18n';
+import { getSofa2CmsSchema } from '../sofa2-cms';
 import { Sofa2AdminCmsView } from './sofa2-admin-cms-view';
 import { Sofa2AdminLayout, SOFA2_ADMIN_THEME } from './sofa2-admin-layout';
 import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS, findSofa2AdminModule } from '../sofa2-admin-data';
@@ -115,6 +116,7 @@ export function Sofa2AdminModuleView() {
   }
 
   const hrSchema = group.slug === 'hr' ? getSofa2HrSchema(module.slug) : undefined;
+  const cmsSchema = group.slug === 'cms' ? getSofa2CmsSchema(module.slug) : undefined;
   if (hrSchema) {
     const translatedGroup = {
       ...group,
@@ -140,6 +142,15 @@ export function Sofa2AdminModuleView() {
         group={translatedGroup}
         module={translatedModule}
         schema={translatedSchema}
+      />
+    );
+  }
+  if (cmsSchema) {
+    return (
+      <Sofa2AdminCmsView
+        group={group}
+        module={module}
+        schema={cmsSchema}
       />
     );
   }

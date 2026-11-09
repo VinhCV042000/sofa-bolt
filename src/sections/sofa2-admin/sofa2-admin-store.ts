@@ -1,6 +1,6 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from 'src/integrations/supabase/client';
 
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
@@ -576,50 +576,8 @@ const cmsWriteQueues = new Map<string, Promise<AdminRow[]>>();
 const cmsWriteRevisions = new Map<string, number>();
 const savedCmsRows = new Map<string, AdminRow[]>();
 
-const CMS_API_MODULES = new Set([
-  'cooperation',
-  'distributors',
-  'wholesalers',
-  'registration',
-  'project-quotes',
-  'oem',
-  'contractors',
-  'policies',
-]);
-
-async function putCmsApiRows(moduleSlug: string, rows: AdminRow[]): Promise<AdminRow[]> {
-  const response = await fetch(`/api/admin/cms/${encodeURIComponent(moduleSlug)}`, {
-    method: 'PUT',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ rows }),
-  });
-  if (!response.ok) throw new Error('Không lưu được dữ liệu CMS trên máy chủ.');
-  const payload = (await response.json()) as { rows?: AdminRow[] };
-  return (payload.rows ?? []).map((row) => ({ ...row }));
-}
-
-async function loadCmsApiRows(moduleSlug: string, defaults: AdminRow[]): Promise<AdminRow[]> {
-  const k = key('cms', moduleSlug);
-  const response = await fetch(`/api/admin/cms/${encodeURIComponent(moduleSlug)}`, {
-    credentials: 'include',
-  });
-  if (!response.ok) throw new Error('Không tải được dữ liệu CMS. Hãy đăng nhập bằng tài khoản quản trị.');
-
-  const payload = (await response.json()) as { rows?: AdminRow[]; initialized?: boolean };
-  const nextRows = payload.initialized
-    ? (payload.rows ?? []).map((row) => ({ ...row }))
-    : await putCmsApiRows(moduleSlug, store[k] ?? defaults);
-
-  store[k] = nextRows;
-  savedCmsRows.set(k, nextRows.map((row) => ({ ...row })));
-  emit();
-  return nextRows;
-}
-
 export async function loadSofa2CmsRows(moduleSlug: string, defaults: AdminRow[]): Promise<AdminRow[]> {
   const k = key('cms', moduleSlug);
-  if (CMS_API_MODULES.has(moduleSlug)) return loadCmsApiRows(moduleSlug, defaults);
   const table = CMS_TABLE_MAP[moduleSlug];
   if (!table) return store[k] ?? defaults;
 
@@ -657,19 +615,8 @@ export async function syncSofa2CmsRow(
   index: number
 ): Promise<AdminRow[]> {
   const k = key('cms', moduleSlug);
-  if (CMS_API_MODULES.has(moduleSlug)) {
-    const current = store[k] ?? [];
-    const nextRows =
-      mode === 'create'
-        ? [{ ...row }, ...current]
-        : mode === 'update'
-          ? current.map((item, i) => (i === index ? { ...row } : item))
-          : current.filter((item, i) => (row.id ? item.id !== row.id : i !== index));
-    return putCmsApiRows(moduleSlug, nextRows);
-  }
   const table = CMS_TABLE_MAP[moduleSlug];
   if (!table) return store[k] ?? [];
-
 
   const previous = cmsWriteQueues.get(k) ?? Promise.resolve([]);
   const next = previous
