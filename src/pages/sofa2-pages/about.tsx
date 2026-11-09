@@ -21,6 +21,7 @@ import {
   SOFA2_PAGE_IMAGES,
   SOFA2_COMPANY_INFO,
 } from 'src/sections/sofa2/sofa2-pages-data';
+import { useCmsPageBlocks } from 'src/sections/sofa2/sofa2-cms-client';
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +49,8 @@ const SUB_PAGES = [
 
 export default function Page() {
   const theme = useTheme();
+  const { blocks: cmsBlocks } = useCmsPageBlocks('about');
+  const hasCmsIntro = cmsBlocks.some((b) => b.block === 'intro' && b.content);
 
   return (
     <>

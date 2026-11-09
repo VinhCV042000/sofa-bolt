@@ -177,3 +177,55 @@ export function cmsBlogPostToUi(post: Sofa2CmsBlogPost, index: number) {
 export function useFallbackBlogPosts() {
   return SOFA2_BLOG_POSTS;
 }
+
+// ----- CMS page blocks hook -----
+
+import { useEffect, useState } from 'react';
+
+export function useCmsPageBlocks(slug: string) {
+  const [blocks, setBlocks] = useState<Sofa2CmsPageBlock[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    fetchPublishedPageBlocks(slug)
+      .then((data) => {
+        if (active) setBlocks(data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  return { blocks, loading };
+}
+
+// ----- CMS banners hook -----
+
+export function useCmsBanners(position?: string) {
+  const [banners, setBanners] = useState<Sofa2CmsBanner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    fetchPublishedBanners(position)
+      .then((data) => {
+        if (active) setBanners(data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [position]);
+
+  return { banners, loading };
+}
