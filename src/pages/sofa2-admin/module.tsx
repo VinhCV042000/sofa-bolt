@@ -13,6 +13,10 @@ import { getSofa2CrmSchema } from 'src/sections/sofa2-admin/sofa2-crm';
 import { getSofa2HrSchema } from 'src/sections/sofa2-admin/sofa2-hr';
 import { getSofa2CustomerSchema } from 'src/sections/sofa2-admin/sofa2-customer';
 import { getSofa2AccessSchema } from 'src/sections/sofa2-admin/sofa2-access';
+import {
+  localizeSofa2AccessView,
+  useSofa2AccessT,
+} from 'src/sections/sofa2-admin/sofa2-access-i18n';
 import { getSofa2AnalyticsSchema } from 'src/sections/sofa2-admin/sofa2-analytics';
 import { getSofa2SeoSchema } from 'src/sections/sofa2-admin/sofa2-seo';
 import { getSofa2CartSchema } from 'src/sections/sofa2-admin/sofa2-cart';
@@ -27,6 +31,7 @@ import { Sofa2DealerAdminGuard } from 'src/sections/sofa2-admin/view/sofa2-deale
 
 export default function Page() {
   const { group, module } = useParams();
+  const accessT = useSofa2AccessT();
   if (group === 'member') {
     const legacyRoutes: Record<string, string> = {
       dashboard: 'dashboard',
@@ -43,6 +48,11 @@ export default function Page() {
   const found = findSofa2AdminModule(group, module);
 
   if (found && module) {
+    const accessSchema = getSofa2AccessSchema(found.module.slug);
+    const access =
+      found.group.slug === 'access' && accessSchema
+        ? localizeSofa2AccessView(found.group, found.module, accessSchema, accessT)
+        : undefined;
     const schema =
       (found.group.slug === 'cms' && getSofa2CmsSchema(found.module.slug)) ||
       (found.group.slug === 'catalog' && getSofa2CatalogSchema(found.module.slug)) ||
@@ -57,14 +67,14 @@ export default function Page() {
       (found.group.slug === 'crm' && getSofa2CrmSchema(found.module.slug)) ||
       (found.group.slug === 'hr' && getSofa2HrSchema(found.module.slug)) ||
       (found.group.slug === 'customer' && getSofa2CustomerSchema(found.module.slug)) ||
-      (found.group.slug === 'access' && getSofa2AccessSchema(found.module.slug)) ||
+      access?.schema ||
       undefined;
     if (schema) {
       const content = (
         <Sofa2AdminCmsView
           key={`${found.group.slug}/${found.module.slug}`}
-          group={found.group}
-          module={found.module}
+          group={access?.group ?? found.group}
+          module={access?.module ?? found.module}
           schema={schema}
         />
       );

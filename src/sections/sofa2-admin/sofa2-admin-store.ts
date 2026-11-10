@@ -722,6 +722,30 @@ export async function syncSofa2DealerRows(moduleSlug: string, rows: AdminRow[]) 
   }
 }
 
+export async function loadSofa2AccessRows(moduleSlug: string) {
+  const response = await fetch(`/api/admin/access/${encodeURIComponent(moduleSlug)}`, { credentials: 'include' });
+  if (!response.ok) throw new Error('Không tải được dữ liệu phân quyền từ máy chủ.');
+  const payload = (await response.json()) as { rows?: AdminRow[] };
+  store[key('access', moduleSlug)] = (payload.rows ?? []).map((row) => ({ ...row }));
+  emit();
+}
+
+export async function syncSofa2AccessRows(moduleSlug: string, rows: AdminRow[]) {
+  const response = await fetch(`/api/admin/access/${encodeURIComponent(moduleSlug)}`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ rows }),
+  });
+  if (!response.ok) {
+    const payload = (await response.json().catch(() => ({}))) as { error?: string };
+    throw new Error(payload.error || 'Không lưu được dữ liệu phân quyền.');
+  }
+  const payload = (await response.json()) as { rows?: AdminRow[] };
+  store[key('access', moduleSlug)] = (payload.rows ?? []).map((row) => ({ ...row }));
+  emit();
+}
+
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
   return () => {
@@ -737,7 +761,8 @@ export function useSofa2AdminRows(
   const k = key(groupSlug, moduleSlug);
   const isSeoModule = groupSlug === 'seo';
   const isCmsModule = groupSlug === 'cms';
-  const shouldLoad = (isSeoModule || isCmsModule) && options.load !== false;
+  const isAccessModule = groupSlug === 'access';
+  const shouldLoad = (isSeoModule || isCmsModule || isAccessModule) && options.load !== false;
   const [loading, setLoading] = useState(shouldLoad);
   const [error, setError] = useState('');
   const [pendingWrites, setPendingWrites] = useState(0);
@@ -761,7 +786,9 @@ export function useSofa2AdminRows(
 
     const loader = isCmsModule
       ? loadSofa2CmsRows(moduleSlug, store[k] ?? [])
-      : loadSofa2SeoRows(moduleSlug, store[k] ?? []);
+      : isAccessModule
+        ? loadSofa2AccessRows(moduleSlug)
+        : loadSofa2SeoRows(moduleSlug, store[k] ?? []);
 
     loader
       .catch((loadError: unknown) => {
@@ -771,7 +798,9 @@ export function useSofa2AdminRows(
               ? loadError.message
               : isCmsModule
                 ? 'Không tải được dữ liệu CMS.'
-                : 'Không tải được dữ liệu SEO.'
+                : isAccessModule
+                  ? 'Không tải được dữ liệu phân quyền.'
+                  : 'Không tải được dữ liệu SEO.'
           );
         }
       })
@@ -782,7 +811,7 @@ export function useSofa2AdminRows(
     return () => {
       active = false;
     };
-  }, [shouldLoad, isCmsModule, k, moduleSlug, reloadToken]);
+  }, [shouldLoad, isCmsModule, isAccessModule, k, moduleSlug, reloadToken]);
 
   const persistCmsRow = useCallback(
     (mode: 'create' | 'update' | 'delete', row: AdminRow, index: number, previousRows: AdminRow[]) => {
@@ -839,6 +868,23 @@ export function useSofa2AdminRows(
     [isSeoModule, k, moduleSlug]
   );
 
+  const persistAccessRows = useCallback(
+    (nextRows: AdminRow[], previousRows: AdminRow[]) => {
+      if (!isAccessModule) return;
+      setPendingWrites((count) => count + 1);
+      setError('');
+
+      syncSofa2AccessRows(moduleSlug, nextRows)
+        .catch((saveError: unknown) => {
+          store[k] = previousRows;
+          emit();
+          setError(saveError instanceof Error ? saveError.message : 'Không lưu được dữ liệu phân quyền.');
+        })
+        .finally(() => setPendingWrites((count) => Math.max(0, count - 1)));
+    },
+    [isAccessModule, k, moduleSlug]
+  );
+
   const createRow = useCallback(
     (row: AdminRow) => {
       const nextRow = { ...row };
@@ -884,9 +930,10 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      persistAccessRows(store[k], previousRows);
       if (isCmsModule) persistCmsRow('create', nextRow, 0, previousRows);
     },
-    [k, persistSeoRows, isCmsModule, persistCmsRow]
+    [k, persistSeoRows, persistAccessRows, isCmsModule, persistCmsRow]
   );
 
   const updateRow = useCallback(
@@ -951,9 +998,10 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(next, previousRows);
+      persistAccessRows(next, previousRows);
       if (isCmsModule) persistCmsRow('update', row, index, previousRows);
     },
-    [k, persistSeoRows, isCmsModule, persistCmsRow]
+    [k, persistSeoRows, persistAccessRows, isCmsModule, persistCmsRow]
   );
 
   const deleteRow = useCallback(
@@ -967,9 +1015,10 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      persistAccessRows(store[k], previousRows);
       if (isCmsModule && removed) persistCmsRow('delete', removed, index, previousRows);
     },
-    [k, persistSeoRows, isCmsModule, persistCmsRow]
+    [k, persistSeoRows, persistAccessRows, isCmsModule, persistCmsRow]
   );
 
   const deleteRows = useCallback(
@@ -984,11 +1033,12 @@ export function useSofa2AdminRows(
       }
       emit();
       persistSeoRows(store[k], previousRows);
+      persistAccessRows(store[k], previousRows);
       if (isCmsModule) {
         removed.forEach((r) => persistCmsRow('delete', r, -1, previousRows));
       }
     },
-    [k, persistSeoRows, isCmsModule, persistCmsRow]
+    [k, persistSeoRows, persistAccessRows, isCmsModule, persistCmsRow]
   );
 
   const resetRows = useCallback(
@@ -997,6 +1047,7 @@ export function useSofa2AdminRows(
       store[k] = initial.map((row) => ({ ...row }));
       emit();
       persistSeoRows(store[k], previousRows);
+      persistAccessRows(store[k], previousRows);
     },
     [k, persistSeoRows]
   );

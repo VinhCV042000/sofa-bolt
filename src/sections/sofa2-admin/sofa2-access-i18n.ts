@@ -3,6 +3,8 @@
 // Chỉ dịch nhãn hiển thị. Giá trị lưu trữ (trạng thái, vai trò, module...) giữ nguyên tiếng Việt.
 // ----------------------------------------------------------------------
 
+import type { Sofa2CmsSchema } from './sofa2-cms';
+
 import { useTranslate } from 'src/locales';
 
 export type Sofa2AccessLang = 'en' | 'vi' | 'fr' | 'cn' | 'ar';
@@ -373,4 +375,37 @@ export function useSofa2AccessT() {
   const translateModuleLabel = (slug: string, fallback: string) => dict[`module.${slug}`] ?? fallback;
 
   return { t, lang, translateFieldLabel, translateValue, translateModuleLabel };
+}
+
+export function localizeSofa2AccessView<
+  G extends { name: string },
+  M extends { slug: string; name: string; columns: { key: string; label: string }[] },
+>(group: G, module: M, schema: Sofa2CmsSchema, tr: ReturnType<typeof useSofa2AccessT>) {
+  return {
+    group: { ...group, name: tr.t('title') },
+    module: {
+      ...module,
+      name: tr.translateModuleLabel(module.slug, module.name),
+      columns: module.columns.map((column) => ({
+        ...column,
+        label: tr.translateFieldLabel(column.key, column.label),
+      })),
+    },
+    schema: localizeSofa2AccessSchema(schema, tr),
+  };
+}
+
+export function localizeSofa2AccessSchema(
+  schema: Sofa2CmsSchema,
+  tr: ReturnType<typeof useSofa2AccessT>
+): Sofa2CmsSchema {
+  return {
+    ...schema,
+    fields: schema.fields.map((field) => ({
+      ...field,
+      label: tr.translateFieldLabel(field.key, field.label),
+      options: field.options?.map((option) => tr.translateValue(option)),
+    })),
+    valueLabel: (value) => tr.translateValue(value),
+  };
 }

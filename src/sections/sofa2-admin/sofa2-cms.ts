@@ -45,6 +45,8 @@ export type Sofa2CmsSchema = {
   hideClientLink?: boolean;
   /** Ẩn công tắc trạng thái khi trạng thái biểu thị tiến trình nghiệp vụ, không phải xuất bản */
   statusToggle?: boolean;
+  /** Nhãn hiển thị cho giá trị đã lưu (mặc định: giữ nguyên giá trị) */
+  valueLabel?: (value: string) => string;
 };
 
 // ----------------------------------------------------------------------

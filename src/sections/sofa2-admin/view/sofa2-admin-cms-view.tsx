@@ -96,6 +96,7 @@ type FormState = { open: boolean; mode: 'create' | 'edit'; index: number; values
 type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2CmsSchema };
 
 export function Sofa2AdminCmsView({ group, module, schema }: Props) {
+  const isAppendOnly = module.slug === 'audit-log';
   const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa2AdminRows(
     group.slug,
     module.slug
@@ -767,7 +768,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
               >
                 <Tab value="all" label={`Tất cả (${counts.all})`} />
                 {statusOptions.map((s) => (
-                  <Tab key={s} value={s} label={`${s} (${counts[s] ?? 0})`} />
+                  <Tab key={s} value={s} label={`${schema.valueLabel?.(s) ?? s} (${counts[s] ?? 0})`} />
                 ))}
               </Tabs>
 
@@ -898,7 +899,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                               {col.type === 'status' ? (
                                 <Chip
                                   size="small"
-                                  label={String(value)}
+                                  label={schema.valueLabel?.(String(value)) ?? String(value)}
                                   color={statusColor(String(value)) as any}
                                 />
                               ) : col.key === 'cvUrl' && /^https?:\/\//i.test(String(value)) ? (
@@ -939,25 +940,29 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Sửa">
-                              <IconButton size="small" onClick={() => openEdit(index)}>
-                                <Iconify icon="solar:pen-bold-duotone" width={18} />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Nhân bản">
-                              <IconButton size="small" onClick={() => duplicateRow(index)}>
-                                <Iconify icon="solar:copy-bold-duotone" width={18} />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Xoá">
-                              <IconButton
-                                size="small"
-                                color="error"
-                                onClick={() => setConfirm({ open: true, index })}
-                              >
-                                <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
-                              </IconButton>
-                            </Tooltip>
+                            {!isAppendOnly && (
+                              <>
+                                <Tooltip title="Sửa">
+                                  <IconButton size="small" onClick={() => openEdit(index)}>
+                                    <Iconify icon="solar:pen-bold-duotone" width={18} />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Nhân bản">
+                                  <IconButton size="small" onClick={() => duplicateRow(index)}>
+                                    <Iconify icon="solar:copy-bold-duotone" width={18} />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Xoá">
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => setConfirm({ open: true, index })}
+                                  >
+                                    <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
+                                  </IconButton>
+                                </Tooltip>
+                              </>
+                            )}
                           </Stack>
                         </TableCell>
                       </TableRow>
