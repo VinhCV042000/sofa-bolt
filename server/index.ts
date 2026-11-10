@@ -66,6 +66,7 @@ const CMS_MODULES = new Set([
   'policies',
 ]);
 const CMS_PUBLISHED_STATUSES = new Set(['Đã xuất bản', 'Đang chạy']);
+const ACCESS_MODULES = new Set(['users', 'roles', 'permissions', 'audit-log']);
 
 // Cổng đại lý và lưu SEO cần PostgreSQL; khi chưa cấu hình DATABASE_URL,
 // ứng dụng vẫn khởi động và trả lỗi 503 cho các API cần cơ sở dữ liệu.
@@ -157,14 +158,40 @@ async function readSeoModule(module: string): Promise<Record<string, unknown>[] 
 }
 
 async function readCmsModule(module: string): Promise<Record<string, unknown>[] | null> {
+  return readStoredModule('sofa2_cms_modules', module);
+}
+
+async function readStoredModule(
+  table: 'sofa2_cms_modules' | 'sofa2_access_modules',
+  module: string
+): Promise<Record<string, unknown>[] | null> {
   try {
-    const result = await pool.query('SELECT rows FROM sofa2_cms_modules WHERE module = $1', [module]);
+    const result = await pool.query(`SELECT rows FROM ${table} WHERE module = $1`, [module]);
     if (!result.rows.length) return null;
     return validRows(result.rows[0].rows) ?? [];
   } catch (error) {
     if (error instanceof Error && error.message === 'SOFA2_DB_UNAVAILABLE') return null;
     throw error;
   }
+}
+
+function rowFingerprint(row: Record<string, unknown>) {
+  return JSON.stringify(Object.keys(row).sort().map((key) => [key, row[key]]));
+}
+
+function isAppendOnly(previous: Record<string, unknown>[], next: Record<string, unknown>[]) {
+  const remaining = new Map<string, number>();
+  next.forEach((row) => {
+    const key = rowFingerprint(row);
+    remaining.set(key, (remaining.get(key) ?? 0) + 1);
+  });
+  return previous.every((row) => {
+    const key = rowFingerprint(row);
+    const count = remaining.get(key) ?? 0;
+    if (count === 0) return false;
+    remaining.set(key, count - 1);
+    return true;
+  });
 }
 
 function escapeXml(value: string) {
@@ -728,6 +755,48 @@ app.put(
       [module, JSON.stringify(rows)]
     );
     res.json({ rows: (await readCmsModule(module)) ?? [] });
+  })
+);
+
+app.get(
+  '/api/admin/access/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    if (!ACCESS_MODULES.has(module)) {
+      res.status(404).json({ error: 'Không tìm thấy module phân quyền.' });
+      return;
+    }
+    const rows = await readStoredModule('sofa2_access_modules', module);
+    res.json({ rows: rows ?? [], initialized: rows !== null });
+  })
+);
+
+app.put(
+  '/api/admin/access/:module',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    const rows = validRows(req.body?.rows);
+    if (!ACCESS_MODULES.has(module) || !rows) {
+      res.status(400).json({ error: 'Dữ liệu phân quyền không hợp lệ.' });
+      return;
+    }
+    if (module === 'audit-log') {
+      const current = (await readStoredModule('sofa2_access_modules', module)) ?? [];
+      if (!isAppendOnly(current, rows)) {
+        res.status(409).json({ error: 'Nhật ký hệ thống chỉ được bổ sung, không được sửa hoặc xóa.' });
+        return;
+      }
+    }
+    await pool.query(
+      `INSERT INTO sofa2_access_modules (module, rows, updated_at)
+       VALUES ($1, $2::jsonb, NOW())
+       ON CONFLICT (module) DO UPDATE
+         SET rows = EXCLUDED.rows, updated_at = NOW()`,
+      [module, JSON.stringify(rows)]
+    );
+    res.json({ rows: (await readStoredModule('sofa2_access_modules', module)) ?? [] });
   })
 );
 
