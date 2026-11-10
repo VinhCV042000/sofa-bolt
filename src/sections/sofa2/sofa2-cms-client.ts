@@ -229,3 +229,37 @@ export function useCmsBanners(position?: string) {
 
   return { banners, loading };
 }
+
+// ----- CMS SEO hook -----
+
+type CmsSeoData = {
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string;
+  canonical: string;
+  ogImage: string;
+  indexable: boolean;
+} | null;
+
+export function useCmsSeo(pagePath: string) {
+  const [seo, setSeo] = useState<CmsSeoData>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    fetchPublishedSeo(pagePath)
+      .then((data) => {
+        if (active) setSeo(data as CmsSeoData);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [pagePath]);
+
+  return { seo, loading };
+}

@@ -18,6 +18,7 @@ import { varFade, MotionViewport } from 'src/components/animate';
 
 import { Sofa2Section, Sofa2PageHero } from 'src/sections/sofa2/sofa2-page-hero';
 import { SOFA2_PAGE_IMAGES, SOFA2_COMPANY_INFO } from 'src/sections/sofa2/sofa2-pages-data';
+import { useCmsPageBlocks, useCmsSeo } from 'src/sections/sofa2/sofa2-cms-client';
 
 // ----------------------------------------------------------------------
 
@@ -39,18 +40,23 @@ const SOCIALS = [
 
 export default function Page() {
   const [sent, setSent] = useState(false);
+  const { blocks: cmsBlocks } = useCmsPageBlocks('contact');
+  const { seo } = useCmsSeo('/sofa2/contact');
+  const cmsIntro = cmsBlocks.find((b) => b.block === 'intro' && b.content);
 
   return (
     <>
       <Helmet>
-        <title>{metadata.title}</title>
+        <title>{seo?.metaTitle || metadata.title}</title>
+        {seo?.metaDescription && <meta name="description" content={seo.metaDescription} />}
+        {seo?.keywords && <meta name="keywords" content={seo.keywords} />}
       </Helmet>
 
       <Sofa2PageHero
-        title="Liên hệ LUXE Sofa"
-        subtitle="Chúng tôi luôn sẵn sàng lắng nghe — liên hệ qua hotline, email hoặc đến trực tiếp showroom để được tư vấn tận tâm."
-        image={SOFA2_PAGE_IMAGES.contact}
-        overline="Liên hệ"
+        title={cmsIntro?.heading || 'Liên hệ LUXE Sofa'}
+        subtitle={cmsIntro?.content || 'Chúng tôi luôn sẵn sàng lắng nghe — liên hệ qua hotline, email hoặc đến trực tiếp showroom để được tư vấn tận tâm.'}
+        image={cmsIntro?.image || SOFA2_PAGE_IMAGES.contact}
+        overline={cmsIntro?.title || 'Liên hệ'}
       />
 
       {/* Info cards */}

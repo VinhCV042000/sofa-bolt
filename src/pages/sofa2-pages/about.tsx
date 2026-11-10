@@ -21,7 +21,7 @@ import {
   SOFA2_PAGE_IMAGES,
   SOFA2_COMPANY_INFO,
 } from 'src/sections/sofa2/sofa2-pages-data';
-import { useCmsPageBlocks } from 'src/sections/sofa2/sofa2-cms-client';
+import { useCmsPageBlocks, useCmsSeo } from 'src/sections/sofa2/sofa2-cms-client';
 
 // ----------------------------------------------------------------------
 
@@ -50,12 +50,15 @@ const SUB_PAGES = [
 export default function Page() {
   const theme = useTheme();
   const { blocks: cmsBlocks } = useCmsPageBlocks('about');
-  const hasCmsIntro = cmsBlocks.some((b) => b.block === 'intro' && b.content);
+  const { seo } = useCmsSeo('/sofa2/about');
+  const cmsIntro = cmsBlocks.find((b) => b.block === 'intro' && b.content);
 
   return (
     <>
       <Helmet>
-        <title>{metadata.title}</title>
+        <title>{seo?.metaTitle || metadata.title}</title>
+        {seo?.metaDescription && <meta name="description" content={seo.metaDescription} />}
+        {seo?.keywords && <meta name="keywords" content={seo.keywords} />}
       </Helmet>
 
       {/* Hero */}
@@ -81,30 +84,42 @@ export default function Page() {
               <Box component={m.div} variants={varFade({ distance: 24 }).inLeft}>
                 <Box
                   component="img"
-                  src={SOFA2_PAGE_IMAGES.workshop}
-                  alt="Xưởng chế tác LUXE Sofa"
+                  src={cmsIntro?.image || SOFA2_PAGE_IMAGES.workshop}
+                  alt={cmsIntro?.heading || 'Xưởng chế tác LUXE Sofa'}
                   sx={{ width: 1, borderRadius: 2, aspectRatio: '4/5', objectFit: 'cover' }}
                 />
               </Box>
             </Grid>
             <Grid xs={12} md={6}>
               <Stack spacing={3} component={m.div} variants={varFade({ distance: 24 }).inRight}>
-                <Typography variant="overline" sx={{ color: 'text.disabled' }}>Hành trình của chúng tôi</Typography>
-                <Typography variant="h2">
-                  Từ xưởng nhỏ
-                  <Box component="span" sx={{ opacity: 0.4 }}> đến thương hiệu quốc gia</Box>
+                <Typography variant="overline" sx={{ color: 'text.disabled' }}>
+                  {cmsIntro?.title || 'Hành trình của chúng tôi'}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>
-                  LUXE Sofa ra đời năm 2012 từ một xưởng mộc nhỏ tại Bình Dương với 5 nghệ nhân. Bắt
-                  đầu từ những chiếc sofa bespoke cho khách hàng cá nhân, chúng tôi dần khẳng định
-                  chất lượng và mở rộng thành thương hiệu nội thất cao cấp với showroom tại 4 thành
-                  phố lớn.
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>
-                  Triết lý của LUXE Sofa rất đơn giản: mỗi chiếc sofa phải là một kiệt tác. Chúng tôi
-                  chọn lọc từng tấm da bò, từng thanh gỗ sồi, may từng đường kim bằng tay để mỗi sản
-                  phẩm mang dấu ấn riêng và đồng hành cùng gia đình bạn qua năm tháng.
-                </Typography>
+                {cmsIntro?.heading ? (
+                  <Typography variant="h2" dangerouslySetInnerHTML={{ __html: cmsIntro.heading }} />
+                ) : (
+                  <Typography variant="h2">
+                    Từ xưởng nhỏ
+                    <Box component="span" sx={{ opacity: 0.4 }}> đến thương hiệu quốc gia</Box>
+                  </Typography>
+                )}
+                {cmsIntro?.content ? (
+                  <Typography sx={{ color: 'text.secondary' }} dangerouslySetInnerHTML={{ __html: cmsIntro.content }} />
+                ) : (
+                  <>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                      LUXE Sofa ra đời năm 2012 từ một xưởng mộc nhỏ tại Bình Dương với 5 nghệ nhân. Bắt
+                      đầu từ những chiếc sofa bespoke cho khách hàng cá nhân, chúng tôi dần khẳng định
+                      chất lượng và mở rộng thành thương hiệu nội thất cao cấp với showroom tại 4 thành
+                      phố lớn.
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                      Triết lý của LUXE Sofa rất đơn giản: mỗi chiếc sofa phải là một kiệt tác. Chúng tôi
+                      chọn lọc từng tấm da bò, từng thanh gỗ sồi, may từng đường kim bằng tay để mỗi sản
+                      phẩm mang dấu ấn riêng và đồng hành cùng gia đình bạn qua năm tháng.
+                    </Typography>
+                  </>
+                )}
               </Stack>
             </Grid>
           </Grid>
