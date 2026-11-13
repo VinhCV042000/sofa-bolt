@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -54,9 +54,35 @@ export function Sofa2AdminLayout({
   const siteLink = '/sofa2';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [adminSession, setAdminSession] = useState<{
+    role?: string;
+    permissions?: string[];
+  } | null>(null);
   const [openGroups, setOpenGroups] = useState<string[]>(
     activeGroup ? [activeGroup] : [SOFA2_ADMIN_GROUPS[0].slug]
   );
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/access/session', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((session) => {
+        if (active) setAdminSession(session);
+      })
+      .catch(() => {
+        if (active) setAdminSession(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const visibleGroups =
+    adminSession?.role === 'admin'
+      ? SOFA2_ADMIN_GROUPS
+      : adminSession?.role === 'staff' && adminSession.permissions?.includes('SEO:Xem')
+        ? SOFA2_ADMIN_GROUPS.filter((group) => group.slug === 'seo')
+        : [];
 
   const toggleGroup = (slug: string) =>
     setOpenGroups((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
@@ -93,29 +119,31 @@ export function Sofa2AdminLayout({
       </Stack>
 
       <Box sx={{ flex: 1, overflowY: 'auto', px: 1.5, py: 2 }}>
-        <ButtonBase
-          component={RouterLink}
-          href={adminRoot}
-          sx={{
-            width: 1,
-            gap: 1.5,
-            px: 1.5,
-            py: 1.15,
-            mb: 1,
-            borderRadius: 1.25,
-            justifyContent: 'flex-start',
-            color: !activeGroup ? ACCENT : alpha(TEXT, 0.7),
-            bgcolor: !activeGroup ? alpha(ACCENT, 0.1) : 'transparent',
-            '&:hover': { bgcolor: alpha(ACCENT, 0.08) },
-          }}
-        >
-          <Iconify icon="solar:widget-5-bold-duotone" width={20} />
-          <Typography variant="body2" sx={{ fontWeight: 600 }}>
-            Tổng quan
-          </Typography>
-        </ButtonBase>
+        {adminSession?.role !== 'staff' && (
+          <ButtonBase
+            component={RouterLink}
+            href={adminRoot}
+            sx={{
+              width: 1,
+              gap: 1.5,
+              px: 1.5,
+              py: 1.15,
+              mb: 1,
+              borderRadius: 1.25,
+              justifyContent: 'flex-start',
+              color: !activeGroup ? ACCENT : alpha(TEXT, 0.7),
+              bgcolor: !activeGroup ? alpha(ACCENT, 0.1) : 'transparent',
+              '&:hover': { bgcolor: alpha(ACCENT, 0.08) },
+            }}
+          >
+            <Iconify icon="solar:widget-5-bold-duotone" width={20} />
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+              Tổng quan
+            </Typography>
+          </ButtonBase>
+        )}
 
-        {SOFA2_ADMIN_GROUPS.map((group) => {
+        {visibleGroups.map((group) => {
           const open = openGroups.includes(group.slug);
           const isActiveGroup = activeGroup === group.slug;
 

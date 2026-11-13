@@ -97,12 +97,31 @@ type Props = { group: Sofa2AdminGroup; module: Sofa2AdminModule; schema: Sofa2Cm
 
 export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const isAppendOnly = module.slug === 'audit-log';
-  const { rows, createRow, updateRow, deleteRow, deleteRows, resetRows } = useSofa2AdminRows(
-    group.slug,
-    module.slug
-  );
+  const {
+    rows,
+    createRow,
+    updateRow,
+    deleteRow,
+    deleteRows,
+    resetRows,
+    loading: rowsLoading,
+    saving: rowsSaving,
+    error: rowsError,
+    retry: retryRows,
+  } = useSofa2AdminRows(group.slug, module.slug);
 
   const [dealerLoading, setDealerLoading] = useState(group.slug === 'dealer');
+  const [accessSaveStarted, setAccessSaveStarted] = useState(false);
+  useEffect(() => {
+    if (group.slug !== 'access') return;
+    if (rowsSaving) {
+      setAccessSaveStarted(true);
+    } else if (accessSaveStarted) {
+      setToast(rowsError ? `Không lưu được: ${rowsError}` : 'Đã lưu thay đổi phân quyền trên máy chủ.');
+      setAccessSaveStarted(false);
+    }
+  }, [accessSaveStarted, group.slug, rowsError, rowsSaving]);
+
   useEffect(() => {
     if (group.slug !== 'dealer') return undefined;
     let active = true;
@@ -336,6 +355,64 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         }
       }
     }
+    if (group.slug === 'access') {
+      if (module.slug === 'users') {
+        const email = String(form.values.email ?? '').trim().toLowerCase();
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          next.email = 'Vui lòng nhập email hợp lệ.';
+        }
+        if (
+          email &&
+          rows.some(
+            (row, index) =>
+              !(form.mode === 'edit' && index === form.index) &&
+              String(row.email ?? '').trim().toLowerCase() === email
+          )
+        ) {
+          next.email = 'Email này đã được thêm vào hệ thống.';
+        }
+      }
+      if (module.slug === 'roles') {
+        const name = String(form.values.role ?? '').trim().toLowerCase();
+        const code = String(form.values.code ?? '').trim().toLowerCase();
+        if (
+          name &&
+          rows.some(
+            (row, index) =>
+              !(form.mode === 'edit' && index === form.index) &&
+              String(row.role ?? '').trim().toLowerCase() === name
+          )
+        ) {
+          next.role = 'Tên vai trò này đã tồn tại.';
+        }
+        if (
+          code &&
+          rows.some(
+            (row, index) =>
+              !(form.mode === 'edit' && index === form.index) &&
+              String(row.code ?? '').trim().toLowerCase() === code
+          )
+        ) {
+          next.code = 'Mã vai trò này đã tồn tại.';
+        }
+      }
+      if (module.slug === 'permissions') {
+        const moduleName = String(form.values.module ?? '').trim().toLowerCase();
+        const action = String(form.values.action ?? '').trim().toLowerCase();
+        if (
+          moduleName &&
+          action &&
+          rows.some(
+            (row, index) =>
+              !(form.mode === 'edit' && index === form.index) &&
+              String(row.module ?? '').trim().toLowerCase() === moduleName &&
+              String(row.action ?? '').trim().toLowerCase() === action
+          )
+        ) {
+          next.action = 'Module và hành động này đã có trong ma trận.';
+        }
+      }
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -454,7 +531,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     );
 
-  const allOnPage = paged.length > 0 && paged.every(({ index }) => selected.includes(index));
+  const isProtectedAccessRole = (row: AdminRow) =>
+    group.slug === 'access' && module.slug === 'roles' && row.status === 'Hệ thống';
+  const selectablePaged = paged.filter(({ row }) => !isProtectedAccessRole(row));
+  const allOnPage =
+    selectablePaged.length > 0 && selectablePaged.every(({ index }) => selected.includes(index));
 
   const exportCsv = () => {
     const keys = fields.map((x) => x.key);
@@ -625,6 +706,43 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
       return statsByModule[module.slug] ?? module.stats;
     }
 
+    if (group.slug === 'access') {
+      if (module.slug === 'users') {
+        return [
+          { label: 'Tài khoản', value: rows.length.toLocaleString('vi-VN') },
+          { label: 'Đang hoạt động', value: rows.filter((row) => row.status === 'Hoạt động').length.toLocaleString('vi-VN') },
+          { label: 'Chờ kích hoạt', value: rows.filter((row) => row.status === 'Chờ kích hoạt').length.toLocaleString('vi-VN') },
+          { label: 'Bị khoá', value: rows.filter((row) => row.status === 'Bị khoá').length.toLocaleString('vi-VN') },
+        ];
+      }
+      if (module.slug === 'roles') {
+        return [
+          { label: 'Vai trò', value: rows.length.toLocaleString('vi-VN') },
+          { label: 'Vai trò tuỳ chỉnh', value: rows.filter((row) => row.status === 'Tuỳ chỉnh').length.toLocaleString('vi-VN') },
+          { label: 'Người dùng gán', value: rows.reduce((sum, row) => sum + asNumber(row.users), 0).toLocaleString('vi-VN') },
+          { label: 'Đang sử dụng', value: rows.filter((row) => row.status !== 'Ngưng dùng').length.toLocaleString('vi-VN') },
+        ];
+      }
+      if (module.slug === 'permissions') {
+        const active = rows.filter((row) => row.status !== 'Tắt');
+        return [
+          { label: 'Module có quyền', value: new Set(active.map((row) => String(row.module))).size.toLocaleString('vi-VN') },
+          { label: 'Quyền đang bật', value: active.length.toLocaleString('vi-VN') },
+          { label: 'Quyền nhạy cảm', value: rows.filter((row) => row.status === 'Nhạy cảm').length.toLocaleString('vi-VN') },
+          { label: 'Cần phê duyệt', value: rows.filter((row) => row.status === 'Cần phê duyệt').length.toLocaleString('vi-VN') },
+        ];
+      }
+      if (module.slug === 'audit-log') {
+        const today = new Date().toISOString().slice(0, 10);
+        return [
+          { label: 'Sự kiện đang lưu', value: rows.length.toLocaleString('vi-VN') },
+          { label: 'Sự kiện hôm nay', value: rows.filter((row) => String(row.time).startsWith(today)).length.toLocaleString('vi-VN') },
+          { label: 'Thay đổi quyền', value: rows.filter((row) => row.type === 'Thay đổi quyền').length.toLocaleString('vi-VN') },
+          { label: 'Giới hạn hiển thị', value: '500' },
+        ];
+      }
+    }
+
     if (group.slug !== 'hr') return module.stats;
 
     const sum = (key: string, items = rows) =>
@@ -687,6 +805,39 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
         title={module.name}
         subtitle={module.description}
       >
+        {group.slug === 'access' && rowsLoading && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Đang tải cấu hình phân quyền từ máy chủ…
+          </Alert>
+        )}
+        {group.slug === 'access' && rowsError && (
+          <Alert
+            severity="error"
+            sx={{ mb: 2 }}
+            action={
+              <Button color="inherit" size="small" onClick={retryRows}>
+                Thử lại
+              </Button>
+            }
+          >
+            {rowsError}
+          </Alert>
+        )}
+        {group.slug === 'access' && rowsSaving && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Đang lưu thay đổi phân quyền…
+          </Alert>
+        )}
+        {group.slug === 'access' && module.slug === 'users' && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Thêm email đã đăng ký Clerk. Người dùng phải đăng nhập và xác minh đúng email; quyền sẽ được liên kết tự động. Thao tác này không gửi thư mời.
+          </Alert>
+        )}
+        {group.slug === 'access' && module.slug === 'permissions' && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            Quyền nhân viên hiện được máy chủ áp dụng cho module SEO. Các module quản trị khác vẫn chỉ dành cho tài khoản quản trị gốc.
+          </Alert>
+        )}
         {group.slug === 'dealer' && dealerLoading && (
           <Alert severity="info" sx={{ mb: 2 }}>
             Đang tải dữ liệu đại lý đã đồng bộ…
@@ -797,7 +948,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                 />
                 <Box sx={{ flexGrow: 1 }} />
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  {!!selected.length && (
+                  {!!selected.length && !isAppendOnly && (
                     <>
                       {showStatusToggle && (
                         <Button
@@ -821,7 +972,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       </Button>
                     </>
                   )}
-                  {group.slug !== 'hr' && (
+                  {group.slug !== 'hr' && group.slug !== 'access' && !isAppendOnly && (
                     <Button
                       size="small"
                       variant="outlined"
@@ -849,18 +1000,20 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     onClick={exportCsv}
                     startIcon={<Iconify icon="solar:export-bold-duotone" />}
                   >
-                    Xuất CSV
+                    {isAppendOnly ? 'Xuất nhật ký CSV' : 'Xuất CSV'}
                   </Button>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="inherit"
-                    onClick={openCreate}
-                    sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
-                    startIcon={<Iconify icon="mingcute:add-line" />}
-                  >
-                    {module.actions?.[0] ?? 'Thêm mới'}
-                  </Button>
+                  {!isAppendOnly && (
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="inherit"
+                      onClick={openCreate}
+                      sx={{ bgcolor: SURFACE, '&:hover': { bgcolor: alpha(SURFACE, 0.85) } }}
+                      startIcon={<Iconify icon="mingcute:add-line" />}
+                    >
+                      {module.actions?.[0] ?? 'Thêm mới'}
+                    </Button>
+                  )}
                 </Stack>
               </Stack>
 
@@ -868,14 +1021,17 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={allOnPage}
-                          onChange={() =>
-                            setSelected(allOnPage ? [] : paged.map(({ index }) => index))
-                          }
-                        />
-                      </TableCell>
+                      {!isAppendOnly && (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={allOnPage}
+                            disabled={!selectablePaged.length}
+                            onChange={() =>
+                              setSelected(allOnPage ? [] : selectablePaged.map(({ index }) => index))
+                            }
+                          />
+                        </TableCell>
+                      )}
                       {module.columns.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
@@ -886,12 +1042,15 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                   <TableBody>
                     {paged.map(({ row, index }) => (
                       <TableRow key={index} hover selected={selected.includes(index)}>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selected.includes(index)}
-                            onChange={() => toggleSelect(index)}
-                          />
-                        </TableCell>
+                        {!isAppendOnly && (
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={selected.includes(index)}
+                              disabled={isProtectedAccessRole(row)}
+                              onChange={() => toggleSelect(index)}
+                            />
+                          </TableCell>
+                        )}
                         {module.columns.map((col) => {
                           const value = row[col.key] ?? '—';
                           return (
@@ -940,7 +1099,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            {!isAppendOnly && (
+                            {!isAppendOnly && !isProtectedAccessRole(row) && (
                               <>
                                 <Tooltip title="Sửa">
                                   <IconButton size="small" onClick={() => openEdit(index)}>
@@ -970,7 +1129,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     {!filtered.length && (
                       <TableRow>
                           <TableCell
-                            colSpan={module.columns.length + (showStatusToggle ? 3 : 2)}
+                            colSpan={module.columns.length + Number(showStatusToggle) + 1 + Number(!isAppendOnly)}
                             align="center"
                             sx={{ py: 6 }}
                           >

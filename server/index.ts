@@ -93,6 +93,16 @@ const httpServer = createHttpServer(app);
 type Identity =
   | { role: 'admin'; userId: string; email: string }
   | {
+      role: 'staff';
+      userId: string;
+      email: string;
+      name: string;
+      roles: string[];
+      permissions: string[];
+      canApprove: boolean;
+      canExport: boolean;
+    }
+  | {
       role: 'dealer';
       userId: string;
       email: string;
@@ -175,23 +185,108 @@ async function readStoredModule(
   }
 }
 
-function rowFingerprint(row: Record<string, unknown>) {
-  return JSON.stringify(Object.keys(row).sort().map((key) => [key, row[key]]));
+function splitAccessList(value: unknown) {
+  return asText(value, 2000)
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
 }
 
-function isAppendOnly(previous: Record<string, unknown>[], next: Record<string, unknown>[]) {
-  const remaining = new Map<string, number>();
-  next.forEach((row) => {
-    const key = rowFingerprint(row);
-    remaining.set(key, (remaining.get(key) ?? 0) + 1);
+function roleHasModuleScope(role: Record<string, unknown>, module: string) {
+  const scopes = splitAccessList(role.scope).map((scope) => scope.toLowerCase());
+  return scopes.some((scope) =>
+    ['toàn quyền', 'toàn hệ thống', module.toLowerCase()].includes(scope)
+  );
+}
+
+function buildStaffPermissions(
+  roles: Record<string, unknown>[],
+  permissionRows: Record<string, unknown>[]
+) {
+  const roleNames = new Set(roles.map((role) => asText(role.role, 80)));
+  const allowed = new Set<string>();
+  permissionRows.forEach((permission) => {
+    const module = asText(permission.module, 80);
+    const action = asText(permission.action, 80);
+    const status = asText(permission.status, 40);
+    if (!module || !action || ['Tắt', 'Cần phê duyệt'].includes(status)) return;
+    const assigned = splitAccessList(permission.roles);
+    const grantedRoles = roles.filter((role) => {
+      const roleName = asText(role.role, 80);
+      if (!roleNames.has(roleName) || !assigned.includes(roleName) || !roleHasModuleScope(role, module)) {
+        return false;
+      }
+      if (status === 'Nhạy cảm' && !isEnabled(role.canApprove)) return false;
+      if (action === 'Xuất dữ liệu' && !isEnabled(role.canExport)) return false;
+      return true;
+    });
+    if (grantedRoles.length) allowed.add(`${module}:${action}`);
   });
-  return previous.every((row) => {
-    const key = rowFingerprint(row);
-    const count = remaining.get(key) ?? 0;
-    if (count === 0) return false;
-    remaining.set(key, count - 1);
-    return true;
-  });
+  return [...allowed];
+}
+
+async function readAdminAuditRows() {
+  const result = await pool.query(
+    `SELECT id, actor_email, actor_name, event_type, module, action, target, details, ip,
+            user_agent, outcome, created_at
+       FROM sofa2_admin_audit_log
+      ORDER BY created_at DESC, id DESC
+      LIMIT 500`
+  );
+  return result.rows.map((row) => ({
+    id: String(row.id),
+    time: row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at),
+    user: row.actor_name || row.actor_email,
+    email: row.actor_email,
+    type: row.event_type,
+    module: row.module,
+    action: row.action,
+    target: row.target,
+    detail: typeof row.details === 'string' ? row.details : JSON.stringify(row.details ?? {}),
+    ip: row.ip,
+    device: row.user_agent,
+    location: '',
+    handled: 'Không',
+    status: row.outcome,
+  })) as Record<string, unknown>[];
+}
+
+async function recordAdminAudit(
+  req: Request,
+  identity: Identity,
+  event: {
+    type: string;
+    module: string;
+    action: string;
+    target?: string;
+    details?: Record<string, unknown>;
+    outcome?: string;
+  }
+) {
+  if (identity.role === 'dealer') return;
+  const actorName = identity.role === 'staff' ? identity.name : 'Quản trị viên';
+  await pool.query(
+    `INSERT INTO sofa2_admin_audit_log
+      (actor_user_id, actor_email, actor_name, event_type, module, action, target, details, ip, user_agent, outcome)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9, $10, $11)`,
+    [
+      identity.userId,
+      identity.email,
+      actorName,
+      event.type,
+      event.module,
+      event.action,
+      asText(event.target, 300),
+      JSON.stringify(event.details ?? {}),
+      asText(req.ip, 80),
+      asText(req.get('user-agent'), 500),
+      event.outcome ?? 'Thành công',
+    ]
+  );
+}
+
+function rowFingerprint(row: Record<string, unknown>) {
+  return JSON.stringify(Object.keys(row).sort().map((key) => [key, row[key]]));
 }
 
 function escapeXml(value: string) {
@@ -375,6 +470,79 @@ async function resolveIdentity(req: Request, res: Response): Promise<Identity | 
     return { role: 'admin', userId, email };
   }
 
+  const accessUsers = (await readStoredModule('sofa2_access_modules', 'users')) ?? [];
+  const staffUser = accessUsers.find(
+    (row) => asText(row.email, 254).toLowerCase() === email
+  );
+  if (staffUser) {
+    if (asText(staffUser.status, 40) !== 'Hoạt động') {
+      res.status(403).json({ error: 'Tài khoản quản trị đang chờ kích hoạt hoặc đã bị khoá.' });
+      return null;
+    }
+    const expiresAt = asText(staffUser.expiresAt, 40);
+    if (expiresAt && Number.isFinite(Date.parse(`${expiresAt}T23:59:59.999Z`)) &&
+        Date.parse(`${expiresAt}T23:59:59.999Z`) < Date.now()) {
+      res.status(403).json({ error: 'Quyền truy cập quản trị của tài khoản này đã hết hạn.' });
+      return null;
+    }
+    const boundUserId = asText(staffUser.clerkUserId, 160);
+    if (boundUserId && boundUserId !== userId) {
+      res.status(403).json({ error: 'Tài khoản quản trị đã được liên kết với một hồ sơ đăng nhập khác.' });
+      return null;
+    }
+    if (!boundUserId) {
+      await pool.query(
+        `UPDATE sofa2_access_modules
+            SET rows = (
+              SELECT COALESCE(
+                jsonb_agg(
+                  CASE
+                    WHEN LOWER(entry.value->>'email') = $2
+                    THEN jsonb_set(entry.value, '{clerkUserId}', to_jsonb($1::text), TRUE)
+                    ELSE entry.value
+                  END
+                ),
+                '[]'::jsonb
+              )
+                FROM jsonb_array_elements(rows) AS entry(value)
+            ),
+            updated_at = NOW()
+          WHERE module = 'users'`,
+        [userId, email]
+      );
+    }
+
+    const assignedNames = new Set([
+      asText(staffUser.role, 80),
+      ...splitAccessList(staffUser.extraRoles),
+    ].filter(Boolean));
+    if (assignedNames.has('Quản trị hệ thống')) {
+      res.status(403).json({ error: 'Vai trò quản trị gốc chỉ được cấp bằng tài khoản quản trị chính.' });
+      return null;
+    }
+    const allRoles = (await readStoredModule('sofa2_access_modules', 'roles')) ?? [];
+    const activeRoles = allRoles.filter(
+      (role) =>
+        assignedNames.has(asText(role.role, 80)) &&
+        asText(role.status, 40) !== 'Ngưng dùng'
+    );
+    if (!activeRoles.length) {
+      res.status(403).json({ error: 'Tài khoản chưa được gán vai trò đang hoạt động.' });
+      return null;
+    }
+    const permissionRows = (await readStoredModule('sofa2_access_modules', 'permissions')) ?? [];
+    return {
+      role: 'staff',
+      userId,
+      email,
+      name: asText(staffUser.name, 100) || email,
+      roles: activeRoles.map((role) => asText(role.role, 80)),
+      permissions: buildStaffPermissions(activeRoles, permissionRows),
+      canApprove: activeRoles.some((role) => isEnabled(role.canApprove)),
+      canExport: activeRoles.some((role) => isEnabled(role.canExport)),
+    };
+  }
+
   const result = await pool.query(
     `SELECT id, profile
        FROM sofa2_dealer_profiles
@@ -411,6 +579,231 @@ async function requireAdmin(req: Request, res: Response) {
     return false;
   }
   return true;
+}
+
+async function requireSeoPermission(req: Request, res: Response, action: string) {
+  return requireSeoPermissions(req, res, [action]);
+}
+
+async function requireSeoPermissions(req: Request, res: Response, actions: string[]) {
+  const identity = await resolveIdentity(req, res);
+  if (!identity) return null;
+  if (identity.role === 'admin') return identity;
+  if (
+    identity.role === 'staff' &&
+    actions.every((action) => identity.permissions.includes(`SEO:${action}`))
+  ) {
+    return identity;
+  }
+  if (identity.role === 'staff') {
+    await recordAdminAudit(req, identity, {
+      type: 'Truy cập từ chối',
+      module: 'SEO',
+      action: `Từ chối quyền: ${actions.join(', ')}`,
+      outcome: 'Từ chối',
+    });
+  }
+  res.status(403).json({ error: `Bạn chưa được cấp đủ quyền trong module SEO (${actions.join(', ')}).` });
+  return null;
+}
+
+function seoRowAccessKey(row: Record<string, unknown>) {
+  for (const key of ['id', 'url', 'pagePath', 'page_path', 'path', 'slug', 'canonicalUrl', 'canonical_url', 'code']) {
+    const value = asText(row[key], 500);
+    if (value) return `${key}:${value}`;
+  }
+  return '';
+}
+
+function seoMutationActions(previous: Record<string, unknown>[], next: Record<string, unknown>[]) {
+  const actions = new Set<string>();
+  const previousByKey = new Map(
+    previous.map((row, index) => [seoRowAccessKey(row) || `index:${index}`, row])
+  );
+  const nextByKey = new Map(
+    next.map((row, index) => [seoRowAccessKey(row) || `index:${index}`, row])
+  );
+  previousByKey.forEach((row, key) => {
+    const changed = nextByKey.get(key);
+    if (!changed) {
+      actions.add('Xoá');
+      return;
+    }
+    if (rowFingerprint(row) !== rowFingerprint(changed)) {
+      actions.add('Sửa');
+      const wasPublished = CMS_PUBLISHED_STATUSES.has(asText(row.status, 40));
+      const isPublished = CMS_PUBLISHED_STATUSES.has(asText(changed.status, 40));
+      if (!wasPublished && isPublished) actions.add('Xuất bản');
+    }
+  });
+  nextByKey.forEach((_row, key) => {
+    if (!previousByKey.has(key)) actions.add('Tạo mới');
+  });
+  return [...actions];
+}
+
+function normalizeAccessRows(module: string, rows: Record<string, unknown>[], current: Record<string, unknown>[]) {
+  if (module === 'users') {
+    const currentByEmail = new Map(
+      current.map((row) => [asText(row.email, 254).toLowerCase(), row])
+    );
+    return rows.map((row) => {
+      const email = asText(row.email, 254).toLowerCase();
+      const existing = currentByEmail.get(email);
+      return {
+        ...row,
+        email,
+        ...(existing?.clerkUserId ? { clerkUserId: existing.clerkUserId } : {}),
+      };
+    });
+  }
+  if (module === 'roles') {
+    return rows.map((row) => ({
+      ...row,
+      code: slugify(asText(row.code, 80) || asText(row.role, 80)),
+    }));
+  }
+  if (module === 'permissions') {
+    return rows.map((row) => ({
+      ...row,
+      code:
+        asText(row.code, 100) ||
+        `${slugify(asText(row.module, 80))}.${slugify(asText(row.action, 80))}`,
+    }));
+  }
+  return rows;
+}
+
+function publicAccessRows(module: string, rows: Record<string, unknown>[]) {
+  if (module !== 'users') return rows;
+  return rows.map((row) =>
+    Object.fromEntries(Object.entries(row).filter(([key]) => key !== 'clerkUserId'))
+  );
+}
+
+function validateAccessRows(
+  module: string,
+  rows: Record<string, unknown>[],
+  current: Record<string, unknown>[],
+  roles: Record<string, unknown>[],
+  users: Record<string, unknown>[] = [],
+  permissions: Record<string, unknown>[] = []
+) {
+  if (module === 'users') {
+    const emails = new Set<string>();
+    const availableRoles = new Set(
+      roles
+        .filter((role) => asText(role.status, 40) !== 'Ngưng dùng')
+        .map((role) => asText(role.role, 80))
+    );
+    const currentByEmail = new Map(
+      current.map((row) => [asText(row.email, 254).toLowerCase(), row])
+    );
+    for (const row of rows) {
+      const email = asText(row.email, 254).toLowerCase();
+      const role = asText(row.role, 80);
+      if (!asText(row.name, 100)) return 'Cần nhập họ tên người dùng.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Email đăng nhập không hợp lệ.';
+      if (ADMIN_EMAIL && email === ADMIN_EMAIL) {
+        return 'Tài khoản quản trị gốc được cấu hình riêng, không thêm vào danh sách nhân viên.';
+      }
+      if (emails.has(email)) return 'Email người dùng bị trùng.';
+      emails.add(email);
+      if (!role || !availableRoles.has(role)) return `Vai trò “${role || 'chưa chọn'}” không tồn tại hoặc đã ngưng dùng.`;
+      const extraRoles = splitAccessList(row.extraRoles);
+      const unknownExtraRole = extraRoles.find((name) => !availableRoles.has(name));
+      if (unknownExtraRole) return `Vai trò phụ “${unknownExtraRole}” không tồn tại hoặc đã ngưng dùng.`;
+      if (role === 'Quản trị hệ thống' || extraRoles.includes('Quản trị hệ thống')) {
+        return 'Không thể cấp vai trò quản trị gốc cho tài khoản nhân viên.';
+      }
+      if (!['Hoạt động', 'Chờ kích hoạt', 'Bị khoá'].includes(asText(row.status, 40))) {
+        return 'Trạng thái người dùng không hợp lệ.';
+      }
+      const previous = currentByEmail.get(email);
+      if (previous?.clerkUserId && asText(previous.clerkUserId, 160) !== asText(row.clerkUserId, 160)) {
+        return 'Không thể thay đổi email đã liên kết với tài khoản Clerk.';
+      }
+      if (row.expiresAt && !Number.isFinite(Date.parse(`${asText(row.expiresAt, 40)}T23:59:59.999Z`))) {
+        return 'Ngày hết hạn truy cập không hợp lệ.';
+      }
+    }
+  }
+
+  if (module === 'roles') {
+    const names = new Set<string>();
+    const codes = new Set<string>();
+    for (const row of rows) {
+      const name = asText(row.role, 80);
+      const code = asText(row.code, 80).toLowerCase();
+      if (!name || !code) return 'Tên và mã vai trò là bắt buộc.';
+      if (names.has(name.toLowerCase()) || codes.has(code)) return 'Tên hoặc mã vai trò bị trùng.';
+      names.add(name.toLowerCase());
+      codes.add(code);
+      if (!['Hệ thống', 'Tuỳ chỉnh', 'Ngưng dùng'].includes(asText(row.status, 40))) {
+        return 'Trạng thái vai trò không hợp lệ.';
+      }
+    }
+    const currentSystemRoles = current.filter((role) => asText(role.status, 40) === 'Hệ thống');
+    for (const role of current) {
+      if (asText(role.status, 40) === 'Hệ thống') {
+        const keptRole = rows.find((item) => asText(item.code, 80) === asText(role.code, 80));
+        if (!keptRole || asText(keptRole.status, 40) !== 'Hệ thống') {
+          return `Không thể xoá hoặc đổi trạng thái vai trò hệ thống “${asText(role.role, 80)}”.`;
+        }
+      }
+    }
+    for (const role of rows) {
+      if (asText(role.status, 40) !== 'Hệ thống') continue;
+      const previousSystemRole = currentSystemRoles.find(
+        (item) => asText(item.code, 80) === asText(role.code, 80)
+      );
+      if (!previousSystemRole || asText(previousSystemRole.role, 80) !== asText(role.role, 80)) {
+        return 'Không thể tạo mới hoặc đổi tên vai trò hệ thống.';
+      }
+    }
+    for (const role of current) {
+      const code = asText(role.code, 80);
+      const name = asText(role.role, 80);
+      const assigned = users.some(
+        (user) =>
+          [asText(user.role, 80), ...splitAccessList(user.extraRoles)].includes(name)
+      );
+      const referencedByPermission = permissions.some((permission) =>
+        splitAccessList(permission.roles).includes(name)
+      );
+      const nextRole = rows.find((item) => asText(item.code, 80) === code);
+      if (assigned && (!nextRole || asText(nextRole.status, 40) === 'Ngưng dùng')) {
+        return `Không thể xoá hoặc ngưng dùng vai trò đang được gán cho người dùng: “${name}”.`;
+      }
+      if ((assigned || referencedByPermission) && nextRole && asText(nextRole.role, 80) !== name) {
+        return `Không thể đổi tên vai trò “${name}” khi đang được gán hoặc cấp quyền.`;
+      }
+      if (referencedByPermission && !nextRole) {
+        return `Không thể xoá vai trò “${name}” khi vai trò này còn được cấp quyền.`;
+      }
+    }
+  }
+
+  if (module === 'permissions') {
+    const codes = new Set<string>();
+    const pairs = new Set<string>();
+    const roleNames = new Set(roles.map((role) => asText(role.role, 80)));
+    for (const row of rows) {
+      const moduleName = asText(row.module, 80);
+      const action = asText(row.action, 80);
+      const code = asText(row.code, 100).toLowerCase();
+      if (!moduleName || !action || !code) return 'Module, hành động và mã quyền là bắt buộc.';
+      if (codes.has(code) || pairs.has(`${moduleName}:${action}`)) return 'Mã quyền hoặc cặp module/hành động bị trùng.';
+      codes.add(code);
+      pairs.add(`${moduleName}:${action}`);
+      if (!['Bình thường', 'Nhạy cảm', 'Cần phê duyệt', 'Tắt'].includes(asText(row.status, 40))) {
+        return 'Mức độ quyền không hợp lệ.';
+      }
+      const unknownRole = splitAccessList(row.roles).find((name) => !roleNames.has(name));
+      if (unknownRole) return `Không tìm thấy vai trò “${unknownRole}”.`;
+    }
+  }
+  return null;
 }
 
 async function findDealerId(name: string, client: Pool | PoolClient = pool): Promise<string | null> {
@@ -647,21 +1040,22 @@ SEO_SITEMAP_ROUTES.forEach(({ file, module }) => {
 app.get(
   '/api/admin/seo/:module',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
+    if (!(await requireSeoPermission(req, res, 'Xem'))) return;
     const module = asText(req.params.module, 40);
     if (!SEO_MODULES.has(module)) {
       res.status(404).json({ error: 'Không tìm thấy module SEO.' });
       return;
     }
     const rows = await readSeoModule(module);
-    res.json({ rows: rows ?? [], initialized: rows !== null });
+    res.json({ rows: publicAccessRows(module, rows ?? []), initialized: rows !== null });
   })
 );
 
 app.post(
   '/api/admin/seo/:module/seed',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
+    const identity = await requireSeoPermission(req, res, 'Tạo mới');
+    if (!identity) return;
     const module = asText(req.params.module, 40);
     const rows = validRows(req.body?.rows);
     if (!SEO_MODULES.has(module) || !rows) {
@@ -675,6 +1069,13 @@ app.post(
       [module, JSON.stringify(rows)]
     );
     if (SEO_PAGE_MODULES.includes(module)) seoRedirectCacheExpiresAt = 0;
+    await recordAdminAudit(req, identity, {
+      type: 'Tạo mới',
+      module: 'SEO',
+      action: 'Khởi tạo dữ liệu SEO',
+      target: module,
+      details: { records: rows.length },
+    });
     res.json({ rows: (await readSeoModule(module)) ?? [], initialized: true });
   })
 );
@@ -682,13 +1083,17 @@ app.post(
 app.put(
   '/api/admin/seo/:module',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
+    if (!(await requireSeoPermission(req, res, 'Xem'))) return;
     const module = asText(req.params.module, 40);
     const rows = validRows(req.body?.rows);
     if (!SEO_MODULES.has(module) || !rows) {
       res.status(400).json({ error: 'Danh sách dữ liệu SEO không hợp lệ.' });
       return;
     }
+    const previous = (await readSeoModule(module)) ?? [];
+    const actions = seoMutationActions(previous, rows);
+    const identity = await requireSeoPermissions(req, res, actions);
+    if (!identity) return;
     await pool.query(
       `INSERT INTO sofa2_seo_modules (module, rows, updated_at)
        VALUES ($1, $2::jsonb, NOW())
@@ -697,6 +1102,15 @@ app.put(
       [module, JSON.stringify(rows)]
     );
     if (SEO_PAGE_MODULES.includes(module)) seoRedirectCacheExpiresAt = 0;
+    if (actions.length) {
+      await recordAdminAudit(req, identity, {
+        type: actions.includes('Xuất bản') ? 'Xuất bản' : 'Cập nhật',
+        module: 'SEO',
+        action: actions.join(', '),
+        target: module,
+        details: { before: previous.length, after: rows.length },
+      });
+    }
     res.json({ rows: (await readSeoModule(module)) ?? [] });
   })
 );
@@ -759,6 +1173,86 @@ app.put(
 );
 
 app.get(
+  '/api/admin/access/session',
+  asyncRoute(async (req, res) => {
+    const identity = await resolveIdentity(req, res);
+    if (!identity) return;
+    if (identity.role === 'dealer') {
+      res.status(403).json({ error: 'Chỉ tài khoản nhân viên được vào khu quản trị.' });
+      return;
+    }
+    if (identity.role === 'staff') {
+      await pool.query(
+        `UPDATE sofa2_access_modules
+            SET rows = (
+              SELECT COALESCE(
+                jsonb_agg(
+                  CASE
+                    WHEN LOWER(entry.value->>'email') = $1
+                    THEN jsonb_set(
+                      entry.value,
+                      '{last}',
+                      to_jsonb(to_char(NOW() AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI')),
+                      TRUE
+                    )
+                    ELSE entry.value
+                  END
+                ),
+                '[]'::jsonb
+              )
+                FROM jsonb_array_elements(rows) AS entry(value)
+            ),
+            updated_at = NOW()
+          WHERE module = 'users'`,
+        [identity.email]
+      );
+      const recentLogin = await pool.query(
+        `SELECT 1 FROM sofa2_admin_audit_log
+          WHERE actor_user_id = $1 AND event_type = 'Đăng nhập'
+            AND created_at > NOW() - INTERVAL '30 minutes'
+          LIMIT 1`,
+        [identity.userId]
+      );
+      if (!recentLogin.rows.length) {
+        await recordAdminAudit(req, identity, {
+          type: 'Đăng nhập',
+          module: 'Phân quyền',
+          action: 'Đăng nhập khu quản trị',
+        });
+      }
+    } else {
+      const recentLogin = await pool.query(
+        `SELECT 1 FROM sofa2_admin_audit_log
+          WHERE actor_user_id = $1 AND event_type = 'Đăng nhập'
+            AND created_at > NOW() - INTERVAL '30 minutes'
+          LIMIT 1`,
+        [identity.userId]
+      );
+      if (!recentLogin.rows.length) {
+        await recordAdminAudit(req, identity, {
+          type: 'Đăng nhập',
+          module: 'Phân quyền',
+          action: 'Đăng nhập khu quản trị',
+        });
+      }
+    }
+    res.json(
+      identity.role === 'admin'
+        ? { role: 'admin', email: identity.email, permissions: ['*'], roles: ['Quản trị hệ thống'] }
+        : {
+            role: 'staff',
+            email: identity.email,
+            name: identity.name,
+            roles: identity.roles,
+            permissions: identity.permissions,
+            canApprove: identity.canApprove,
+            canExport: identity.canExport,
+          }
+    );
+  })
+);
+
+app.get(
   '/api/admin/access/:module',
   asyncRoute(async (req, res) => {
     if (!(await requireAdmin(req, res))) return;
@@ -767,27 +1261,96 @@ app.get(
       res.status(404).json({ error: 'Không tìm thấy module phân quyền.' });
       return;
     }
+    if (module === 'audit-log') {
+      res.json({ rows: await readAdminAuditRows(), initialized: true });
+      return;
+    }
     const rows = await readStoredModule('sofa2_access_modules', module);
+    if (module === 'roles' && rows) {
+      const users = (await readStoredModule('sofa2_access_modules', 'users')) ?? [];
+      const withCounts = rows.map((role) => ({
+        ...role,
+        users: users.filter(
+          (user) =>
+            [asText(user.role, 80), ...splitAccessList(user.extraRoles)].includes(
+              asText(role.role, 80)
+            )
+        ).length,
+      }));
+      res.json({ rows: withCounts, initialized: true });
+      return;
+    }
     res.json({ rows: rows ?? [], initialized: rows !== null });
+  })
+);
+
+app.post(
+  '/api/admin/access/:module/seed',
+  asyncRoute(async (req, res) => {
+    if (!(await requireAdmin(req, res))) return;
+    const module = asText(req.params.module, 40);
+    const rows = validRows(req.body?.rows);
+    if (!ACCESS_MODULES.has(module) || module === 'audit-log' || !rows) {
+      res.status(400).json({ error: 'Dữ liệu khởi tạo phân quyền không hợp lệ.' });
+      return;
+    }
+    await pool.query(
+      `INSERT INTO sofa2_access_modules (module, rows)
+       VALUES ($1, $2::jsonb)
+       ON CONFLICT (module) DO NOTHING`,
+      [module, JSON.stringify(rows)]
+    );
+    res.json({
+      rows: (await readStoredModule('sofa2_access_modules', module)) ?? [],
+      initialized: true,
+    });
   })
 );
 
 app.put(
   '/api/admin/access/:module',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
+    const actor = await resolveIdentity(req, res);
+    if (!actor) return;
+    if (actor.role !== 'admin') {
+      res.status(403).json({ error: 'Chỉ quản trị viên gốc mới được quản lý người dùng và vai trò.' });
+      return;
+    }
     const module = asText(req.params.module, 40);
-    const rows = validRows(req.body?.rows);
-    if (!ACCESS_MODULES.has(module) || !rows) {
+    const incomingRows = validRows(req.body?.rows);
+    if (module === 'audit-log') {
+      res.status(405).json({ error: 'Nhật ký hệ thống chỉ đọc; không thể thêm, sửa hoặc xoá sự kiện.' });
+      return;
+    }
+    if (!ACCESS_MODULES.has(module) || !incomingRows) {
       res.status(400).json({ error: 'Dữ liệu phân quyền không hợp lệ.' });
       return;
     }
-    if (module === 'audit-log') {
-      const current = (await readStoredModule('sofa2_access_modules', module)) ?? [];
-      if (!isAppendOnly(current, rows)) {
-        res.status(409).json({ error: 'Nhật ký hệ thống chỉ được bổ sung, không được sửa hoặc xóa.' });
-        return;
-      }
+    const current = (await readStoredModule('sofa2_access_modules', module)) ?? [];
+    const roleRows =
+      module === 'roles'
+        ? current
+        : (await readStoredModule('sofa2_access_modules', 'roles')) ?? [];
+    const userRows =
+      module === 'roles'
+        ? (await readStoredModule('sofa2_access_modules', 'users')) ?? []
+        : [];
+    const permissionRows =
+      module === 'roles'
+        ? (await readStoredModule('sofa2_access_modules', 'permissions')) ?? []
+        : [];
+    const rows = normalizeAccessRows(module, incomingRows, current);
+    const validationError = validateAccessRows(
+      module,
+      rows,
+      current,
+      roleRows,
+      userRows,
+      permissionRows
+    );
+    if (validationError) {
+      res.status(400).json({ error: validationError });
+      return;
     }
     await pool.query(
       `INSERT INTO sofa2_access_modules (module, rows, updated_at)
@@ -796,7 +1359,27 @@ app.put(
          SET rows = EXCLUDED.rows, updated_at = NOW()`,
       [module, JSON.stringify(rows)]
     );
-    res.json({ rows: (await readStoredModule('sofa2_access_modules', module)) ?? [] });
+    let saved = (await readStoredModule('sofa2_access_modules', module)) ?? [];
+    if (module === 'roles') {
+      const users = (await readStoredModule('sofa2_access_modules', 'users')) ?? [];
+      saved = saved.map((role) => ({
+        ...role,
+        users: users.filter(
+          (user) =>
+            [asText(user.role, 80), ...splitAccessList(user.extraRoles)].includes(
+              asText(role.role, 80)
+            )
+        ).length,
+      }));
+    }
+    await recordAdminAudit(req, actor, {
+      type: 'Thay đổi quyền',
+      module: 'Phân quyền',
+      action: `Cập nhật ${module}`,
+      target: module,
+      details: { before: current.length, after: saved.length },
+    });
+    res.json({ rows: publicAccessRows(module, saved) });
   })
 );
 

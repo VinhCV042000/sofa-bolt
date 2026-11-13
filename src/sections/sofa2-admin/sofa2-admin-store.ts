@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { supabase } from 'src/integrations/supabase/client';
+import { supabase } from 'src/lib/supabase';
 
 import { SOFA2_ADMIN_GROUPS } from './sofa2-admin-data';
-import { sofa2Slugify, sofa2Today } from './sofa2-cms';
+import { sofa2Slugify } from './sofa2-cms';
 
 const untypedSupabase = supabase as unknown as SupabaseClient;
 
@@ -54,7 +54,10 @@ SOFA2_ADMIN_GROUPS.forEach((group) => {
 try {
   const saved = typeof window !== 'undefined' ? window.localStorage.getItem(STORAGE_KEY) : null;
   if (saved) {
-    Object.assign(store, JSON.parse(saved) as Store);
+    const savedRows = JSON.parse(saved) as Store;
+    Object.entries(savedRows).forEach(([storeKey, rows]) => {
+      if (!storeKey.startsWith('access/')) store[storeKey] = rows;
+    });
   } else {
     const addressesKey = key('shopping', 'addresses');
     const wishlistKey = key('shop', 'wishlist');
@@ -465,7 +468,7 @@ function cmsAdminToDbRow(moduleSlug: string, row: AdminRow): Record<string, unkn
   const statusEn = STATUS_VN_TO_EN[String(row.status ?? '')] ?? 'draft';
   const order = Number(row.order ?? 0);
   const updated = vnDateToIso(row.updated) ?? new Date().toISOString().slice(0, 10);
-  const indexable = row.indexable === 'Không' ? false : true;
+  const indexable = row.indexable !== 'Không';
 
   if (moduleSlug === 'blog') {
     return {
@@ -723,9 +726,37 @@ export async function syncSofa2DealerRows(moduleSlug: string, rows: AdminRow[]) 
 }
 
 export async function loadSofa2AccessRows(moduleSlug: string) {
-  const response = await fetch(`/api/admin/access/${encodeURIComponent(moduleSlug)}`, { credentials: 'include' });
-  if (!response.ok) throw new Error('Không tải được dữ liệu phân quyền từ máy chủ.');
-  const payload = (await response.json()) as { rows?: AdminRow[] };
+  const readModule = async (slug: string) => {
+    const response = await fetch(`/api/admin/access/${encodeURIComponent(slug)}`, {
+      credentials: 'include',
+    });
+    if (!response.ok) throw new Error('Không tải được dữ liệu phân quyền từ máy chủ.');
+    return (await response.json()) as { rows?: AdminRow[]; initialized?: boolean };
+  };
+  const seedModule = async (slug: string, rows: AdminRow[]) => {
+    const response = await fetch(`/api/admin/access/${encodeURIComponent(slug)}/seed`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows }),
+    });
+    if (!response.ok) throw new Error('Không khởi tạo được cấu hình phân quyền mặc định.');
+    return (await response.json()) as { rows?: AdminRow[] };
+  };
+  const getDefaults = (slug: string) =>
+    SOFA2_ADMIN_GROUPS.find((group) => group.slug === 'access')?.modules.find(
+      (module) => module.slug === slug
+    )?.rows ?? [];
+
+  if (moduleSlug !== 'roles' && moduleSlug !== 'audit-log') {
+    const roles = await readModule('roles');
+    if (!roles.initialized) await seedModule('roles', getDefaults('roles'));
+  }
+
+  let payload = await readModule(moduleSlug);
+  if (!payload.initialized && moduleSlug !== 'audit-log') {
+    payload = await seedModule(moduleSlug, getDefaults(moduleSlug));
+  }
   store[key('access', moduleSlug)] = (payload.rows ?? []).map((row) => ({ ...row }));
   emit();
 }
@@ -1049,7 +1080,7 @@ export function useSofa2AdminRows(
       persistSeoRows(store[k], previousRows);
       persistAccessRows(store[k], previousRows);
     },
-    [k, persistSeoRows]
+    [k, persistSeoRows, persistAccessRows]
   );
 
   return {

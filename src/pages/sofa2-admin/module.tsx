@@ -26,6 +26,7 @@ import { Sofa2AdminSeoView } from 'src/sections/sofa2-admin/view/sofa2-admin-seo
 import { Sofa2AdminCartView } from 'src/sections/sofa2-admin/view/sofa2-admin-cart-view';
 import { Sofa2AdminModuleView } from 'src/sections/sofa2-admin/view';
 import { Sofa2DealerAdminGuard } from 'src/sections/sofa2-admin/view/sofa2-dealer-admin-guard';
+import { Sofa2AdminAccessGuard } from 'src/sections/sofa2-admin/view/sofa2-admin-access-guard';
 
 // ----------------------------------------------------------------------
 
@@ -78,21 +79,31 @@ export default function Page() {
           schema={schema}
         />
       );
-      return found.group.slug === 'dealer' ? (
-        <Sofa2DealerAdminGuard>{content}</Sofa2DealerAdminGuard>
-      ) : content;
+      const protectedContent =
+        found.group.slug === 'dealer' ? (
+          <Sofa2DealerAdminGuard>{content}</Sofa2DealerAdminGuard>
+        ) : (
+          content
+        );
+      return (
+        <Sofa2AdminAccessGuard group={found.group.slug} moduleSlug={found.module.slug}>
+          {protectedContent}
+        </Sofa2AdminAccessGuard>
+      );
     }
 
     const analyticsSchema =
       found.group.slug === 'analytics' ? getSofa2AnalyticsSchema(found.module.slug) : undefined;
     if (analyticsSchema) {
       return (
-        <Sofa2AdminAnalyticsView
-          key={`${found.group.slug}/${found.module.slug}`}
-          group={found.group}
-          module={found.module}
-          schema={analyticsSchema}
-        />
+        <Sofa2AdminAccessGuard group={found.group.slug} moduleSlug={found.module.slug}>
+          <Sofa2AdminAnalyticsView
+            key={`${found.group.slug}/${found.module.slug}`}
+            group={found.group}
+            module={found.module}
+            schema={analyticsSchema}
+          />
+        </Sofa2AdminAccessGuard>
       );
     }
 
@@ -100,14 +111,14 @@ export default function Page() {
       found.group.slug === 'seo' ? getSofa2SeoSchema(found.module.slug) : undefined;
     if (seoSchema) {
       return (
-        <Sofa2DealerAdminGuard resource="SEO">
+        <Sofa2AdminAccessGuard group={found.group.slug} moduleSlug={found.module.slug}>
           <Sofa2AdminSeoView
             key={`${found.group.slug}/${found.module.slug}`}
             group={found.group}
             module={found.module}
             schema={seoSchema}
           />
-        </Sofa2DealerAdminGuard>
+        </Sofa2AdminAccessGuard>
       );
     }
 
@@ -116,15 +127,21 @@ export default function Page() {
     // Cart view takes priority for shopping modules with a cart schema (charts + richer CRUD)
     if (cartSchema) {
       return (
-        <Sofa2AdminCartView
-          key={`${found.group.slug}/${found.module.slug}`}
-          group={found.group}
-          module={found.module}
-          schema={cartSchema}
-        />
+        <Sofa2AdminAccessGuard group={found.group.slug} moduleSlug={found.module.slug}>
+          <Sofa2AdminCartView
+            key={`${found.group.slug}/${found.module.slug}`}
+            group={found.group}
+            module={found.module}
+            schema={cartSchema}
+          />
+        </Sofa2AdminAccessGuard>
       );
     }
   }
 
-  return <Sofa2AdminModuleView />;
+  return (
+    <Sofa2AdminAccessGuard group={group} moduleSlug={module}>
+      <Sofa2AdminModuleView />
+    </Sofa2AdminAccessGuard>
+  );
 }

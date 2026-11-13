@@ -60,6 +60,34 @@ CREATE TABLE IF NOT EXISTS sofa2_cms_modules (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS sofa2_access_modules (
+  module TEXT PRIMARY KEY CHECK (module IN ('users', 'roles', 'permissions')),
+  rows JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(rows) = 'array'),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS sofa2_admin_audit_log (
+  id BIGSERIAL PRIMARY KEY,
+  actor_user_id TEXT NOT NULL,
+  actor_email TEXT NOT NULL,
+  actor_name TEXT NOT NULL DEFAULT '',
+  event_type TEXT NOT NULL,
+  module TEXT NOT NULL,
+  action TEXT NOT NULL,
+  target TEXT NOT NULL DEFAULT '',
+  details JSONB NOT NULL DEFAULT '{}'::jsonb,
+  ip TEXT NOT NULL DEFAULT '',
+  user_agent TEXT NOT NULL DEFAULT '',
+  outcome TEXT NOT NULL DEFAULT 'Thành công',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS sofa2_admin_audit_log_created_idx
+  ON sofa2_admin_audit_log (created_at DESC);
+
+CREATE INDEX IF NOT EXISTS sofa2_admin_audit_log_actor_idx
+  ON sofa2_admin_audit_log (actor_email, created_at DESC);
+
 CREATE TABLE IF NOT EXISTS sofa2_customer_profiles (
   clerk_user_id TEXT PRIMARY KEY,
   email TEXT NOT NULL,
