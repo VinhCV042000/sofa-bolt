@@ -21,6 +21,10 @@ import { Iconify } from 'src/components/iconify';
 
 import { SOFA2_ADMIN_ROOT, SOFA2_ADMIN_GROUPS } from '../sofa2-admin-data';
 import { SOFA2_ADMIN_TOOLS } from '../sofa2-admin-tools';
+import {
+  canOpenSofa2AdminGroup,
+  type Sofa2AdminAccessSession,
+} from '../sofa2-access-control';
 
 // ----------------------------------------------------------------------
 
@@ -54,10 +58,7 @@ export function Sofa2AdminLayout({
   const siteLink = '/sofa2';
   const isDesktop = useMediaQuery('(min-width:1200px)');
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [adminSession, setAdminSession] = useState<{
-    role?: string;
-    permissions?: string[];
-  } | null>(null);
+  const [adminSession, setAdminSession] = useState<Sofa2AdminAccessSession | null>(null);
   const [openGroups, setOpenGroups] = useState<string[]>(
     activeGroup ? [activeGroup] : [SOFA2_ADMIN_GROUPS[0].slug]
   );
@@ -80,9 +81,7 @@ export function Sofa2AdminLayout({
   const visibleGroups =
     adminSession?.role === 'admin'
       ? SOFA2_ADMIN_GROUPS
-      : adminSession?.role === 'staff' && adminSession.permissions?.includes('SEO:Xem')
-        ? SOFA2_ADMIN_GROUPS.filter((group) => group.slug === 'seo')
-        : [];
+      : SOFA2_ADMIN_GROUPS.filter((group) => canOpenSofa2AdminGroup(adminSession, group.slug));
 
   const toggleGroup = (slug: string) =>
     setOpenGroups((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
@@ -223,47 +222,54 @@ export function Sofa2AdminLayout({
           );
         })}
 
-        <Typography
-          variant="overline"
-          sx={{ display: 'block', px: 1.5, pt: 2, pb: 1, color: alpha(TEXT, 0.4) }}
-        >
-          Tiện ích
-        </Typography>
-
-        {SOFA2_ADMIN_TOOLS.map((tool) => (
-          <ButtonBase
-            key={tool.slug}
-            component={RouterLink}
-            href={`${adminRoot}/tools/${tool.slug}`}
-            sx={{
-              width: 1,
-              gap: 1.5,
-              px: 1.5,
-              py: 1.05,
-              mb: 0.25,
-              borderRadius: 1.25,
-              justifyContent: 'flex-start',
-              color: alpha(TEXT, 0.7),
-              '&:hover': { bgcolor: alpha(ACCENT, 0.08), color: TEXT },
-            }}
-          >
-            <Iconify icon={tool.icon} width={20} />
-            <Typography variant="body2" sx={{ fontWeight: 600, textAlign: 'left' }}>
-              {tool.name}
+        {adminSession?.role === 'admin' && (
+          <>
+            <Typography
+              variant="overline"
+              sx={{ display: 'block', px: 1.5, pt: 2, pb: 1, color: alpha(TEXT, 0.4) }}
+            >
+              Tiện ích
             </Typography>
-          </ButtonBase>
-        ))}
+            {SOFA2_ADMIN_TOOLS.map((tool) => (
+              <ButtonBase
+                key={tool.slug}
+                component={RouterLink}
+                href={`${adminRoot}/tools/${tool.slug}`}
+                sx={{
+                  width: 1,
+                  gap: 1.5,
+                  px: 1.5,
+                  py: 1.05,
+                  mb: 0.25,
+                  borderRadius: 1.25,
+                  justifyContent: 'flex-start',
+                  color: alpha(TEXT, 0.7),
+                  '&:hover': { bgcolor: alpha(ACCENT, 0.08), color: TEXT },
+                }}
+              >
+                <Iconify icon={tool.icon} width={20} />
+                <Typography variant="body2" sx={{ fontWeight: 600, textAlign: 'left' }}>
+                  {tool.name}
+                </Typography>
+              </ButtonBase>
+            ))}
+          </>
+        )}
       </Box>
 
       <Divider sx={{ borderColor: alpha(ACCENT, 0.12) }} />
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ p: 2 }}>
-        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.16), color: ACCENT, width: 36, height: 36 }}>MA</Avatar>
+        <Avatar sx={{ bgcolor: alpha(ACCENT, 0.16), color: ACCENT, width: 36, height: 36 }}>
+          {(adminSession?.name ?? adminSession?.email ?? 'AD').slice(0, 2).toUpperCase()}
+        </Avatar>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>
-            Minh Anh
+            {adminSession?.name ?? adminSession?.email ?? 'Đang tải tài khoản'}
           </Typography>
           <Typography variant="caption" sx={{ color: alpha(TEXT, 0.5) }} noWrap>
-            Quản trị viên
+            {adminSession?.role === 'admin'
+              ? 'Quản trị viên gốc'
+              : adminSession?.roles?.join(', ') || 'Nhân viên'}
           </Typography>
         </Box>
         <Tooltip title="Về trang bán hàng">

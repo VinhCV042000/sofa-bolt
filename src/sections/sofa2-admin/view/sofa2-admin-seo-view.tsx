@@ -56,6 +56,10 @@ import {
 import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2SeoSchema } from '../sofa2-seo';
 import { SOFA2_SITE_ORIGIN } from '../sofa2-seo-generator';
+import {
+  hasSofa2AdminPermission,
+  type Sofa2AdminAccessSession,
+} from '../sofa2-access-control';
 
 import { SOFA2_ADMIN_GROUPS, type Sofa2AdminGroup, type Sofa2AdminModule } from '../sofa2-admin-data';
 
@@ -220,6 +224,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<number[]>([]);
   const [toast, setToast] = useState('');
+  const [accessSession, setAccessSession] = useState<Sofa2AdminAccessSession | null>(null);
   const [detail, setDetail] = useState<AdminRow | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirm, setConfirm] = useState<{ open: boolean; index: number | null }>({
@@ -239,6 +244,26 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   const publishLabel = schema.publishLabel ?? 'Đánh dấu tốt';
   const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Cần cải thiện';
   const published = statusOptions[0];
+  const canCreate = hasSofa2AdminPermission(accessSession, group.slug, 'Tạo mới');
+  const canEdit = hasSofa2AdminPermission(accessSession, group.slug, 'Sửa');
+  const canDelete = hasSofa2AdminPermission(accessSession, group.slug, 'Xoá');
+  const canPublish = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất bản');
+  const canExport = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất dữ liệu');
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/access/session', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((session: Sofa2AdminAccessSession | null) => {
+        if (active) setAccessSession(session);
+      })
+      .catch(() => {
+        if (active) setAccessSession(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
   const seoPageModules = useMemo(
     () =>
       SOFA2_ADMIN_GROUPS.find((item) => item.slug === 'seo')?.modules.filter((item) =>
@@ -380,13 +405,13 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const openCreate = () => {
-    if (loading || saving || error) return;
+    if (!canCreate || loading || saving || error) return;
     setErrors({});
     setForm({ open: true, mode: 'create', index: -1, values: emptyValues() });
   };
 
   const openEdit = (index: number) => {
-    if (loading || saving || error) return;
+    if (!canEdit || loading || saving || error) return;
     setErrors({});
     setForm({ open: true, mode: 'edit', index, values: { ...emptyValues(), ...rows[index] } });
   };
@@ -533,6 +558,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const submitForm = () => {
+    if (!(form.mode === 'create' ? canCreate : canEdit)) return;
     if (loading || saving || error) return;
     if (!validate()) return;
 
@@ -554,7 +580,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const togglePublish = (index: number) => {
-    if (loading || saving || error) return;
+    if (!canPublish || loading || saving || error) return;
     const row = rows[index];
     const isPageModule = schema.kind === 'page';
     const isPublished = isPageModule
@@ -570,7 +596,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const duplicateRow = (index: number) => {
-    if (loading || saving || error) return;
+    if (!canCreate || loading || saving || error) return;
     const row = rows[index];
     const copy: AdminRow = {
       ...row,
@@ -590,6 +616,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const doDelete = () => {
+    if (!canDelete) {
+      setConfirm({ open: false, index: null });
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     if (!loading && !saving && !error && confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
@@ -599,6 +630,11 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const doBulkDelete = () => {
+    if (!canDelete) {
+      setBulkConfirm(false);
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     if (loading || saving || error) return;
     const count = selected.length;
     deleteRows(selected);
@@ -608,7 +644,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const doReset = () => {
-    if (loading || saving || error) return;
+    if (accessSession?.role !== 'admin' || loading || saving || error) return;
     resetRows(module.rows);
     setSelected([]);
     setResetConfirm(false);
@@ -616,7 +652,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   };
 
   const bulkPublish = () => {
-    if (loading || saving || error) return;
+    if (!canPublish || loading || saving || error) return;
     selected
       .slice()
       .sort((a, b) => a - b)
@@ -644,6 +680,10 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
   const allOnPage = paged.length > 0 && paged.every(({ index }) => selected.includes(index));
 
   const exportCsv = () => {
+    if (!canExport) {
+      setToast('Tài khoản chưa được cấp quyền xuất dữ liệu.');
+      return;
+    }
     const keys = fields.map((x) => x.key);
     const csvCell = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`;
     const header = fields.map((x) => csvCell(x.label)).join(',');
@@ -829,29 +869,33 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {!!selected.length && (
                     <>
-                      <Button
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        onClick={bulkPublish}
-                        disabled={loading || saving || !!error}
-                        startIcon={<Iconify icon="solar:check-circle-bold-duotone" />}
-                      >
-                        {publishLabel} ({selected.length})
-                      </Button>
-                      <Button
-                        size="small"
-                        color="error"
-                        variant="outlined"
-                        onClick={() => setBulkConfirm(true)}
-                        disabled={loading || saving || !!error}
-                        startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
-                      >
-                        Xoá ({selected.length})
-                      </Button>
+                      {canPublish && (
+                        <Button
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                          onClick={bulkPublish}
+                          disabled={loading || saving || !!error}
+                          startIcon={<Iconify icon="solar:check-circle-bold-duotone" />}
+                        >
+                          {publishLabel} ({selected.length})
+                        </Button>
+                      )}
+                      {canDelete && (
+                        <Button
+                          size="small"
+                          color="error"
+                          variant="outlined"
+                          onClick={() => setBulkConfirm(true)}
+                          disabled={loading || saving || !!error}
+                          startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
+                        >
+                          Xoá ({selected.length})
+                        </Button>
+                      )}
                     </>
                   )}
-                  <Button
+                  {accessSession?.role === 'admin' && <Button
                     size="small"
                     variant="outlined"
                     color="inherit"
@@ -860,8 +904,8 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     startIcon={<Iconify icon="solar:refresh-bold-duotone" />}
                   >
                     Khôi phục
-                  </Button>
-                  <Button
+                  </Button>}
+                  {canExport && <Button
                     size="small"
                     variant="outlined"
                     color="inherit"
@@ -870,8 +914,8 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     startIcon={<Iconify icon="solar:export-bold-duotone" />}
                   >
                     Xuất CSV
-                  </Button>
-                  <Button
+                  </Button>}
+                  {canCreate && <Button
                     size="small"
                     variant="contained"
                     color="inherit"
@@ -881,7 +925,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                     startIcon={<Iconify icon="mingcute:add-line" />}
                   >
                     {module.actions?.[0] ?? 'Thêm mới'}
-                  </Button>
+                  </Button>}
                 </Stack>
               </Stack>
 
@@ -889,7 +933,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
+                      {(canDelete || canPublish) && <TableCell padding="checkbox">
                         <Checkbox
                           checked={allOnPage}
                           disabled={loading || saving || !!error}
@@ -897,25 +941,25 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                             setSelected(allOnPage ? [] : paged.map(({ index }) => index))
                           }
                         />
-                      </TableCell>
+                      </TableCell>}
                       {tableCols.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
                       {schema.kind === 'page' && <TableCell align="center">Điểm SEO</TableCell>}
-                      <TableCell align="center">{publishLabel}</TableCell>
+                      {canPublish && <TableCell align="center">{publishLabel}</TableCell>}
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paged.map(({ row, index }) => (
                       <TableRow key={index} hover selected={selected.includes(index)}>
-                        <TableCell padding="checkbox">
+                        {(canDelete || canPublish) && <TableCell padding="checkbox">
                           <Checkbox
                             checked={selected.includes(index)}
                             disabled={loading || saving || !!error}
                             onChange={() => toggleSelect(index)}
                           />
-                        </TableCell>
+                        </TableCell>}
                         {tableCols.map((col) => {
                           const value = row[col.key] ?? '—';
                           return (
@@ -950,7 +994,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                             <SeoScoreChip row={row} />
                           </TableCell>
                         )}
-                        <TableCell align="center">
+                        {canPublish && <TableCell align="center">
                           <Switch
                             size="small"
                             checked={
@@ -961,7 +1005,7 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                             disabled={loading || saving || !!error}
                             onChange={() => togglePublish(index)}
                           />
-                        </TableCell>
+                        </TableCell>}
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                             {schema.kind === 'page' &&
@@ -978,17 +1022,17 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Sửa">
+                            {canEdit && <Tooltip title="Sửa">
                               <IconButton size="small" disabled={loading || saving || !!error} onClick={() => openEdit(index)}>
                                 <Iconify icon="solar:pen-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Nhân bản">
+                            </Tooltip>}
+                            {canCreate && <Tooltip title="Nhân bản">
                               <IconButton size="small" disabled={loading || saving || !!error} onClick={() => duplicateRow(index)}>
                                 <Iconify icon="solar:copy-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Xoá">
+                            </Tooltip>}
+                            {canDelete && <Tooltip title="Xoá">
                               <IconButton
                                 size="small"
                                 color="error"
@@ -997,14 +1041,24 @@ export function Sofa2AdminSeoView({ group, module, schema }: Props) {
                               >
                                 <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
                           </Stack>
                         </TableCell>
                       </TableRow>
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={tableCols.length + (schema.kind === 'page' ? 4 : 3)} align="center" sx={{ py: 6 }}>
+                        <TableCell
+                          colSpan={
+                            tableCols.length +
+                            1 +
+                            Number(canDelete || canPublish) +
+                            Number(canPublish) +
+                            Number(schema.kind === 'page')
+                          }
+                          align="center"
+                          sx={{ py: 6 }}
+                        >
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Chưa có {entity} nào phù hợp.
                           </Typography>

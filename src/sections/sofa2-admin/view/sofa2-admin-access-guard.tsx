@@ -9,10 +9,13 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-type AdminSession = {
-  role: 'admin' | 'staff';
-  permissions?: string[];
-};
+import { SOFA2_ADMIN_GROUPS, SOFA2_ADMIN_ROOT } from '../sofa2-admin-data';
+import {
+  canOpenSofa2AdminGroup,
+  type Sofa2AdminAccessSession,
+} from '../sofa2-access-control';
+
+type AdminSession = Sofa2AdminAccessSession;
 
 type Props = {
   children: React.ReactNode;
@@ -62,13 +65,26 @@ export function Sofa2AdminAccessGuard({ children, group, moduleSlug }: Props) {
     return <Navigate to={`/sofa2/dealer/sign-in?redirect_url=${returnTo}`} replace />;
   }
 
-  const canOpenSeo = !!session?.permissions?.includes('SEO:Xem');
-  const allowed =
-    session?.role === 'admin' ||
-    (session?.role === 'staff' && group === 'seo' && canOpenSeo);
+  if (session?.role === 'staff' && !group) {
+    const firstAllowed = SOFA2_ADMIN_GROUPS.find((item) =>
+      canOpenSofa2AdminGroup(session, item.slug)
+    );
+    const firstModule = firstAllowed?.modules[0];
+    if (firstAllowed && firstModule) {
+      return <Navigate to={`${SOFA2_ADMIN_ROOT}/${firstAllowed.slug}/${firstModule.slug}`} replace />;
+    }
+  }
+
+  const allowed = session?.role === 'admin' || (!!group && canOpenSofa2AdminGroup(session, group));
 
   if (!allowed) {
-    const returnToSeo = canOpenSeo ? '/sofa2/admin/seo/category' : '/sofa2';
+    const firstAllowed = SOFA2_ADMIN_GROUPS.find((item) =>
+      canOpenSofa2AdminGroup(session, item.slug)
+    );
+    const firstModule = firstAllowed?.modules[0];
+    const returnToAllowed = firstAllowed && firstModule
+      ? `${SOFA2_ADMIN_ROOT}/${firstAllowed.slug}/${firstModule.slug}`
+      : '/sofa2';
     return (
       <Box sx={{ p: { xs: 2, md: 6 } }}>
         <Paper sx={{ maxWidth: 560, mx: 'auto', p: 4, textAlign: 'center' }}>
@@ -77,8 +93,8 @@ export function Sofa2AdminAccessGuard({ children, group, moduleSlug }: Props) {
             <Typography color="text.secondary">
               Tài khoản này chưa được cấp quyền vào khu vực quản trị hoặc module đang mở.
             </Typography>
-            <Button component={RouterLink} to={returnToSeo} variant="contained">
-              {canOpenSeo ? 'Mở trang SEO được cấp quyền' : 'Về trang Sofa2'}
+            <Button component={RouterLink} to={returnToAllowed} variant="contained">
+              {returnToAllowed === '/sofa2' ? 'Về trang Sofa2' : 'Mở trang được cấp quyền'}
             </Button>
           </Stack>
         </Paper>

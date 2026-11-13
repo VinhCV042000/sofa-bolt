@@ -3090,9 +3090,9 @@ const ACCESS_GROUP: Sofa2AdminGroup = {
       ],
       [
         { role: 'Quản trị hệ thống', code: 'system-admin', description: 'Tài khoản gốc được cấu hình bằng SOFA2_ADMIN_EMAIL.', users: 0, scope: 'Toàn quyền', canApprove: 'Có', canExport: 'Có', status: 'Hệ thống' },
-        { role: 'Quản lý bán hàng', code: 'sales-manager', description: 'Vai trò mẫu cho nghiệp vụ kinh doanh.', users: 0, scope: 'Đơn hàng, CRM, Kho', canApprove: 'Có', canExport: 'Có', status: 'Tuỳ chỉnh' },
-        { role: 'Biên tập nội dung', code: 'content-editor', description: 'Quản lý nội dung SEO theo các quyền được cấp.', users: 0, scope: 'CMS, Blog, SEO', canApprove: 'Không', canExport: 'Có', status: 'Tuỳ chỉnh' },
-        { role: 'CSKH', code: 'customer-support', description: 'Vai trò mẫu cho chăm sóc khách hàng.', users: 0, scope: 'CRM, Đổi trả, Hỗ trợ', canApprove: 'Không', canExport: 'Không', status: 'Tuỳ chỉnh' },
+        { role: 'Quản lý bán hàng', code: 'sales-manager', description: 'Vai trò mẫu cho nghiệp vụ kinh doanh.', users: 0, scope: 'Đơn hàng, CRM, Kho hàng', canApprove: 'Có', canExport: 'Có', status: 'Tuỳ chỉnh' },
+        { role: 'Biên tập nội dung', code: 'content-editor', description: 'Quản lý nội dung SEO theo các quyền được cấp.', users: 0, scope: 'CMS, SEO', canApprove: 'Không', canExport: 'Có', status: 'Tuỳ chỉnh' },
+        { role: 'CSKH', code: 'customer-support', description: 'Vai trò mẫu cho chăm sóc khách hàng.', users: 0, scope: 'CRM, Khách hàng, Hỗ trợ', canApprove: 'Không', canExport: 'Không', status: 'Tuỳ chỉnh' },
         { role: 'Kế toán', code: 'accountant', description: 'Vai trò mẫu cho nghiệp vụ kế toán.', users: 0, scope: 'Thanh toán, Hoàn tiền', canApprove: 'Có', canExport: 'Có', status: 'Tuỳ chỉnh' },
       ],
       ['Tạo vai trò']

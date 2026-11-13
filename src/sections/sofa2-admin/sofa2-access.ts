@@ -15,7 +15,27 @@ const f = (
 
 const ROLES = ['Quản lý bán hàng', 'Biên tập nội dung', 'CSKH', 'Kế toán'];
 const DEPARTMENTS = ['Ban giám đốc', 'Kinh doanh', 'Marketing', 'Nội dung', 'CSKH', 'Kế toán', 'Kho vận', 'IT'];
-const MODULES = ['CMS', 'Sản phẩm', 'Kho hàng', 'Đơn hàng', 'Thanh toán', 'Hoàn tiền', 'CRM', 'Marketing', 'Analytics', 'SEO', 'Đại lý B2B', 'Phân quyền', 'Cài đặt hệ thống'];
+const MODULES = [
+  'CMS',
+  'Sản phẩm',
+  'Kho hàng',
+  'Đơn hàng',
+  'Mua hàng',
+  'Giỏ hàng & Khách hàng',
+  'Khách hàng',
+  'Thanh toán',
+  'Hoàn tiền',
+  'CRM',
+  'Marketing',
+  'Analytics',
+  'SEO',
+  'Đại lý',
+  'Đại lý B2B',
+  'Hỗ trợ',
+  'Tuyển dụng',
+  'Phân quyền',
+  'Cài đặt hệ thống',
+];
 const ACTIONS = ['Xem', 'Tạo mới', 'Sửa', 'Xoá', 'Xuất bản', 'Duyệt', 'Huỷ đơn', 'Duyệt hoàn tiền', 'Xuất dữ liệu', 'Nhập dữ liệu', 'Gán vai trò', 'Cấu hình'];
 const BRANCHES = ['Tất cả', 'Showroom HCM', 'Showroom HN', 'Showroom Đà Nẵng', 'Kho tổng Bình Dương'];
 // ----------------------------------------------------------------------
@@ -64,7 +84,7 @@ export const SOFA2_ACCESS_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('description', 'Mô tả', 'textarea', 'content', { multiline: 3, maxLength: 500 }),
       f('scope', 'Module được truy cập (cách nhau dấu phẩy)', 'textarea', 'content', {
         multiline: 2,
-        helper: `Các module: ${MODULES.join(', ')}. Nhân viên hiện chỉ được phép vào SEO theo ma trận; các module khác vẫn dành cho quản trị viên gốc.`,
+        helper: `Phạm vi phải khớp module trong ma trận quyền: ${MODULES.join(', ')}.`,
       }),
       f('canApprove', 'Được duyệt (hoàn tiền, huỷ đơn, xuất bản)', 'switch', 'display'),
       f('canExport', 'Được xuất dữ liệu', 'switch', 'display'),
@@ -95,7 +115,7 @@ export const SOFA2_ACCESS_SCHEMAS: Record<string, Sofa2CmsSchema> = {
       f('status', 'Mức độ', 'select', 'display', {
         required: true,
         options: ['Bình thường', 'Nhạy cảm', 'Cần phê duyệt', 'Tắt'],
-        helper: 'API hiện áp dụng quyền nhân viên cho SEO. Quyền “Cần phê duyệt” bị từ chối đến khi có luồng duyệt hai người.',
+        helper: 'Quyền “Cần phê duyệt” bị từ chối cho đến khi có quy trình duyệt độc lập.',
       }),
     ],
   },

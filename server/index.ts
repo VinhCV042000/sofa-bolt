@@ -67,6 +67,24 @@ const CMS_MODULES = new Set([
 ]);
 const CMS_PUBLISHED_STATUSES = new Set(['Đã xuất bản', 'Đang chạy']);
 const ACCESS_MODULES = new Set(['users', 'roles', 'permissions', 'audit-log']);
+const ADMIN_PERMISSION_MODULE_BY_GROUP: Record<string, string> = {
+  cms: 'CMS',
+  catalog: 'Sản phẩm',
+  warehouse: 'Kho hàng',
+  orders: 'Đơn hàng',
+  crm: 'CRM',
+  marketing: 'Marketing',
+  analytics: 'Analytics',
+  seo: 'SEO',
+  access: 'Phân quyền',
+  b2b: 'Đại lý B2B',
+  dealer: 'Đại lý',
+  shopping: 'Mua hàng',
+  shop: 'Giỏ hàng & Khách hàng',
+  customer: 'Khách hàng',
+  support: 'Hỗ trợ',
+  hr: 'Tuyển dụng',
+};
 
 // Cổng đại lý và lưu SEO cần PostgreSQL; khi chưa cấu hình DATABASE_URL,
 // ứng dụng vẫn khởi động và trả lỗi 503 cho các API cần cơ sở dữ liệu.
@@ -581,30 +599,38 @@ async function requireAdmin(req: Request, res: Response) {
   return true;
 }
 
+async function requireAdminModulePermissions(
+  req: Request,
+  res: Response,
+  moduleName: string,
+  actions: string[]
+) {
+  const identity = await resolveIdentity(req, res);
+  if (!identity) return null;
+  if (identity.role === 'admin') return identity;
+  const granted =
+    identity.role === 'staff' &&
+    actions.every((action) => identity.permissions.includes(`${moduleName}:${action}`));
+  if (granted) return identity;
+
+  await recordAdminAudit(req, identity, {
+    type: 'Truy cập từ chối',
+    module: moduleName,
+    action: `Từ chối quyền: ${actions.join(', ')}`,
+    outcome: 'Từ chối',
+  });
+  res.status(403).json({
+    error: `Bạn chưa được cấp đủ quyền trong module ${moduleName} (${actions.join(', ')}).`,
+  });
+  return null;
+}
+
 async function requireSeoPermission(req: Request, res: Response, action: string) {
   return requireSeoPermissions(req, res, [action]);
 }
 
 async function requireSeoPermissions(req: Request, res: Response, actions: string[]) {
-  const identity = await resolveIdentity(req, res);
-  if (!identity) return null;
-  if (identity.role === 'admin') return identity;
-  if (
-    identity.role === 'staff' &&
-    actions.every((action) => identity.permissions.includes(`SEO:${action}`))
-  ) {
-    return identity;
-  }
-  if (identity.role === 'staff') {
-    await recordAdminAudit(req, identity, {
-      type: 'Truy cập từ chối',
-      module: 'SEO',
-      action: `Từ chối quyền: ${actions.join(', ')}`,
-      outcome: 'Từ chối',
-    });
-  }
-  res.status(403).json({ error: `Bạn chưa được cấp đủ quyền trong module SEO (${actions.join(', ')}).` });
-  return null;
+  return requireAdminModulePermissions(req, res, 'SEO', actions);
 }
 
 function seoRowAccessKey(row: Record<string, unknown>) {
@@ -617,6 +643,8 @@ function seoRowAccessKey(row: Record<string, unknown>) {
 
 function seoMutationActions(previous: Record<string, unknown>[], next: Record<string, unknown>[]) {
   const actions = new Set<string>();
+  const isPublished = (row: Record<string, unknown>) =>
+    CMS_PUBLISHED_STATUSES.has(asText(row.status, 40)) || isEnabled(row.published);
   const previousByKey = new Map(
     previous.map((row, index) => [seoRowAccessKey(row) || `index:${index}`, row])
   );
@@ -631,13 +659,69 @@ function seoMutationActions(previous: Record<string, unknown>[], next: Record<st
     }
     if (rowFingerprint(row) !== rowFingerprint(changed)) {
       actions.add('Sửa');
-      const wasPublished = CMS_PUBLISHED_STATUSES.has(asText(row.status, 40));
-      const isPublished = CMS_PUBLISHED_STATUSES.has(asText(changed.status, 40));
-      if (!wasPublished && isPublished) actions.add('Xuất bản');
+      if (isPublished(row) !== isPublished(changed)) actions.add('Xuất bản');
     }
   });
   nextByKey.forEach((_row, key) => {
-    if (!previousByKey.has(key)) actions.add('Tạo mới');
+    if (!previousByKey.has(key)) {
+      actions.add('Tạo mới');
+      if (isPublished(_row)) actions.add('Xuất bản');
+    }
+  });
+  return [...actions];
+}
+
+function adminRowsMutationActions(
+  previous: Record<string, unknown>[],
+  next: Record<string, unknown>[]
+) {
+  const accessKey = (row: Record<string, unknown>) => {
+    for (const key of [
+      'id',
+      'recordId',
+      'dealerId',
+      'customerId',
+      'applicationId',
+      'jobId',
+      'orderId',
+      'ticketId',
+      'sku',
+      'code',
+      'email',
+      'slug',
+      'url',
+      'name',
+      'dealer',
+      'title',
+    ]) {
+      const value = asText(row[key], 500);
+      if (value) return `${key}:${value.toLowerCase()}`;
+    }
+    return '';
+  };
+  const previousByKey = new Map(
+    previous.map((row, index) => [accessKey(row) || `index:${index}`, row])
+  );
+  const nextByKey = new Map(next.map((row, index) => [accessKey(row) || `index:${index}`, row]));
+  const actions = new Set<string>();
+  previousByKey.forEach((row, key) => {
+    const changed = nextByKey.get(key);
+    if (!changed) actions.add('Xoá');
+    else if (rowFingerprint(row) !== rowFingerprint(changed)) {
+      actions.add('Sửa');
+      if (
+        CMS_PUBLISHED_STATUSES.has(asText(row.status, 40)) !==
+        CMS_PUBLISHED_STATUSES.has(asText(changed.status, 40))
+      ) {
+        actions.add('Xuất bản');
+      }
+    }
+  });
+  nextByKey.forEach((_row, key) => {
+    if (!previousByKey.has(key)) {
+      actions.add('Tạo mới');
+      if (CMS_PUBLISHED_STATUSES.has(asText(_row.status, 40))) actions.add('Xuất bản');
+    }
   });
   return [...actions];
 }
@@ -1140,10 +1224,12 @@ app.get(
 app.get(
   '/api/admin/cms/:module',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
     const module = asText(req.params.module, 40);
     if (!CMS_MODULES.has(module)) {
       res.status(404).json({ error: 'Không tìm thấy module CMS.' });
+      return;
+    }
+    if (!(await requireAdminModulePermissions(req, res, ADMIN_PERMISSION_MODULE_BY_GROUP.cms, ['Xem']))) {
       return;
     }
     const rows = await readCmsModule(module);
@@ -1154,13 +1240,31 @@ app.get(
 app.put(
   '/api/admin/cms/:module',
   asyncRoute(async (req, res) => {
-    if (!(await requireAdmin(req, res))) return;
     const module = asText(req.params.module, 40);
     const rows = validRows(req.body?.rows);
     if (!CMS_MODULES.has(module) || !rows) {
       res.status(400).json({ error: 'Dữ liệu CMS không hợp lệ.' });
       return;
     }
+    const viewer = await requireAdminModulePermissions(
+      req,
+      res,
+      ADMIN_PERMISSION_MODULE_BY_GROUP.cms,
+      ['Xem']
+    );
+    if (!viewer) return;
+    const previous = (await readCmsModule(module)) ?? [];
+    const actions = adminRowsMutationActions(previous, rows);
+    const actor =
+      actions.length > 0
+        ? await requireAdminModulePermissions(
+            req,
+            res,
+            ADMIN_PERMISSION_MODULE_BY_GROUP.cms,
+            ['Xem', ...actions]
+          )
+        : viewer;
+    if (!actor) return;
     await pool.query(
       `INSERT INTO sofa2_cms_modules (module, rows, updated_at)
        VALUES ($1, $2::jsonb, NOW())
@@ -1168,6 +1272,15 @@ app.put(
          SET rows = EXCLUDED.rows, updated_at = NOW()`,
       [module, JSON.stringify(rows)]
     );
+    if (actions.length) {
+      await recordAdminAudit(req, actor, {
+        type: actions.includes('Xuất bản') ? 'Xuất bản' : 'Cập nhật',
+        module: 'CMS',
+        action: actions.join(', '),
+        target: module,
+        details: { before: previous.length, after: rows.length },
+      });
+    }
     res.json({ rows: (await readCmsModule(module)) ?? [] });
   })
 );
@@ -1562,15 +1675,19 @@ app.post(
 app.get(
   '/api/admin/dealer/:module',
   asyncRoute(async (req, res) => {
-    const identity = await resolveIdentity(req, res);
-    if (!identity) return;
-    if (identity.role !== 'admin') {
-      res.status(403).json({ error: 'Chỉ quản trị viên mới truy cập được module này.' });
-      return;
-    }
     const module = asText(req.params.module, 80);
     if (!DEALER_MODULES.has(module)) {
       res.status(404).json({ error: 'Không tìm thấy module đại lý.' });
+      return;
+    }
+    if (
+      !(await requireAdminModulePermissions(
+        req,
+        res,
+        ADMIN_PERMISSION_MODULE_BY_GROUP.dealer,
+        ['Xem']
+      ))
+    ) {
       return;
     }
     res.json({ rows: await readModuleRows(module) });
@@ -1580,12 +1697,6 @@ app.get(
 app.post(
   '/api/admin/dealer/:module/seed',
   asyncRoute(async (req, res) => {
-    const identity = await resolveIdentity(req, res);
-    if (!identity) return;
-    if (identity.role !== 'admin') {
-      res.status(403).json({ error: 'Chỉ quản trị viên mới được khởi tạo dữ liệu.' });
-      return;
-    }
     const module = asText(req.params.module, 80);
     const rows = validRows(req.body?.rows);
     const profileError = module === 'dashboard' && rows ? validateDealerProfileRows(rows) : null;
@@ -1593,19 +1704,28 @@ app.post(
       res.status(400).json({ error: profileError || 'Dữ liệu khởi tạo không hợp lệ.' });
       return;
     }
-    res.json({ rows: await replaceModuleRows(module, rows, true) });
+    const identity = await requireAdminModulePermissions(
+      req,
+      res,
+      ADMIN_PERMISSION_MODULE_BY_GROUP.dealer,
+      ['Tạo mới']
+    );
+    if (!identity) return;
+    const saved = await replaceModuleRows(module, rows, true);
+    await recordAdminAudit(req, identity, {
+      type: 'Khởi tạo dữ liệu',
+      module: 'Đại lý',
+      action: 'Khởi tạo dữ liệu module đại lý',
+      target: module,
+      details: { records: saved.length },
+    });
+    res.json({ rows: saved });
   })
 );
 
 app.put(
   '/api/admin/dealer/:module',
   asyncRoute(async (req, res) => {
-    const identity = await resolveIdentity(req, res);
-    if (!identity) return;
-    if (identity.role !== 'admin') {
-      res.status(403).json({ error: 'Chỉ quản trị viên mới được cập nhật module này.' });
-      return;
-    }
     const module = asText(req.params.module, 80);
     const rows = validRows(req.body?.rows);
     const profileError = module === 'dashboard' && rows ? validateDealerProfileRows(rows) : null;
@@ -1613,7 +1733,36 @@ app.put(
       res.status(400).json({ error: profileError || 'Danh sách dữ liệu không hợp lệ.' });
       return;
     }
-    res.json({ rows: await replaceModuleRows(module, rows) });
+    const viewer = await requireAdminModulePermissions(
+      req,
+      res,
+      ADMIN_PERMISSION_MODULE_BY_GROUP.dealer,
+      ['Xem']
+    );
+    if (!viewer) return;
+    const previous = await readModuleRows(module);
+    const actions = adminRowsMutationActions(previous, rows);
+    const actor =
+      actions.length > 0
+        ? await requireAdminModulePermissions(
+            req,
+            res,
+            ADMIN_PERMISSION_MODULE_BY_GROUP.dealer,
+            ['Xem', ...actions]
+          )
+        : viewer;
+    if (!actor) return;
+    const saved = await replaceModuleRows(module, rows);
+    if (actions.length) {
+      await recordAdminAudit(req, actor, {
+        type: 'Cập nhật',
+        module: 'Đại lý',
+        action: actions.join(', '),
+        target: module,
+        details: { before: previous.length, after: saved.length },
+      });
+    }
+    res.json({ rows: saved });
   })
 );
 

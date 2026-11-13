@@ -53,6 +53,10 @@ import { sofa2Today, sofa2Slugify, type Sofa2CmsField, type Sofa2CmsSchema } fro
 import { Sofa2AdminDealerInsights } from './sofa2-admin-dealer-insights';
 
 import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
+import {
+  hasSofa2AdminPermission,
+  type Sofa2AdminAccessSession,
+} from '../sofa2-access-control';
 
 // ----------------------------------------------------------------------
 
@@ -112,6 +116,29 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
 
   const [dealerLoading, setDealerLoading] = useState(group.slug === 'dealer');
   const [accessSaveStarted, setAccessSaveStarted] = useState(false);
+  const [accessSession, setAccessSession] = useState<Sofa2AdminAccessSession | null>(null);
+  const isAdmin = accessSession?.role === 'admin';
+  const canCreate = hasSofa2AdminPermission(accessSession, group.slug, 'Tạo mới');
+  const canEdit = hasSofa2AdminPermission(accessSession, group.slug, 'Sửa');
+  const canDelete = hasSofa2AdminPermission(accessSession, group.slug, 'Xoá');
+  const canPublish = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất bản');
+  const canExport = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất dữ liệu');
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/access/session', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((session: Sofa2AdminAccessSession | null) => {
+        if (active) setAccessSession(session);
+      })
+      .catch(() => {
+        if (active) setAccessSession(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   useEffect(() => {
     if (group.slug !== 'access') return;
     if (rowsSaving) {
@@ -215,11 +242,13 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const openCreate = () => {
+    if (!canCreate) return;
     setErrors({});
     setForm({ open: true, mode: 'create', index: -1, values: emptyValues() });
   };
 
   const openEdit = (index: number) => {
+    if (!canEdit) return;
     setErrors({});
     setForm({ open: true, mode: 'edit', index, values: { ...emptyValues(), ...rows[index] } });
   };
@@ -418,6 +447,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const submitForm = async () => {
+    if (!(form.mode === 'create' ? canCreate : canEdit)) {
+      setToast('Tài khoản chưa được cấp quyền thực hiện thao tác này.');
+      return;
+    }
     if (!validate()) return;
 
     const clean: AdminRow = { ...form.values };
@@ -457,6 +490,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const togglePublish = async (index: number) => {
+    if (!canPublish) return;
     const row = rows[index];
     const isPublished = String(row[statusKey]) === published;
     const next = isPublished ? statusOptions[1] ?? 'Bản nháp' : published;
@@ -472,6 +506,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const duplicateRow = async (index: number) => {
+    if (!canCreate) return;
     const row = rows[index];
     const copy: AdminRow = {
       ...row,
@@ -490,6 +525,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const doDelete = async () => {
+    if (!canDelete) {
+      setConfirm({ open: false, index: null });
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     if (confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
@@ -500,6 +540,11 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const doBulkDelete = async () => {
+    if (!canDelete) {
+      setBulkConfirm(false);
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     const deletedCount = selected.length;
     deleteRows(selected);
     setSelected([]);
@@ -513,6 +558,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   };
 
   const bulkPublish = async () => {
+    if (!canPublish) return;
     selected
       .slice()
       .sort((a, b) => a - b)
@@ -538,6 +584,10 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
     selectablePaged.length > 0 && selectablePaged.every(({ index }) => selected.includes(index));
 
   const exportCsv = () => {
+    if (!canExport && !isAdmin) {
+      setToast('Tài khoản chưa được cấp quyền xuất dữ liệu.');
+      return;
+    }
     const keys = fields.map((x) => x.key);
     const header = fields.map((x) => x.label).join(',');
     const body = filtered
@@ -558,20 +608,29 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
   const renderField = (field: Sofa2CmsField) => {
     const value = form.values[field.key] ?? '';
     const error = errors[field.key];
-    const fieldOptions =
-      field.key === 'dealer' && group.slug === 'dealer'
-        ? Array.from(
-            new Set(
-              [
-                ...getSofa2AdminRows('dealer', 'dashboard').map((row) =>
-                  String(row.dealer ?? '').trim()
-                ),
-                ...(field.options ?? []),
-                String(value).trim(),
-              ].filter(Boolean)
-            )
+    const fieldOptions = (() => {
+      if (field.key === 'dealer' && group.slug === 'dealer') {
+        return Array.from(
+          new Set(
+            [
+              ...getSofa2AdminRows('dealer', 'dashboard').map((row) =>
+                String(row.dealer ?? '').trim()
+              ),
+              ...(field.options ?? []),
+              String(value).trim(),
+            ].filter(Boolean)
           )
-        : field.options ?? [];
+        );
+      }
+      if (field.key === 'role' && group.slug === 'access' && module.slug === 'users') {
+        const activeRoles = getSofa2AdminRows('access', 'roles')
+          .filter((row) => String(row.status) !== 'Ngưng dùng')
+          .map((row) => String(row.role ?? '').trim())
+          .filter(Boolean);
+        return Array.from(new Set([...activeRoles, String(value).trim()])).filter(Boolean);
+      }
+      return field.options ?? [];
+    })();
 
     if (field.type === 'switch') {
       return (
@@ -834,8 +893,8 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
           </Alert>
         )}
         {group.slug === 'access' && module.slug === 'permissions' && (
-          <Alert severity="warning" sx={{ mb: 2 }}>
-            Quyền nhân viên hiện được máy chủ áp dụng cho module SEO. Các module quản trị khác vẫn chỉ dành cho tài khoản quản trị gốc.
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Nhân viên chỉ thấy module có quyền Xem; thao tác thêm, sửa, xoá, xuất bản và xuất dữ liệu được kiểm tra riêng. Quyền phê duyệt đang bị từ chối an toàn cho đến khi có quy trình duyệt.
           </Alert>
         )}
         {group.slug === 'dealer' && dealerLoading && (
@@ -950,7 +1009,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {!!selected.length && !isAppendOnly && (
                     <>
-                      {showStatusToggle && (
+                      {showStatusToggle && canPublish && (
                         <Button
                           size="small"
                           color="success"
@@ -961,18 +1020,20 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                           {publishLabel} ({selected.length})
                         </Button>
                       )}
-                      <Button
-                        size="small"
-                        color="error"
-                        variant="outlined"
-                        onClick={() => setBulkConfirm(true)}
-                        startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
-                      >
-                        Xoá ({selected.length})
-                      </Button>
+                      {canDelete && (
+                        <Button
+                          size="small"
+                          color="error"
+                          variant="outlined"
+                          onClick={() => setBulkConfirm(true)}
+                          startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
+                        >
+                          Xoá ({selected.length})
+                        </Button>
+                      )}
                     </>
                   )}
-                  {group.slug !== 'hr' && group.slug !== 'access' && !isAppendOnly && (
+                  {isAdmin && group.slug !== 'hr' && group.slug !== 'access' && !isAppendOnly && (
                     <Button
                       size="small"
                       variant="outlined"
@@ -993,16 +1054,18 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       Khôi phục
                     </Button>
                   )}
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="inherit"
-                    onClick={exportCsv}
-                    startIcon={<Iconify icon="solar:export-bold-duotone" />}
-                  >
-                    {isAppendOnly ? 'Xuất nhật ký CSV' : 'Xuất CSV'}
-                  </Button>
-                  {!isAppendOnly && (
+                  {canExport && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="inherit"
+                      onClick={exportCsv}
+                      startIcon={<Iconify icon="solar:export-bold-duotone" />}
+                    >
+                      {isAppendOnly ? 'Xuất nhật ký CSV' : 'Xuất CSV'}
+                    </Button>
+                  )}
+                  {!isAppendOnly && canCreate && (
                     <Button
                       size="small"
                       variant="contained"
@@ -1021,7 +1084,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
-                      {!isAppendOnly && (
+                      {!isAppendOnly && (canDelete || canPublish) && (
                         <TableCell padding="checkbox">
                           <Checkbox
                             checked={allOnPage}
@@ -1035,14 +1098,16 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                       {module.columns.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                       {showStatusToggle && <TableCell align="center">{publishLabel}</TableCell>}
+                        {showStatusToggle && canPublish && (
+                          <TableCell align="center">{publishLabel}</TableCell>
+                        )}
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paged.map(({ row, index }) => (
                       <TableRow key={index} hover selected={selected.includes(index)}>
-                        {!isAppendOnly && (
+                        {!isAppendOnly && (canDelete || canPublish) && (
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selected.includes(index)}
@@ -1083,7 +1148,7 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                             </TableCell>
                           );
                         })}
-                        {showStatusToggle && (
+                        {showStatusToggle && canPublish && (
                           <TableCell align="center">
                             <Switch
                               size="small"
@@ -1099,27 +1164,33 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            {!isAppendOnly && !isProtectedAccessRole(row) && (
+                            {!isAppendOnly && !isProtectedAccessRole(row) && (canEdit || canCreate || canDelete) && (
                               <>
-                                <Tooltip title="Sửa">
-                                  <IconButton size="small" onClick={() => openEdit(index)}>
-                                    <Iconify icon="solar:pen-bold-duotone" width={18} />
-                                  </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Nhân bản">
-                                  <IconButton size="small" onClick={() => duplicateRow(index)}>
-                                    <Iconify icon="solar:copy-bold-duotone" width={18} />
-                                  </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Xoá">
-                                  <IconButton
-                                    size="small"
-                                    color="error"
-                                    onClick={() => setConfirm({ open: true, index })}
-                                  >
-                                    <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
-                                  </IconButton>
-                                </Tooltip>
+                                {canEdit && (
+                                  <Tooltip title="Sửa">
+                                    <IconButton size="small" onClick={() => openEdit(index)}>
+                                      <Iconify icon="solar:pen-bold-duotone" width={18} />
+                                    </IconButton>
+                                  </Tooltip>
+                                )}
+                                {canCreate && (
+                                  <Tooltip title="Nhân bản">
+                                    <IconButton size="small" onClick={() => duplicateRow(index)}>
+                                      <Iconify icon="solar:copy-bold-duotone" width={18} />
+                                    </IconButton>
+                                  </Tooltip>
+                                )}
+                                {canDelete && (
+                                  <Tooltip title="Xoá">
+                                    <IconButton
+                                      size="small"
+                                      color="error"
+                                      onClick={() => setConfirm({ open: true, index })}
+                                    >
+                                      <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
+                                    </IconButton>
+                                  </Tooltip>
+                                )}
                               </>
                             )}
                           </Stack>
@@ -1129,7 +1200,12 @@ export function Sofa2AdminCmsView({ group, module, schema }: Props) {
                     {!filtered.length && (
                       <TableRow>
                           <TableCell
-                            colSpan={module.columns.length + Number(showStatusToggle) + 1 + Number(!isAppendOnly)}
+                            colSpan={
+                              module.columns.length +
+                              Number(showStatusToggle && canPublish) +
+                              1 +
+                              Number(!isAppendOnly && (canDelete || canPublish))
+                            }
                             align="center"
                             sx={{ py: 6 }}
                           >

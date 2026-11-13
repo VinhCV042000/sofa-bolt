@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import Box from '@mui/material/Box';
@@ -43,6 +43,10 @@ import { sofa2Today, type Sofa2CmsField } from '../sofa2-cms';
 import { type Sofa2CartSchema } from '../sofa2-cart';
 
 import type { Sofa2AdminGroup, Sofa2AdminModule } from '../sofa2-admin-data';
+import {
+  hasSofa2AdminPermission,
+  type Sofa2AdminAccessSession,
+} from '../sofa2-access-control';
 
 // ----------------------------------------------------------------------
 
@@ -282,6 +286,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState<number[]>([]);
   const [toast, setToast] = useState('');
+  const [accessSession, setAccessSession] = useState<Sofa2AdminAccessSession | null>(null);
   const [detail, setDetail] = useState<AdminRow | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirm, setConfirm] = useState<{ open: boolean; index: number | null }>({
@@ -301,6 +306,11 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   const defaultDraft = schema.defaultStatus ?? statusOptions[1] ?? 'Bản nháp';
   const published = statusOptions[0];
   const showStatusToggle = schema.statusToggle !== false;
+  const canCreate = hasSofa2AdminPermission(accessSession, group.slug, 'Tạo mới');
+  const canEdit = hasSofa2AdminPermission(accessSession, group.slug, 'Sửa');
+  const canDelete = hasSofa2AdminPermission(accessSession, group.slug, 'Xoá');
+  const canPublish = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất bản');
+  const canExport = hasSofa2AdminPermission(accessSession, group.slug, 'Xuất dữ liệu');
   const sharedClientModules = new Set([
     'account',
     'profile',
@@ -312,6 +322,21 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
     'warranty',
   ]);
   const showReset = !(group.slug === 'shopping' && sharedClientModules.has(module.slug));
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/access/session', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((session: Sofa2AdminAccessSession | null) => {
+        if (active) setAccessSession(session);
+      })
+      .catch(() => {
+        if (active) setAccessSession(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: rows.length };
@@ -425,11 +450,13 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const openCreate = () => {
+    if (!canCreate) return;
     setErrors({});
     setForm({ open: true, mode: 'create', index: -1, values: emptyValues() });
   };
 
   const openEdit = (index: number) => {
+    if (!canEdit) return;
     setErrors({});
     setForm({ open: true, mode: 'edit', index, values: { ...emptyValues(), ...rows[index] } });
   };
@@ -486,6 +513,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const submitForm = () => {
+    if (!(form.mode === 'create' ? canCreate : canEdit)) return;
     if (!validate()) return;
 
     const clean: AdminRow = { ...form.values };
@@ -506,6 +534,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const togglePublish = (index: number) => {
+    if (!canPublish) return;
     const row = rows[index];
     const isPublished = String(row[statusKey]) === published;
     const next = isPublished ? defaultDraft : published;
@@ -514,6 +543,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const duplicateRow = (index: number) => {
+    if (!canCreate) return;
     const row = rows[index];
     const copy: AdminRow = {
       ...row,
@@ -525,6 +555,11 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const doDelete = () => {
+    if (!canDelete) {
+      setConfirm({ open: false, index: null });
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     if (confirm.index !== null) {
       deleteRow(confirm.index);
       setSelected([]);
@@ -534,7 +569,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const bulkPublish = () => {
-    if (!showStatusToggle) return;
+    if (!showStatusToggle || !canPublish) return;
     selected
       .slice()
       .sort((a, b) => a - b)
@@ -544,6 +579,11 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   };
 
   const bulkDelete = () => {
+    if (!canDelete) {
+      setBulkConfirm(false);
+      setToast('Tài khoản chưa được cấp quyền xoá.');
+      return;
+    }
     deleteRows(selected);
     setToast(`Đã xoá ${selected.length} ${entity}.`);
     setSelected([]);
@@ -558,6 +598,10 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
   const allOnPage = paged.length > 0 && paged.every(({ index }) => selected.includes(index));
 
   const exportCsv = () => {
+    if (!canExport) {
+      setToast('Tài khoản chưa được cấp quyền xuất dữ liệu.');
+      return;
+    }
     const keys = fields.map((x) => x.key);
     const header = fields.map((x) => x.label).join(',');
     const body = filtered
@@ -712,7 +756,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                   {!!selected.length && (
                     <>
-                      {showStatusToggle && (
+                      {showStatusToggle && canPublish && (
                         <Button
                           size="small"
                           color="success"
@@ -723,18 +767,20 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                           {publishLabel} ({selected.length})
                         </Button>
                       )}
-                      <Button
-                        size="small"
-                        color="error"
-                        variant="outlined"
-                        onClick={() => setBulkConfirm(true)}
-                        startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
-                      >
-                        Xoá ({selected.length})
-                      </Button>
+                      {canDelete && (
+                        <Button
+                          size="small"
+                          color="error"
+                          variant="outlined"
+                          onClick={() => setBulkConfirm(true)}
+                          startIcon={<Iconify icon="solar:trash-bin-trash-bold-duotone" />}
+                        >
+                          Xoá ({selected.length})
+                        </Button>
+                      )}
                     </>
                   )}
-                  {showReset && (
+                  {showReset && accessSession?.role === 'admin' && (
                     <Button
                       size="small"
                       variant="outlined"
@@ -749,7 +795,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                       Khôi phục
                     </Button>
                   )}
-                  <Button
+                  {canExport && <Button
                     size="small"
                     variant="outlined"
                     color="inherit"
@@ -757,8 +803,8 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                     startIcon={<Iconify icon="solar:export-bold-duotone" />}
                   >
                     Xuất CSV
-                  </Button>
-                  <Button
+                  </Button>}
+                  {canCreate && <Button
                     size="small"
                     variant="contained"
                     color="inherit"
@@ -767,7 +813,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                     startIcon={<Iconify icon="mingcute:add-line" />}
                   >
                     {module.actions?.[0] ?? 'Thêm mới'}
-                  </Button>
+                  </Button>}
                 </Stack>
               </Stack>
 
@@ -775,30 +821,33 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                 <Table size="medium">
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
+                      {(canDelete || canPublish) && <TableCell padding="checkbox">
                         <Checkbox
                           checked={allOnPage}
+                          disabled={!paged.length}
                           onChange={() =>
                             setSelected(allOnPage ? [] : paged.map(({ index }) => index))
                           }
                         />
-                      </TableCell>
+                      </TableCell>}
                       {tableCols.map((col) => (
                         <TableCell key={col.key}>{col.label}</TableCell>
                       ))}
-                      {showStatusToggle && <TableCell align="center">{publishLabel}</TableCell>}
+                      {showStatusToggle && canPublish && (
+                        <TableCell align="center">{publishLabel}</TableCell>
+                      )}
                       <TableCell align="right">Thao tác</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paged.map(({ row, index }) => (
                       <TableRow key={index} hover selected={selected.includes(index)}>
-                        <TableCell padding="checkbox">
+                        {(canDelete || canPublish) && <TableCell padding="checkbox">
                           <Checkbox
                             checked={selected.includes(index)}
                             onChange={() => toggleSelect(index)}
                           />
-                        </TableCell>
+                        </TableCell>}
                         {tableCols.map((col) => {
                           const value = row[col.key] ?? '—';
                           return (
@@ -828,7 +877,7 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                             </TableCell>
                           );
                         })}
-                        {showStatusToggle && (
+                        {showStatusToggle && canPublish && (
                           <TableCell align="center">
                             <Switch
                               size="small"
@@ -844,17 +893,17 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                                 <Iconify icon="solar:eye-bold-duotone" width={18} />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Sửa">
+                            {canEdit && <Tooltip title="Sửa">
                               <IconButton size="small" onClick={() => openEdit(index)}>
                                 <Iconify icon="solar:pen-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Nhân bản">
+                            </Tooltip>}
+                            {canCreate && <Tooltip title="Nhân bản">
                               <IconButton size="small" onClick={() => duplicateRow(index)}>
                                 <Iconify icon="solar:copy-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Xoá">
+                            </Tooltip>}
+                            {canDelete && <Tooltip title="Xoá">
                               <IconButton
                                 size="small"
                                 color="error"
@@ -862,14 +911,23 @@ export function Sofa2AdminCartView({ group, module, schema }: Props) {
                               >
                                 <Iconify icon="solar:trash-bin-trash-bold-duotone" width={18} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip>}
                           </Stack>
                         </TableCell>
                       </TableRow>
                     ))}
                     {!filtered.length && (
                       <TableRow>
-                        <TableCell colSpan={tableCols.length + (showStatusToggle ? 3 : 2)} align="center" sx={{ py: 6 }}>
+                        <TableCell
+                          colSpan={
+                            tableCols.length +
+                            1 +
+                            Number(canDelete || canPublish) +
+                            Number(showStatusToggle && canPublish)
+                          }
+                          align="center"
+                          sx={{ py: 6 }}
+                        >
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Chưa có {entity} nào phù hợp.
                           </Typography>
